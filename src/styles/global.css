@@ -108,8 +108,13 @@
     text-transform: uppercase;
   }
 
-  /* Long-form editorial copy (articles, case studies). */
-  .prose-edco { max-width: 68ch; }
+  /* Long-form editorial copy (articles, case studies). Slightly larger than
+     the UI text — these are pages people actually read start to finish. */
+  .prose-edco {
+    max-width: 66ch;
+    font-size: 1.0625rem;
+    line-height: 1.72;
+  }
   .prose-edco > * + * { margin-top: 1.25em; }
   .prose-edco h2 {
     font-size: var(--text-title);
