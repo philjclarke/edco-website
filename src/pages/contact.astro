@@ -1,0 +1,158 @@
+---
+/* Brief §68. The whole contact journey is one question: what are you trying to
+   achieve? Nothing compulsory beyond name, work email and organisation — no
+   phone number, budget, job title, company size, timeframe, or "how did you
+   hear about us". The purpose is to begin a conversation, not interrogate. */
+import Layout from '@/layouts/Layout.astro';
+import PageHero from '@/components/PageHero.astro';
+import Section from '@/components/Section.astro';
+import Placeholder from '@/components/Placeholder.astro';
+import { outcomes } from '@/data/outcomes';
+import { contact } from '@/data/site';
+
+const field =
+  'w-full rounded-xl border border-line bg-paper px-4 py-3 text-[0.9375rem] transition placeholder:text-ink-muted/60 focus:border-orange';
+---
+
+<Layout
+  title="Tell us what you’re trying to achieve"
+  description="You don’t need to know which EdCo product or team you need. That’s our job."
+>
+  <PageHero
+    eyebrow="Contact"
+    title="Tell us what you’re trying to achieve"
+    standfirst="You don’t need to know which EdCo product or team you need. That’s our job."
+    lead="Tell us what you’re trying to achieve and we’ll connect you with the right people."
+    size="lg"
+  />
+
+  <Section tone="light" size="lg">
+    <div class="grid gap-14 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:gap-20">
+      <form id="objective-form" novalidate>
+        <fieldset>
+          <legend class="text-title">What are you trying to achieve?</legend>
+          <p class="mt-3 text-ink-muted">Choose as many as apply. Or none, if none of them fit.</p>
+          <ul class="mt-7 grid gap-3 sm:grid-cols-2">
+            {
+              outcomes.map((o) => (
+                <li>
+                  <label class="flex h-full cursor-pointer items-start gap-3 rounded-card border border-line bg-paper p-4 transition hover:border-ink/25 has-[:checked]:border-pink has-[:checked]:bg-pink/5">
+                    <input
+                      type="checkbox"
+                      name="objective"
+                      value={o.slug}
+                      class="mt-1 h-4 w-4 shrink-0 accent-[var(--color-pink)]"
+                    />
+                    <span class="font-display text-[0.9375rem] font-semibold leading-snug">
+                      {o.navLabel}
+                    </span>
+                  </label>
+                </li>
+              ))
+            }
+            <li class="sm:col-span-2">
+              <label class="flex cursor-pointer items-start gap-3 rounded-card border border-line bg-paper p-4 transition hover:border-ink/25 has-[:checked]:border-pink has-[:checked]:bg-pink/5">
+                <input
+                  type="checkbox"
+                  name="objective"
+                  value="customer-analysis"
+                  class="mt-1 h-4 w-4 shrink-0 accent-[var(--color-pink)]"
+                />
+                <span class="font-display text-[0.9375rem] font-semibold leading-snug">
+                  I’d like the free customer analysis
+                </span>
+              </label>
+            </li>
+          </ul>
+        </fieldset>
+
+        <div class="mt-12">
+          <label for="more" class="text-title">Tell us a little more</label>
+          <p class="mt-3 text-ink-muted">Optional. As much or as little as you like.</p>
+          <textarea id="more" name="more" rows="5" class:list={[field, 'mt-5']}></textarea>
+        </div>
+
+        <div class="mt-12 grid gap-5 sm:grid-cols-2">
+          <div class="sm:col-span-2">
+            <h2 class="text-title">And who are you?</h2>
+          </div>
+          <div>
+            <label for="name" class="mb-2 block text-sm font-medium">Name</label>
+            <input id="name" name="name" autocomplete="name" required class={field} />
+          </div>
+          <div>
+            <label for="org" class="mb-2 block text-sm font-medium">Organisation</label>
+            <input id="org" name="organisation" autocomplete="organization" required class={field} />
+          </div>
+          <div class="sm:col-span-2">
+            <label for="email" class="mb-2 block text-sm font-medium">Work email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required class={field} />
+          </div>
+        </div>
+
+        <div class="mt-10">
+          <button
+            type="submit"
+            class="w-full rounded-full bg-[linear-gradient(96deg,var(--color-orange),var(--color-pink))] px-7 py-3.5 font-display text-base font-semibold text-white transition hover:brightness-110 sm:w-auto"
+            >Start the conversation</button
+          >
+        </div>
+        <div class="mt-6 space-y-2">
+          <Placeholder label="FORM ENDPOINT" note="no CRM or form handler connected yet" block />
+          <Placeholder label="PRIVACY NOTICE / CONSENT WORDING" note="legal sign-off required" block />
+        </div>
+      </form>
+
+      <aside class="lg:pt-4">
+        <div class="rounded-card border border-line bg-mist p-7">
+          <h2 class="text-title">What happens next</h2>
+          <p class="mt-4 text-ink-muted">
+            Somebody who understands both education and your kind of organisation reads it, and gets
+            in touch. Where it makes sense, that includes senior people.
+          </p>
+          <p class="mt-4 text-ink-muted">
+            We may well come back with a question rather than a proposal. That’s usually a good
+            sign.
+          </p>
+        </div>
+
+        <div class="mt-8">
+          <h2 class="text-title">Or just ring us</h2>
+          <p class="mt-4">
+            <a href={contact.phoneHref} class="font-display text-xl font-semibold grad-text"
+              >{contact.phone}</a
+            >
+          </p>
+          <address class="mt-6 text-sm not-italic text-ink-muted">
+            {contact.address.map((line) => <span class="block">{line}</span>)}
+          </address>
+          <p class="mt-4">
+            <Placeholder label="GENERAL EMAIL ADDRESS" />
+          </p>
+        </div>
+
+        <div class="mt-8 rounded-card border border-line p-7">
+          <h2 class="font-display text-base font-semibold">Already an EdCo customer?</h2>
+          <p class="mt-3 text-sm text-ink-muted">
+            Your account manager is the fastest route. Product logins and support are in the
+            <a href="/customer/" class="underline decoration-pink underline-offset-2"
+              >customer area</a
+            >.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </Section>
+</Layout>
+
+<script>
+  // Deep links such as /contact/?intent=customer-analysis pre-tick the matching
+  // objective, so a CTA elsewhere on the site carries its context into the form.
+  const intent = new URLSearchParams(location.search).get('intent');
+  if (intent) {
+    const box = document.querySelector<HTMLInputElement>(
+      `#objective-form input[name="objective"][value="${CSS.escape(intent)}"]`
+    );
+    if (box) box.checked = true;
+  }
+</script>

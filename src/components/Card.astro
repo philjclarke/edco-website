@@ -1,0 +1,62 @@
+---
+interface Props {
+  href?: string;
+  eyebrow?: string;
+  /** Empty when the card is a content placeholder. */
+  title: string;
+  body?: string;
+  meta?: string;
+  tone?: 'dark' | 'light';
+  /** Numbered cards for the six outcomes / process steps. */
+  index?: number;
+}
+const { href, eyebrow, title, body, meta, tone = 'light', index } = Astro.props;
+const dark = tone === 'dark';
+const Tag = href ? 'a' : 'div';
+---
+
+<Tag
+  href={href}
+  class:list={[
+    'group relative flex h-full flex-col rounded-card border p-6 transition md:p-7',
+    dark
+      ? 'border-navy-700 bg-navy-800 hover:border-orange/60'
+      : 'border-line bg-paper hover:border-ink/25 hover:shadow-lg hover:shadow-navy-900/5',
+  ]}
+>
+  {
+    index !== undefined && (
+      <span class="mb-4 font-display text-sm font-bold grad-text">
+        {String(index).padStart(2, '0')}
+      </span>
+    )
+  }
+  {eyebrow && <p class:list={['eyebrow mb-3', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{eyebrow}</p>}
+  {title && <h3 class="text-lg leading-snug md:text-xl">{title}</h3>}
+  {body && <p class:list={['mt-3 text-sm', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{body}</p>}
+  <slot />
+  {
+    (meta || href) && (
+      <p
+        class:list={[
+          'mt-auto flex items-center gap-2 pt-5 text-sm font-medium',
+          dark ? 'text-ondark' : 'text-ink',
+        ]}
+      >
+        <span class="grad-text">{meta ?? 'Read more'}</span>
+        {href && (
+          <svg
+            class="h-3.5 w-3.5 text-pink transition-transform group-hover:translate-x-1"
+            viewBox="0 0 14 14"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            aria-hidden="true"
+          >
+            <path d="M2 7h10M8 3l4 4-4 4" />
+          </svg>
+        )}
+      </p>
+    )
+  }
+</Tag>

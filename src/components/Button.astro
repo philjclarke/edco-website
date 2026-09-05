@@ -1,0 +1,38 @@
+---
+interface Props {
+  href: string;
+  variant?: 'gradient' | 'solid' | 'ghost' | 'ghost-dark';
+  size?: 'sm' | 'md' | 'lg';
+  full?: boolean;
+  class?: string;
+}
+const { href, variant = 'gradient', size = 'md', full = false, class: cls = '' } = Astro.props;
+
+const sizes = {
+  sm: 'px-4 py-2 text-[13px]',
+  md: 'px-5 py-3 text-sm',
+  lg: 'px-7 py-3.5 text-base',
+};
+
+const variants = {
+  // The signature ribbon gradient, used for the one primary action per view.
+  gradient:
+    'text-white bg-[linear-gradient(96deg,var(--color-orange),var(--color-pink))] hover:brightness-110 shadow-lg shadow-pink/20',
+  solid: 'bg-navy-900 text-ondark hover:bg-navy-800',
+  ghost: 'border border-line text-ink hover:border-ink hover:bg-mist',
+  'ghost-dark': 'border border-navy-600 text-ondark hover:border-orange hover:text-orange',
+};
+---
+
+<a
+  href={href}
+  class:list={[
+    'inline-flex items-center justify-center gap-2 rounded-full font-display font-semibold transition',
+    sizes[size],
+    variants[variant],
+    full && 'w-full',
+    cls,
+  ]}
+>
+  <slot />
+</a>

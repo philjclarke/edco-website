@@ -1,0 +1,26 @@
+---
+import Placeholder from './Placeholder.astro';
+
+interface Props {
+  /** Brief §59: testimonials are collected against a specific theme, not "they were great". */
+  prompt: string;
+  tone?: 'dark' | 'light';
+}
+const { prompt, tone = 'light' } = Astro.props;
+const dark = tone === 'dark';
+---
+
+<figure
+  class:list={[
+    'rounded-card border p-7 md:p-8',
+    dark ? 'border-navy-700 bg-navy-800' : 'border-line bg-paper',
+  ]}
+>
+  <div class="h-1 w-12 rounded-full grad-rule"></div>
+  <blockquote class="mt-5 font-display text-lg leading-snug md:text-xl">
+    <Placeholder label={`TESTIMONIAL ABOUT ${prompt.toUpperCase()}`} block />
+  </blockquote>
+  <figcaption class:list={['mt-5 text-sm', dark ? 'text-ondark-muted' : 'text-ink-muted']}>
+    <Placeholder label="NAME, ROLE" /> <Placeholder label="CLIENT NAME" />
+  </figcaption>
+</figure>

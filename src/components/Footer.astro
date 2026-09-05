@@ -1,0 +1,98 @@
+---
+import { Image } from 'astro:assets';
+import logo from '@/assets/brand/edco-logo-reversed.png';
+import { footerNav, contact, site } from '@/data/site';
+import Placeholder from './Placeholder.astro';
+---
+
+<footer class="bg-navy-950 text-ondark">
+  <div class="h-1 grad-rule"></div>
+
+  <!-- Brief §52: not "our newsletter". -->
+  <div class="border-b border-navy-800">
+    <div class="mx-auto grid max-w-7xl gap-8 px-6 py-14 lg:grid-cols-2 lg:items-center">
+      <div>
+        <h2 class="text-title">Keep listening with us.</h2>
+        <p class="mt-4 max-w-xl text-ondark-muted">
+          Get the most useful things we’re hearing from educators, new research, EdCo opinion and
+          invitations to events. No generic education-news roundup. Just things we think are worth
+          knowing.
+        </p>
+        <p class="mt-3 font-display text-sm font-semibold grad-text">
+          Worth knowing. Occasionally worth arguing about.
+        </p>
+      </div>
+      <form class="flex flex-col gap-3 sm:flex-row" data-subscribe>
+        <label class="sr-only" for="sub-name">Name</label>
+        <input
+          id="sub-name"
+          name="name"
+          autocomplete="name"
+          placeholder="Name"
+          class="min-w-0 flex-1 rounded-full border border-navy-700 bg-navy-900 px-5 py-3 text-sm placeholder:text-ondark-muted/60"
+        />
+        <label class="sr-only" for="sub-email">Work email</label>
+        <input
+          id="sub-email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          placeholder="Work email"
+          class="min-w-0 flex-1 rounded-full border border-navy-700 bg-navy-900 px-5 py-3 text-sm placeholder:text-ondark-muted/60"
+        />
+        <button
+          type="submit"
+          class="shrink-0 rounded-full bg-[linear-gradient(96deg,var(--color-orange),var(--color-pink))] px-6 py-3 font-display text-sm font-semibold text-white transition hover:brightness-110"
+          >Keep listening</button
+        >
+      </form>
+    </div>
+    <div class="mx-auto max-w-7xl px-6 pb-8">
+      <Placeholder label="FORM ENDPOINT" note="no marketing platform connected yet" />
+    </div>
+  </div>
+
+  <div class="mx-auto max-w-7xl px-6 py-14">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,3fr)]">
+      <div>
+        <Image src={logo} alt={site.name} widths={[200, 400]} sizes="170px" class="h-12 w-auto" />
+        <address class="mt-6 text-sm not-italic text-ondark-muted">
+          {contact.address.map((line) => <span class="block">{line}</span>)}
+          <a href={contact.phoneHref} class="mt-3 block hover:text-orange">{contact.phone}</a>
+        </address>
+      </div>
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          footerNav.map((group) => (
+            <div>
+              <h2 class="font-display text-sm font-semibold">{group.heading}</h2>
+              <ul class="mt-4 space-y-2.5">
+                {group.links.map((l) => (
+                  <li>
+                    <a href={l.href} class="text-sm text-ondark-muted transition-colors hover:text-orange">
+                      {l.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="border-t border-navy-800">
+    <div
+      class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-6 text-xs text-ondark-muted"
+    >
+      <p>© {new Date().getFullYear()} The Education Company. Registered in England.</p>
+      <div class="flex flex-wrap gap-5">
+        <Placeholder label="PRIVACY POLICY" />
+        <Placeholder label="COOKIE POLICY" />
+        <Placeholder label="TERMS" />
+        <Placeholder label="COMPANY NO. / VAT NO." />
+      </div>
+    </div>
+  </div>
+</footer>

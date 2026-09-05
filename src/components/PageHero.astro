@@ -1,0 +1,72 @@
+---
+import { Image } from 'astro:assets';
+import ribbon from '@/assets/brand/ribbon-1.png';
+import Button from './Button.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  /** The second-line proposition that sits directly under the H1. */
+  standfirst?: string;
+  lead?: string;
+  primaryCta?: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+  size?: 'sm' | 'lg';
+  /** The brand ribbon device down the right edge. */
+  ribbon?: boolean;
+}
+const {
+  eyebrow,
+  title,
+  standfirst,
+  lead,
+  primaryCta,
+  secondaryCta,
+  size = 'sm',
+  ribbon: showRibbon = true,
+} = Astro.props;
+---
+
+<section class="relative overflow-hidden bg-navy-900 text-ondark">
+  {
+    showRibbon && (
+      <Image
+        src={ribbon}
+        alt=""
+        aria-hidden="true"
+        widths={[420, 840]}
+        sizes="(min-width: 1280px) 420px, 260px"
+        class="pointer-events-none absolute -right-24 -top-[20%] h-[170%] w-auto opacity-20 md:right-0 md:opacity-90 lg:right-16"
+      />
+    )
+  }
+  <div
+    class:list={[
+      'relative mx-auto max-w-7xl px-6',
+      size === 'lg' ? 'py-20 md:py-32' : 'py-16 md:py-24',
+    ]}
+  >
+    <div class="max-w-3xl">
+      {eyebrow && <p class="eyebrow mb-5 text-ondark-muted">{eyebrow}</p>}
+      <h1 class:list={[size === 'lg' ? 'text-hero' : 'text-display']}>{title}</h1>
+      {standfirst && <p class="mt-6 font-display text-lead font-medium grad-text">{standfirst}</p>}
+      {lead && <p class="mt-5 max-w-2xl text-lead text-ondark-muted">{lead}</p>}
+      {
+        (primaryCta || secondaryCta) && (
+          <div class="mt-9 flex flex-wrap gap-3">
+            {primaryCta && (
+              <Button href={primaryCta.href} size="lg">
+                {primaryCta.label}
+              </Button>
+            )}
+            {secondaryCta && (
+              <Button href={secondaryCta.href} size="lg" variant="ghost-dark">
+                {secondaryCta.label}
+              </Button>
+            )}
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>

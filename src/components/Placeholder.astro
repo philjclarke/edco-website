@@ -1,0 +1,27 @@
+---
+/*
+  Brief §77: the build must clearly distinguish live copy from content that
+  still needs sourcing or verification. Every placeholder on the site renders
+  through this component, so `grep -r "<Placeholder"` is the outstanding-content
+  list, and a single style change makes them all invisible at launch.
+*/
+interface Props {
+  /** The bracketed token from the brief, e.g. "CLIENT TESTIMONIAL". */
+  label: string;
+  note?: string;
+  block?: boolean;
+}
+const { label, note, block = false } = Astro.props as Props;
+const Tag = block ? 'div' : 'span';
+---
+
+<Tag
+  data-placeholder
+  class:list={[
+    'rounded border border-dashed border-orange/60 bg-orange/10 font-sans text-[0.8125rem] font-medium tracking-wide text-orange',
+    block ? 'block px-4 py-3' : 'inline-block px-2 py-0.5',
+  ]}
+  title={note}
+>
+  [{label}]{note && <span class="ml-2 font-normal opacity-70">{note}</span>}
+</Tag>

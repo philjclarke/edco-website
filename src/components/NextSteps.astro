@@ -1,0 +1,54 @@
+---
+/*
+  Brief §70: internal links are framed as "Where might you go next?", based on
+  what the visitor might sensibly need next. Never "You may also be interested in…".
+*/
+import type { NavLink } from '@/data/site';
+
+interface Props {
+  links: NavLink[];
+  title?: string;
+  tone?: 'dark' | 'light';
+}
+const { links, title = 'Where might you go next?', tone = 'light' } = Astro.props;
+const dark = tone === 'dark';
+---
+
+<div>
+  <h2 class="text-title">{title}</h2>
+  <ul class="mt-8 grid gap-px overflow-hidden rounded-card border sm:grid-cols-2 lg:grid-cols-3"
+    class:list={[dark ? 'border-navy-700 bg-navy-700' : 'border-line bg-line']}>
+    {
+      links.map((l) => (
+        <li class:list={[dark ? 'bg-navy-800' : 'bg-paper']}>
+          <a
+            href={l.href}
+            class:list={[
+              'group flex h-full flex-col p-6 transition',
+              dark ? 'hover:bg-navy-700' : 'hover:bg-mist',
+            ]}
+          >
+            <span class="font-display text-base font-semibold">{l.label}</span>
+            {l.blurb && (
+              <span class:list={['mt-2 text-sm', dark ? 'text-ondark-muted' : 'text-ink-muted']}>
+                {l.blurb}
+              </span>
+            )}
+            <span class="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-medium grad-text">
+              <svg
+                class="h-4 w-4 text-pink transition-transform group-hover:translate-x-1"
+                viewBox="0 0 14 14"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                aria-hidden="true"
+              >
+                <path d="M2 7h10M8 3l4 4-4 4" />
+              </svg>
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</div>

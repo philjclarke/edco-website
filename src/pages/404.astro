@@ -1,0 +1,32 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Section from '@/components/Section.astro';
+import Button from '@/components/Button.astro';
+import { outcomes } from '@/data/outcomes';
+import Card from '@/components/Card.astro';
+---
+
+<Layout title="Page not found" headerTone="light">
+  <Section tone="light" size="md">
+    <div class="max-w-2xl">
+      <p class="eyebrow grad-text mb-4">404</p>
+      <h1 class="text-display">That page isn’t here.</h1>
+      <p class="mt-6 text-lead text-ink-muted">
+        Which is annoying. Since you’re here anyway — what were you trying to achieve?
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <Button href="/">Back to the homepage</Button>
+        <Button href="/search/" variant="ghost">Search the site</Button>
+      </div>
+    </div>
+    <ul class="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {
+        outcomes.map((o) => (
+          <li>
+            <Card href={`/${o.slug}/`} title={o.navLabel} body={o.summary} meta="Explore this" />
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+</Layout>

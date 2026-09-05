@@ -1,0 +1,44 @@
+---
+import Button from './Button.astro';
+import { site } from '@/data/site';
+
+interface Props {
+  title?: string;
+  body?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  tone?: 'gradient' | 'navy';
+}
+const {
+  title = 'What are you trying to achieve?',
+  body = 'You don’t need to know which EdCo product, service or team you need. Tell us what you’re trying to achieve and we’ll bring together the right people, thinking and expertise to help.',
+  ctaLabel = site.primaryCta.label,
+  ctaHref = site.primaryCta.href,
+  tone = 'navy',
+} = Astro.props;
+---
+
+<section class:list={['relative overflow-hidden', tone === 'navy' ? 'bg-navy-950' : 'bg-navy-900']}>
+  <div
+    class="pointer-events-none absolute inset-x-0 top-0 h-1 grad-rule"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class="pointer-events-none absolute -left-24 top-1/2 h-[420px] w-[420px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(247,144,31,0.18),transparent_65%)]"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class="pointer-events-none absolute -right-24 top-1/2 h-[420px] w-[420px] -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(232,67,127,0.2),transparent_65%)]"
+    aria-hidden="true"
+  >
+  </div>
+  <div class="relative mx-auto max-w-3xl px-6 py-20 text-center text-ondark md:py-28">
+    <h2 class="text-display">{title}</h2>
+    <p class="mt-6 text-lead text-ondark-muted">{body}</p>
+    <div class="mt-9 flex justify-center">
+      <Button href={ctaHref} size="lg">{ctaLabel}</Button>
+    </div>
+  </div>
+</section>

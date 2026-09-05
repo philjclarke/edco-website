@@ -1,0 +1,87 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import Section from '@/components/Section.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import ArticleCard from '@/components/ArticleCard.astro';
+import { streamBySlug } from '@/data/streams';
+
+export async function getStaticPaths() {
+  const all = await getCollection('articles');
+  return all.map((article) => ({
+    params: { stream: article.data.stream, slug: article.id },
+    props: {
+      article,
+      related: all.filter((a) => a.id !== article.id).slice(0, 3),
+    },
+  }));
+}
+
+const { article, related } = Astro.props;
+const { Content } = await render(article);
+const stream = streamBySlug[article.data.stream];
+---
+
+<Layout title={article.data.title} description={article.data.summary}>
+  <article>
+    <header class="bg-navy-900 py-16 text-ondark md:py-20">
+      <div class="mx-auto max-w-3xl px-6">
+        <a href={`/what-we-think/${stream.slug}/`} class="eyebrow grad-text">{stream.label}</a>
+        <h1 class="mt-5 text-display">{article.data.title}</h1>
+        <p class="mt-6 text-lead text-ondark-muted">{article.data.summary}</p>
+        <p class="mt-8 flex flex-wrap items-center gap-x-4 text-sm text-ondark-muted">
+          <time datetime={article.data.date.toISOString()}>
+            {article.data.date.toLocaleDateString('en-GB', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+            })}
+          </time>
+          {article.data.author && <span>{article.data.author}</span>}
+        </p>
+      </div>
+    </header>
+
+    {
+      article.data.status === 'sample' && (
+        <div class="border-b border-orange/30 bg-orange/10">
+          <p class="mx-auto max-w-3xl px-6 py-4 text-sm text-ink">
+            <strong class="font-display font-semibold">Sample article.</strong> Written to the brief’s
+            voice to demonstrate the template. Not approved as EdCo’s published position.
+          </p>
+        </div>
+      )
+    }
+
+    <!-- Brief §51: open by default. No gate in front of this. -->
+    <Section tone="light" size="md" width="narrow">
+      <div class="prose-edco">
+        <Content />
+      </div>
+      {
+        article.data.themes.length > 0 && (
+          <ul class="mt-12 flex flex-wrap gap-2 border-t border-line pt-8">
+            {article.data.themes.map((t) => (
+              <li class="rounded-full bg-mist px-3.5 py-1.5 text-[0.8125rem] font-medium">{t}</li>
+            ))}
+          </ul>
+        )
+      }
+    </Section>
+  </article>
+
+  <!-- Brief §51: invite rather than force, after the useful thing. -->
+  <Section tone="mist" size="md">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-title">Found that useful?</h2>
+      <p class="mt-4 text-ink-muted">
+        Get more of what we’re hearing, researching and thinking about education.
+      </p>
+    </div>
+    <ul class="mt-12 grid gap-5 md:grid-cols-3">
+      {related.map((a) => <li><ArticleCard article={a} /></li>)}
+    </ul>
+  </Section>
+
+  <CtaBand />
+</Layout>

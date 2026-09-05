@@ -1,0 +1,95 @@
+---
+/* Brief §11, §13. The overview of the six outcome routes. */
+import Layout from '@/layouts/Layout.astro';
+import PageHero from '@/components/PageHero.astro';
+import Section from '@/components/Section.astro';
+import Card from '@/components/Card.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import { outcomes } from '@/data/outcomes';
+import { routes } from '@/data/model';
+---
+
+<Layout
+  title="What are you trying to achieve?"
+  description="Start with your objective, not our organisation chart. Six routes into EdCo."
+>
+  <PageHero
+    eyebrow="Start here"
+    title="Start with your objective. Not our organisation chart."
+    standfirst="You don’t need to know which EdCo product or team you need. That’s our job."
+    lead="Tell us what you’re trying to achieve. We’ll work out what combination of intelligence, people, technology and engagement capability makes sense."
+    size="lg"
+  />
+
+  <Section tone="light" size="lg">
+    <ul class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {
+        outcomes.map((o, i) => (
+          <li>
+            <Card
+              href={`/${o.slug}/`}
+              index={i + 1}
+              title={o.navLabel}
+              body={o.summary}
+              meta={o.standfirst}
+            />
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <!-- Brief §72: the agency comparison, used here to explain breadth. -->
+  <Section tone="dark" size="lg">
+    <div class="grid gap-12 lg:grid-cols-2 lg:gap-20">
+      <div>
+        <p class="eyebrow grad-text mb-4">Why we start here</p>
+        <h2 class="text-display">Different problems need different answers.</h2>
+      </div>
+      <div class="text-lead text-ondark-muted">
+        <p>
+          A marketing agency is likely to suggest marketing. A data provider is likely to suggest
+          data. A software company is likely to suggest software.
+        </p>
+        <p class="mt-5">That isn’t necessarily wrong. But it isn’t how we start.</p>
+        <p class="mt-5 font-display font-semibold text-ondark">
+          Because sometimes the answer is a campaign. Sometimes it’s research. Sometimes it’s better
+          intelligence. Sometimes it’s something useful to give educators. Sometimes it’s
+          technology. Often it’s several things working together.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <!-- Brief §71: real objectives, and one way EdCo might approach each. -->
+  <Section tone="light" size="lg">
+    <h2 class="text-display">Some things people actually say to us</h2>
+    <ul class="mt-12 space-y-px overflow-hidden rounded-card border border-line bg-line">
+      {
+        routes.map((r) => (
+          <li class="bg-paper p-6 md:p-8">
+            <p class="font-display text-lg font-semibold md:text-xl">“{r.objective}”</p>
+            <ol class="mt-5 flex flex-wrap items-center gap-x-2.5 gap-y-2">
+              {r.steps.map((s, i) => (
+                <>
+                  <li class="rounded-full bg-mist px-3.5 py-1.5 text-[0.8125rem] font-medium">{s}</li>
+                  {i < r.steps.length - 1 && (
+                    <li aria-hidden="true" class="text-sm text-pink">
+                      →
+                    </li>
+                  )}
+                </>
+              ))}
+            </ol>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-8 max-w-2xl text-ink-muted">
+      None of these is a fixed process. They’re examples of how intelligence, people, content and
+      engagement combine around an objective.
+    </p>
+  </Section>
+
+  <CtaBand />
+</Layout>

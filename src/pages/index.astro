@@ -1,0 +1,327 @@
+---
+/* Brief §12–§20. Section order here is the brief's order and shouldn't be shuffled:
+   the outcome-led proposition has to land before "One EdCo" or the products. */
+import { Image } from 'astro:assets';
+import Layout from '@/layouts/Layout.astro';
+import Section from '@/components/Section.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import Button from '@/components/Button.astro';
+import Card from '@/components/Card.astro';
+import ModelStrip from '@/components/ModelStrip.astro';
+import StatGrid from '@/components/StatGrid.astro';
+import LogoWall from '@/components/LogoWall.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Placeholder from '@/components/Placeholder.astro';
+import { outcomes } from '@/data/outcomes';
+import { proofStats } from '@/data/proof';
+import { site } from '@/data/site';
+import classroom from '@/assets/images/classroom.png';
+import ribbon from '@/assets/brand/ribbon-1.png';
+import ribbonWave from '@/assets/brand/ribbon-4.png';
+---
+
+<Layout
+  title="home"
+  description="EdCo helps organisations understand what educators need, identify where those needs exist, give something genuinely useful and build relationships that become leads, pipeline and long-term customers."
+>
+  <!-- ============================ Hero ============================ -->
+  <section class="relative overflow-hidden bg-navy-900 text-ondark">
+    <!-- Image sits behind on desktop; the brand ribbon rides the seam. -->
+    <div class="pointer-events-none absolute inset-y-0 right-0 hidden w-[52%] lg:block">
+      <Image
+        src={classroom}
+        alt=""
+        aria-hidden="true"
+        widths={[900, 1400, 1800]}
+        sizes="52vw"
+        class="h-full w-full object-cover object-left"
+      />
+      <div
+        class="absolute inset-0 bg-[linear-gradient(90deg,var(--color-navy-900)_0%,rgba(15,20,33,0.85)_18%,rgba(15,20,33,0)_58%)]"
+      >
+      </div>
+    </div>
+    <Image
+      src={ribbon}
+      alt=""
+      aria-hidden="true"
+      widths={[400, 800]}
+      sizes="(min-width: 1024px) 360px, 200px"
+      class="pointer-events-none absolute -top-32 right-[-10%] h-[150%] w-auto opacity-20 lg:right-[18%] lg:opacity-95"
+    />
+
+    <div class="relative mx-auto max-w-7xl px-6 py-20 md:py-28 lg:py-36">
+      <div class="max-w-2xl">
+        <p class="eyebrow mb-6 text-ondark-muted">{site.category}</p>
+        <h1 class="text-hero">
+          Helping great organisations help educators deliver great outcomes.
+        </h1>
+        <p class="mt-7 font-display text-lead font-semibold grad-text">
+          If you want to sell to education, start by understanding it.
+        </p>
+        <p class="mt-6 max-w-xl text-lead text-ondark-muted">
+          EdCo helps organisations understand what educators need, identify where those needs
+          exist, give something genuinely useful and build relationships that become leads,
+          pipeline and long-term customers.
+        </p>
+        <div class="mt-10 flex flex-wrap gap-3">
+          <Button href={site.primaryCta.href} size="lg">{site.primaryCta.label}</Button>
+          <Button href={site.secondaryCta.href} size="lg" variant="ghost-dark">
+            {site.secondaryCta.label}
+          </Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Schools need partners, not vendors ================= -->
+  <Section tone="light" size="lg">
+    <div class="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-20">
+      <div>
+        <p class="eyebrow grad-text mb-4">The starting point</p>
+        <h2 class="text-display">Schools need partners, not vendors.</h2>
+      </div>
+      <div class="text-lead text-ink-muted">
+        <p>
+          Schools don’t wake up hoping to hear from another supplier. They have problems to solve,
+          outcomes to improve and very limited time.
+        </p>
+        <p class="mt-5">
+          If you want a meaningful relationship with educators, start there. Understand what they
+          need. Be useful. Earn attention. Build trust.
+        </p>
+        <p class="mt-5 font-display font-semibold text-ink">
+          Then you’ve got a considerably better basis for a commercial conversation.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <!-- ========================= How EdCo works ========================= -->
+  <Section tone="dark" size="lg" id="how-edco-works" class="overflow-hidden">
+    <Image
+      src={ribbonWave}
+      alt=""
+      aria-hidden="true"
+      widths={[900]}
+      sizes="900px"
+      class="pointer-events-none absolute -right-40 -top-20 w-[900px] max-w-none opacity-[0.14]"
+    />
+    <SectionHead
+      eyebrow="How EdCo works"
+      title="Listen. Understand. Give. Engage. Build. Grow."
+      lead="One model, running underneath everything we do. Where you join it depends on what you’re trying to achieve."
+      tone="dark"
+    />
+    <div class="mt-14">
+      <ModelStrip tone="dark" />
+    </div>
+    <p class="mt-10 font-display text-title">
+      Then your sales team does the <span class="grad-text">selling bit</span>.
+    </p>
+    <p class="mt-4 max-w-2xl text-ondark-muted">
+      We can create the opportunity. At some point, you still have to sell. EdCo does not offer
+      outsourced sales representation — we make the conversation worth having.
+    </p>
+  </Section>
+
+  <!-- ================ What are you trying to achieve? ================ -->
+  <Section tone="light" size="lg">
+    <SectionHead
+      eyebrow="Start here"
+      title="Start with your objective. Not our organisation chart."
+      lead="You don’t need to know which EdCo product or team you need. Tell us what you’re trying to achieve. We’ll work out what combination of intelligence, people, technology and engagement capability makes sense."
+    />
+    <ul class="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {
+        outcomes.map((o, i) => (
+          <li>
+            <Card
+              href={`/${o.slug}/`}
+              index={i + 1}
+              title={o.navLabel}
+              body={o.summary}
+              meta="Explore this"
+            />
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <!-- ============================ One EdCo ============================ -->
+  <Section tone="mist" size="lg">
+    <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+      <div>
+        <h2 class="text-display">One EdCo. Lots of ways to help.</h2>
+        <p class="mt-6 text-lead text-ink-muted">
+          We don’t expect you to work out which one you need. That’s our job.
+        </p>
+        <div class="mt-8">
+          <Button href="/what-are-you-trying-to-achieve/" variant="ghost">
+            See all six routes
+          </Button>
+        </div>
+      </div>
+      <ul class="flex flex-wrap gap-2.5">
+        {
+          [
+            'Research',
+            'Intelligence',
+            'Strategy',
+            'Data',
+            'Marketing',
+            'Content',
+            'Events',
+            'Technology',
+            'Networks',
+            'CRM',
+          ].map((w) => (
+            <li class="rounded-full border border-line bg-paper px-5 py-2.5 font-display text-base font-semibold">
+              {w}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </Section>
+
+  <!-- ======================= Why breadth matters ======================= -->
+  <Section tone="light" size="lg">
+    <div class="grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-20">
+      <div>
+        <p class="eyebrow grad-text mb-4">Why breadth matters</p>
+        <h2 class="text-display">
+          The problem with starting with a supplier is that you often end up starting with their
+          solution.
+        </h2>
+      </div>
+      <div>
+        <ul class="divide-y divide-line border-y border-line">
+          {
+            [
+              ['A data provider', 'sees a data problem.'],
+              ['A marketing agency', 'sees a campaign.'],
+              ['A research agency', 'sees a research project.'],
+              ['A software company', 'sees something to build.'],
+            ].map(([who, what]) => (
+              <li class="flex flex-wrap gap-x-2 py-4">
+                <span class="font-display font-semibold">{who}</span>
+                <span class="text-ink-muted">{what}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="mt-8 font-display text-title">We start somewhere else.</p>
+        <p class="mt-4 text-lead text-ink-muted">
+          Sometimes the answer is research. Sometimes it’s better intelligence. Sometimes it’s a
+          different proposition, useful content, an event, a campaign, technology or several of
+          those things together.
+        </p>
+        <p class="mt-4 text-lead font-medium text-ink">
+          And sometimes the best advice is to change the plan altogether.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <!-- ============================= Proof ============================= -->
+  <Section tone="dark" size="lg">
+    <div class="grid gap-12 lg:grid-cols-2 lg:gap-20">
+      <div>
+        <p class="eyebrow grad-text mb-4">The evidence</p>
+        <h2 class="text-display">Relationships measured in decades, not campaigns.</h2>
+      </div>
+      <div class="text-lead text-ondark-muted">
+        <p>
+          Some customers have worked with EdCo for more than <Placeholder
+            label="VERIFIED METRIC"
+            note="28 years"
+          /> years.
+        </p>
+        <p class="mt-5">
+          Not because we’ve kept selling them the same thing. Because their objectives have
+          changed, education has changed and we’ve changed with them.
+        </p>
+      </div>
+    </div>
+    <div class="mt-14">
+      <StatGrid stats={proofStats} tone="dark" />
+    </div>
+  </Section>
+
+  <!-- ========================= Customer logos ========================= -->
+  <Section tone="light" size="md">
+    <SectionHead
+      title="Great organisations. Different objectives. One thing in common."
+      lead="They want to understand education better and make a greater difference within it."
+      align="center"
+    />
+    <div class="mt-12">
+      <LogoWall />
+    </div>
+  </Section>
+
+  <!-- ======================= What we're hearing ======================= -->
+  <Section tone="mist" size="lg">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <SectionHead
+        eyebrow="Listening"
+        title="What we’re hearing from educators right now"
+        lead="Not education news. What educators are actually telling us — and what it might mean for organisations working with education."
+        class="flex-1"
+      />
+      <Button href="/what-we-think/what-were-hearing/" variant="ghost">See what we’re hearing</Button>
+    </div>
+    <ul class="mt-12 grid gap-5 md:grid-cols-3">
+      {
+        [1, 2, 3].map((n) => (
+          <li>
+            <Card eyebrow="What we’re hearing" title="">
+              <div class="space-y-3">
+                <Placeholder label="CURRENT WHAT WE’RE HEARING ITEM" note={`slot ${n}`} block />
+                <p class="text-sm text-ink-muted">
+                  Each item answers: what are educators telling us, where are we hearing it, why it
+                  matters, and what it could mean for organisations working with education.
+                </p>
+              </div>
+            </Card>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <!-- =========================== Free value =========================== -->
+  <Section tone="light" size="lg">
+    <SectionHead
+      eyebrow="Give to receive"
+      title="Something useful before we ask you for anything"
+      lead="Give to receive works for us too."
+    />
+    <ul class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <li>
+        <Card
+          href="/free-customer-analysis/"
+          eyebrow="Free"
+          title="What don’t you know about your customers?"
+          body="Send us your customer list. We’ll analyse it through Education IQ and an EdCo person will walk you through what’s in there."
+          meta="Analyse my customers"
+        />
+      </li>
+      {
+        ['CURRENT RESEARCH', 'CURRENT GUIDE OR BRIEFING', 'CURRENT EVENT', 'CURRENT DIAGNOSTIC OR TOOL'].map(
+          (label) => (
+            <li>
+              <Card title="" tone="light">
+                <Placeholder label={label} block />
+              </Card>
+            </li>
+          )
+        )
+      }
+    </ul>
+  </Section>
+
+  <CtaBand />
+</Layout>

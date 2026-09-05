@@ -1,0 +1,25 @@
+---
+interface Props {
+  tone?: 'dark' | 'darker' | 'light' | 'mist';
+  size?: 'sm' | 'md' | 'lg';
+  width?: 'default' | 'narrow' | 'wide';
+  id?: string;
+  class?: string;
+}
+const { tone = 'light', size = 'md', width = 'default', id, class: cls = '' } = Astro.props;
+
+const tones = {
+  dark: 'bg-navy-900 text-ondark',
+  darker: 'bg-navy-950 text-ondark',
+  light: 'bg-paper text-ink',
+  mist: 'bg-mist text-ink',
+};
+const sizes = { sm: 'py-12 md:py-16', md: 'py-16 md:py-24', lg: 'py-20 md:py-32' };
+const widths = { narrow: 'max-w-3xl', default: 'max-w-7xl', wide: 'max-w-[88rem]' };
+---
+
+<section id={id} class:list={['relative', tones[tone], sizes[size], cls]}>
+  <div class:list={['relative mx-auto px-6', widths[width]]}>
+    <slot />
+  </div>
+</section>

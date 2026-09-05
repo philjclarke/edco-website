@@ -1,0 +1,62 @@
+---
+/* Brief §69. A discreet utility area, deliberately not part of the sales
+   narrative. All destinations need supplying and verifying before launch. */
+import Layout from '@/layouts/Layout.astro';
+import Section from '@/components/Section.astro';
+import Placeholder from '@/components/Placeholder.astro';
+import { contact } from '@/data/site';
+
+const destinations = [
+  { name: 'Education IQ', note: 'Intelligence platform login' },
+  { name: 'SPIRIT', note: 'CRM login' },
+  { name: 'EdNet administration', note: 'Site administration' },
+  { name: 'International Schools Network', note: 'Network / admin system' },
+  { name: 'The Curriculum Network', note: 'Network / admin system' },
+];
+---
+
+<Layout title="Customer login" description="Logins and support for existing EdCo customers.">
+  <Section tone="light" size="lg">
+    <div class="max-w-2xl">
+      <p class="eyebrow grad-text mb-4">Customer area</p>
+      <h1 class="text-display">Logins and support</h1>
+      <p class="mt-6 text-lead text-ink-muted">
+        If you’re an existing customer, everything you need is below. If you’d rather talk to a
+        person, your account manager is the fastest route.
+      </p>
+    </div>
+
+    <ul class="mt-12 grid max-w-4xl gap-px overflow-hidden rounded-card border border-line bg-line">
+      {
+        destinations.map((d) => (
+          <li class="flex flex-wrap items-center justify-between gap-4 bg-paper px-6 py-5">
+            <div>
+              <p class="font-display text-base font-semibold">{d.name}</p>
+              <p class="text-sm text-ink-muted">{d.note}</p>
+            </div>
+            <Placeholder label="EXTERNAL LOGIN URL" note="to be supplied and verified" />
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mt-12 grid max-w-4xl gap-5 sm:grid-cols-2">
+      <div class="rounded-card border border-line bg-mist p-6">
+        <h2 class="font-display text-base font-semibold">Support</h2>
+        <p class="mt-3 text-sm text-ink-muted">
+          <a href={contact.phoneHref} class="underline decoration-pink underline-offset-2"
+            >{contact.phone}</a
+          >
+        </p>
+        <p class="mt-2"><Placeholder label="SUPPORT EMAIL / TICKET URL" /></p>
+      </div>
+      <div class="rounded-card border border-line bg-mist p-6">
+        <h2 class="font-display text-base font-semibold">Your account manager</h2>
+        <p class="mt-3 text-sm text-ink-muted">
+          Your objectives become our objectives — and your account manager is the person who keeps
+          it that way.
+        </p>
+      </div>
+    </div>
+  </Section>
+</Layout>

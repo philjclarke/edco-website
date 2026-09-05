@@ -1,0 +1,37 @@
+---
+import Placeholder from './Placeholder.astro';
+
+interface Stat {
+  value: string;
+  label: string;
+  /** Brief §76: nothing goes live until EdCo confirm it. */
+  verified?: boolean;
+}
+interface Props {
+  stats: Stat[];
+  tone?: 'dark' | 'light';
+}
+const { stats, tone = 'dark' } = Astro.props;
+const dark = tone === 'dark';
+---
+
+<dl class="grid gap-px overflow-hidden rounded-card border sm:grid-cols-2 lg:grid-cols-4"
+  class:list={[dark ? 'border-navy-700 bg-navy-700' : 'border-line bg-line']}>
+  {
+    stats.map((s) => (
+      <div class:list={['flex flex-col p-6 md:p-8', dark ? 'bg-navy-800' : 'bg-paper']}>
+        <dt class:list={['order-2 mt-2 text-sm', dark ? 'text-ondark-muted' : 'text-ink-muted']}>
+          {s.label}
+        </dt>
+        <dd class="order-1 font-display text-3xl font-bold md:text-4xl">
+          <span class="grad-text">{s.value}</span>
+        </dd>
+        {!s.verified && (
+          <p class="order-3 mt-3">
+            <Placeholder label="VERIFY" note="figure not yet confirmed" />
+          </p>
+        )}
+      </div>
+    ))
+  }
+</dl>

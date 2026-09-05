@@ -1,0 +1,12 @@
+---
+import ContentPage from '@/components/ContentPage.astro';
+import { capabilityPages } from '@/data/capabilities';
+
+export function getStaticPaths() {
+  return capabilityPages.map((c) => ({ params: { slug: c.slug }, props: { page: c } }));
+}
+
+const { page } = Astro.props;
+---
+
+<ContentPage page={page} eyebrow="What we do" />

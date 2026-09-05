@@ -1,0 +1,87 @@
+---
+/* Brief §54. A clearly defined route for educators who arrive — without
+   turning the corporate site into an educator site. */
+import Layout from '@/layouts/Layout.astro';
+import PageHero from '@/components/PageHero.astro';
+import Section from '@/components/Section.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import Card from '@/components/Card.astro';
+import Placeholder from '@/components/Placeholder.astro';
+---
+
+<Layout
+  title="For educators"
+  description="Events, CPD, resources and research you can take part in — through the International Schools Network and The Curriculum Network."
+>
+  <PageHero
+    eyebrow="For educators"
+    title="If you’re an educator, this bit is for you."
+    standfirst="We spend a lot of time asking educators what they need. Occasionally we have something to give back."
+    lead="Most of this site is aimed at organisations that want to work with education. This part isn’t."
+  />
+
+  <Section tone="light" size="lg">
+    <SectionHead
+      eyebrow="Networks"
+      title="Where you’ll actually find us"
+      lead="Two communities EdCo runs, both free to join for educators."
+    />
+    <ul class="mt-12 grid gap-5 md:grid-cols-2">
+      <li>
+        <Card
+          href="/products/the-curriculum-network/"
+          eyebrow="UK"
+          title="The Curriculum Network"
+          body="Webinars, CPD, research and resources for UK educators."
+          meta="Find out more"
+        />
+      </li>
+      <li>
+        <Card
+          href="/products/international-schools-network/"
+          eyebrow="International"
+          title="International Schools Network"
+          body="A community for educators working in international schools."
+          meta="Find out more"
+        />
+      </li>
+    </ul>
+    <p class="mt-6 flex flex-wrap gap-3">
+      <Placeholder label="NETWORK URL" note="ISN external destination" />
+      <Placeholder label="NETWORK URL" note="Curriculum Network external destination" />
+    </p>
+  </Section>
+
+  <Section tone="mist" size="lg">
+    <SectionHead eyebrow="What’s on" title="Events and CPD coming up" />
+    <ul class="mt-12 grid gap-5 md:grid-cols-3">
+      {
+        [1, 2, 3].map((n) => (
+          <li>
+            <Card title="" tone="light">
+              <Placeholder label="CURRENT EVENT" note={`educator-facing, slot ${n}`} block />
+            </Card>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section tone="light" size="lg">
+    <div class="grid gap-12 lg:grid-cols-2 lg:gap-20">
+      <div>
+        <p class="eyebrow grad-text mb-4">Take part</p>
+        <h2 class="text-display">Tell us what you’re dealing with</h2>
+        <p class="mt-6 text-lead text-ink-muted">
+          We run interviews, focus groups and research studies with educators all year round.
+          Sometimes they’re paid. Always they’re short, and we’ll tell you what we found.
+        </p>
+      </div>
+      <div class="space-y-3">
+        <Placeholder label="RESEARCH PARTICIPATION SIGN-UP" block />
+        <Placeholder label="CURRENT RESEARCH OPPORTUNITIES" block />
+        <Placeholder label="FREE RESOURCES FOR EDUCATORS" block />
+      </div>
+    </div>
+  </Section>
+</Layout>

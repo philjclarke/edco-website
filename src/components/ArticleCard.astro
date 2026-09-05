@@ -1,0 +1,40 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { streamBySlug } from '@/data/streams';
+
+interface Props {
+  article: CollectionEntry<'articles'>;
+  tone?: 'dark' | 'light';
+}
+const { article, tone = 'light' } = Astro.props;
+const dark = tone === 'dark';
+const { data } = article;
+const stream = streamBySlug[data.stream];
+const href = `/what-we-think/${data.stream}/${article.id}/`;
+---
+
+<a
+  href={href}
+  class:list={[
+    'group flex h-full flex-col rounded-card border p-6 transition md:p-7',
+    dark
+      ? 'border-navy-700 bg-navy-800 hover:border-orange/60'
+      : 'border-line bg-paper hover:border-ink/25 hover:shadow-lg hover:shadow-navy-900/5',
+  ]}
+>
+  <p class:list={['eyebrow mb-3', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{stream.label}</p>
+  <h3 class="text-lg leading-snug md:text-xl">{data.title}</h3>
+  <p class:list={['mt-3 text-sm', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{data.summary}</p>
+  <p
+    class:list={[
+      'mt-auto flex flex-wrap items-center gap-x-3 pt-5 text-xs',
+      dark ? 'text-ondark-muted' : 'text-ink-muted',
+    ]}
+  >
+    <time datetime={data.date.toISOString()}>
+      {data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+    </time>
+    {data.author && <span>{data.author}</span>}
+    {data.status === 'sample' && <span class="text-orange">Sample</span>}
+  </p>
+</a>

@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import PageHero from '@/components/PageHero.astro';
+import Section from '@/components/Section.astro';
+import ArticleCard from '@/components/ArticleCard.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Placeholder from '@/components/Placeholder.astro';
+import { streams } from '@/data/streams';
+
+export async function getStaticPaths() {
+  const all = await getCollection('articles');
+  return streams.map((s) => ({
+    params: { stream: s.slug },
+    props: {
+      stream: s,
+      articles: all
+        .filter((a) => a.data.stream === s.slug)
+        .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()),
+    },
+  }));
+}
+
+const { stream, articles } = Astro.props;
+---
+
+<Layout title={stream.label} description={stream.lead}>
+  <PageHero eyebrow="What We Think" title={stream.title} standfirst={stream.question} lead={stream.lead} />
+
+  <Section tone="light" size="lg">
+    <ul class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {articles.map((a) => <li><ArticleCard article={a} /></li>)}
+      <li class="rounded-card border border-dashed border-line p-7">
+        <Placeholder label="FURTHER ARTICLES" note={`${stream.label} — content programme to agree`} block />
+        <p class="mt-4 text-sm text-ink-muted">{stream.note}</p>
+      </li>
+    </ul>
+  </Section>
+
+  <CtaBand />
+</Layout>

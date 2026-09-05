@@ -1,0 +1,114 @@
+---
+/* Brief §21–§26. The six outcome pages sit at the root, as specified in the
+   sitemap (§11) — /understand-education-and-educators/, not /outcomes/…. */
+import Layout from '@/layouts/Layout.astro';
+import PageHero from '@/components/PageHero.astro';
+import Section from '@/components/Section.astro';
+import NextSteps from '@/components/NextSteps.astro';
+import Testimonial from '@/components/Testimonial.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Card from '@/components/Card.astro';
+import TickList from '@/components/TickList.astro';
+import { outcomes } from '@/data/outcomes';
+import { routes } from '@/data/model';
+
+export function getStaticPaths() {
+  return outcomes.map((o) => ({ params: { outcome: o.slug }, props: { outcome: o } }));
+}
+
+const { outcome } = Astro.props;
+const others = outcomes.filter((o) => o.slug !== outcome.slug);
+
+// Brief §71: each outcome names the joined-up route that illustrates it.
+// Matching on words in the label picked the wrong route, so it's explicit.
+const matchedRoute = routes.find((r) => r.objective === outcome.routeObjective)!;
+---
+
+<Layout title={outcome.navLabel} description={outcome.summary}>
+  <PageHero
+    eyebrow="What are you trying to achieve?"
+    title={outcome.title}
+    standfirst={outcome.standfirst}
+    size="lg"
+  />
+
+  <Section tone="light" size="md">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] lg:gap-20">
+      <div class="text-lead text-ink-muted">
+        {outcome.intro.map((p) => <p class="mt-0 [&+p]:mt-5">{p}</p>)}
+      </div>
+      <div>
+        <h2 class="text-title">{outcome.helpTitle}</h2>
+        <div class="mt-6">
+          <TickList items={outcome.help} columns={2} />
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  {
+    outcome.pull && (
+      <section class="bg-navy-900 py-16 text-ondark md:py-20">
+        <div class="mx-auto max-w-4xl px-6 text-center">
+          <div class="mx-auto mb-8 h-1 w-16 rounded-full grad-rule" />
+          <p class="font-display text-display font-bold">{outcome.pull}</p>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- Brief §71: show a joined-up route rather than a list of services. -->
+  <Section tone="mist" size="md">
+    <p class="eyebrow grad-text mb-4">One way this can work</p>
+    <h2 class="text-title">“{matchedRoute.objective}”</h2>
+    <ol class="mt-8 flex flex-wrap items-center gap-x-3 gap-y-3">
+      {
+        matchedRoute.steps.map((s, i) => (
+          <>
+            <li class="rounded-full border border-line bg-paper px-4 py-2 font-display text-sm font-semibold">
+              {s}
+            </li>
+            {i < matchedRoute.steps.length - 1 && (
+              <li aria-hidden="true" class="font-display text-pink">
+                →
+              </li>
+            )}
+          </>
+        ))
+      }
+    </ol>
+    <p class="mt-6 max-w-2xl text-ink-muted">
+      Not a fixed process. One example of how intelligence, people, content and engagement combine
+      around an objective — which is why we’d rather start with yours than with a service.
+    </p>
+  </Section>
+
+  <Section tone="light" size="md">
+    <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:items-center">
+      <div>
+        <p class="eyebrow grad-text mb-4">Proof beside the claim</p>
+        <h2 class="text-title">Don’t take our word for it.</h2>
+      </div>
+      <Testimonial prompt="EdCo challenging the original brief" />
+    </div>
+  </Section>
+
+  <Section tone="mist" size="md">
+    <NextSteps links={outcome.next} />
+  </Section>
+
+  <Section tone="light" size="md">
+    <h2 class="text-title">Trying to achieve something else?</h2>
+    <ul class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {
+        others.map((o) => (
+          <li>
+            <Card href={`/${o.slug}/`} title={o.navLabel} body={o.summary} meta="Explore this" />
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <CtaBand />
+</Layout>

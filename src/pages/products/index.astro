@@ -1,0 +1,63 @@
+---
+/* Brief §27. Products come after the broader proposition, never before it. */
+import Layout from '@/layouts/Layout.astro';
+import PageHero from '@/components/PageHero.astro';
+import Section from '@/components/Section.astro';
+import Card from '@/components/Card.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import NextSteps from '@/components/NextSteps.astro';
+import { products } from '@/data/products';
+---
+
+<Layout
+  title="Products"
+  description="Education IQ, EdNet, SPIRIT, the International Schools Network and The Curriculum Network — different ways of solving education-specific problems."
+>
+  <PageHero
+    eyebrow="Products"
+    title="Products built around understanding education"
+    standfirst="They are part of EdCo, not separate businesses."
+    lead="EdCo products are different ways of solving education-specific problems. Which of them is relevant depends entirely on what you’re trying to achieve."
+  />
+
+  <Section tone="light" size="lg">
+    <ul class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {
+        products.map((p) => (
+          <li>
+            <Card
+              href={`/products/${p.slug}/`}
+              eyebrow={p.navLabel}
+              title={p.standfirst ?? p.title}
+              body={p.summary}
+              meta="Read about it"
+            />
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section tone="dark" size="md">
+    <div class="mx-auto max-w-3xl text-center">
+      <div class="mx-auto mb-8 h-1 w-16 rounded-full grad-rule"></div>
+      <p class="font-display text-display font-bold">Your technology doesn’t need our logo on it.</p>
+      <p class="mt-6 text-lead text-ondark-muted">
+        If you already have a CRM you like — Salesforce, HubSpot, Microsoft Dynamics or anything
+        else — we’ll help make that environment more valuable. SPIRIT is an option, not an agenda.
+      </p>
+    </div>
+  </Section>
+
+  <Section tone="light" size="md">
+    <NextSteps
+      links={[
+        { label: 'What are you trying to achieve?', href: '/what-are-you-trying-to-achieve/', blurb: 'A better starting point than a product list.' },
+        { label: 'What we do', href: '/capabilities/', blurb: 'The people and services around the products.' },
+        { label: 'Free customer analysis', href: '/free-customer-analysis/', blurb: 'See Education IQ applied to your own data.' },
+      ]}
+    />
+  </Section>
+
+  <CtaBand />
+</Layout>

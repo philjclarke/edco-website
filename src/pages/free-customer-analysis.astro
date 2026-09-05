@@ -1,0 +1,114 @@
+---
+/* Brief §29. The site's major conversion offer, so it gets its own page and
+   is linked from Education IQ, Data Services and Grow & Retain Customers. */
+import Layout from '@/layouts/Layout.astro';
+import PageHero from '@/components/PageHero.astro';
+import Section from '@/components/Section.astro';
+import NextSteps from '@/components/NextSteps.astro';
+import Testimonial from '@/components/Testimonial.astro';
+import Button from '@/components/Button.astro';
+import Placeholder from '@/components/Placeholder.astro';
+import TickList from '@/components/TickList.astro';
+
+const findings = [
+  'Customers under significant financial pressure',
+  'Trusts where you already serve some schools but not others',
+  'Customers sitting inside trusts where you have no central relationship',
+  'Changes in leadership or structure',
+  'Organisations similar to your strongest customers',
+  'Areas of customer risk',
+  'Areas of potential growth',
+];
+---
+
+<Layout
+  title="Free customer analysis"
+  description="Send us your customer list and we’ll analyse it through Education IQ — then an EdCo person will review the findings with you."
+>
+  <PageHero
+    eyebrow="Free customer analysis"
+    title="What don’t you know about your customers?"
+    standfirst="Send us your customer list. We’ll analyse it through Education IQ."
+    lead="Then an EdCo person reviews the findings with you. This is not an automated PDF report."
+    primaryCta={{ label: 'Analyse my customers', href: '/contact/?intent=customer-analysis' }}
+    size="lg"
+  />
+
+  <Section tone="light" size="lg">
+    <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-20">
+      <div>
+        <h2 class="text-display">We might find</h2>
+        <p class="mt-6 text-lead text-ink-muted">
+          Most organisations know who their customers are. Rather fewer know what they have in
+          common, which of them are at risk, or where the next twenty sit.
+        </p>
+      </div>
+      <TickList items={findings} columns={1} />
+    </div>
+  </Section>
+
+  <Section tone="dark" size="lg">
+    <div class="mx-auto max-w-4xl text-center">
+      <p class="eyebrow grad-text mb-6">What actually happens</p>
+      <ol class="flex flex-wrap items-center justify-center gap-x-3 gap-y-3">
+        {
+          ['Data', 'Intelligence', 'Human interpretation', 'Challenge', 'Action'].map((s, i, a) => (
+            <>
+              <li class="rounded-full border border-navy-600 px-5 py-2.5 font-display text-sm font-semibold">
+                {s}
+              </li>
+              {i < a.length - 1 && (
+                <li aria-hidden="true" class="font-display text-pink">
+                  →
+                </li>
+              )}
+            </>
+          ))
+        }
+      </ol>
+      <p class="mt-8 text-lead text-ondark-muted">
+        A person who understands education looks at what came out, tells you what they think it
+        means, and is prepared to disagree with you about it.
+      </p>
+      <div class="mt-10 flex justify-center">
+        <Button href="/contact/?intent=customer-analysis" size="lg">Analyse my customers</Button>
+      </div>
+    </div>
+  </Section>
+
+  <Section tone="mist" size="md">
+    <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:items-center">
+      <div>
+        <h2 class="text-title">The practical bits</h2>
+        <p class="mt-4 text-ink-muted">
+          What we need from you, what we do with it, and how long it takes.
+        </p>
+      </div>
+      <div class="space-y-3">
+        <Placeholder label="DATA HANDLING / GDPR STATEMENT" note="legal sign-off required" block />
+        <Placeholder label="WHAT WE NEED FROM YOU" note="file format, minimum records" block />
+        <Placeholder label="TURNAROUND TIME" block />
+      </div>
+    </div>
+  </Section>
+
+  <Section tone="light" size="md">
+    <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:items-center">
+      <div>
+        <p class="eyebrow grad-text mb-4">Proof beside the claim</p>
+        <h2 class="text-title">Somebody has already done this.</h2>
+      </div>
+      <Testimonial prompt="EdCo understanding both education and the client’s business" />
+    </div>
+  </Section>
+
+  <Section tone="mist" size="md">
+    <NextSteps
+      links={[
+        { label: 'Education IQ', href: '/products/education-iq/', blurb: 'The product doing the analysis.' },
+        { label: 'Grow & retain customers', href: '/grow-and-retain-customers/', blurb: 'The objective this usually serves.' },
+        { label: 'Data Services', href: '/capabilities/data-services/', blurb: 'Cleansing, matching and enrichment.' },
+      ]}
+    />
+  </Section>
+</Layout>

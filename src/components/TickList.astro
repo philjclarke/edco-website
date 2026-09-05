@@ -1,0 +1,44 @@
+---
+/* Ruled tick list. Deliberately not a bordered grid: a bordered grid leaves an
+   empty cell whenever the item count doesn't divide by the column count, and
+   these lists are all odd lengths. */
+interface Props {
+  items: readonly string[];
+  columns?: 1 | 2 | 3;
+  tone?: 'dark' | 'light';
+}
+const { items, columns = 2, tone = 'light' } = Astro.props;
+const dark = tone === 'dark';
+const cols = { 1: '', 2: 'sm:grid-cols-2', 3: 'sm:grid-cols-2 lg:grid-cols-3' };
+---
+
+<ul
+  class:list={[
+    'grid gap-x-10 border-t',
+    cols[columns],
+    dark ? 'border-navy-700' : 'border-line',
+  ]}
+>
+  {
+    items.map((item) => (
+      <li
+        class:list={[
+          'flex items-start gap-3 border-b py-3.5',
+          dark ? 'border-navy-700' : 'border-line',
+        ]}
+      >
+        <svg
+          class="mt-1.5 h-3 w-3 shrink-0 text-pink"
+          viewBox="0 0 12 12"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <path d="M2 6.5 4.8 9.2 10 3.2" />
+        </svg>
+        <span class="text-[0.9375rem]">{item}</span>
+      </li>
+    ))
+  }
+</ul>

@@ -1,0 +1,44 @@
+---
+/* Brief §64. Prominent site-wide search across every content type, so someone
+   searching "SEND" or "MATs" finds articles, products, capabilities and cases
+   together. Powered by Pagefind, which indexes the built site — no server,
+   no third-party search service, and it survives a CMS change.
+   §64 also rules out live Education IQ data in public search at launch. */
+import Layout from '@/layouts/Layout.astro';
+import Section from '@/components/Section.astro';
+---
+
+<Layout title="Search" headerTone="light">
+  <Section tone="light" size="md">
+    <div class="max-w-2xl">
+      <p class="eyebrow grad-text mb-4">Search</p>
+      <h1 class="text-display">Look for a theme, not a department.</h1>
+      <p class="mt-6 text-lead text-ink-muted">
+        SEND. MATs. School finance. Lead generation. Salesforce. Teacher workload. Whatever you’re
+        dealing with — this searches everything we’ve published.
+      </p>
+    </div>
+    <div id="search" class="mt-10"></div>
+  </Section>
+</Layout>
+
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+<script is:inline src="/pagefind/pagefind-ui.js"></script>
+<script is:inline>
+  window.addEventListener('DOMContentLoaded', () => {
+    if (typeof PagefindUI === 'undefined') return;
+    new PagefindUI({ element: '#search', showSubResults: true, showImages: false });
+  });
+</script>
+<style is:global>
+  /* Bring Pagefind's default UI onto the EdCo palette. */
+  #search {
+    --pagefind-ui-primary: var(--color-ink);
+    --pagefind-ui-text: var(--color-ink);
+    --pagefind-ui-background: var(--color-paper);
+    --pagefind-ui-border: var(--color-line);
+    --pagefind-ui-tag: var(--color-mist);
+    --pagefind-ui-border-radius: 0.75rem;
+    --pagefind-ui-font: var(--font-sans);
+  }
+</style>

@@ -1,0 +1,108 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import Section from '@/components/Section.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import NextSteps from '@/components/NextSteps.astro';
+import Placeholder from '@/components/Placeholder.astro';
+import { outcomes } from '@/data/outcomes';
+
+export async function getStaticPaths() {
+  const studies = await getCollection('caseStudies');
+  return studies.map((study) => ({ params: { slug: study.id }, props: { study } }));
+}
+
+const { study } = Astro.props;
+const { Content } = await render(study);
+const d = study.data;
+const outcome = outcomes.find((o) => o.slug === d.outcome);
+const draft = d.status === 'placeholder';
+
+/* Brief §56: this seven-part structure is required and shouldn't be varied. */
+const sections: { q: string; a: string | string[] }[] = [
+  { q: 'What were they trying to achieve?', a: d.objective },
+  { q: 'What did we discover?', a: d.discovered },
+  { q: 'What did we recommend?', a: d.recommended },
+  { q: 'What did we do?', a: d.did },
+  { q: 'What changed?', a: d.changed },
+  { q: 'The evidence', a: d.evidence },
+];
+---
+
+<Layout title={d.title} description={d.summary}>
+  <header class="bg-navy-900 py-16 text-ondark md:py-20">
+    <div class="mx-auto max-w-4xl px-6">
+      {outcome && <a href={`/${outcome.slug}/`} class="eyebrow grad-text">{outcome.navLabel}</a>}
+      <h1 class="mt-5 text-display">{d.title}</h1>
+      <p class="mt-6 text-lead text-ondark-muted">{d.summary}</p>
+      <p class="mt-8 font-display text-sm font-semibold">{d.client}</p>
+    </div>
+  </header>
+
+  {
+    draft && (
+      <div class="border-b border-orange/30 bg-orange/10">
+        <p class="mx-auto max-w-4xl px-6 py-4 text-sm text-ink">
+          <strong class="font-display font-semibold">Placeholder case study.</strong> Structure only.
+          No client facts, metrics or testimonials have been invented — every field below is waiting
+          on verified, approved content.
+        </p>
+      </div>
+    )
+  }
+
+  <Section tone="light" size="md" width="narrow">
+    <dl class="space-y-10">
+      {
+        sections.map((s) => (
+          <div>
+            <dt class="text-title">{s.q}</dt>
+            <dd class="mt-4">
+              {Array.isArray(s.a) ? (
+                <ul class="space-y-2">
+                  {s.a.map((item) => (
+                    <li>
+                      {draft ? <Placeholder label={item.replace(/^\[|\]$/g, '')} block /> : <span>{item}</span>}
+                    </li>
+                  ))}
+                </ul>
+              ) : draft ? (
+                <Placeholder label={s.a.replace(/^\[|\]$/g, '')} block />
+              ) : (
+                <p class="text-lead text-ink-muted">{s.a}</p>
+              )}
+            </dd>
+          </div>
+        ))
+      }
+      <div>
+        <dt class="text-title">What the client says</dt>
+        <dd class="mt-4">
+          {
+            draft ? (
+              <Placeholder label={d.testimonial.replace(/^\[|\]$/g, '')} block />
+            ) : (
+              <blockquote class="border-l-[3px] border-orange pl-5 font-display text-xl leading-snug">
+                {d.testimonial}
+              </blockquote>
+            )
+          }
+        </dd>
+      </div>
+    </dl>
+
+    <div class="prose-edco mt-14 border-t border-line pt-10 text-ink-muted">
+      <Content />
+    </div>
+  </Section>
+
+  {
+    outcome && (
+      <Section tone="mist" size="md">
+        <NextSteps links={outcome.next.slice(0, 3)} title="Trying to do something similar?" />
+      </Section>
+    )
+  }
+
+  <CtaBand />
+</Layout>

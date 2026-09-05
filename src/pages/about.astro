@@ -1,0 +1,126 @@
+---
+/* Brief §61–§63. Lead with beliefs, not a corporate timeline.
+   No careers section — recruitment is handled elsewhere. */
+import Layout from '@/layouts/Layout.astro';
+import PageHero from '@/components/PageHero.astro';
+import Section from '@/components/Section.astro';
+import SectionHead from '@/components/SectionHead.astro';
+import StatGrid from '@/components/StatGrid.astro';
+import NextSteps from '@/components/NextSteps.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Placeholder from '@/components/Placeholder.astro';
+import { beliefs } from '@/data/model';
+import { proofStats } from '@/data/proof';
+---
+
+<Layout
+  title="About EdCo"
+  description="What we believe, how we got here and the people who do the work."
+>
+  <PageHero
+    eyebrow="About EdCo"
+    title="What we believe"
+    standfirst="Partnership is demonstrated, not claimed."
+    lead="We could open with a timeline. It seems more useful to tell you how we think, so you can work out whether you want us anywhere near your plans."
+    size="lg"
+  />
+
+  <Section tone="light" size="lg">
+    <ul class="grid gap-px overflow-hidden rounded-card border border-line bg-line md:grid-cols-2">
+      {
+        beliefs.map((b, i) => (
+          <li class="bg-paper p-7 md:p-8">
+            <span class="font-display text-sm font-bold grad-text">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <h2 class="mt-3 font-display text-lg font-bold leading-snug md:text-xl">{b.title}</h2>
+            <p class="mt-3 text-ink-muted">{b.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <!-- Brief §62: heritage as evidence, not the main proposition. -->
+  <Section tone="dark" size="lg">
+    <div class="grid gap-12 lg:grid-cols-2 lg:gap-20">
+      <div>
+        <p class="eyebrow grad-text mb-4">Heritage</p>
+        <h2 class="text-display">We’ve been listening to educators since before email.</h2>
+      </div>
+      <div class="text-lead text-ondark-muted">
+        <p>
+          Channels have changed. Technology has changed. Education has changed almost beyond
+          recognition.
+        </p>
+        <p class="mt-5">
+          The need to understand educators before trying to engage them has not.
+        </p>
+      </div>
+    </div>
+    <div class="mt-14">
+      <StatGrid stats={proofStats} tone="dark" />
+    </div>
+  </Section>
+
+  <!-- Brief §63: people as evidence of expertise, not a wall of 50 biographies. -->
+  <Section tone="light" size="lg">
+    <SectionHead
+      eyebrow="People"
+      title="Everything begins with understanding education."
+      lead="On top of that, EdCo has specialists in data, technology, research, marketing, content, events and strategy. And dedicated account managers whose job is to point that expertise at your objectives."
+    />
+    <div class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+      {
+        ['LEADERSHIP PROFILE', 'LEADERSHIP PROFILE', 'LEADERSHIP PROFILE', 'LEADERSHIP PROFILE'].map(
+          (label, i) => (
+            <div class="rounded-card border border-line bg-paper p-6">
+              <div class="mb-5 aspect-square rounded-lg bg-mist" />
+              <Placeholder label={label} note={`${i + 1} of 4`} block />
+              <p class="mt-3 text-sm text-ink-muted">
+                Name, role, and one line on what they actually know about.
+              </p>
+            </div>
+          )
+        )
+      }
+    </div>
+    <p class="mt-6">
+      <Placeholder label="MEET EDCO" note="broader team area — phase 2" />
+    </p>
+  </Section>
+
+  <!-- Brief §60. -->
+  <Section tone="mist" size="lg">
+    <div class="grid gap-12 lg:grid-cols-2 lg:gap-20">
+      <div>
+        <p class="eyebrow grad-text mb-4">Dedicated account management</p>
+        <h2 class="text-display">Your objectives become our objectives.</h2>
+      </div>
+      <div class="text-lead text-ink-muted">
+        <p>
+          You should have one relationship with EdCo, not separate relationships with several
+          departments.
+        </p>
+        <p class="mt-5">
+          Your Account Manager’s job isn’t to sell you whichever EdCo service happens to be next.
+          It’s to understand what you’re trying to achieve and bring together the people who can
+          help — then keep the work aligned to it, track progress, and challenge the assumptions
+          when they need challenging.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <Section tone="light" size="md">
+    <NextSteps
+      links={[
+        { label: 'What We Think', href: '/what-we-think/', blurb: 'The beliefs, argued in public.' },
+        { label: 'Case studies', href: '/case-studies/', blurb: 'The beliefs, applied to real work.' },
+        { label: 'Agencies & Partners', href: '/agencies-and-partners/', blurb: 'How we work alongside other agencies.' },
+      ]}
+    />
+  </Section>
+
+  <CtaBand />
+</Layout>

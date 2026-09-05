@@ -1,0 +1,186 @@
+---
+import { Image } from 'astro:assets';
+import logoReversed from '@/assets/brand/edco-logo-reversed.png';
+import logoPositive from '@/assets/brand/edco-logo-positive.png';
+import { primaryNav, utilityNav, site, contact } from '@/data/site';
+import Button from './Button.astro';
+
+interface Props {
+  tone?: 'dark' | 'light';
+}
+const { tone = 'dark' } = Astro.props;
+const dark = tone === 'dark';
+const path = Astro.url.pathname;
+---
+
+<header
+  class:list={[
+    'relative z-40',
+    dark ? 'bg-navy-900 text-ondark' : 'bg-paper text-ink border-b border-line',
+  ]}
+>
+  <!-- Utility bar -->
+  <div class:list={['hidden lg:block', dark ? 'border-b border-navy-700' : 'border-b border-line']}>
+    <div class="mx-auto flex max-w-7xl items-center justify-end gap-6 px-6 py-2 text-xs">
+      {
+        utilityNav.map((l) => (
+          <a
+            href={l.href}
+            class:list={[
+              'transition-colors hover:text-orange',
+              dark ? 'text-ondark-muted' : 'text-ink-muted',
+            ]}
+          >
+            {l.label}
+          </a>
+        ))
+      }
+      <a
+        href={contact.phoneHref}
+        class:list={['transition-colors hover:text-orange', dark ? 'text-ondark-muted' : 'text-ink-muted']}
+        >{contact.phone}</a
+      >
+    </div>
+  </div>
+
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-8 px-6 py-4">
+    <a href="/" class="shrink-0" aria-label="The Education Company — home">
+      <Image
+        src={dark ? logoReversed : logoPositive}
+        alt="The Education Company"
+        widths={[220, 440]}
+        sizes="210px"
+        class="h-12 w-auto md:h-14"
+        loading="eager"
+      />
+    </a>
+
+    <!-- Desktop nav -->
+    <nav class="hidden items-center lg:flex" aria-label="Primary">
+      {
+        primaryNav.map((item) => {
+          const active = path.startsWith(item.href) && item.href !== '/';
+          return item.children ? (
+            <div class="group relative">
+              <a
+                href={item.href}
+                class:list={[
+                  'flex items-center gap-1 whitespace-nowrap rounded-lg px-2.5 py-2 text-[0.8125rem] font-medium transition-colors',
+                  dark ? 'hover:bg-navy-800' : 'hover:bg-mist',
+                  active && 'text-orange',
+                ]}
+              >
+                {item.label}
+                <svg class="h-3 w-3 opacity-60" viewBox="0 0 12 12" aria-hidden="true">
+                  <path d="M2 4.5 6 8.5 10 4.5" fill="none" stroke="currentColor" stroke-width="1.6" />
+                </svg>
+              </a>
+              <div class="invisible absolute left-0 top-full w-72 pt-2 opacity-0 transition group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+                <ul class="overflow-hidden rounded-card border border-navy-700 bg-navy-800 py-2 text-ondark shadow-2xl">
+                  {item.children.map((c) => (
+                    <li>
+                      <a
+                        href={c.href}
+                        class="block px-4 py-2.5 text-sm transition-colors hover:bg-navy-700 hover:text-orange"
+                      >
+                        {c.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ) : (
+            <a
+              href={item.href}
+              class:list={[
+                'whitespace-nowrap rounded-lg px-2.5 py-2 text-[0.8125rem] font-medium transition-colors',
+                dark ? 'hover:bg-navy-800' : 'hover:bg-mist',
+                active && 'text-orange',
+              ]}
+            >
+              {item.label}
+            </a>
+          );
+        })
+      }
+    </nav>
+
+    <div class="hidden shrink-0 2xl:block">
+      <Button href={site.primaryCta.href} size="sm">Tell us what you’re trying to achieve</Button>
+    </div>
+
+    <!-- Mobile toggle -->
+    <button
+      type="button"
+      id="nav-toggle"
+      aria-expanded="false"
+      aria-controls="mobile-nav"
+      class:list={[
+        'rounded-lg border p-2 lg:hidden',
+        dark ? 'border-navy-700' : 'border-line',
+      ]}
+    >
+      <span class="sr-only">Menu</span>
+      <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M4 7h16M4 12h16M4 17h16" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile nav -->
+  <div id="mobile-nav" hidden class:list={['lg:hidden', dark ? 'bg-navy-900' : 'bg-paper']}>
+    <nav class="mx-auto max-w-7xl px-6 pb-8" aria-label="Primary (mobile)">
+      <ul class:list={['divide-y', dark ? 'divide-navy-700' : 'divide-line']}>
+        {
+          primaryNav.map((item) => (
+            <li class="py-3">
+              <a href={item.href} class="block font-display text-base font-semibold">
+                {item.label}
+              </a>
+              {item.children && (
+                <ul class="mt-2 space-y-1 pl-3">
+                  {item.children.map((c) => (
+                    <li>
+                      <a
+                        href={c.href}
+                        class:list={[
+                          'block py-1.5 text-sm',
+                          dark ? 'text-ondark-muted' : 'text-ink-muted',
+                        ]}
+                      >
+                        {c.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))
+        }
+        {
+          utilityNav.map((l) => (
+            <li class="py-3">
+              <a href={l.href} class="block text-sm font-medium">
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mt-6">
+        <Button href={site.primaryCta.href} full>Tell us what you’re trying to achieve</Button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const panel = document.getElementById('mobile-nav');
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    if (panel) panel.hidden = open;
+  });
+</script>

@@ -1,0 +1,53 @@
+---
+/* Shared template for product and capability pages (brief §27–§43).
+   Every one of them ends with proof beside the claim (§58) and
+   "Where might you go next?" (§70). */
+import Layout from '@/layouts/Layout.astro';
+import PageHero from './PageHero.astro';
+import Blocks from './Blocks.astro';
+import Section from './Section.astro';
+import NextSteps from './NextSteps.astro';
+import Testimonial from './Testimonial.astro';
+import LogoWall from './LogoWall.astro';
+import CtaBand from './CtaBand.astro';
+import type { ContentPage } from '@/data/blocks';
+
+interface Props {
+  page: ContentPage;
+  eyebrow: string;
+}
+const { page, eyebrow } = Astro.props;
+---
+
+<Layout title={page.navLabel} description={page.summary}>
+  <PageHero eyebrow={eyebrow} title={page.title} standfirst={page.standfirst} lead={page.lead} />
+
+  <Blocks blocks={page.blocks} />
+
+  {
+    page.testimonialTheme && (
+      <Section tone="mist" size="md">
+        <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:items-center">
+          <div>
+            <p class="eyebrow grad-text mb-4">Proof beside the claim</p>
+            <h2 class="text-title">Don’t take our word for it.</h2>
+          </div>
+          <Testimonial prompt={page.testimonialTheme} />
+        </div>
+        <div class="mt-12">
+          <LogoWall />
+        </div>
+      </Section>
+    )
+  }
+
+  {
+    page.next.length > 0 && (
+      <Section tone="light" size="md">
+        <NextSteps links={page.next} />
+      </Section>
+    )
+  }
+
+  <CtaBand />
+</Layout>

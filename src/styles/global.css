@@ -1,0 +1,140 @@
+@import 'tailwindcss';
+
+/*
+  EdCo design system — derived from the 2024 logo and the brand deck
+  ("Do schools still need suppliers?"), not from a written brand guideline.
+  Anything marked PROVISIONAL needs sign-off from EdCo.
+*/
+
+@theme {
+  /* --- Ground: brand navy, sampled from the deck --------------------- */
+  --color-navy-950: #0a0e18; /* deepest — footer, full-bleed CTA bands */
+  --color-navy-900: #0f1421; /* THE brand navy */
+  --color-navy-800: #161c2d; /* raised cards on dark */
+  --color-navy-700: #232b3f; /* hairlines on dark */
+  --color-navy-600: #333c54;
+
+  /* --- Accent: the ribbon gradient ----------------------------------- */
+  --color-orange: #f7901f;
+  --color-orange-soft: #ffb45c;
+  --color-pink: #e8437f;
+  --color-pink-soft: #f4739f;
+
+  /* --- Light sections ------------------------------------------------ */
+  --color-paper: #ffffff;
+  --color-mist: #f5f6f9; /* alternating light band */
+  --color-line: #e3e7ee;
+
+  /* --- Text ---------------------------------------------------------- */
+  --color-ink: #0f1421;
+  --color-ink-muted: #59637c;
+  --color-ondark: #ffffff;
+  --color-ondark-muted: #a8b0c4;
+
+  /* --- Type. PROVISIONAL: Poppins stands in for the deck's geometric
+         sans until EdCo confirm the licensed brand face. ------------- */
+  --font-display: 'Poppins', 'Century Gothic', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  --text-hero: clamp(2.5rem, 6.2vw, 4.5rem);
+  --text-hero--line-height: 1.04;
+  --text-hero--letter-spacing: -0.03em;
+  --text-display: clamp(2rem, 4.2vw, 3.125rem);
+  --text-display--line-height: 1.1;
+  --text-display--letter-spacing: -0.025em;
+  --text-title: clamp(1.5rem, 2.6vw, 2rem);
+  --text-title--line-height: 1.18;
+  --text-title--letter-spacing: -0.02em;
+  --text-lead: clamp(1.125rem, 1.6vw, 1.375rem);
+  --text-lead--line-height: 1.55;
+
+  --radius-card: 1rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+
+  /* Visible, on-brand focus ring in both light and dark sections. */
+  :focus-visible {
+    outline: 2px solid var(--color-orange);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* The signature orange→pink ribbon, as a text/graphic treatment. */
+  .grad-text {
+    background: linear-gradient(96deg, var(--color-orange) 0%, var(--color-pink) 62%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .grad-rule {
+    background: linear-gradient(90deg, var(--color-orange) 0%, var(--color-pink) 100%);
+  }
+
+  /* Eyebrow label — used above almost every section heading. */
+  .eyebrow {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  /* Long-form editorial copy (articles, case studies). */
+  .prose-edco { max-width: 68ch; }
+  .prose-edco > * + * { margin-top: 1.25em; }
+  .prose-edco h2 {
+    font-size: var(--text-title);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-top: 2.25em;
+  }
+  .prose-edco h3 {
+    font-size: 1.25rem;
+    line-height: 1.3;
+    margin-top: 1.75em;
+  }
+  .prose-edco ul { list-style: disc; padding-left: 1.25rem; }
+  .prose-edco ol { list-style: decimal; padding-left: 1.25rem; }
+  .prose-edco li + li { margin-top: 0.4em; }
+  .prose-edco a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--color-pink);
+  }
+  .prose-edco blockquote {
+    border-left: 3px solid var(--color-orange);
+    padding-left: 1.25rem;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    line-height: 1.45;
+  }
+}

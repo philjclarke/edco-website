@@ -1,0 +1,61 @@
+---
+/* Brief §11: capabilities are a secondary route. This page exists so the
+   detail is findable, not so it competes with the outcome routes. */
+import Layout from '@/layouts/Layout.astro';
+import PageHero from '@/components/PageHero.astro';
+import Section from '@/components/Section.astro';
+import Card from '@/components/Card.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Placeholder from '@/components/Placeholder.astro';
+import { capabilities } from '@/data/capabilities';
+---
+
+<Layout
+  title="What we do"
+  description="Research, marketing, events and CPD, content, data, technology, CSR programmes and education strategy — the capabilities behind the outcomes."
+>
+  <PageHero
+    eyebrow="What we do"
+    title="The capabilities behind the outcomes"
+    standfirst="Useful to know. Not the best place to start."
+    lead="If you already know what you need, it’s all here. If you don’t, start with what you’re trying to achieve and let us do the diagnosis."
+  />
+
+  <Section tone="light" size="lg">
+    <ul class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {
+        capabilities.map((c) => (
+          <li>
+            <Card
+              href={c.page ? `/capabilities/${c.slug}/` : undefined}
+              eyebrow={c.navLabel}
+              title={c.title}
+              body={c.summary}
+              meta={c.page ? 'Read about it' : undefined}
+            >
+              {!c.page && (
+                <p class="mt-auto pt-5">
+                  <Placeholder label="PAGE TO FOLLOW" note="phase 2" />
+                </p>
+              )}
+            </Card>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section tone="dark" size="md">
+    <div class="mx-auto max-w-3xl text-center">
+      <div class="mx-auto mb-8 h-1 w-16 rounded-full grad-rule"></div>
+      <p class="font-display text-display font-bold">Diagnose before you prescribe.</p>
+      <p class="mt-6 text-lead text-ondark-muted">
+        A customer asks for an email campaign. We might find the targeting is fine and the
+        proposition is weak — in which case the right answer is research and proposition work
+        before anybody writes a campaign.
+      </p>
+    </div>
+  </Section>
+
+  <CtaBand />
+</Layout>
