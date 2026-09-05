@@ -36,7 +36,7 @@ rather than a rewrite.
 | `src/data/site.ts` | Navigation, footer, contact, global CTAs | Settings singleton |
 | `src/data/outcomes.ts` | The six outcome routes (brief §21–26) | Repeatable "outcome" type |
 | `src/data/products.ts` | The five products (§28–33) | Repeatable "product" type |
-| `src/data/capabilities.ts` | Ten capabilities, four with full pages (§34–43) | Repeatable "capability" type |
+| `src/data/capabilities.ts` | Ten capabilities, seven with full pages (§34–43) | Repeatable "capability" type |
 | `src/data/model.ts` | The Listen→Grow model, beliefs, joined-up routes | Settings / repeatable |
 | `src/data/proof.ts` | Stats, logo candidates, testimonial and case themes | Settings / repeatable |
 | `src/data/blocks.ts` | The five-block page vocabulary | Component / blocks model |
@@ -97,6 +97,6 @@ src/
 
 ## What isn't built yet
 
-See `OUTSTANDING.md`. In short: `/resources/`, `/events/`, six capability detail pages,
+See `OUTSTANDING.md`. In short: `/resources/`, `/events/`, three capability detail pages,
 interactive diagnostics, and real case-study content are phase 2. Every one of them has a
 route reserved or a placeholder on the page that will hold it.

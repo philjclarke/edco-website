@@ -1,7 +1,7 @@
 /*
   Brief §11 — capabilities are a secondary route, not a principal navigation
-  emphasis. Phase 1 builds the four most heavily cross-linked in full; the
-  remaining six are summarised on /capabilities/ and get their own pages in
+  emphasis. Phase 1 builds the seven that other pages actually link to; the
+  remaining three are summarised on /capabilities/ and get their own pages in
   phase 2. `page: false` means "summary only, no detail page yet".
 */
 
@@ -218,14 +218,56 @@ export const capabilities: Capability[] = [
 
   /* --- Phase 2 detail pages. Summarised on /capabilities/ for now. ------- */
   {
-    page: false,
+    page: true,
     slug: 'content-creation',
     navLabel: 'Content creation',
     title: 'Create something genuinely useful.',
+    standfirst: 'What problem will this help an educator understand or solve?',
     summary:
-      'CPD, webinars, articles, guides, classroom resources, reports, videos, diagnostics and interactive tools. The organising principle isn’t format — it’s what problem this helps an educator understand or solve.',
-    blocks: [],
-    next: [],
+      'CPD, webinars, articles, guides, classroom resources, reports, videos, diagnostics and interactive tools — organised around the problem, not the format.',
+    blocks: [
+      {
+        type: 'prose',
+        title: 'Start with the problem, not the format',
+        paras: [
+          'Most content briefs arrive as a format. We need a webinar. We need a series of blogs. We need a whitepaper.',
+          'That is the wrong end of the question. The useful one is: what problem will this help an educator understand or solve? Answer that and the format usually picks itself — and if it turns out the answer is a one-page checklist rather than a forty-page report, everybody saves money.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'What we make',
+        columns: 3,
+        items: [
+          'CPD programmes',
+          'Webinars',
+          'Articles',
+          'Guides',
+          'Classroom resources',
+          'Research reports',
+          'Videos',
+          'Diagnostics',
+          'Audits',
+          'Interactive tools',
+          'AI-enabled tools',
+          'Downloadable resources',
+          'Thought leadership',
+        ],
+      },
+      {
+        type: 'pull',
+        text: 'Nobody wants your webinar. They might want the knowledge inside it.',
+      },
+    ],
+    testimonialTheme: 'EdCo understanding both education and the client’s business',
+    next: [
+      { label: 'Research', href: '/capabilities/research/', blurb: 'Find out what’s worth making first.' },
+      { label: 'Events & CPD', href: '/capabilities/events-and-cpd/', blurb: 'Content with a live moment attached.' },
+      { label: 'EdNet', href: '/products/ednet/', blurb: 'Somewhere for it all to live.' },
+      { label: 'Marketing Services', href: '/capabilities/marketing-services/', blurb: 'Getting it in front of people.' },
+      { label: 'Build your reputation & audience', href: '/build-your-reputation-and-audience/' },
+      { label: 'Tell us what you’re trying to achieve', href: '/contact/' },
+    ],
   },
   {
     page: false,
@@ -258,24 +300,92 @@ export const capabilities: Capability[] = [
     next: [],
   },
   {
-    page: false,
+    page: true,
     slug: 'technology-and-integration',
     navLabel: 'Technology & integration',
     title: 'Sometimes making things work better means making things work together.',
+    standfirst: 'Technology should solve the problem, not become the project.',
     summary:
-      'APIs, system and CRM integration, data flows, automation, intelligent tools and technical consultancy. Technology should solve the problem, not become the project.',
-    blocks: [],
-    next: [],
+      'APIs, system and CRM integration, data flows, automation and intelligent tools — connecting what you already have rather than replacing it.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What this usually involves',
+        columns: 3,
+        items: [
+          'APIs',
+          'System integration',
+          'CRM integration',
+          'Data flows',
+          'Automation',
+          'Intelligent tools',
+          'AI-enabled functionality',
+          'Technical consultancy',
+          'Bespoke applications',
+        ],
+      },
+      {
+        type: 'prose',
+        title: 'We don’t go looking for a problem to build against',
+        paras: [
+          'We build technology where technology is the answer. Where the answer is a better proposition, or a conversation with twelve headteachers, we would rather say so — even though it is a smaller invoice.',
+          'Most of the value here is unglamorous: getting education context into the system your team already lives in, so nobody has to open a second window to find out that a customer just joined a trust.',
+        ],
+      },
+      { type: 'pull', text: 'Your technology doesn’t need our logo on it.' },
+    ],
+    testimonialTheme: 'EdCo feeling like part of the client team',
+    next: [
+      { label: 'Education IQ', href: '/products/education-iq/', blurb: 'The intelligence that gets integrated.' },
+      { label: 'Data Services', href: '/capabilities/data-services/', blurb: 'Matching, enrichment and the plumbing.' },
+      { label: 'Bespoke technology', href: '/capabilities/bespoke-technology/', blurb: 'When it needs building from scratch.' },
+      { label: 'SPIRIT', href: '/products/spirit/', blurb: 'Or use ours, if you’d rather.' },
+      { label: 'Tell us what you’re trying to achieve', href: '/contact/' },
+    ],
   },
   {
-    page: false,
+    page: true,
     slug: 'bespoke-technology',
     navLabel: 'Bespoke technology',
     title: 'Need something that doesn’t exist? We build things too.',
+    standfirst: 'Before we build it, let’s make sure somebody wants it.',
     summary:
-      'Discover → define → build → launch → operate → improve. EdCo built Navigate, now used by more than 250,000 post-16 students. Where agreed, the product and the IP are yours.',
-    blocks: [],
-    next: [],
+      'Discover, define, build, launch, operate and improve — with flexible IP arrangements, because it’s usually your product.',
+    blocks: [
+      {
+        type: 'steps',
+        title: 'The lifecycle',
+        lead: 'We can pick this up at any point, including from somebody else’s half-finished build.',
+        steps: ['Discover', 'Define', 'Build', 'Launch', 'Operate', 'Improve'],
+      },
+      {
+        type: 'prose',
+        title: 'Navigate',
+        paras: [
+          'EdCo built Navigate, a platform now used by more than 250,000 post-16 students. It is the clearest evidence that "we build things too" is not a line on a capabilities list.',
+        ],
+      },
+      {
+        type: 'pull',
+        text: 'Your idea. Your product. Your IP.',
+        sub: 'Where agreed, clients own the resulting product and the intellectual property in it. EdCo can then keep providing hosting, maintenance, support, roadmap development, new features, integration and data management — or hand it over entirely.',
+      },
+      {
+        type: 'prose',
+        title: 'The awkward question first',
+        paras: [
+          'Almost every bespoke build we are asked about would benefit from a fortnight of research before a line of code exists. Sometimes that research kills the idea, which is a considerably cheaper outcome than launching it.',
+        ],
+      },
+    ],
+    testimonialTheme: 'EdCo challenging the original brief',
+    next: [
+      { label: 'Research', href: '/capabilities/research/', blurb: 'Validate it before you build it.' },
+      { label: 'Technology & integration', href: '/capabilities/technology-and-integration/', blurb: 'Connecting it to everything else.' },
+      { label: 'Data Services', href: '/capabilities/data-services/', blurb: 'The data underneath it.' },
+      { label: 'Get your education strategy right', href: '/education-strategy/' },
+      { label: 'Tell us what you’re trying to achieve', href: '/contact/' },
+    ],
   },
 ];
 
