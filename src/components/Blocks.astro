@@ -1,6 +1,8 @@
 ---
 import type { Block } from '@/data/blocks';
 import TickList from './TickList.astro';
+import ProductShot from './ProductShot.astro';
+import Placeholder from './Placeholder.astro';
 
 interface Props {
   blocks: Block[];
@@ -62,6 +64,27 @@ const bg = (i: number) => (i % 2 === 1 ? 'bg-mist' : 'bg-paper');
           </div>
         )}
 
+        {block.type === 'shots' && (
+          <div>
+            {block.title && (
+              <div class="max-w-3xl">
+                <h2 class="text-title">{block.title}</h2>
+                {block.lead && <p class="mt-4 text-lead text-ink-muted">{block.lead}</p>}
+              </div>
+            )}
+            <div
+              class:list={[
+                'mt-8 grid gap-6',
+                block.shots.length > 1 ? 'md:grid-cols-2' : 'max-w-3xl',
+              ]}
+            >
+              {block.shots.map((sh) => (
+                <ProductShot caption={sh.caption} src={sh.src} />
+              ))}
+            </div>
+          </div>
+        )}
+
         {block.type === 'pull' && (
           <div class="mx-auto max-w-4xl text-center">
             <div class="mx-auto mb-8 h-1 w-16 rounded-full grad-rule" />
@@ -79,12 +102,45 @@ const bg = (i: number) => (i % 2 === 1 ? 'bg-mist' : 'bg-paper');
               </div>
             )}
             <div class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-              {block.items.map((c) => (
-                <div class="rounded-card border border-line bg-paper p-6">
-                  <h3 class="text-lg leading-snug">{c.title}</h3>
-                  <p class="mt-3 text-sm text-ink-muted">{c.body}</p>
-                </div>
-              ))}
+              {block.items.map((c) =>
+                c.detail || c.shot ? (
+                  /* <details> keeps this keyboard-accessible and working with
+                     no JavaScript — no pop-up library needed. */
+                  <details class="group rounded-card border border-line bg-paper transition open:border-pink/50 hover:border-ink/25">
+                    <summary class="flex cursor-pointer list-none items-start gap-3 p-6 [&::-webkit-details-marker]:hidden">
+                      <span class="flex-1">
+                        <span class="block font-display text-lg font-bold leading-snug">{c.title}</span>
+                        <span class="mt-3 block text-sm text-ink-muted">{c.body}</span>
+                      </span>
+                      <svg
+                        class="mt-1 h-4 w-4 shrink-0 text-pink transition-transform group-open:rotate-45"
+                        viewBox="0 0 14 14"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        aria-hidden="true"
+                      >
+                        <path d="M7 2v10M2 7h10" />
+                      </svg>
+                    </summary>
+                    <div class="border-t border-line px-6 py-5">
+                      {c.detail ? (
+                        <p class="text-sm text-ink-muted">{c.detail}</p>
+                      ) : (
+                        <Placeholder label="DETAIL COPY" note={c.title} block />
+                      )}
+                      <div class="mt-4">
+                        <ProductShot caption={c.shot ?? c.title} ratio="tall" />
+                      </div>
+                    </div>
+                  </details>
+                ) : (
+                  <div class="rounded-card border border-line bg-paper p-6">
+                    <h3 class="text-lg leading-snug">{c.title}</h3>
+                    <p class="mt-3 text-sm text-ink-muted">{c.body}</p>
+                  </div>
+                )
+              )}
             </div>
           </div>
         )}

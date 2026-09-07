@@ -146,8 +146,23 @@ import ribbonWave from '@/assets/brand/ribbon-4.png';
       <ul class="flex flex-wrap gap-2.5">
         {
           home.oneEdco.words.map((w) => (
-            <li class="rounded-full border border-line bg-paper px-5 py-2.5 font-display text-base font-semibold">
-              {w}
+            <li>
+              <a
+                href={w.href}
+                class="group inline-flex items-center gap-1.5 rounded-full border border-line bg-paper px-5 py-2.5 font-display text-base font-semibold transition hover:border-pink hover:bg-pink/5"
+              >
+                {w.label}
+                <svg
+                  class="h-3 w-3 text-pink opacity-0 transition group-hover:opacity-100"
+                  viewBox="0 0 14 14"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path d="M2 7h10M8 3l4 4-4 4" />
+                </svg>
+              </a>
             </li>
           ))
         }

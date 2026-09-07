@@ -1,0 +1,52 @@
+---
+/*
+  A framed product screenshot. EdCo have none yet, so this renders a labelled
+  frame at the right aspect ratio — the layout is settled and a real capture
+  drops straight in.
+*/
+import Placeholder from './Placeholder.astro';
+
+interface Props {
+  caption: string;
+  /** Path to a real screenshot once one exists. */
+  src?: string;
+  tone?: 'dark' | 'light';
+  ratio?: 'wide' | 'tall';
+}
+const { caption, src, tone = 'light', ratio = 'wide' } = Astro.props;
+const dark = tone === 'dark';
+---
+
+<figure class="w-full">
+  <div
+    class:list={[
+      'relative overflow-hidden rounded-card border',
+      ratio === 'wide' ? 'aspect-[16/10]' : 'aspect-[4/3]',
+      dark ? 'border-navy-700 bg-navy-800' : 'border-line bg-mist',
+    ]}
+  >
+    {
+      src ? (
+        <img src={src} alt={caption} class="h-full w-full object-cover object-top" loading="lazy" />
+      ) : (
+        <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 text-center">
+          <svg
+            class:list={['h-8 w-8', dark ? 'text-navy-600' : 'text-line']}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            aria-hidden="true"
+          >
+            <rect x="2" y="4" width="20" height="14" rx="2"></rect>
+            <path d="M2 14l5-4 4 3 4-5 7 6"></path>
+          </svg>
+          <Placeholder label="SCREENSHOT" note={caption} />
+        </div>
+      )
+    }
+  </div>
+  <figcaption class:list={['mt-3 text-sm', dark ? 'text-ondark-muted' : 'text-ink-muted']}>
+    {caption}
+  </figcaption>
+</figure>

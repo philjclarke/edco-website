@@ -14,39 +14,60 @@
         "items": [
           {
             "title": "Understand individual schools",
-            "body": "Who they are, how they’re structured, what’s changing and what that might mean."
+            "body": "Who they are, how they’re structured, what’s changing and what that might mean.",
+            "shot": "Understand individual schools"
           },
           {
             "title": "Understand trusts",
-            "body": "How a trust is composed, where decisions sit, and which schools sit inside it."
+            "body": "How a trust is composed, where decisions sit, and which schools sit inside it.",
+            "shot": "Understand trusts"
           },
           {
             "title": "Identify likely need",
-            "body": "Find the organisations whose circumstances suggest they need what you do."
+            "body": "Find the organisations whose circumstances suggest they need what you do.",
+            "shot": "Identify likely need"
           },
           {
             "title": "Analyse your customers",
-            "body": "Understand the organisations you already serve — and what they have in common."
+            "body": "Understand the organisations you already serve — and what they have in common.",
+            "shot": "Analyse your customers"
           },
           {
             "title": "Find opportunities across trusts",
-            "body": "You serve four schools in a trust of nineteen. Now what?"
+            "body": "You serve four schools in a trust of nineteen. Now what?",
+            "shot": "Find opportunities across trusts"
           },
           {
             "title": "Identify risk",
-            "body": "Leadership change, financial pressure, structural change — before renewal."
+            "body": "Leadership change, financial pressure, structural change — before renewal.",
+            "shot": "Identify risk"
           },
           {
             "title": "Find lookalikes",
-            "body": "Find organisations that resemble your strongest customers."
+            "body": "Find organisations that resemble your strongest customers.",
+            "shot": "Find lookalikes"
           },
           {
             "title": "Improve targeting",
-            "body": "Fewer, better-aimed conversations rather than more of them."
+            "body": "Fewer, better-aimed conversations rather than more of them.",
+            "shot": "Improve targeting"
           },
           {
             "title": "Enrich your CRM",
-            "body": "Put education context next to the records your team already works in."
+            "body": "Put education context next to the records your team already works in.",
+            "shot": "Enrich your CRM"
+          }
+        ]
+      },
+      {
+        "type": "shots",
+        "title": "What it actually looks like",
+        "shots": [
+          {
+            "caption": "A school record in Education IQ"
+          },
+          {
+            "caption": "Trust structure and the schools inside it"
           }
         ]
       },
@@ -125,6 +146,18 @@
         "paras": [
           "Schools buy solutions to problems, not products from suppliers. A conventional supplier website usually begins: who we are → what we sell → why we’re good → contact us.",
           "An EdNet website behaves differently: your challenges → useful help → expertise → engagement → relationship → solution."
+        ]
+      },
+      {
+        "type": "shots",
+        "title": "What an EdNet site looks like",
+        "shots": [
+          {
+            "caption": "An EdNet site — the visitor view"
+          },
+          {
+            "caption": "Engagement intelligence — the administrator view"
+          }
         ]
       },
       {
@@ -226,6 +259,18 @@
         ]
       },
       {
+        "type": "shots",
+        "title": "What SPIRIT looks like",
+        "shots": [
+          {
+            "caption": "The SPIRIT pipeline view"
+          },
+          {
+            "caption": "An education organisation record"
+          }
+        ]
+      },
+      {
         "type": "prose",
         "title": "And if you already have a CRM?",
         "paras": [
@@ -295,6 +340,15 @@
         ]
       },
       {
+        "type": "shots",
+        "title": "The network",
+        "shots": [
+          {
+            "caption": "The International Schools Network site"
+          }
+        ]
+      },
+      {
         "type": "prose",
         "title": "It is also part of our listening infrastructure",
         "paras": [
@@ -353,6 +407,15 @@
           "Events",
           "Content",
           "Educator engagement"
+        ]
+      },
+      {
+        "type": "shots",
+        "title": "The network",
+        "shots": [
+          {
+            "caption": "The Curriculum Network site"
+          }
         ]
       },
       {

@@ -112,6 +112,25 @@ Twenty-four pages need more. Worth commissioning or licensing:
 - 3.4 Event and CPD photography
 - 3.5 Abstract/data-led imagery for the Education IQ and Data Services pages
 
+### Product screenshots — EdCo feedback, Sept 2026
+
+Every product page now has framed slots waiting for real captures. Until they
+arrive each renders a `[SCREENSHOT]` placeholder at the right aspect ratio, so
+dropping an image in needs no layout work — just a `src` in `products.json`.
+
+| Product | Shots needed |
+| --- | --- |
+| Education IQ | A school record; trust structure and its schools; **plus one per use case** — nine expandable cards on the page each open to a screenshot |
+| EdNet | An EdNet site as a visitor sees it; the engagement-intelligence admin view |
+| SPIRIT | The pipeline view; an education organisation record |
+| International Schools Network | The network site |
+| The Curriculum Network | The network site |
+
+Also outstanding from the same feedback: **detail copy for the nine Education IQ
+use cases.** Each expandable card shows a `[DETAIL COPY]` placeholder — I have
+not written these, because they are specific product claims rather than
+positioning.
+
 Note the brand's faded-photo treatment (supplied as `faded img.png`) is a light-section
 device — that pattern is in the design system but currently unused.
 

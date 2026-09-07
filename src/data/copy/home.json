@@ -3,7 +3,7 @@
     "description": "EdCo combines education intelligence, research, content, events, marketing and technology to help organisations understand what schools and trusts need, engage the right educators and turn those relationships into awareness, leads, pipeline and long-term growth."
   },
   "hero": {
-    "eyebrow": "Education Intelligence & Engagement",
+    "eyebrow": "The Education Company",
     "heading": "Helping organisations build better relationships with education.",
     "standfirst": "Understand educators. Create value. Build engagement.",
     "body": "EdCo combines education intelligence, research, content, events, marketing and technology to help organisations understand what schools and trusts need, engage the right educators and turn those relationships into awareness, leads, pipeline and long-term growth."
@@ -34,16 +34,46 @@
     "lead": "We don’t expect you to work out which one you need. That’s our job.",
     "cta": "See all six routes",
     "words": [
-      "Research",
-      "Intelligence",
-      "Strategy",
-      "Data",
-      "Marketing",
-      "Content",
-      "Events",
-      "Technology",
-      "Networks",
-      "CRM"
+      {
+        "label": "Research",
+        "href": "/capabilities/research/"
+      },
+      {
+        "label": "Intelligence",
+        "href": "/products/education-iq/"
+      },
+      {
+        "label": "Strategy",
+        "href": "/education-strategy/"
+      },
+      {
+        "label": "Data",
+        "href": "/capabilities/data-services/"
+      },
+      {
+        "label": "Marketing",
+        "href": "/capabilities/marketing-services/"
+      },
+      {
+        "label": "Content",
+        "href": "/capabilities/content-creation/"
+      },
+      {
+        "label": "Events",
+        "href": "/capabilities/events-and-cpd/"
+      },
+      {
+        "label": "Technology",
+        "href": "/capabilities/technology-and-integration/"
+      },
+      {
+        "label": "Networks",
+        "href": "/products/international-schools-network/"
+      },
+      {
+        "label": "CRM",
+        "href": "/products/spirit/"
+      }
     ]
   },
   "breadth": {
