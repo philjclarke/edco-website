@@ -24,4 +24,11 @@ export interface ContentPage {
   next: { label: string; href: string; blurb?: string }[];
   /** Brief §58 — proof sits beside the claim, on every product/capability page. */
   testimonialTheme?: string;
+  /**
+   * The product's own website. An empty `href` means the site isn't live yet,
+   * and the page shows a tracked placeholder rather than a dead link.
+   * `href` sits in the copy deck's STRUCTURAL set, so URLs are never editable
+   * there — only the label is.
+   */
+  externalSite?: { label: string; href: string };
 }

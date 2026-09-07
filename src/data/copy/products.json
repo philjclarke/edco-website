@@ -106,7 +106,11 @@
         "label": "Tell us what you’re trying to achieve",
         "href": "/contact/"
       }
-    ]
+    ],
+    "externalSite": {
+      "label": "Visit Education IQ",
+      "href": "https://www.educationiq.app/"
+    }
   },
   {
     "slug": "ednet",
@@ -195,7 +199,11 @@
         "label": "Tell us what you want your website to achieve",
         "href": "/contact/"
       }
-    ]
+    ],
+    "externalSite": {
+      "label": "Visit EdNet",
+      "href": ""
+    }
   },
   {
     "slug": "spirit",
@@ -260,7 +268,11 @@
         "label": "Tell us what you’re trying to achieve",
         "href": "/contact/"
       }
-    ]
+    ],
+    "externalSite": {
+      "label": "Visit SPIRIT",
+      "href": ""
+    }
   },
   {
     "slug": "international-schools-network",
@@ -317,7 +329,11 @@
         "label": "Tell us what you’re trying to achieve",
         "href": "/contact/"
       }
-    ]
+    ],
+    "externalSite": {
+      "label": "Visit International Schools Network",
+      "href": "https://isn.education/"
+    }
   },
   {
     "slug": "the-curriculum-network",
@@ -371,6 +387,10 @@
         "label": "Tell us what you’re trying to achieve",
         "href": "/contact/"
       }
-    ]
+    ],
+    "externalSite": {
+      "label": "Visit The Curriculum Network",
+      "href": ""
+    }
   }
 ]

@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import ribbon from '@/assets/brand/ribbon-1.png';
 import Button from './Button.astro';
+import Placeholder from './Placeholder.astro';
 
 interface Props {
   eyebrow?: string;
@@ -11,6 +12,8 @@ interface Props {
   lead?: string;
   primaryCta?: { label: string; href: string };
   secondaryCta?: { label: string; href: string };
+  /** A link off to the product's own website. Empty href = not live yet. */
+  externalSite?: { label: string; href: string };
   size?: 'sm' | 'lg';
   /** The brand ribbon device down the right edge. */
   ribbon?: boolean;
@@ -22,6 +25,7 @@ const {
   lead,
   primaryCta,
   secondaryCta,
+  externalSite,
   size = 'sm',
   ribbon: showRibbon = true,
 } = Astro.props;
@@ -52,13 +56,21 @@ const {
       {standfirst && <p class="mt-6 font-display text-lead font-medium grad-text">{standfirst}</p>}
       {lead && <p class="mt-5 max-w-2xl text-lead text-ondark-muted">{lead}</p>}
       {
-        (primaryCta || secondaryCta) && (
-          <div class="mt-9 flex flex-wrap gap-3">
+        (primaryCta || secondaryCta || externalSite) && (
+          <div class="mt-9 flex flex-wrap items-center gap-3">
             {primaryCta && (
               <Button href={primaryCta.href} size="lg">
                 {primaryCta.label}
               </Button>
             )}
+            {externalSite &&
+              (externalSite.href ? (
+                <Button href={externalSite.href} size="lg" external>
+                  {externalSite.label}
+                </Button>
+              ) : (
+                <Placeholder label="PRODUCT SITE URL" note={externalSite.label} />
+              ))}
             {secondaryCta && (
               <Button href={secondaryCta.href} size="lg" variant="ghost-dark">
                 {secondaryCta.label}

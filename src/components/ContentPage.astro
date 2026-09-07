@@ -20,7 +20,13 @@ const { page, eyebrow } = Astro.props;
 ---
 
 <Layout title={page.navLabel} description={page.summary}>
-  <PageHero eyebrow={eyebrow} title={page.title} standfirst={page.standfirst} lead={page.lead} />
+  <PageHero
+    eyebrow={eyebrow}
+    title={page.title}
+    standfirst={page.standfirst}
+    lead={page.lead}
+    externalSite={page.externalSite}
+  />
 
   <Blocks blocks={page.blocks} />
 
