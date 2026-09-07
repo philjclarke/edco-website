@@ -48,6 +48,36 @@ Product and capability pages are assembled from five block types only — `prose
 and gives a CMS an obvious components model. Adding a sixth type should need two pages to
 genuinely want it.
 
+## The copy deck
+
+All the site's words live in `src/data/copy/*.json`, and there is an online
+**copy deck** — a published page with a small database behind it — where EdCo can
+edit them without touching the repo.
+
+    https://claude.ai/code/artifact/0f197f46-c8ee-4481-81d9-ac375796e324
+
+25 documents, ~760 fields, one document per page. Editing the deck does **not**
+change the live site; the sync is deliberate and runs through Claude:
+
+```bash
+node scripts/copy-deck.mjs pack          # repo  -> .copy-deck/   (seed / re-baseline)
+node scripts/copy-deck.mjs apply <dir>   # deck  -> src/data/copy/
+```
+
+`pack` flattens each source file into a flat map of dotted paths to strings and
+records the current values as the baseline, so the deck can mark what has changed
+since the last sync. `apply` reverses it, writing back only string leaves that
+still exist in the structure.
+
+Structural fields — `slug`, `href`, `page`, `type`, `columns`, `verified` — are
+never exposed to the deck and never written back, so no edit made there can break
+a route or a layout. Everything under `src/content/` (articles, case studies) is
+edited as markdown in the repo, not in the deck.
+
+**Pushing edits live**, end to end: pull the deck's documents down, `apply` them,
+`npm run build` to check, commit, push. Then `pack` and re-seed so the deck's
+baseline matches what shipped.
+
 ## Placeholders
 
 Brief §77 requires live copy to be visually distinct from content still being sourced.

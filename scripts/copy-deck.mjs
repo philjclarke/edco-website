@@ -1,0 +1,216 @@
+/*
+  Bridge between the repo's copy JSON and the online copy deck.
+
+    node scripts/copy-deck.mjs pack             -> .copy-deck/<doc>.json   (seed the deck)
+    node scripts/copy-deck.mjs apply <dir>      -> src/data/copy/*.json    (pull edits back)
+
+  `pack` flattens each source file into a flat map of dotted paths to strings —
+  one deck document per page, so two people editing different pages never
+  collide. `apply` reverses it, writing only string leaves back into the
+  existing structure. Structural fields (slugs, hrefs, block types) are never
+  exposed to the deck and never written back, so an edit cannot break a route.
+*/
+
+import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
+import path from 'node:path';
+
+const COPY_DIR = 'src/data/copy';
+const OUT_DIR = '.copy-deck';
+
+/* Keys that describe structure rather than words. Never editable, never
+   round-tripped — changing one would break a URL, a layout or a type. */
+const STRUCTURAL = new Set([
+  'slug',
+  'href',
+  'page',
+  'type',
+  'columns',
+  'verified',
+  'routeObjective',
+  'stream',
+  'status',
+  'outcome',
+  'testimonialTheme',
+]);
+
+/** Human labels for the field paths, so the deck reads like a document. */
+const FIELD_LABELS = {
+  navLabel: 'Nav label',
+  title: 'Heading',
+  heading: 'Heading',
+  standfirst: 'Standfirst',
+  summary: 'Summary / card text',
+  lead: 'Intro paragraph',
+  helpTitle: 'List heading',
+  pull: 'Pull quote',
+  body: 'Body',
+  close: 'Closing line',
+  eyebrow: 'Eyebrow',
+  cta: 'Button label',
+  label: 'Link label',
+  blurb: 'Link description',
+  question: 'Question',
+  note: 'Note',
+  name: 'Name',
+  value: 'Figure',
+  objective: 'Objective',
+  description: 'Meta description',
+};
+
+/* ------------------------------------------------------------------ */
+
+/** Flatten to { 'a.b.0.c': 'string' }, skipping structural keys. */
+function flatten(node, prefix = '', out = {}) {
+  if (typeof node === 'string') {
+    out[prefix] = node;
+    return out;
+  }
+  if (Array.isArray(node)) {
+    node.forEach((v, i) => flatten(v, prefix ? `${prefix}.${i}` : String(i), out));
+    return out;
+  }
+  if (node && typeof node === 'object') {
+    for (const [k, v] of Object.entries(node)) {
+      if (STRUCTURAL.has(k)) continue;
+      flatten(v, prefix ? `${prefix}.${k}` : k, out);
+    }
+  }
+  return out;
+}
+
+/** Write flat values back into an existing structure, in place. */
+function unflatten(target, values) {
+  let applied = 0;
+  for (const [dotted, value] of Object.entries(values)) {
+    if (typeof value !== 'string') continue;
+    const parts = dotted.split('.');
+    let node = target;
+    let ok = true;
+    for (const part of parts.slice(0, -1)) {
+      const key = Array.isArray(node) ? Number(part) : part;
+      if (node?.[key] === undefined) {
+        ok = false;
+        break;
+      }
+      node = node[key];
+    }
+    if (!ok) continue;
+    const last = parts.at(-1);
+    const key = Array.isArray(node) ? Number(last) : last;
+    // Only overwrite an existing string. A path that no longer exists, or that
+    // points at an object, means the deck is stale — skip rather than corrupt.
+    if (typeof node?.[key] !== 'string') continue;
+    if (node[key] !== value) applied += 1;
+    node[key] = value;
+  }
+  return applied;
+}
+
+function labelFor(dotted) {
+  const leaf = dotted.split('.').at(-1);
+  if (FIELD_LABELS[leaf]) return FIELD_LABELS[leaf];
+  if (/^\d+$/.test(leaf)) {
+    const parent = dotted.split('.').at(-2);
+    const n = Number(leaf) + 1;
+    return `${FIELD_LABELS[parent] ?? sentence(parent)} ${n}`;
+  }
+  return sentence(leaf);
+}
+
+const sentence = (s = '') =>
+  s.replace(/([A-Z])/g, ' $1').replace(/^./, (c) => c.toUpperCase()).trim();
+
+/* Which source file each deck document is cut from, and how it is split. */
+const SOURCES = [
+  { file: 'home.json', group: 'Homepage', split: false, docId: 'home', title: 'Homepage' },
+  { file: 'outcomes.json', group: 'Outcome pages', split: 'navLabel' },
+  { file: 'products.json', group: 'Product pages', split: 'navLabel' },
+  { file: 'capabilities.json', group: 'What we do', split: 'navLabel' },
+  { file: 'model.json', group: 'Shared', split: false, docId: 'model', title: 'Model, beliefs & routes' },
+  { file: 'proof.json', group: 'Shared', split: false, docId: 'proof', title: 'Proof, logos & themes' },
+  { file: 'streams.json', group: 'Shared', split: false, docId: 'streams', title: 'What We Think streams' },
+];
+
+async function pack() {
+  await mkdir(OUT_DIR, { recursive: true });
+  const index = [];
+
+  for (const src of SOURCES) {
+    const raw = JSON.parse(await readFile(path.join(COPY_DIR, src.file), 'utf8'));
+
+    const emit = async (docId, title, payload, sourcePath) => {
+      const values = flatten(payload);
+      const fields = Object.keys(values).map((k) => ({ path: k, label: labelFor(k) }));
+      const doc = {
+        docId,
+        title,
+        group: src.group,
+        source: { file: src.file, path: sourcePath },
+        fields,
+        values,
+        // Baseline at seed time, so the deck can mark what has been edited
+        // since it was last synced with the repo.
+        original: { ...values },
+        seededAt: new Date().toISOString(),
+      };
+      await writeFile(path.join(OUT_DIR, `${docId}.json`), JSON.stringify(doc, null, 2) + '\n');
+      index.push({ docId, title, group: src.group, count: fields.length });
+    };
+
+    if (src.split && Array.isArray(raw)) {
+      for (const [i, item] of raw.entries()) {
+        await emit(
+          `${src.file.replace('.json', '')}-${item.slug}`,
+          item[src.split] ?? item.slug,
+          item,
+          String(i)
+        );
+      }
+    } else {
+      await emit(src.docId, src.title, raw, '');
+    }
+  }
+
+  await writeFile(path.join(OUT_DIR, '_index.json'), JSON.stringify(index, null, 2) + '\n');
+  const total = index.reduce((n, d) => n + d.count, 0);
+  console.log(`packed ${index.length} documents, ${total} editable fields -> ${OUT_DIR}/`);
+}
+
+async function apply(dir) {
+  const files = (await readdir(dir)).filter((f) => f.endsWith('.json') && !f.startsWith('_'));
+  const loaded = new Map(); // source file -> parsed structure
+  let changed = 0;
+
+  for (const f of files) {
+    const parsed = JSON.parse(await readFile(path.join(dir, f), 'utf8'));
+    // A document downloaded from the deck's database arrives wrapped in a
+    // {id, data, version} envelope; one written by `pack` is bare.
+    const doc = parsed?.data?.source ? parsed.data : parsed;
+    if (!doc?.source?.file || !doc.values) {
+      console.warn(`skipped ${f}: not a deck document`);
+      continue;
+    }
+    const srcFile = doc.source.file;
+    if (!loaded.has(srcFile)) {
+      loaded.set(srcFile, JSON.parse(await readFile(path.join(COPY_DIR, srcFile), 'utf8')));
+    }
+    const root = loaded.get(srcFile);
+    const target = doc.source.path === '' ? root : root[Number(doc.source.path)];
+    const n = unflatten(target, doc.values);
+    if (n) console.log(`${doc.title}: ${n} field${n === 1 ? '' : 's'} changed`);
+    changed += n;
+  }
+
+  for (const [file, data] of loaded) {
+    await writeFile(path.join(COPY_DIR, file), JSON.stringify(data, null, 2) + '\n');
+  }
+  console.log(changed ? `\napplied ${changed} changes across ${loaded.size} files` : '\nno changes');
+}
+
+const [cmd, arg] = process.argv.slice(2);
+if (cmd === 'pack') await pack();
+else if (cmd === 'apply') await apply(arg ?? OUT_DIR);
+else {
+  console.error('usage: copy-deck.mjs pack | apply <dir>');
+  process.exit(1);
+}

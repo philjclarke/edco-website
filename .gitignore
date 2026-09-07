@@ -5,3 +5,7 @@ dist/
 .env
 .env.production
 npm-debug.log*
+
+# Working directory for the copy deck sync (scripts/copy-deck.mjs)
+.copy-deck/
+.copy-pull/

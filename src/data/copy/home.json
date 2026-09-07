@@ -50,10 +50,22 @@
     "eyebrow": "Why breadth matters",
     "heading": "The problem with starting with a supplier is that you often end up starting with their solution.",
     "comparisons": [
-      { "who": "A data provider", "what": "sees a data problem." },
-      { "who": "A marketing agency", "what": "sees a campaign." },
-      { "who": "A research agency", "what": "sees a research project." },
-      { "who": "A software company", "what": "sees something to build." }
+      {
+        "who": "A data provider",
+        "what": "sees a data problem."
+      },
+      {
+        "who": "A marketing agency",
+        "what": "sees a campaign."
+      },
+      {
+        "who": "A research agency",
+        "what": "sees a research project."
+      },
+      {
+        "who": "A software company",
+        "what": "sees something to build."
+      }
     ],
     "turn": "We start somewhere else.",
     "body": "Sometimes the answer is research. Sometimes it’s better intelligence. Sometimes it’s a different proposition, useful content, an event, a campaign, technology or several of those things together.",
