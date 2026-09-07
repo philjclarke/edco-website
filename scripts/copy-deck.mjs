@@ -4,9 +4,8 @@
     node scripts/copy-deck.mjs csv                 -> copy-deck.csv        (import into Sheets)
     node scripts/copy-deck.mjs apply-csv [file|url] -> src/data/copy/*.json (pull edits back)
 
-  `apply-csv` takes a "Publish to web" CSV link from Sheets, a file path, or
-  nothing at all — in which case it looks for the newest deck-shaped CSV in
-  the working directory or ~/Downloads.
+  `apply-csv` with no argument reads the live Google Sheet (DECK_URL below).
+  Pass a path or a different URL to override it.
 
     node scripts/copy-deck.mjs pack             -> .copy-deck/<doc>.json   (JSON form)
     node scripts/copy-deck.mjs apply <dir>      -> src/data/copy/*.json
@@ -18,12 +17,19 @@
   exposed to the deck and never written back, so an edit cannot break a route.
 */
 
-import { readFile, writeFile, mkdir, readdir, stat } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
 import path from 'node:path';
-import os from 'node:os';
 
 const COPY_DIR = 'src/data/copy';
 const OUT_DIR = '.copy-deck';
+
+/*
+  The live copy deck. Google serves any link-shared sheet as CSV from this
+  endpoint, so no "publish to web" is needed — but it does mean the sheet has to
+  stay shared as "anyone with the link can view" for the pull to work.
+*/
+const DECK_URL =
+  'https://docs.google.com/spreadsheets/d/1tIJqD10Xente09Q4pjejPsd7qyaYfcGevYmNA3Sbj4o/export?format=csv';
 
 /* Keys that describe structure rather than words. Never editable, never
    round-tripped — changing one would break a URL, a layout or a type. */
@@ -280,66 +286,26 @@ async function csv() {
   console.log('Import into Google Sheets: File > Import > Upload, "Replace spreadsheet".');
 }
 
-/*
-  Find the edited deck without being told where it is. Sheets exports land in
-  ~/Downloads under whatever the spreadsheet is called, so rather than make
-  someone move the file, take the newest CSV that looks like a copy deck.
-*/
-async function findCsv() {
-  const candidates = [];
-  const isDeck = async (p) => {
-    try {
-      const head = (await readFile(p, 'utf8')).slice(0, 400);
-      return head.includes('"Ref"') && head.includes('"New copy"');
-    } catch {
-      return false;
-    }
-  };
-
-  if (await isDeck(CSV_FILE)) return CSV_FILE;
-
-  const downloads = path.join(os.homedir(), 'Downloads');
-  let names = [];
-  try {
-    names = await readdir(downloads);
-  } catch {
-    names = [];
-  }
-  for (const n of names) {
-    if (!n.toLowerCase().endsWith('.csv')) continue;
-    const full = path.join(downloads, n);
-    if (!(await isDeck(full))) continue;
-    candidates.push({ full, mtime: (await stat(full)).mtimeMs });
-  }
-  if (!candidates.length) {
-    throw new Error(
-      'No copy deck CSV found. Pass the path explicitly, or export the sheet ' +
-        'to ~/Downloads (File > Download > Comma-separated values).'
-    );
-  }
-  candidates.sort((a, b) => b.mtime - a.mtime);
-  console.log(`using ${candidates[0].full}`);
-  return candidates[0].full;
-}
-
 async function applyCsv(fileArg) {
+  // No argument means the live deck; a path or a different URL overrides it.
+  const source = fileArg ?? DECK_URL;
   let text;
-  if (fileArg && /^https?:\/\//.test(fileArg)) {
+  if (/^https?:\/\//.test(source)) {
     // A "Publish to web" CSV link from Sheets — always the current sheet, no
     // export step. Sheets serves these through a redirect.
-    const res = await fetch(fileArg, { redirect: 'follow' });
+    const res = await fetch(source, { redirect: 'follow' });
     if (!res.ok) throw new Error(`fetch failed: ${res.status} ${res.statusText}`);
     text = await res.text();
     if (!text.includes('Ref') || !text.includes('New copy')) {
       throw new Error(
-        'That URL did not return the copy deck. Check the link is the CSV form ' +
-          '(File > Share > Publish to web > CSV) and that the sheet is published.'
+        'That URL did not return the copy deck — most likely the sheet is no ' +
+          'longer shared. It needs "anyone with the link can view" for the CSV ' +
+          'export to be readable. Pass a downloaded file instead if it must stay private.'
       );
     }
     console.log(`fetched ${text.length} bytes from the published sheet`);
   } else {
-    const file = fileArg ?? (await findCsv());
-    text = await readFile(file, 'utf8');
+    text = await readFile(source, 'utf8');
   }
   const rows = parseCsv(text);
   const header = rows.shift().map((h) => h.replace(/^\uFEFF/, '').trim());

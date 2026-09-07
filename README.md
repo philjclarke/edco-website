@@ -51,25 +51,36 @@ genuinely want it.
 ## The copy deck
 
 All the site's words live in `src/data/copy/*.json`, and there is a **copy deck**
-— a spreadsheet — where EdCo can edit them without touching the repo.
+— a Google Sheet — where EdCo can edit them without touching the repo.
 
-760 fields across 25 pages. Editing the deck does **not** change the live site;
-the sync is deliberate and runs through Claude:
+    https://docs.google.com/spreadsheets/d/1tIJqD10Xente09Q4pjejPsd7qyaYfcGevYmNA3Sbj4o/edit
+
+760 fields across 25 pages, one row per field. Editing the deck does **not**
+change the live site; the sync is deliberate:
 
 ```bash
-node scripts/copy-deck.mjs csv                  # repo -> copy-deck.csv (import to Sheets)
-node scripts/copy-deck.mjs apply-csv            # edited sheet -> src/data/copy/
+node scripts/copy-deck.mjs apply-csv     # live sheet -> src/data/copy/
+node scripts/copy-deck.mjs csv           # repo -> copy-deck.csv (re-seed the sheet)
 ```
 
-`apply-csv` with no argument finds the deck itself: `./copy-deck.csv` first, then
-the most recently modified CSV in `~/Downloads` whose header carries a `Ref` and
-a `New copy` column. So the round trip is *File > Download > CSV* in Sheets and
-nothing else — no moving or renaming. Pass a path to override.
+`apply-csv` reads the sheet directly over Google's CSV export endpoint, so there
+is no download step — but that endpoint only works while the sheet is shared as
+*anyone with the link can view*. Pass a file path instead if it ever has to be
+private.
 
-The spreadsheet has a **Current copy** column and an empty **New copy** column.
-Only rows with something in *New copy* are applied, so a reviewer can work
-through the deck a page at a time and unfinished rows are simply ignored. The
-`Ref` column is what maps a row back to a field — it must not be edited.
+The sheet has a **Current copy** column and an empty **New copy** column. Only
+rows with something in *New copy* are applied, so a reviewer can work through it
+a page at a time and unfinished rows are ignored. The `Ref` column maps a row
+back to a field and must not be edited — it is protected in the sheet.
+
+Structural fields — `slug`, `href`, `page`, `type`, `columns`, `verified` — are
+never exposed to the deck and never written back, so no edit made there can break
+a route or a layout. Everything under `src/content/` (articles, case studies) is
+edited as markdown in the repo, not in the deck.
+
+**Pushing edits live**: `apply-csv`, `npm run build` to check, commit, push. Then
+re-run `csv` and re-import if the sheet needs its *Current copy* column brought
+back in line with what shipped.
 
 There is also a JSON form of the same data, used to seed a database-backed
 editor:
@@ -78,20 +89,6 @@ editor:
 node scripts/copy-deck.mjs pack          # repo  -> .copy-deck/
 node scripts/copy-deck.mjs apply <dir>   # deck  -> src/data/copy/
 ```
-
-`pack` flattens each source file into a flat map of dotted paths to strings and
-records the current values as the baseline, so the deck can mark what has changed
-since the last sync. `apply` reverses it, writing back only string leaves that
-still exist in the structure.
-
-Structural fields — `slug`, `href`, `page`, `type`, `columns`, `verified` — are
-never exposed to the deck and never written back, so no edit made there can break
-a route or a layout. Everything under `src/content/` (articles, case studies) is
-edited as markdown in the repo, not in the deck.
-
-**Pushing edits live**, end to end: pull the deck's documents down, `apply` them,
-`npm run build` to check, commit, push. Then `pack` and re-seed so the deck's
-baseline matches what shipped.
 
 ## Placeholders
 
