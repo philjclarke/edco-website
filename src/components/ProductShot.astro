@@ -4,17 +4,20 @@
   frame at the right aspect ratio — the layout is settled and a real capture
   drops straight in.
 */
+import { Image } from 'astro:assets';
 import Placeholder from './Placeholder.astro';
+import { screens, isScreenKey } from '@/data/screens';
 
 interface Props {
   caption: string;
-  /** Path to a real screenshot once one exists. */
+  /** A key from src/data/screens.ts, once a capture exists for this slot. */
   src?: string;
   tone?: 'dark' | 'light';
   ratio?: 'wide' | 'tall';
 }
 const { caption, src, tone = 'light', ratio = 'wide' } = Astro.props;
 const dark = tone === 'dark';
+const shot = isScreenKey(src) ? screens[src] : null;
 ---
 
 <figure class="w-full">
@@ -22,12 +25,19 @@ const dark = tone === 'dark';
     class:list={[
       'relative overflow-hidden rounded-card border',
       ratio === 'wide' ? 'aspect-[16/10]' : 'aspect-[4/3]',
-      dark ? 'border-navy-700 bg-navy-800' : 'border-line bg-mist',
+      shot ? 'border-navy-700 bg-navy-900' : dark ? 'border-navy-700 bg-navy-800' : 'border-line bg-mist',
     ]}
   >
     {
-      src ? (
-        <img src={src} alt={caption} class="h-full w-full object-cover object-top" loading="lazy" />
+      shot ? (
+        <Image
+          src={shot}
+          alt={caption}
+          widths={[600, 900, 1400]}
+          sizes="(min-width: 768px) 45vw, 90vw"
+          class="h-full w-full object-cover object-top"
+          loading="lazy"
+        />
       ) : (
         <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 text-center">
           <svg

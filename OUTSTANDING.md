@@ -118,9 +118,14 @@ Every product page now has framed slots waiting for real captures. Until they
 arrive each renders a `[SCREENSHOT]` placeholder at the right aspect ratio, so
 dropping an image in needs no layout work — just a `src` in `products.json`.
 
+Education IQ is **provisionally filled** with eight design-prototype captures
+taken from the Education IQ marketing repo. They carry a "design prototype"
+footer and example data, and one of them names a real school against invented
+staff and commentary — fine as a reference point, worth replacing before launch.
+
 | Product | Shots needed |
 | --- | --- |
-| Education IQ | A school record; trust structure and its schools; **plus one per use case** — nine expandable cards on the page each open to a screenshot |
+| Education IQ | Prototype captures in place. Replace with the live product, and add one for **Find lookalikes**, which has no capture yet |
 | EdNet | An EdNet site as a visitor sees it; the engagement-intelligence admin view |
 | SPIRIT | The pipeline view; an education organisation record |
 | International Schools Network | The network site |

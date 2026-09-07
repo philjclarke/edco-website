@@ -15,47 +15,46 @@
           {
             "title": "Understand individual schools",
             "body": "Who they are, how they’re structured, what’s changing and what that might mean.",
-            "shot": "Understand individual schools"
+            "shot": "eiq/school-overview"
           },
           {
             "title": "Understand trusts",
             "body": "How a trust is composed, where decisions sit, and which schools sit inside it.",
-            "shot": "Understand trusts"
+            "shot": "eiq/trust-overview"
           },
           {
             "title": "Identify likely need",
             "body": "Find the organisations whose circumstances suggest they need what you do.",
-            "shot": "Identify likely need"
+            "shot": "eiq/top-list-financial"
           },
           {
             "title": "Analyse your customers",
             "body": "Understand the organisations you already serve — and what they have in common.",
-            "shot": "Analyse your customers"
+            "shot": "eiq/projects-analyse"
           },
           {
             "title": "Find opportunities across trusts",
             "body": "You serve four schools in a trust of nineteen. Now what?",
-            "shot": "Find opportunities across trusts"
+            "shot": "eiq/trust-comparisons"
           },
           {
             "title": "Identify risk",
             "body": "Leadership change, financial pressure, structural change — before renewal.",
-            "shot": "Identify risk"
+            "shot": "eiq/school-ofsted-finance"
           },
           {
             "title": "Find lookalikes",
-            "body": "Find organisations that resemble your strongest customers.",
-            "shot": "Find lookalikes"
+            "body": "Find organisations that resemble your strongest customers."
           },
           {
             "title": "Improve targeting",
             "body": "Fewer, better-aimed conversations rather than more of them.",
-            "shot": "Improve targeting"
+            "shot": "eiq/search"
           },
           {
             "title": "Enrich your CRM",
             "body": "Put education context next to the records your team already works in.",
-            "shot": "Enrich your CRM"
+            "shot": "eiq/pitch-briefing"
           }
         ]
       },
@@ -64,12 +63,15 @@
         "title": "What it actually looks like",
         "shots": [
           {
-            "caption": "A school record in Education IQ"
+            "caption": "A school record — inspection, finance, staff and what changed recently",
+            "src": "eiq/school-overview"
           },
           {
-            "caption": "Trust structure and the schools inside it"
+            "caption": "A trust overview — its schools, its pressures and where the opportunities sit",
+            "src": "eiq/trust-overview"
           }
-        ]
+        ],
+        "lead": "Education IQ, embedded in a CRM. These are design prototypes using example data."
       },
       {
         "type": "list",

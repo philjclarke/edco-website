@@ -103,7 +103,7 @@ const bg = (i: number) => (i % 2 === 1 ? 'bg-mist' : 'bg-paper');
             )}
             <div class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {block.items.map((c) =>
-                c.detail || c.shot ? (
+                block.items.some((i) => i.detail || i.shot) ? (
                   /* <details> keeps this keyboard-accessible and working with
                      no JavaScript — no pop-up library needed. */
                   <details class="group rounded-card border border-line bg-paper transition open:border-pink/50 hover:border-ink/25">
@@ -130,7 +130,7 @@ const bg = (i: number) => (i % 2 === 1 ? 'bg-mist' : 'bg-paper');
                         <Placeholder label="DETAIL COPY" note={c.title} block />
                       )}
                       <div class="mt-4">
-                        <ProductShot caption={c.shot ?? c.title} ratio="tall" />
+                        <ProductShot caption={c.title} src={c.shot} ratio="tall" />
                       </div>
                     </div>
                   </details>
