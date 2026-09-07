@@ -1,0 +1,191 @@
+{
+  "edcoModel": [
+    {
+      "name": "Listen",
+      "summary": "Ask educators rather than guess.",
+      "methods": [
+        "Interviews",
+        "Focus groups",
+        "Networks",
+        "Research",
+        "Conversations",
+        "Events",
+        "Continual sector participation"
+      ]
+    },
+    {
+      "name": "Understand",
+      "summary": "Use data, intelligence and research to understand where needs exist.",
+      "methods": [
+        "Education IQ",
+        "Customer analysis",
+        "Market intelligence",
+        "School and trust data",
+        "Segmentation"
+      ]
+    },
+    {
+      "name": "Give",
+      "summary": "Create something educators genuinely value.",
+      "methods": [
+        "Research",
+        "CPD",
+        "Events",
+        "Guides and articles",
+        "Tools and diagnostics",
+        "Classroom resources"
+      ]
+    },
+    {
+      "name": "Engage",
+      "summary": "Put it in front of the right people.",
+      "methods": [
+        "Marketing Services",
+        "Events",
+        "ISN",
+        "The Curriculum Network",
+        "Opted-in audiences",
+        "Targeted communications"
+      ]
+    },
+    {
+      "name": "Build",
+      "summary": "Turn engagement into relationships, leads and pipeline.",
+      "methods": [
+        "Education IQ",
+        "SPIRIT",
+        "EdNet engagement intelligence",
+        "Your existing CRM"
+      ]
+    },
+    {
+      "name": "Grow",
+      "summary": "Strengthen and expand the relationships you’ve already earned.",
+      "methods": [
+        "Retention risk",
+        "Whitespace",
+        "Trust opportunities",
+        "Cross-sell",
+        "Deeper engagement"
+      ]
+    }
+  ],
+  "beliefs": [
+    {
+      "title": "Start with what educators need.",
+      "body": "Your product is fascinating to you. Their problem is fascinating to them."
+    },
+    {
+      "title": "Listen before you assume.",
+      "body": "Thirty-five years in education has taught us many things. One of them is to keep asking questions."
+    },
+    {
+      "title": "Give to receive.",
+      "body": "Be useful before you ask someone to buy something."
+    },
+    {
+      "title": "Partnership is demonstrated, not claimed.",
+      "body": "Putting “trusted education partner” on your homepage doesn’t make you one."
+    },
+    {
+      "title": "Relevance beats volume.",
+      "body": "Sending the wrong message to more schools doesn’t make it more right."
+    },
+    {
+      "title": "Data is the foundation. Understanding is the value.",
+      "body": "A database can tell you who exists. Intelligence helps you understand who matters."
+    },
+    {
+      "title": "Make friends before you make leads.",
+      "body": "People are considerably more receptive to organisations they already value."
+    },
+    {
+      "title": "Better relationships build better pipeline.",
+      "body": "Yes, we said pipeline. This is ultimately about helping good organisations sell more."
+    },
+    {
+      "title": "Winning a customer is the beginning, not the end.",
+      "body": "There’s often more opportunity among the organisations that already know you than those that don’t."
+    },
+    {
+      "title": "Good advice sometimes means saying “don’t do that”.",
+      "body": "If we think a proposed campaign is a bad idea, we’d rather say so before the money is spent."
+    },
+    {
+      "title": "Your objectives become our objectives.",
+      "body": "We’re more interested in what you’re trying to achieve than which bit of EdCo we can sell you."
+    },
+    {
+      "title": "Technology should enable the relationship, not become the story.",
+      "body": "Nobody built a better relationship with a school because they had an impressive tech stack."
+    }
+  ],
+  "routes": [
+    {
+      "objective": "We need more MAT customers",
+      "steps": [
+        "Customer analysis",
+        "Trust intelligence",
+        "Research",
+        "Useful content",
+        "Targeted engagement",
+        "Sales intelligence"
+      ]
+    },
+    {
+      "objective": "We want to become known for SEND",
+      "steps": [
+        "Educator research",
+        "Thought leadership",
+        "CPD / event",
+        "Content",
+        "Opted-in audience",
+        "Relationship building",
+        "Pipeline"
+      ]
+    },
+    {
+      "objective": "We’re launching something new",
+      "steps": [
+        "Research",
+        "Proposition validation",
+        "Audience definition",
+        "Content",
+        "Launch campaign",
+        "Engagement",
+        "Pipeline"
+      ]
+    },
+    {
+      "objective": "Our sales team needs better conversations",
+      "steps": [
+        "Education IQ",
+        "Data enrichment",
+        "Customer & prospect intelligence",
+        "Engagement activity",
+        "CRM context"
+      ]
+    },
+    {
+      "objective": "We need to understand why customers are leaving",
+      "steps": [
+        "Customer analysis",
+        "Research",
+        "Segmentation",
+        "Retention strategy",
+        "Customer engagement"
+      ]
+    },
+    {
+      "objective": "We want relationships before people are ready to buy",
+      "steps": [
+        "Research",
+        "Resources",
+        "CPD / events",
+        "Opted-in audience",
+        "Ongoing engagement",
+        "Qualified commercial conversations"
+      ]
+    }
+  ]
+}

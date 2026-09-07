@@ -1,0 +1,334 @@
+[
+  {
+    "slug": "understand-education-and-educators",
+    "navLabel": "Understand education & educators",
+    "title": "Understand education before you decide what to do in it.",
+    "standfirst": "Don’t guess what educators need. Ask them.",
+    "summary": "Replace assumptions about schools, trusts and educators with evidence you can act on.",
+    "intro": [
+      "Schools, trusts, colleges and educators are not a single audience. Their priorities differ. Their pressures differ. Their structures differ. Their needs change.",
+      "EdCo helps you replace assumptions with understanding."
+    ],
+    "routeObjective": "We’re launching something new",
+    "helpTitle": "We can help you",
+    "help": [
+      "Understand what educators actually need",
+      "Research a new idea or proposition",
+      "Identify who has a particular need",
+      "Understand your customers",
+      "Analyse a market",
+      "Find and recruit educators for research",
+      "Test a product idea before building it",
+      "Understand schools and trusts individually"
+    ],
+    "pull": "Don’t guess what educators need. Ask them.",
+    "next": [
+      {
+        "label": "Research",
+        "href": "/capabilities/research/",
+        "blurb": "Tell us who you need to hear from. We’ll find them."
+      },
+      {
+        "label": "Education IQ",
+        "href": "/products/education-iq/",
+        "blurb": "Understand individual schools, trusts and the sector."
+      },
+      {
+        "label": "Free customer analysis",
+        "href": "/free-customer-analysis/",
+        "blurb": "What don’t you know about your customers?"
+      },
+      {
+        "label": "Data Services",
+        "href": "/capabilities/data-services/",
+        "blurb": "The foundation underneath the intelligence."
+      },
+      {
+        "label": "Research & insight",
+        "href": "/what-we-think/research-and-insight/",
+        "blurb": "What our research is telling us."
+      },
+      {
+        "label": "Tell us what you’re trying to achieve",
+        "href": "/contact/"
+      }
+    ]
+  },
+  {
+    "slug": "build-your-reputation-and-audience",
+    "navLabel": "Build your reputation & audience",
+    "title": "Become useful before you try to become famous.",
+    "standfirst": "Build an audience you have permission to talk to.",
+    "summary": "Reputation in education is earned by giving educators something they value — not by telling them who you are more often.",
+    "intro": [
+      "Brand awareness in education should not simply mean repeatedly telling educators who you are. Give them reasons to know you.",
+      "EdCo helps organisations build reputation by creating and distributing things educators value."
+    ],
+    "routeObjective": "We want to become known for SEND",
+    "helpTitle": "This can include",
+    "help": [
+      "Research",
+      "Thought leadership",
+      "CPD",
+      "Events",
+      "Guides and resources",
+      "Tools and diagnostics",
+      "Articles",
+      "Useful newsletters and opted-in audiences"
+    ],
+    "pull": "Build an audience you have permission to talk to.",
+    "next": [
+      {
+        "label": "Marketing Services",
+        "href": "/capabilities/marketing-services/",
+        "blurb": "Start with what you want marketing to achieve."
+      },
+      {
+        "label": "Research",
+        "href": "/capabilities/research/",
+        "blurb": "Something worth talking about comes first."
+      },
+      {
+        "label": "Events & CPD",
+        "href": "/capabilities/events-and-cpd/",
+        "blurb": "An event shouldn’t be a moment."
+      },
+      {
+        "label": "EdNet",
+        "href": "/products/ednet/",
+        "blurb": "From digital brochure to engagement platform."
+      },
+      {
+        "label": "The Curriculum Network",
+        "href": "/products/the-curriculum-network/",
+        "blurb": "Where we meet UK educators."
+      },
+      {
+        "label": "Tell us what you’re trying to achieve",
+        "href": "/contact/"
+      }
+    ]
+  },
+  {
+    "slug": "reach-and-engage-educators",
+    "navLabel": "Reach & engage educators",
+    "title": "Reach matters. Relevance matters more.",
+    "standfirst": "Sending the wrong message to more schools doesn’t make it more right.",
+    "summary": "Identify the educators who matter and create reasons for them to engage with you.",
+    "intro": [
+      "EdCo helps organisations identify the educators who matter and create reasons for them to engage."
+    ],
+    "routeObjective": "We want relationships before people are ready to buy",
+    "helpTitle": "This may include",
+    "help": [
+      "Targeted campaigns",
+      "Event recruitment",
+      "Content distribution",
+      "Educator networks",
+      "Opted-in audiences",
+      "Research participation",
+      "CPD",
+      "Resources",
+      "Account-based engagement"
+    ],
+    "pull": "Teachers use social media. That doesn’t mean they’re there to hear from your brand.",
+    "next": [
+      {
+        "label": "Marketing Services",
+        "href": "/capabilities/marketing-services/",
+        "blurb": "Channels are tools, not a strategy."
+      },
+      {
+        "label": "Events & CPD",
+        "href": "/capabilities/events-and-cpd/",
+        "blurb": "Live, on-demand and everything after."
+      },
+      {
+        "label": "International Schools Network",
+        "href": "/products/international-schools-network/",
+        "blurb": "A community of international-school educators."
+      },
+      {
+        "label": "The Curriculum Network",
+        "href": "/products/the-curriculum-network/",
+        "blurb": "CPD, webinars and research with UK educators."
+      },
+      {
+        "label": "Data Services",
+        "href": "/capabilities/data-services/",
+        "blurb": "Knowing who exists is useful. Knowing who matters is better."
+      },
+      {
+        "label": "Tell us what you’re trying to achieve",
+        "href": "/contact/"
+      }
+    ]
+  },
+  {
+    "slug": "generate-leads-and-build-pipeline",
+    "navLabel": "Generate leads & build pipeline",
+    "title": "Better reasons to talk create better sales conversations.",
+    "standfirst": "Build relationships that become leads. Build leads that become pipeline.",
+    "summary": "Give your sales team genuine reasons to start conversations — not just a longer list of email addresses.",
+    "intro": [
+      "A lead should mean more than somebody whose email address you happen to have.",
+      "EdCo helps create relationships and engagement that give sales teams genuine reasons to start conversations."
+    ],
+    "routeObjective": "Our sales team needs better conversations",
+    "helpTitle": "We can",
+    "help": [
+      "Identify the right organisations",
+      "Understand what may matter to them",
+      "Create valuable reasons for engagement",
+      "Identify known organisations engaging",
+      "Turn engagement into leads",
+      "Develop those leads into pipeline",
+      "Give salespeople better context before they make contact"
+    ],
+    "pull": "Then you sell.",
+    "next": [
+      {
+        "label": "Education IQ",
+        "href": "/products/education-iq/",
+        "blurb": "The right context, at the point it matters."
+      },
+      {
+        "label": "Marketing Services",
+        "href": "/capabilities/marketing-services/",
+        "blurb": "Campaigns with something worth saying."
+      },
+      {
+        "label": "Research",
+        "href": "/capabilities/research/",
+        "blurb": "Start with something worth talking about."
+      },
+      {
+        "label": "Events & CPD",
+        "href": "/capabilities/events-and-cpd/",
+        "blurb": "Engagement you can follow up properly."
+      },
+      {
+        "label": "SPIRIT",
+        "href": "/products/spirit/",
+        "blurb": "An education CRM without the enterprise headache."
+      },
+      {
+        "label": "Tell us what you’re trying to achieve",
+        "href": "/contact/"
+      }
+    ]
+  },
+  {
+    "slug": "grow-and-retain-customers",
+    "navLabel": "Grow & retain customers",
+    "title": "Winning the customer is the beginning.",
+    "standfirst": "What don’t you know about your customers?",
+    "summary": "The organisations that already know you are often the biggest opportunity you have.",
+    "intro": [
+      "Existing customers are often one of the biggest opportunities an organisation has."
+    ],
+    "routeObjective": "We need to understand why customers are leaving",
+    "helpTitle": "EdCo can help you",
+    "help": [
+      "Understand customer risk",
+      "Identify changes within customer organisations",
+      "Analyse customer characteristics",
+      "Find trust-level whitespace",
+      "Identify additional schools within trusts",
+      "Spot expansion opportunities",
+      "Engage customers through useful content",
+      "Run customer events and CPD",
+      "Improve retention communications",
+      "Find organisations that resemble your best customers"
+    ],
+    "pull": "What don’t you know about your customers?",
+    "next": [
+      {
+        "label": "Free customer analysis",
+        "href": "/free-customer-analysis/",
+        "blurb": "Send us your customer list. We’ll tell you what’s in it."
+      },
+      {
+        "label": "Education IQ",
+        "href": "/products/education-iq/",
+        "blurb": "Understand individual schools and trusts."
+      },
+      {
+        "label": "Research",
+        "href": "/capabilities/research/",
+        "blurb": "Find out why customers really leave."
+      },
+      {
+        "label": "Events & CPD",
+        "href": "/capabilities/events-and-cpd/",
+        "blurb": "Keep giving customers reasons to stay close."
+      },
+      {
+        "label": "Data Services",
+        "href": "/capabilities/data-services/",
+        "blurb": "Cleanse, enrich and match your customer data."
+      },
+      {
+        "label": "Tell us what you’re trying to achieve",
+        "href": "/contact/"
+      }
+    ]
+  },
+  {
+    "slug": "education-strategy",
+    "navLabel": "Get your education strategy right",
+    "title": "Before you spend money doing things, make sure they’re the right things.",
+    "standfirst": "Diagnose before you prescribe.",
+    "summary": "The critical-friend engagement. “We want to grow in education. Help us work out how.”",
+    "intro": [
+      "Clients often come to EdCo saying: we want to grow in education, help us work out how.",
+      "We start by working out what’s actually true, then what’s actually worth doing."
+    ],
+    "routeObjective": "We need more MAT customers",
+    "helpTitle": "EdCo may use",
+    "help": [
+      "Research",
+      "Educator interviews",
+      "Education IQ",
+      "Customer analysis",
+      "Market intelligence",
+      "Proposition development",
+      "Route-to-market work",
+      "Procurement understanding",
+      "Strategy workshops",
+      "Technology and product discovery"
+    ],
+    "pull": "Sometimes the right answer is not to market it yet.",
+    "next": [
+      {
+        "label": "Research",
+        "href": "/capabilities/research/",
+        "blurb": "Evidence before recommendations."
+      },
+      {
+        "label": "Education IQ",
+        "href": "/products/education-iq/",
+        "blurb": "Understand the market you’re planning against."
+      },
+      {
+        "label": "All capabilities",
+        "href": "/capabilities/",
+        "blurb": "Everything EdCo can bring to a plan."
+      },
+      {
+        "label": "What We Think",
+        "href": "/what-we-think/",
+        "blurb": "How we argue about this in public."
+      },
+      {
+        "label": "Case studies",
+        "href": "/case-studies/",
+        "blurb": "They asked us for X. We found they needed Y."
+      },
+      {
+        "label": "Tell us what you’re trying to achieve",
+        "href": "/contact/"
+      }
+    ]
+  }
+]

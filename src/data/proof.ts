@@ -1,54 +1,27 @@
 /*
-  Brief §16 and §76. Every figure below is a candidate drawn from the brief and
-  is UNVERIFIED. `verified: true` is the switch that removes the [VERIFY] flag
-  from the page — do not flip it without written confirmation from EdCo.
-  Brief §16 also bans vanity statistics such as email volume.
+  Brief §16 and §76. Every figure is a candidate drawn from the brief and is
+  UNVERIFIED until EdCo confirm it in writing — flipping `verified` to true is
+  what removes the [VERIFY] chip from the page. Brief §16 also bans vanity
+  statistics such as email volume.
+
+  Words in ./copy/proof.json — see outcomes.ts for the rationale.
 */
 
-export const proofStats = [
-  { value: '35 years', label: 'working in education', verified: false },
-  { value: '50+', label: 'people across research, data, technology and marketing', verified: false },
-  { value: '95%+', label: 'customer retention, year after year', verified: false },
-  { value: '250,000+', label: 'post-16 students using Navigate, built by EdCo', verified: false },
-];
+import data from './copy/proof.json';
 
-/*
-  Brief §76: historical/current proof candidates. Do not imply a historical
-  relationship is current unless confirmed, and use verified logos only.
-*/
-export const logoCandidates = [
-  'Cambridge University Press',
-  'Collins',
-  'Encyclopaedia Britannica',
-  'The Education People',
-  'Timstar',
-  'Edustaff',
-  'Raintree',
-  'Gatsby',
-  'British Red Cross',
-  'The Big Plastic Count',
-];
+export interface ProofStat {
+  value: string;
+  label: string;
+  verified: boolean;
+}
+
+export const proofStats: ProofStat[] = data.proofStats;
+
+/* Brief §76: do not imply a historical relationship is current unless confirmed. */
+export const logoCandidates: string[] = data.logoCandidates;
 
 /* Brief §59 — testimonials are commissioned against these themes. */
-export const testimonialThemes = [
-  'EdCo challenging the original brief',
-  'EdCo understanding both education and the client’s business',
-  'EdCo feeling like part of the client team',
-  'a long-term relationship',
-];
+export const testimonialThemes: string[] = data.testimonialThemes;
 
-/* Brief §57 — the case-study themes to source for launch (8–12 substantial cases). */
-export const caseStudyThemes = [
-  'Research → thought leadership → pipeline',
-  'Education IQ / customer intelligence',
-  'A long-term customer relationship',
-  'Marketing and lead generation',
-  'EdNet',
-  'Bespoke technology / Navigate',
-  'A CSR programme',
-  'Events and CPD',
-  'SPIRIT',
-  'An agency / white-label relationship',
-  'They asked us for X. We discovered they needed Y.',
-  'They asked us for X. We discovered they needed Y. (second case)',
-];
+/* Brief §57 — the case-study themes to source for launch. */
+export const caseStudyThemes: string[] = data.caseStudyThemes;

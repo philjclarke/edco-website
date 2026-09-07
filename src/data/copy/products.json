@@ -1,0 +1,376 @@
+[
+  {
+    "slug": "education-iq",
+    "navLabel": "Education IQ",
+    "title": "Start with the school, not the product.",
+    "standfirst": "The right context, at the point it matters.",
+    "summary": "Understand individual schools, trusts and the wider sector — so you can identify need and make every interaction more relevant.",
+    "lead": "Education IQ helps organisations understand individual schools, trusts and the wider education sector so they can identify need, make every interaction more relevant and build better relationships with educators.",
+    "blocks": [
+      {
+        "type": "cards",
+        "title": "What people use it for",
+        "lead": "Education IQ is not a feature list. It is a set of questions organisations need answered.",
+        "items": [
+          {
+            "title": "Understand individual schools",
+            "body": "Who they are, how they’re structured, what’s changing and what that might mean."
+          },
+          {
+            "title": "Understand trusts",
+            "body": "How a trust is composed, where decisions sit, and which schools sit inside it."
+          },
+          {
+            "title": "Identify likely need",
+            "body": "Find the organisations whose circumstances suggest they need what you do."
+          },
+          {
+            "title": "Analyse your customers",
+            "body": "Understand the organisations you already serve — and what they have in common."
+          },
+          {
+            "title": "Find opportunities across trusts",
+            "body": "You serve four schools in a trust of nineteen. Now what?"
+          },
+          {
+            "title": "Identify risk",
+            "body": "Leadership change, financial pressure, structural change — before renewal."
+          },
+          {
+            "title": "Find lookalikes",
+            "body": "Find organisations that resemble your strongest customers."
+          },
+          {
+            "title": "Improve targeting",
+            "body": "Fewer, better-aimed conversations rather than more of them."
+          },
+          {
+            "title": "Enrich your CRM",
+            "body": "Put education context next to the records your team already works in."
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "title": "Use it however it fits",
+        "columns": 2,
+        "items": [
+          "Standalone",
+          "Linked into your existing CRM",
+          "Embedded into your team’s workflows",
+          "Through APIs and data services",
+          "Powering a bespoke application"
+        ]
+      },
+      {
+        "type": "pull",
+        "text": "Works with the CRM you’ve already got.",
+        "sub": "Salesforce, HubSpot, Microsoft Dynamics or something else entirely. Your technology doesn’t need our logo on it."
+      },
+      {
+        "type": "prose",
+        "title": "Data is the foundation. Intelligence is the product.",
+        "paras": [
+          "Knowing who exists is useful. Knowing who matters is better. Education IQ exists to close that gap — and where it helps, to put a person alongside the data who can tell you what it means."
+        ]
+      }
+    ],
+    "testimonialTheme": "EdCo understanding both education and the client’s business",
+    "next": [
+      {
+        "label": "Free customer analysis",
+        "href": "/free-customer-analysis/",
+        "blurb": "See Education IQ applied to your own customer list."
+      },
+      {
+        "label": "Research",
+        "href": "/capabilities/research/",
+        "blurb": "When the data raises a question only educators can answer."
+      },
+      {
+        "label": "Data Services",
+        "href": "/capabilities/data-services/",
+        "blurb": "Cleansing, matching, enrichment and integration."
+      },
+      {
+        "label": "Technology & integration",
+        "href": "/capabilities/technology-and-integration/",
+        "blurb": "Getting it into the systems you already use."
+      },
+      {
+        "label": "Grow & retain customers",
+        "href": "/grow-and-retain-customers/",
+        "blurb": "The outcome most people arrive here looking for."
+      },
+      {
+        "label": "Tell us what you’re trying to achieve",
+        "href": "/contact/"
+      }
+    ]
+  },
+  {
+    "slug": "ednet",
+    "navLabel": "EdNet",
+    "title": "From digital brochure to education engagement platform.",
+    "standfirst": "Schools don’t need more vendors. They need partners. EdNet sites help suppliers become one.",
+    "summary": "A website that demonstrates why schools should want to work with you, rather than listing what you sell.",
+    "blocks": [
+      {
+        "type": "prose",
+        "title": "Most supplier websites are built backwards",
+        "paras": [
+          "Schools buy solutions to problems, not products from suppliers. A conventional supplier website usually begins: who we are → what we sell → why we’re good → contact us.",
+          "An EdNet website behaves differently: your challenges → useful help → expertise → engagement → relationship → solution."
+        ]
+      },
+      {
+        "type": "list",
+        "title": "What an EdNet site lets you give",
+        "columns": 3,
+        "items": [
+          "Expert content",
+          "Resources",
+          "Intelligent tools",
+          "CPD",
+          "Webinars",
+          "Events",
+          "Diagnostics",
+          "Audits",
+          "On-demand content"
+        ]
+      },
+      {
+        "type": "steps",
+        "title": "Anonymous traffic becomes a known relationship",
+        "lead": "EdNet is built to move visitors along a path, and to show you who is walking it.",
+        "steps": [
+          "Reads an article",
+          "Attends a webinar",
+          "Downloads a resource",
+          "Uses a tool",
+          "Completes a diagnostic",
+          "Returns for CPD",
+          "Requests a conversation"
+        ]
+      },
+      {
+        "type": "pull",
+        "text": "Give value. Build trust. Understand need. Create relationships.",
+        "sub": "Measure relationships, not simply traffic."
+      },
+      {
+        "type": "prose",
+        "paras": [
+          "Your website can sell what you do. Or it can demonstrate why schools should want to work with you."
+        ]
+      }
+    ],
+    "testimonialTheme": "EdCo challenging the original brief",
+    "next": [
+      {
+        "label": "Content creation",
+        "href": "/capabilities/content-creation/",
+        "blurb": "The useful things that fill it."
+      },
+      {
+        "label": "Events & CPD",
+        "href": "/capabilities/events-and-cpd/",
+        "blurb": "Live and on-demand, built into the site."
+      },
+      {
+        "label": "Research",
+        "href": "/capabilities/research/",
+        "blurb": "Know what to put on it before you build it."
+      },
+      {
+        "label": "Education IQ",
+        "href": "/products/education-iq/",
+        "blurb": "Understand the organisations engaging with you."
+      },
+      {
+        "label": "Build your reputation & audience",
+        "href": "/build-your-reputation-and-audience/"
+      },
+      {
+        "label": "Tell us what you want your website to achieve",
+        "href": "/contact/"
+      }
+    ]
+  },
+  {
+    "slug": "spirit",
+    "navLabel": "SPIRIT",
+    "title": "An education CRM without the enterprise headache.",
+    "standfirst": "SPIRIT is an option, not an agenda.",
+    "summary": "A fully managed, education-specific CRM — for organisations that want one. If you already have a CRM you like, we’ll work with that instead.",
+    "blocks": [
+      {
+        "type": "list",
+        "title": "What SPIRIT offers",
+        "columns": 2,
+        "items": [
+          "Lower cost of ownership",
+          "Fully managed",
+          "Education data integrated",
+          "Simple to use",
+          "Strong support for selling across trusts",
+          "Dedicated account management"
+        ]
+      },
+      {
+        "type": "prose",
+        "title": "And if you already have a CRM?",
+        "paras": [
+          "Then keep it. If your organisation already uses Salesforce, HubSpot, Microsoft Dynamics or anything else it gets on with, EdCo will help make that environment more valuable rather than argue with it.",
+          "SPIRIT is the right answer when an organisation wants a simpler, fully managed, education-specific CRM. It is not the right answer for everyone, and we won’t pretend otherwise."
+        ]
+      },
+      {
+        "type": "pull",
+        "text": "Your technology doesn’t need our logo on it."
+      }
+    ],
+    "testimonialTheme": "a long-term relationship",
+    "next": [
+      {
+        "label": "Education IQ",
+        "href": "/products/education-iq/",
+        "blurb": "The education context that goes inside the CRM."
+      },
+      {
+        "label": "Technology & integration",
+        "href": "/capabilities/technology-and-integration/",
+        "blurb": "Connecting it to everything else."
+      },
+      {
+        "label": "Data Services",
+        "href": "/capabilities/data-services/",
+        "blurb": "Getting the data underneath it right."
+      },
+      {
+        "label": "Generate leads & build pipeline",
+        "href": "/generate-leads-and-build-pipeline/"
+      },
+      {
+        "label": "Customer login",
+        "href": "/customer/",
+        "blurb": "Existing SPIRIT customer?"
+      },
+      {
+        "label": "Tell us what you’re trying to achieve",
+        "href": "/contact/"
+      }
+    ]
+  },
+  {
+    "slug": "international-schools-network",
+    "navLabel": "International Schools Network",
+    "title": "A community of international-school educators.",
+    "standfirst": "Part of how organisations reach international educators — and part of how EdCo keeps listening to them.",
+    "summary": "ISN serves international-school educators, and gives organisations a credible route to engage with them.",
+    "blocks": [
+      {
+        "type": "list",
+        "title": "What it offers organisations",
+        "columns": 2,
+        "items": [
+          "Access to educator audiences",
+          "Webinar and event recruitment",
+          "CPD",
+          "Engagement",
+          "Research participation",
+          "Continued listening to international educators"
+        ]
+      },
+      {
+        "type": "prose",
+        "title": "It is also part of our listening infrastructure",
+        "paras": [
+          "ISN is not only a distribution route. It is one of the places EdCo finds out what international educators are actually dealing with — which is what makes it useful to organisations in the first place."
+        ]
+      }
+    ],
+    "next": [
+      {
+        "label": "Events & CPD",
+        "href": "/capabilities/events-and-cpd/"
+      },
+      {
+        "label": "Research",
+        "href": "/capabilities/research/",
+        "blurb": "Recruit international educators into a study."
+      },
+      {
+        "label": "Reach & engage educators",
+        "href": "/reach-and-engage-educators/"
+      },
+      {
+        "label": "The Curriculum Network",
+        "href": "/products/the-curriculum-network/",
+        "blurb": "The UK equivalent."
+      },
+      {
+        "label": "For educators",
+        "href": "/for-educators/"
+      },
+      {
+        "label": "Tell us what you’re trying to achieve",
+        "href": "/contact/"
+      }
+    ]
+  },
+  {
+    "slug": "the-curriculum-network",
+    "navLabel": "The Curriculum Network",
+    "title": "Where EdCo meets UK educators.",
+    "standfirst": "A resource for educators, and a way for organisations to give value and build relationships.",
+    "summary": "The Curriculum Network connects EdCo with UK educators through webinars, CPD, research, events and content.",
+    "blocks": [
+      {
+        "type": "list",
+        "title": "What it supports",
+        "columns": 3,
+        "items": [
+          "Webinars",
+          "CPD",
+          "Research",
+          "Events",
+          "Content",
+          "Educator engagement"
+        ]
+      },
+      {
+        "type": "prose",
+        "paras": [
+          "It works in both directions. Educators get things worth their time. Organisations get a credible reason to be in the room. And EdCo keeps hearing, first-hand, what UK educators are dealing with."
+        ]
+      }
+    ],
+    "next": [
+      {
+        "label": "Events & CPD",
+        "href": "/capabilities/events-and-cpd/"
+      },
+      {
+        "label": "Content creation",
+        "href": "/capabilities/content-creation/"
+      },
+      {
+        "label": "Research",
+        "href": "/capabilities/research/"
+      },
+      {
+        "label": "Build your reputation & audience",
+        "href": "/build-your-reputation-and-audience/"
+      },
+      {
+        "label": "For educators",
+        "href": "/for-educators/"
+      },
+      {
+        "label": "Tell us what you’re trying to achieve",
+        "href": "/contact/"
+      }
+    ]
+  }
+]

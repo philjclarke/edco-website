@@ -15,6 +15,7 @@ import Placeholder from '@/components/Placeholder.astro';
 import { outcomes } from '@/data/outcomes';
 import { proofStats } from '@/data/proof';
 import { site } from '@/data/site';
+import home from '@/data/copy/home.json';
 import classroom from '@/assets/images/classroom.jpg';
 import ribbon from '@/assets/brand/ribbon-1.png';
 import ribbonWave from '@/assets/brand/ribbon-4.png';
@@ -22,7 +23,7 @@ import ribbonWave from '@/assets/brand/ribbon-4.png';
 
 <Layout
   title="home"
-  description="EdCo combines education intelligence, research, content, events, marketing and technology to help organisations understand what schools and trusts need, engage the right educators and turn those relationships into awareness, leads, pipeline and long-term growth."
+  description={home.meta.description}
 >
   <!-- ============================ Hero ============================ -->
   <section class="relative overflow-hidden bg-navy-900 text-ondark">
@@ -52,19 +53,10 @@ import ribbonWave from '@/assets/brand/ribbon-4.png';
 
     <div class="relative mx-auto max-w-7xl px-6 py-20 md:py-28 lg:py-36">
       <div class="max-w-2xl">
-        <p class="eyebrow mb-6 text-ondark-muted">{site.category}</p>
-        <h1 class="text-hero">
-          Helping organisations build better relationships with education.
-        </h1>
-        <p class="mt-7 font-display text-lead font-semibold grad-text">
-          Understand educators. Create value. Build engagement.
-        </p>
-        <p class="mt-6 max-w-xl text-lead text-ondark-muted">
-          EdCo combines education intelligence, research, content, events, marketing and
-          technology to help organisations understand what schools and trusts need, engage the
-          right educators and turn those relationships into awareness, leads, pipeline and
-          long-term growth.
-        </p>
+        <p class="eyebrow mb-6 text-ondark-muted">{home.hero.eyebrow}</p>
+        <h1 class="text-hero">{home.hero.heading}</h1>
+        <p class="mt-7 font-display text-lead font-semibold grad-text">{home.hero.standfirst}</p>
+        <p class="mt-6 max-w-xl text-lead text-ondark-muted">{home.hero.body}</p>
         <div class="mt-10 flex flex-wrap gap-3">
           <Button href={site.primaryCta.href} size="lg">{site.primaryCta.label}</Button>
           <Button href={site.secondaryCta.href} size="lg" variant="ghost-dark">
@@ -79,21 +71,13 @@ import ribbonWave from '@/assets/brand/ribbon-4.png';
   <Section tone="light" size="lg">
     <div class="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-20">
       <div>
-        <p class="eyebrow grad-text mb-4">The starting point</p>
-        <h2 class="text-display">Schools need partners, not vendors.</h2>
+        <p class="eyebrow grad-text mb-4">{home.partners.eyebrow}</p>
+        <h2 class="text-display">{home.partners.heading}</h2>
       </div>
       <div class="text-lead text-ink-muted">
-        <p>
-          Schools don’t wake up hoping to hear from another supplier. They have problems to solve,
-          outcomes to improve and very limited time.
-        </p>
-        <p class="mt-5">
-          If you want a meaningful relationship with educators, start there. Understand what they
-          need. Be useful. Earn attention. Build trust.
-        </p>
-        <p class="mt-5 font-display font-semibold text-ink">
-          Then you’ve got a considerably better basis for a commercial conversation.
-        </p>
+        <p>{home.partners.body1}</p>
+        <p class="mt-5">{home.partners.body2}</p>
+        <p class="mt-5 font-display font-semibold text-ink">{home.partners.close}</p>
       </div>
     </div>
   </Section>
@@ -109,29 +93,26 @@ import ribbonWave from '@/assets/brand/ribbon-4.png';
       class="pointer-events-none absolute -right-40 -top-20 w-[900px] max-w-none opacity-[0.14]"
     />
     <SectionHead
-      eyebrow="How EdCo works"
-      title="Listen. Understand. Give. Engage. Build. Grow."
-      lead="One model, running underneath everything we do. Where you join it depends on what you’re trying to achieve."
+      eyebrow={home.howItWorks.eyebrow}
+      title={home.howItWorks.heading}
+      lead={home.howItWorks.lead}
       tone="dark"
     />
     <div class="mt-14">
       <ModelStrip tone="dark" />
     </div>
     <p class="mt-10 font-display text-title">
-      Then your sales team does the <span class="grad-text">selling bit</span>.
+      {home.howItWorks.closeLead}<span class="grad-text">{home.howItWorks.closeEmphasis}</span>.
     </p>
-    <p class="mt-4 max-w-2xl text-ondark-muted">
-      We can create the opportunity. At some point, you still have to sell. EdCo does not offer
-      outsourced sales representation — we make the conversation worth having.
-    </p>
+    <p class="mt-4 max-w-2xl text-ondark-muted">{home.howItWorks.closeBody}</p>
   </Section>
 
   <!-- ================ What are you trying to achieve? ================ -->
   <Section tone="light" size="lg">
     <SectionHead
-      eyebrow="Start here"
-      title="Start with your objective. Not our organisation chart."
-      lead="You don’t need to know which EdCo product or team you need. Tell us what you’re trying to achieve. We’ll work out what combination of intelligence, people, technology and engagement capability makes sense."
+      eyebrow={home.outcomes.eyebrow}
+      title={home.outcomes.heading}
+      lead={home.outcomes.lead}
     />
     <ul class="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
       {
@@ -142,7 +123,7 @@ import ribbonWave from '@/assets/brand/ribbon-4.png';
               index={i + 1}
               title={o.navLabel}
               body={o.summary}
-              meta="Explore this"
+              meta={home.outcomes.cardCta}
             />
           </li>
         ))
@@ -154,30 +135,17 @@ import ribbonWave from '@/assets/brand/ribbon-4.png';
   <Section tone="mist" size="lg">
     <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
       <div>
-        <h2 class="text-display">One EdCo. Lots of ways to help.</h2>
-        <p class="mt-6 text-lead text-ink-muted">
-          We don’t expect you to work out which one you need. That’s our job.
-        </p>
+        <h2 class="text-display">{home.oneEdco.heading}</h2>
+        <p class="mt-6 text-lead text-ink-muted">{home.oneEdco.lead}</p>
         <div class="mt-8">
           <Button href="/what-are-you-trying-to-achieve/" variant="ghost">
-            See all six routes
+            {home.oneEdco.cta}
           </Button>
         </div>
       </div>
       <ul class="flex flex-wrap gap-2.5">
         {
-          [
-            'Research',
-            'Intelligence',
-            'Strategy',
-            'Data',
-            'Marketing',
-            'Content',
-            'Events',
-            'Technology',
-            'Networks',
-            'CRM',
-          ].map((w) => (
+          home.oneEdco.words.map((w) => (
             <li class="rounded-full border border-line bg-paper px-5 py-2.5 font-display text-base font-semibold">
               {w}
             </li>
@@ -191,37 +159,23 @@ import ribbonWave from '@/assets/brand/ribbon-4.png';
   <Section tone="light" size="lg">
     <div class="grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-20">
       <div>
-        <p class="eyebrow grad-text mb-4">Why breadth matters</p>
-        <h2 class="text-display">
-          The problem with starting with a supplier is that you often end up starting with their
-          solution.
-        </h2>
+        <p class="eyebrow grad-text mb-4">{home.breadth.eyebrow}</p>
+        <h2 class="text-display">{home.breadth.heading}</h2>
       </div>
       <div>
         <ul class="divide-y divide-line border-y border-line">
           {
-            [
-              ['A data provider', 'sees a data problem.'],
-              ['A marketing agency', 'sees a campaign.'],
-              ['A research agency', 'sees a research project.'],
-              ['A software company', 'sees something to build.'],
-            ].map(([who, what]) => (
+            home.breadth.comparisons.map((c) => (
               <li class="flex flex-wrap gap-x-2 py-4">
-                <span class="font-display font-semibold">{who}</span>
-                <span class="text-ink-muted">{what}</span>
+                <span class="font-display font-semibold">{c.who}</span>
+                <span class="text-ink-muted">{c.what}</span>
               </li>
             ))
           }
         </ul>
-        <p class="mt-8 font-display text-title">We start somewhere else.</p>
-        <p class="mt-4 text-lead text-ink-muted">
-          Sometimes the answer is research. Sometimes it’s better intelligence. Sometimes it’s a
-          different proposition, useful content, an event, a campaign, technology or several of
-          those things together.
-        </p>
-        <p class="mt-4 text-lead font-medium text-ink">
-          And sometimes the best advice is to change the plan altogether.
-        </p>
+        <p class="mt-8 font-display text-title">{home.breadth.turn}</p>
+        <p class="mt-4 text-lead text-ink-muted">{home.breadth.body}</p>
+        <p class="mt-4 text-lead font-medium text-ink">{home.breadth.close}</p>
       </div>
     </div>
   </Section>
@@ -230,20 +184,15 @@ import ribbonWave from '@/assets/brand/ribbon-4.png';
   <Section tone="dark" size="lg">
     <div class="grid gap-12 lg:grid-cols-2 lg:gap-20">
       <div>
-        <p class="eyebrow grad-text mb-4">The evidence</p>
-        <h2 class="text-display">Relationships measured in decades, not campaigns.</h2>
+        <p class="eyebrow grad-text mb-4">{home.proof.eyebrow}</p>
+        <h2 class="text-display">{home.proof.heading}</h2>
       </div>
       <div class="text-lead text-ondark-muted">
         <p>
-          Some customers have worked with EdCo for more than <Placeholder
-            label="VERIFIED METRIC"
-            note="28 years"
-          /> years.
+          {home.proof.bodyBefore} <Placeholder label="VERIFIED METRIC" note="28 years" />
+          {home.proof.bodyAfter}
         </p>
-        <p class="mt-5">
-          Not because we’ve kept selling them the same thing. Because their objectives have
-          changed, education has changed and we’ve changed with them.
-        </p>
+        <p class="mt-5">{home.proof.body2}</p>
       </div>
     </div>
     <div class="mt-14">
@@ -254,8 +203,8 @@ import ribbonWave from '@/assets/brand/ribbon-4.png';
   <!-- ========================= Customer logos ========================= -->
   <Section tone="light" size="md">
     <SectionHead
-      title="Great organisations. Different objectives. One thing in common."
-      lead="They want to understand education better and make a greater difference within it."
+      title={home.logos.heading}
+      lead={home.logos.lead}
       align="center"
     />
     <div class="mt-12">
@@ -267,12 +216,12 @@ import ribbonWave from '@/assets/brand/ribbon-4.png';
   <Section tone="mist" size="lg">
     <div class="flex flex-wrap items-end justify-between gap-6">
       <SectionHead
-        eyebrow="Listening"
-        title="What we’re hearing from educators right now"
-        lead="Not education news. What educators are actually telling us — and what it might mean for organisations working with education."
+        eyebrow={home.hearing.eyebrow}
+        title={home.hearing.heading}
+        lead={home.hearing.lead}
         class="flex-1"
       />
-      <Button href="/what-we-think/what-were-hearing/" variant="ghost">See what we’re hearing</Button>
+      <Button href="/what-we-think/what-were-hearing/" variant="ghost">{home.hearing.cta}</Button>
     </div>
     <ul class="mt-12 grid gap-5 md:grid-cols-3">
       {
@@ -281,10 +230,7 @@ import ribbonWave from '@/assets/brand/ribbon-4.png';
             <Card eyebrow="What we’re hearing" title="">
               <div class="space-y-3">
                 <Placeholder label="CURRENT WHAT WE’RE HEARING ITEM" note={`slot ${n}`} block />
-                <p class="text-sm text-ink-muted">
-                  Each item answers: what are educators telling us, where are we hearing it, why it
-                  matters, and what it could mean for organisations working with education.
-                </p>
+                <p class="text-sm text-ink-muted">{home.hearing.cardNote}</p>
               </div>
             </Card>
           </li>
@@ -296,18 +242,18 @@ import ribbonWave from '@/assets/brand/ribbon-4.png';
   <!-- =========================== Free value =========================== -->
   <Section tone="light" size="lg">
     <SectionHead
-      eyebrow="Give to receive"
-      title="Something useful before we ask you for anything"
-      lead="Give to receive works for us too."
+      eyebrow={home.freeValue.eyebrow}
+      title={home.freeValue.heading}
+      lead={home.freeValue.lead}
     />
     <ul class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
       <li>
         <Card
           href="/free-customer-analysis/"
-          eyebrow="Free"
-          title="What don’t you know about your customers?"
-          body="Send us your customer list. We’ll analyse it through Education IQ and an EdCo person will walk you through what’s in there."
-          meta="Analyse my customers"
+          eyebrow={home.freeValue.featured.eyebrow}
+          title={home.freeValue.featured.title}
+          body={home.freeValue.featured.body}
+          meta={home.freeValue.featured.cta}
         />
       </li>
       {

@@ -1,0 +1,56 @@
+{
+  "proofStats": [
+    {
+      "value": "35 years",
+      "label": "working in education",
+      "verified": false
+    },
+    {
+      "value": "50+",
+      "label": "people across research, data, technology and marketing",
+      "verified": false
+    },
+    {
+      "value": "95%+",
+      "label": "customer retention, year after year",
+      "verified": false
+    },
+    {
+      "value": "250,000+",
+      "label": "post-16 students using Navigate, built by EdCo",
+      "verified": false
+    }
+  ],
+  "logoCandidates": [
+    "Cambridge University Press",
+    "Collins",
+    "Encyclopaedia Britannica",
+    "The Education People",
+    "Timstar",
+    "Edustaff",
+    "Raintree",
+    "Gatsby",
+    "British Red Cross",
+    "The Big Plastic Count"
+  ],
+  "testimonialThemes": [
+    "EdCo challenging the original brief",
+    "EdCo understanding both education and the client’s business",
+    "EdCo feeling like part of the client team",
+    "a long-term relationship"
+  ],
+  "caseStudyThemes": [
+    "Research → thought leadership → pipeline",
+    "Education IQ / customer intelligence",
+    "A long-term customer relationship",
+    "Marketing and lead generation",
+    "EdNet",
+    "Bespoke technology / Navigate",
+    "A CSR programme",
+    "Events and CPD",
+    "SPIRIT",
+    "An agency / white-label relationship",
+    "They asked us for X. We discovered they needed Y.",
+    "They asked us for X. We discovered they needed Y. (second case)"
+  ]
+}
