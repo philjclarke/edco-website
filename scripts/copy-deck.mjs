@@ -1,8 +1,12 @@
 /*
   Bridge between the repo's copy JSON and the online copy deck.
 
-    node scripts/copy-deck.mjs csv              -> copy-deck.csv           (import into Sheets)
-    node scripts/copy-deck.mjs apply-csv <file> -> src/data/copy/*.json    (pull edits back)
+    node scripts/copy-deck.mjs csv                 -> copy-deck.csv        (import into Sheets)
+    node scripts/copy-deck.mjs apply-csv [file|url] -> src/data/copy/*.json (pull edits back)
+
+  `apply-csv` takes a "Publish to web" CSV link from Sheets, a file path, or
+  nothing at all — in which case it looks for the newest deck-shaped CSV in
+  the working directory or ~/Downloads.
 
     node scripts/copy-deck.mjs pack             -> .copy-deck/<doc>.json   (JSON form)
     node scripts/copy-deck.mjs apply <dir>      -> src/data/copy/*.json
@@ -319,8 +323,25 @@ async function findCsv() {
 }
 
 async function applyCsv(fileArg) {
-  const file = fileArg ?? (await findCsv());
-  const rows = parseCsv(await readFile(file, 'utf8'));
+  let text;
+  if (fileArg && /^https?:\/\//.test(fileArg)) {
+    // A "Publish to web" CSV link from Sheets — always the current sheet, no
+    // export step. Sheets serves these through a redirect.
+    const res = await fetch(fileArg, { redirect: 'follow' });
+    if (!res.ok) throw new Error(`fetch failed: ${res.status} ${res.statusText}`);
+    text = await res.text();
+    if (!text.includes('Ref') || !text.includes('New copy')) {
+      throw new Error(
+        'That URL did not return the copy deck. Check the link is the CSV form ' +
+          '(File > Share > Publish to web > CSV) and that the sheet is published.'
+      );
+    }
+    console.log(`fetched ${text.length} bytes from the published sheet`);
+  } else {
+    const file = fileArg ?? (await findCsv());
+    text = await readFile(file, 'utf8');
+  }
+  const rows = parseCsv(text);
   const header = rows.shift().map((h) => h.replace(/^\uFEFF/, '').trim());
   const col = (name) => {
     const i = header.indexOf(name);
@@ -376,11 +397,18 @@ async function applyCsv(fileArg) {
 }
 
 const [cmd, arg] = process.argv.slice(2);
-if (cmd === 'pack') await pack();
-else if (cmd === 'apply') await apply(arg ?? OUT_DIR);
-else if (cmd === 'csv') await csv();
-else if (cmd === 'apply-csv') await applyCsv(arg);
-else {
-  console.error('usage: copy-deck.mjs csv | apply-csv <file> | pack | apply <dir>');
+try {
+  if (cmd === 'pack') await pack();
+  else if (cmd === 'apply') await apply(arg ?? OUT_DIR);
+  else if (cmd === 'csv') await csv();
+  else if (cmd === 'apply-csv') await applyCsv(arg);
+  else {
+    console.error('usage: copy-deck.mjs csv | apply-csv [file|url] | pack | apply <dir>');
+    process.exit(1);
+  }
+} catch (err) {
+  // A stack trace helps nobody here — the failures are all "wrong link" or
+  // "no file", and the message says which.
+  console.error(`\n${err.message}`);
   process.exit(1);
 }
