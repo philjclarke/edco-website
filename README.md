@@ -58,8 +58,13 @@ the sync is deliberate and runs through Claude:
 
 ```bash
 node scripts/copy-deck.mjs csv                  # repo -> copy-deck.csv (import to Sheets)
-node scripts/copy-deck.mjs apply-csv <file>     # edited sheet -> src/data/copy/
+node scripts/copy-deck.mjs apply-csv            # edited sheet -> src/data/copy/
 ```
+
+`apply-csv` with no argument finds the deck itself: `./copy-deck.csv` first, then
+the most recently modified CSV in `~/Downloads` whose header carries a `Ref` and
+a `New copy` column. So the round trip is *File > Download > CSV* in Sheets and
+nothing else — no moving or renaming. Pass a path to override.
 
 The spreadsheet has a **Current copy** column and an empty **New copy** column.
 Only rows with something in *New copy* are applied, so a reviewer can work

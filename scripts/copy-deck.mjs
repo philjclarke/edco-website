@@ -14,8 +14,9 @@
   exposed to the deck and never written back, so an edit cannot break a route.
 */
 
-import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
+import os from 'node:os';
 
 const COPY_DIR = 'src/data/copy';
 const OUT_DIR = '.copy-deck';
@@ -275,7 +276,50 @@ async function csv() {
   console.log('Import into Google Sheets: File > Import > Upload, "Replace spreadsheet".');
 }
 
-async function applyCsv(file) {
+/*
+  Find the edited deck without being told where it is. Sheets exports land in
+  ~/Downloads under whatever the spreadsheet is called, so rather than make
+  someone move the file, take the newest CSV that looks like a copy deck.
+*/
+async function findCsv() {
+  const candidates = [];
+  const isDeck = async (p) => {
+    try {
+      const head = (await readFile(p, 'utf8')).slice(0, 400);
+      return head.includes('"Ref"') && head.includes('"New copy"');
+    } catch {
+      return false;
+    }
+  };
+
+  if (await isDeck(CSV_FILE)) return CSV_FILE;
+
+  const downloads = path.join(os.homedir(), 'Downloads');
+  let names = [];
+  try {
+    names = await readdir(downloads);
+  } catch {
+    names = [];
+  }
+  for (const n of names) {
+    if (!n.toLowerCase().endsWith('.csv')) continue;
+    const full = path.join(downloads, n);
+    if (!(await isDeck(full))) continue;
+    candidates.push({ full, mtime: (await stat(full)).mtimeMs });
+  }
+  if (!candidates.length) {
+    throw new Error(
+      'No copy deck CSV found. Pass the path explicitly, or export the sheet ' +
+        'to ~/Downloads (File > Download > Comma-separated values).'
+    );
+  }
+  candidates.sort((a, b) => b.mtime - a.mtime);
+  console.log(`using ${candidates[0].full}`);
+  return candidates[0].full;
+}
+
+async function applyCsv(fileArg) {
+  const file = fileArg ?? (await findCsv());
   const rows = parseCsv(await readFile(file, 'utf8'));
   const header = rows.shift().map((h) => h.replace(/^\uFEFF/, '').trim());
   const col = (name) => {
@@ -335,7 +379,7 @@ const [cmd, arg] = process.argv.slice(2);
 if (cmd === 'pack') await pack();
 else if (cmd === 'apply') await apply(arg ?? OUT_DIR);
 else if (cmd === 'csv') await csv();
-else if (cmd === 'apply-csv') await applyCsv(arg ?? CSV_FILE);
+else if (cmd === 'apply-csv') await applyCsv(arg);
 else {
   console.error('usage: copy-deck.mjs csv | apply-csv <file> | pack | apply <dir>');
   process.exit(1);
