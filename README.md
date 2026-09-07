@@ -50,17 +50,27 @@ genuinely want it.
 
 ## The copy deck
 
-All the site's words live in `src/data/copy/*.json`, and there is an online
-**copy deck** — a published page with a small database behind it — where EdCo can
-edit them without touching the repo.
+All the site's words live in `src/data/copy/*.json`, and there is a **copy deck**
+— a spreadsheet — where EdCo can edit them without touching the repo.
 
-    https://claude.ai/code/artifact/0f197f46-c8ee-4481-81d9-ac375796e324
-
-25 documents, ~760 fields, one document per page. Editing the deck does **not**
-change the live site; the sync is deliberate and runs through Claude:
+760 fields across 25 pages. Editing the deck does **not** change the live site;
+the sync is deliberate and runs through Claude:
 
 ```bash
-node scripts/copy-deck.mjs pack          # repo  -> .copy-deck/   (seed / re-baseline)
+node scripts/copy-deck.mjs csv                  # repo -> copy-deck.csv (import to Sheets)
+node scripts/copy-deck.mjs apply-csv <file>     # edited sheet -> src/data/copy/
+```
+
+The spreadsheet has a **Current copy** column and an empty **New copy** column.
+Only rows with something in *New copy* are applied, so a reviewer can work
+through the deck a page at a time and unfinished rows are simply ignored. The
+`Ref` column is what maps a row back to a field — it must not be edited.
+
+There is also a JSON form of the same data, used to seed a database-backed
+editor:
+
+```bash
+node scripts/copy-deck.mjs pack          # repo  -> .copy-deck/
 node scripts/copy-deck.mjs apply <dir>   # deck  -> src/data/copy/
 ```
 

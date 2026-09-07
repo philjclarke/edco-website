@@ -1,8 +1,11 @@
 /*
   Bridge between the repo's copy JSON and the online copy deck.
 
-    node scripts/copy-deck.mjs pack             -> .copy-deck/<doc>.json   (seed the deck)
-    node scripts/copy-deck.mjs apply <dir>      -> src/data/copy/*.json    (pull edits back)
+    node scripts/copy-deck.mjs csv              -> copy-deck.csv           (import into Sheets)
+    node scripts/copy-deck.mjs apply-csv <file> -> src/data/copy/*.json    (pull edits back)
+
+    node scripts/copy-deck.mjs pack             -> .copy-deck/<doc>.json   (JSON form)
+    node scripts/copy-deck.mjs apply <dir>      -> src/data/copy/*.json
 
   `pack` flattens each source file into a flat map of dotted paths to strings —
   one deck document per page, so two people editing different pages never
@@ -207,10 +210,133 @@ async function apply(dir) {
   console.log(changed ? `\napplied ${changed} changes across ${loaded.size} files` : '\nno changes');
 }
 
+/* ------------------------------------------------------- spreadsheet */
+
+const CSV_FILE = 'copy-deck.csv';
+const HEADERS = ['Page', 'Section', 'Field', 'Ref', 'Current copy', 'New copy', 'Notes'];
+
+/** RFC 4180: quote everything, double any embedded quote. */
+const cell = (v) => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+
+function parseCsv(text) {
+  const rows = [];
+  let row = [];
+  let field = '';
+  let quoted = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (quoted) {
+      if (c === '"') {
+        if (text[i + 1] === '"') { field += '"'; i++; }
+        else quoted = false;
+      } else field += c;
+    } else if (c === '"') quoted = true;
+    else if (c === ',') { row.push(field); field = ''; }
+    else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+    else if (c !== '\r') field += c;
+  }
+  if (field !== '' || row.length) { row.push(field); rows.push(row); }
+  return rows;
+}
+
+/** The section a field belongs to — the first segment of its path, humanised. */
+function sectionOf(dotted) {
+  const head = dotted.split('.')[0];
+  return /^\d+$/.test(head) ? '' : sentence(head);
+}
+
+async function csv() {
+  await pack();
+  const index = JSON.parse(await readFile(path.join(OUT_DIR, '_index.json'), 'utf8'));
+  // A BOM keeps curly quotes and em dashes intact when Sheets and Excel open it.
+  const lines = ['\uFEFF' + HEADERS.map(cell).join(',')];
+
+  for (const entry of index) {
+    const doc = JSON.parse(await readFile(path.join(OUT_DIR, `${entry.docId}.json`), 'utf8'));
+    for (const f of doc.fields) {
+      lines.push(
+        [
+          doc.title,
+          sectionOf(f.path),
+          f.label,
+          `${doc.docId}::${f.path}`,
+          doc.values[f.path] ?? '',
+          '',
+          '',
+        ]
+          .map(cell)
+          .join(',')
+      );
+    }
+  }
+
+  await writeFile(CSV_FILE, lines.join('\n') + '\n');
+  console.log(`wrote ${CSV_FILE} — ${lines.length - 1} rows`);
+  console.log('Import into Google Sheets: File > Import > Upload, "Replace spreadsheet".');
+}
+
+async function applyCsv(file) {
+  const rows = parseCsv(await readFile(file, 'utf8'));
+  const header = rows.shift().map((h) => h.replace(/^\uFEFF/, '').trim());
+  const col = (name) => {
+    const i = header.indexOf(name);
+    if (i < 0) throw new Error(`column "${name}" not found. Found: ${header.join(', ')}`);
+    return i;
+  };
+  const iRef = col('Ref');
+  const iNew = col('New copy');
+  const iCur = col('Current copy');
+
+  // Group the rows that carry a new wording back into per-document value maps.
+  const byDoc = new Map();
+  let proposed = 0;
+  for (const r of rows) {
+    const ref = (r[iRef] ?? '').trim();
+    if (!ref.includes('::')) continue;
+    const next = r[iNew] ?? '';
+    if (next.trim() === '') continue;              // blank means "leave it alone"
+    if (next === (r[iCur] ?? '')) continue;        // pasted back unchanged
+    const [docId, fieldPath] = ref.split('::');
+    if (!byDoc.has(docId)) byDoc.set(docId, {});
+    byDoc.get(docId)[fieldPath] = next;
+    proposed += 1;
+  }
+
+  if (!proposed) {
+    console.log('No rows have anything in the "New copy" column — nothing to apply.');
+    return;
+  }
+
+  const loaded = new Map();
+  let changed = 0;
+  for (const [docId, values] of byDoc) {
+    const doc = JSON.parse(await readFile(path.join(OUT_DIR, `${docId}.json`), 'utf8'));
+    const srcFile = doc.source.file;
+    if (!loaded.has(srcFile)) {
+      loaded.set(srcFile, JSON.parse(await readFile(path.join(COPY_DIR, srcFile), 'utf8')));
+    }
+    const root = loaded.get(srcFile);
+    const target = doc.source.path === '' ? root : root[Number(doc.source.path)];
+    const n = unflatten(target, values);
+    if (n) console.log(`${doc.title}: ${n} field${n === 1 ? '' : 's'} changed`);
+    changed += n;
+  }
+
+  for (const [f, data] of loaded) {
+    await writeFile(path.join(COPY_DIR, f), JSON.stringify(data, null, 2) + '\n');
+  }
+  console.log(`\napplied ${changed} of ${proposed} proposed changes across ${loaded.size} files`);
+  if (changed < proposed) {
+    console.log('Some rows were skipped — their Ref no longer matches a field (deck out of date).');
+  }
+}
+
 const [cmd, arg] = process.argv.slice(2);
 if (cmd === 'pack') await pack();
 else if (cmd === 'apply') await apply(arg ?? OUT_DIR);
+else if (cmd === 'csv') await csv();
+else if (cmd === 'apply-csv') await applyCsv(arg ?? CSV_FILE);
 else {
-  console.error('usage: copy-deck.mjs pack | apply <dir>');
+  console.error('usage: copy-deck.mjs csv | apply-csv <file> | pack | apply <dir>');
   process.exit(1);
 }
