@@ -1,31 +1,31 @@
 {
   "meta": {
-    "description": "EdCo combines education intelligence, research, content, events, marketing and technology to help organisations understand what schools and trusts need, engage the right educators and turn those relationships into awareness, leads, pipeline and long-term growth."
+    "description": "EdCo helps organisations understand education, engage the right people and build relationships that drive awareness, leads, pipeline and growth."
   },
   "hero": {
     "eyebrow": "The Education Company",
     "heading": "Helping organisations build better relationships with education.",
     "standfirst": "Understand educators. Create value. Build engagement.",
-    "body": "EdCo combines education intelligence, research, content, events, marketing and technology to help organisations understand what schools and trusts need, engage the right educators and turn those relationships into awareness, leads, pipeline and long-term growth."
+    "body": "EdCo helps organisations understand education, engage the right people and build relationships that drive awareness, leads, pipeline and growth."
   },
   "partners": {
     "eyebrow": "The starting point",
     "heading": "Schools need partners, not vendors.",
-    "body1": "Schools don’t wake up hoping to hear from another supplier. They have problems to solve, outcomes to improve and very limited time.",
-    "body2": "If you want a meaningful relationship with educators, start there. Understand what they need. Be useful. Earn attention. Build trust.",
-    "close": "Then you’ve got a considerably better basis for a commercial conversation."
+    "body1": "Schools aren’t looking for suppliers. They’re looking for solutions to real problems and better outcomes.",
+    "body2": "If you want a meaningful relationship with educators, understand what they need, be useful, earn their attention and build their trust.",
+    "close": "At EdCo we love helping great companies become great partners."
   },
   "howItWorks": {
     "eyebrow": "How EdCo works",
     "heading": "Listen. Understand. Give. Engage. Build. Grow.",
-    "lead": "One model, running underneath everything we do. Where you join it depends on what you’re trying to achieve.",
-    "closeLead": "Then your sales team does the ",
-    "closeEmphasis": "selling bit",
-    "closeBody": "We can create the opportunity. At some point, you still have to sell. EdCo does not offer outsourced sales representation — we make the conversation worth having."
+    "lead": "One philosophy underpins everything we do.\nWe start with what you’re trying to achieve, then bring together the right combination of insight, engagement and technology.",
+    "closeLead": "We help create warmer",
+    "closeEmphasis": "conversations",
+    "closeBody": "We help build awareness, engagement and interest — giving your sales team warmer, more relevant conversations with the right people."
   },
   "outcomes": {
     "eyebrow": "Start here",
-    "heading": "Start with your objective. Not our organisation chart.",
+    "heading": "Start with your objective. Not our org chart.",
     "lead": "You don’t need to know which EdCo product or team you need. Tell us what you’re trying to achieve. We’ll work out what combination of intelligence, people, technology and engagement capability makes sense.",
     "cardCta": "Explore this"
   },
@@ -78,7 +78,7 @@
   },
   "breadth": {
     "eyebrow": "Why breadth matters",
-    "heading": "The problem with starting with a supplier is that you often end up starting with their solution.",
+    "heading": "Start with a capability specialist and you often start with their solution. Start with a sector specialist and you start with the problem.",
     "comparisons": [
       {
         "who": "A data provider",
@@ -115,7 +115,7 @@
   "hearing": {
     "eyebrow": "Listening",
     "heading": "What we’re hearing from educators right now",
-    "lead": "Not education news. What educators are actually telling us — and what it might mean for organisations working with education.",
+    "lead": "Beyond the headlines. What educators are actually telling us and what it means for organisations working with education.",
     "cta": "See what we’re hearing",
     "cardNote": "Each item answers: what are educators telling us, where are we hearing it, why it matters, and what it could mean for organisations working with education."
   },
@@ -126,7 +126,7 @@
     "featured": {
       "eyebrow": "Free",
       "title": "What don’t you know about your customers?",
-      "body": "Send us your customer list. We’ll analyse it through Education IQ and an EdCo person will walk you through what’s in there.",
+      "body": "Send us your customer list. We’ll analyse it through Education IQ and we’ll walk you through what’s in there.",
       "cta": "Analyse my customers"
     }
   }

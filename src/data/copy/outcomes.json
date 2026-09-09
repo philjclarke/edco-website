@@ -59,9 +59,9 @@
     "navLabel": "Build your reputation & audience",
     "title": "Become useful before you try to become famous.",
     "standfirst": "Build an audience you have permission to talk to.",
-    "summary": "Reputation in education is earned by giving educators something they value — not by telling them who you are more often.",
+    "summary": "Reputation in education is earned by understanding educators’ challenges — then developing and delivering solutions that genuinely help",
     "intro": [
-      "Brand awareness in education should not simply mean repeatedly telling educators who you are. Give them reasons to know you.",
+      "Brand awareness in education grows when you give educators genuine reasons to know, value and remember you.",
       "EdCo helps organisations build reputation by creating and distributing things educators value."
     ],
     "routeObjective": "We want to become known for SEND",
@@ -94,7 +94,7 @@
         "blurb": "An event shouldn’t be a moment."
       },
       {
-        "label": "EdNet",
+        "label": "Engagement Hub",
         "href": "/products/ednet/",
         "blurb": "From digital brochure to engagement platform."
       },
@@ -171,8 +171,8 @@
     "standfirst": "Build relationships that become leads. Build leads that become pipeline.",
     "summary": "Give your sales team genuine reasons to start conversations — not just a longer list of email addresses.",
     "intro": [
-      "A lead should mean more than somebody whose email address you happen to have.",
-      "EdCo helps create relationships and engagement that give sales teams genuine reasons to start conversations."
+      "A lead should be more than a name on a list. It should be the beginning of a conversation.",
+      "EdCo builds the relationships and engagement that give sales teams a genuine reason to start a conversation."
     ],
     "routeObjective": "Our sales team needs better conversations",
     "helpTitle": "We can",
@@ -185,7 +185,7 @@
       "Develop those leads into pipeline",
       "Give salespeople better context before they make contact"
     ],
-    "pull": "Then you sell.",
+    "pull": "Start with something worth talking about.",
     "next": [
       {
         "label": "Education IQ",

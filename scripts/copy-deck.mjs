@@ -18,6 +18,7 @@
 */
 
 import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 
 const COPY_DIR = 'src/data/copy';
@@ -286,28 +287,27 @@ async function csv() {
   console.log('Import into Google Sheets: File > Import > Upload, "Replace spreadsheet".');
 }
 
-async function applyCsv(fileArg) {
-  // No argument means the live deck; a path or a different URL overrides it.
+/** The deck as CSV text: the live sheet by default, a path or URL if given. */
+async function fetchDeck(fileArg) {
   const source = fileArg ?? DECK_URL;
-  let text;
-  if (/^https?:\/\//.test(source)) {
-    // A "Publish to web" CSV link from Sheets — always the current sheet, no
-    // export step. Sheets serves these through a redirect.
-    const res = await fetch(source, { redirect: 'follow' });
-    if (!res.ok) throw new Error(`fetch failed: ${res.status} ${res.statusText}`);
-    text = await res.text();
-    if (!text.includes('Ref') || !text.includes('New copy')) {
-      throw new Error(
-        'That URL did not return the copy deck — most likely the sheet is no ' +
-          'longer shared. It needs "anyone with the link can view" for the CSV ' +
-          'export to be readable. Pass a downloaded file instead if it must stay private.'
-      );
-    }
-    console.log(`fetched ${text.length} bytes from the published sheet`);
-  } else {
-    text = await readFile(source, 'utf8');
+  if (!/^https?:\/\//.test(source)) return readFile(source, 'utf8');
+
+  const res = await fetch(source, { redirect: 'follow' });
+  if (!res.ok) throw new Error(`fetch failed: ${res.status} ${res.statusText}`);
+  const text = await res.text();
+  if (!text.includes('Ref') || !text.includes('New copy')) {
+    throw new Error(
+      'That URL did not return the copy deck — most likely the sheet is no ' +
+        'longer shared. It needs "anyone with the link can view" for the CSV ' +
+        'export to be readable. Pass a downloaded file instead if it must stay private.'
+    );
   }
-  const rows = parseCsv(text);
+  console.log(`fetched ${text.length} bytes from the sheet`);
+  return text;
+}
+
+async function applyCsv(fileArg) {
+  const rows = parseCsv(await fetchDeck(fileArg));
   const header = rows.shift().map((h) => h.replace(/^\uFEFF/, '').trim());
   const col = (name) => {
     const i = header.indexOf(name);
@@ -362,14 +362,176 @@ async function applyCsv(fileArg) {
   }
 }
 
+/* --------------------------------------------------------- reconcile */
+
+/*
+  Recovery for the predictable accident: a reviewer edits "Current copy" in
+  place instead of filling in "New copy". The edits are still there, but they
+  are no longer distinguishable from the original by looking at the sheet alone.
+
+  Three-way merge against the commit the sheet was cut from:
+    base  = repo at <ref>            what the sheet was generated from
+    sheet = "Current copy" column    base + the reviewer's edits
+    head  = repo now                 base + our edits since
+
+  sheet != base  ->  the reviewer changed it
+  head  != base  ->  we changed it
+  both           ->  a genuine conflict; reported, never applied silently.
+*/
+function readAtRef(ref, file) {
+  const out = execFileSync('git', ['show', `${ref}:${COPY_DIR}/${file}`], {
+    encoding: 'utf8',
+    maxBuffer: 32 * 1024 * 1024,
+  });
+  return JSON.parse(out);
+}
+
+/** Read one dotted path out of a structure, or undefined. */
+function readPath(root, dotted) {
+  let node = root;
+  for (const part of dotted.split('.')) {
+    if (node == null) return undefined;
+    node = Array.isArray(node) ? node[Number(part)] : node[part];
+  }
+  return typeof node === 'string' ? node : undefined;
+}
+
+async function reconcile(ref, { write = false } = {}) {
+  if (!ref) throw new Error('reconcile needs the commit the sheet was cut from, e.g. `reconcile 9631834`');
+
+  const text = await fetchDeck();
+  const rows = parseCsv(text);
+  const header = rows.shift().map((h) => h.replace(/^\uFEFF/, '').trim());
+  const iRef = header.indexOf('Ref');
+  const iCur = header.indexOf('Current copy');
+  const iNew = header.indexOf('New copy');
+
+  const bases = new Map();
+  const heads = new Map();
+  const docCache = new Map();
+  const loadDoc = async (docId) => {
+    if (!docCache.has(docId)) {
+      docCache.set(docId, JSON.parse(await readFile(path.join(OUT_DIR, `${docId}.json`), 'utf8')));
+    }
+    return docCache.get(docId);
+  };
+
+  const edits = [];
+  const conflicts = [];
+  const gone = [];
+
+  for (const r of rows) {
+    const ref2 = (r[iRef] ?? '').trim();
+    if (!ref2.includes('::')) continue;
+    const [docId, fieldPath] = ref2.split('::');
+    // An edit in the right column still wins — it is the clearer signal.
+    const sheetVal = (r[iNew] ?? '').trim() !== '' ? r[iNew] : r[iCur] ?? '';
+
+    let doc;
+    try {
+      doc = await loadDoc(docId);
+    } catch {
+      gone.push({ ref: ref2, why: 'page no longer in the deck' });
+      continue;
+    }
+    const file = doc.source.file;
+    const idx = doc.source.path === '' ? null : Number(doc.source.path);
+
+    if (!bases.has(file)) bases.set(file, readAtRef(ref, file));
+    if (!heads.has(file)) {
+      heads.set(file, JSON.parse(await readFile(path.join(COPY_DIR, file), 'utf8')));
+    }
+    const baseRoot = idx === null ? bases.get(file) : bases.get(file)[idx];
+    const headRoot = idx === null ? heads.get(file) : heads.get(file)[idx];
+    if (baseRoot === undefined) {
+      gone.push({ ref: ref2, why: 'not present at the base commit' });
+      continue;
+    }
+
+    const baseVal = readPath(baseRoot, fieldPath);
+    if (baseVal === undefined) {
+      gone.push({ ref: ref2, why: 'field not at the base commit' });
+      continue;
+    }
+    if (sheetVal === baseVal) continue; // reviewer left it alone
+
+    // The shape may have moved on: a bare string can now be {label, href}.
+    let headPath = fieldPath;
+    let headVal = readPath(headRoot, headPath);
+    if (headVal === undefined) {
+      headVal = readPath(headRoot, `${fieldPath}.label`);
+      if (headVal !== undefined) headPath = `${fieldPath}.label`;
+    }
+    if (headVal === undefined) {
+      gone.push({ ref: ref2, why: 'field has since been removed', sheet: sheetVal });
+      continue;
+    }
+
+    const entry = { docId, file, idx, headPath, baseVal, sheetVal, headVal, title: doc.title };
+    if (headVal !== baseVal) conflicts.push(entry);
+    else edits.push(entry);
+  }
+
+  const trunc = (v, n = 88) => (v.length > n ? v.slice(0, n) + '…' : v);
+  console.log(`\nbase ${ref} · sheet rows ${rows.length}\n`);
+  console.log(`Reviewer edits that apply cleanly: ${edits.length}`);
+  console.log(`Conflicts (we changed it too):     ${conflicts.length}`);
+  console.log(`Rows that no longer map:           ${gone.length}\n`);
+
+  const byDoc = new Map();
+  for (const e of edits) {
+    if (!byDoc.has(e.title)) byDoc.set(e.title, []);
+    byDoc.get(e.title).push(e);
+  }
+  for (const [title, list] of byDoc) {
+    console.log(`  ${title} — ${list.length}`);
+    for (const e of list) {
+      console.log(`    ${e.headPath}`);
+      console.log(`      was: ${trunc(e.baseVal)}`);
+      console.log(`      now: ${trunc(e.sheetVal)}`);
+    }
+  }
+  if (conflicts.length) {
+    console.log('\nCONFLICTS — not applied, decide these by hand:');
+    for (const c of conflicts) {
+      console.log(`  ${c.title} · ${c.headPath}`);
+      console.log(`    base:   ${trunc(c.baseVal)}`);
+      console.log(`    sheet:  ${trunc(c.sheetVal)}`);
+      console.log(`    repo:   ${trunc(c.headVal)}`);
+    }
+  }
+  if (gone.length) {
+    console.log('\nUnmappable rows:');
+    for (const g of gone) console.log(`  ${g.ref} — ${g.why}`);
+  }
+
+  if (!write) {
+    console.log('\nDry run. Re-run with --write to apply the clean edits.');
+    return;
+  }
+
+  for (const e of edits) {
+    const root = e.idx === null ? heads.get(e.file) : heads.get(e.file)[e.idx];
+    unflatten(root, { [e.headPath]: e.sheetVal });
+  }
+  for (const [file, data] of heads) {
+    await writeFile(path.join(COPY_DIR, file), JSON.stringify(data, null, 2) + '\n');
+  }
+  console.log(`\napplied ${edits.length} edits across ${heads.size} files`);
+}
+
 const [cmd, arg] = process.argv.slice(2);
 try {
   if (cmd === 'pack') await pack();
   else if (cmd === 'apply') await apply(arg ?? OUT_DIR);
   else if (cmd === 'csv') await csv();
   else if (cmd === 'apply-csv') await applyCsv(arg);
+  else if (cmd === 'reconcile')
+    await reconcile(arg, { write: process.argv.includes('--write') });
   else {
-    console.error('usage: copy-deck.mjs csv | apply-csv [file|url] | pack | apply <dir>');
+    console.error(
+      'usage: copy-deck.mjs csv | apply-csv [file|url] | reconcile <git-ref> [--write] | pack | apply <dir>'
+    );
     process.exit(1);
   }
 } catch (err) {

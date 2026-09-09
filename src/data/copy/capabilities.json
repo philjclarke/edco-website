@@ -31,7 +31,7 @@
       },
       {
         "type": "prose",
-        "title": "You run the research. We’ll find the right people.",
+        "title": "You want to run the research yourself? We’ll find the right people.",
         "paras": [
           "Educator recruitment is available on its own. If you or your agency are running the study yourselves and just need the right headteachers, SENDCOs or trust CFOs in the room, that is a service you can buy independently."
         ]
@@ -216,7 +216,7 @@
       },
       {
         "type": "pull",
-        "text": "Nobody wants your webinar. They might want the knowledge inside it."
+        "text": "The format isn’t the value. What educators take away from it is."
       }
     ],
     "testimonialTheme": "EdCo feeling like part of the client team",
@@ -351,7 +351,7 @@
       },
       {
         "type": "pull",
-        "text": "Nobody wants your webinar. They might want the knowledge inside it."
+        "text": "The format isn’t the value. What educators take away from it is."
       }
     ],
     "testimonialTheme": "EdCo understanding both education and the client’s business",
@@ -367,7 +367,7 @@
         "blurb": "Content with a live moment attached."
       },
       {
-        "label": "EdNet",
+        "label": "Engagement Hub",
         "href": "/products/ednet/",
         "blurb": "Somewhere for it all to live."
       },

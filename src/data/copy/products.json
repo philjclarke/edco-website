@@ -137,9 +137,9 @@
   },
   {
     "slug": "ednet",
-    "navLabel": "EdNet",
+    "navLabel": "Engagement Hub",
     "title": "From digital brochure to education engagement platform.",
-    "standfirst": "Schools don’t need more vendors. They need partners. EdNet sites help suppliers become one.",
+    "standfirst": "Engagement Hub engagement intelligence",
     "summary": "A website that demonstrates why schools should want to work with you, rather than listing what you sell.",
     "blocks": [
       {
@@ -147,7 +147,7 @@
         "title": "Most supplier websites are built backwards",
         "paras": [
           "Schools buy solutions to problems, not products from suppliers. A conventional supplier website usually begins: who we are → what we sell → why we’re good → contact us.",
-          "An EdNet website behaves differently: your challenges → useful help → expertise → engagement → relationship → solution."
+          "Schools don’t need more vendors. They need partners. Engagement Hub help suppliers become one."
         ]
       },
       {
