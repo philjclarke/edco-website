@@ -65,7 +65,7 @@ const matchedRoute = routes.find((r) => r.objective === outcome.routeObjective)!
       {
         matchedRoute.steps.map((s, i) => (
           <>
-            <li class="rounded-full border border-line bg-paper px-4 py-2 font-display text-sm font-semibold">
+            <li class="rounded-md border-l-2 border-pink/50 bg-mist px-3.5 py-1.5 font-display text-sm font-semibold">
               {s}
             </li>
             {i < matchedRoute.steps.length - 1 && (

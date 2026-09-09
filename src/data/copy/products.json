@@ -74,15 +74,90 @@
         "lead": "Education IQ, embedded in a CRM. These are design prototypes using example data."
       },
       {
-        "type": "list",
-        "title": "Use it however it fits",
-        "columns": 2,
+        "type": "ways",
+        "title": "Ten ways to use it",
+        "lead": "Use Education IQ directly, connect it to your systems, or build new solutions and processes with it.",
         "items": [
-          "Standalone",
-          "Linked into your existing CRM",
-          "Embedded into your team’s workflows",
-          "Through APIs and data services",
-          "Powering a bespoke application"
+          {
+            "title": "Use as a standalone reference platform",
+            "body": "Search, explore and understand any school, trust or education group to:",
+            "points": [
+              "Understand context and changes",
+              "Quickly find the facts you need"
+            ]
+          },
+          {
+            "title": "CRM click-thru for instant context",
+            "body": "Click a button in your CRM to open the Education IQ school or trust dashboard to:",
+            "points": [
+              "Prepare for calls and meetings",
+              "Produce winning proposals"
+            ]
+          },
+          {
+            "title": "API enrichment for your CRM data",
+            "body": "Use the Education IQ API to match, cleanse, validate and enrich your existing CRM records to:",
+            "points": [
+              "Improve data quality",
+              "Reduce maintenance costs"
+            ]
+          },
+          {
+            "title": "Build your own apps with our data and APIs",
+            "body": "Use Education IQ data and APIs as the intelligence behind your own apps, dashboards and AI tools.",
+            "points": [
+              "Power internal and external apps",
+              "Build AI and vibe-coded solutions"
+            ]
+          },
+          {
+            "title": "Build target lists for sales and marketing",
+            "body": "Build highly targeted audiences using hundreds of data points to:",
+            "points": [
+              "Find your best opportunities",
+              "Improve campaign performance"
+            ]
+          },
+          {
+            "title": "Analyse your customer base",
+            "body": "Analyse your customers to discover patterns and correlations to:",
+            "points": [
+              "Find more customers",
+              "Understand what drives buying"
+            ]
+          },
+          {
+            "title": "Identify at-risk customers and protect revenue",
+            "body": "Overlay customer data with financial data to identify accounts at risk.",
+            "points": [
+              "Spot risk early",
+              "Take action to retain customers"
+            ]
+          },
+          {
+            "title": "Monitor changes and get alerts",
+            "body": "Track the schools and trusts that matter and get alerts when important changes happen.",
+            "points": [
+              "React to opportunities",
+              "Stay informed"
+            ]
+          },
+          {
+            "title": "Personalise pitches, proposals and campaigns",
+            "body": "Use Education IQ context to inform AI-generated calls, pitches, proposals, emails and campaigns.",
+            "points": [
+              "Create relevant messages",
+              "Improve win rates"
+            ]
+          },
+          {
+            "title": "Automate workflows and processes",
+            "body": "Connect Education IQ data and insights to your tools and workflows to automate tasks and decisions.",
+            "points": [
+              "Trigger workflows and tasks",
+              "Make data-informed decisions"
+            ]
+          }
         ]
       },
       {

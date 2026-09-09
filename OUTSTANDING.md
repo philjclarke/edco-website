@@ -157,7 +157,21 @@ Not oversights. Each has a route reserved or a placeholder holding its place.
 
 ---
 
-## 5. Questions I'd want answered
+## 5. Open from the Sept 2026 snag list
+
+Two annotations I could not place with confidence, and one structural question
+the new content raises.
+
+| Item | What I need |
+| --- | --- |
+| "Remove — we need the space" | Points into the header, which holds a utility bar (customer login, search, phone) above the nav. Which of those goes? |
+| "Remove, hearing will pick this up" | Points at the What We Think dropdown — What we're hearing / Opinion / Research & insight. Which of the three is being absorbed? |
+| **Education IQ now says the same thing twice** | "What people use it for" (nine expandable cards, written from the brief) and "Ten ways to use it" (EdCo's own slide) cover much the same ground — analyse customers, identify risk, enrich CRM, improve targeting. I have kept both because only one was asked about. They should almost certainly merge, with EdCo's ten as the spine and the screenshots attached to them. |
+
+Also: the ten-ways slide reads "connect it your systems". I have restored the
+missing word on the site; worth fixing in the source deck too.
+
+## 6. Questions I'd want answered
 
 1. **Is the six-outcome navigation right?** It's the brief's spine and it's the biggest
    single bet in the design. Everything else follows from it.

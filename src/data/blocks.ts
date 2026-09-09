@@ -1,6 +1,6 @@
 /*
   A deliberately small block vocabulary. Product and capability pages are built
-  from these six shapes, which keeps the pages consistent and gives the eventual
+  from these seven shapes, which keeps the pages consistent and gives the eventual
   CMS an obvious component/blocks model to mirror. Resist adding a sixth type
   unless two pages genuinely need it.
 */
@@ -17,7 +17,14 @@ export type Block =
       /** With `detail`, each card expands to reveal it plus a screenshot. */
       items: { title: string; body: string; detail?: string; shot?: string }[];
     }
-  | { type: 'shots'; title?: string; lead?: string; shots: { caption: string; src?: string }[] };
+  | { type: 'shots'; title?: string; lead?: string; shots: { caption: string; src?: string }[] }
+  | {
+      type: 'ways';
+      title?: string;
+      lead?: string;
+      /** Numbered because they are a menu of options, not a sequence. */
+      items: { title: string; body: string; points: string[] }[];
+    };
 
 export interface ContentPage {
   slug: string;

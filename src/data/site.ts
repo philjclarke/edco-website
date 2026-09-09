@@ -61,6 +61,18 @@ export const primaryNav: NavGroup[] = [
       { label: 'Research & insight', href: '/what-we-think/research-and-insight/' },
     ],
   },
+  {
+    label: 'Capabilities',
+    href: '/capabilities/',
+    children: [
+      { label: 'Research', href: '/capabilities/research/' },
+      { label: 'Marketing Services', href: '/capabilities/marketing-services/' },
+      { label: 'Events & CPD', href: '/capabilities/events-and-cpd/' },
+      { label: 'Content creation', href: '/capabilities/content-creation/' },
+      { label: 'Data Services', href: '/capabilities/data-services/' },
+      { label: 'All capabilities', href: '/capabilities/' },
+    ],
+  },
   { label: 'For Educators', href: '/for-educators/' },
   { label: 'About', href: '/about/' },
   { label: 'Agencies & Partners', href: '/agencies-and-partners/' },
@@ -81,7 +93,7 @@ export const footerNav: { heading: string; links: NavLink[] }[] = [
     links: primaryNav[1].children!,
   },
   {
-    heading: 'What we do',
+    heading: 'Capabilities',
     links: [
       { label: 'Research', href: '/capabilities/research/' },
       { label: 'Marketing Services', href: '/capabilities/marketing-services/' },
