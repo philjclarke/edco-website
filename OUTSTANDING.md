@@ -147,7 +147,6 @@ Not oversights. Each has a route reserved or a placeholder holding its place.
 
 | Item | Why deferred |
 | --- | --- |
-| Three capability detail pages — CSR programmes, education strategy, proposition development | Summarised on `/capabilities/`; nothing links to them yet, and the brief marks capabilities as a secondary route |
 | `/resources/` library | Needs real resources to organise |
 | `/events/` listing for prospective customers | Needs a real events programme |
 | Interactive tools and diagnostics | Brief §55 explicitly says these needn't exist at launch |

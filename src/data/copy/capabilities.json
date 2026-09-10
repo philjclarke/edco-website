@@ -387,31 +387,87 @@
     ]
   },
   {
-    "page": false,
+    "page": true,
     "slug": "csr-programmes",
     "navLabel": "CSR programmes",
     "title": "Education programmes that create genuine value.",
-    "summary": "From identifying educational need through to development, school recruitment, delivery and measurement — often working alongside your existing CSR agency, never around it.",
-    "blocks": [],
-    "next": []
-  },
-  {
-    "page": false,
-    "slug": "education-strategy",
-    "navLabel": "Education strategy",
-    "title": "Diagnose before you prescribe.",
-    "summary": "The critical-friend engagement: research, interviews, market intelligence, proposition development and route to market, before anyone spends money doing things.",
-    "blocks": [],
-    "next": []
-  },
-  {
-    "page": false,
-    "slug": "proposition-development",
-    "navLabel": "Proposition development",
-    "title": "Your product is fascinating to you.",
-    "summary": "Their problem is fascinating to them. We help you work out what you are actually offering educators, and whether it lands.",
-    "blocks": [],
-    "next": []
+    "summary": "Education programmes that create genuine value — from identifying the need through to delivery and measurement, alongside your CSR agency rather than around it.",
+    "blocks": [
+      {
+        "type": "list",
+        "title": "What we can take on",
+        "columns": 3,
+        "lead": "The whole programme, or the pieces that need education expertise.",
+        "items": [
+          "Identifying educational need",
+          "Programme development",
+          "Concept development",
+          "Research",
+          "Content and resources",
+          "School identification",
+          "School recruitment",
+          "Delivery",
+          "Technology",
+          "Events",
+          "Measurement"
+        ]
+      },
+      {
+        "type": "prose",
+        "title": "Getting into schools is the part people underestimate",
+        "paras": [
+          "Most CSR programmes in education fail at recruitment rather than at design. The idea is sound, the materials are good, and then nobody can get schools to take part.",
+          "That is usually where we come in — because identifying the right schools, reaching the right person inside them and giving them a reason to say yes is the same problem we solve for commercial clients, with the same data and the same networks behind it."
+        ]
+      },
+      {
+        "type": "pull",
+        "text": "Your client stays your client.",
+        "sub": "EdCo works alongside professional CSR agencies regularly. We are not trying to take ownership of your client relationship, and we will put that in writing if it helps."
+      },
+      {
+        "type": "prose",
+        "title": "Measuring something worth measuring",
+        "paras": [
+          "Reach is the easy number. How many schools, how many pupils, how many downloads. It is also the least interesting thing a programme can report.",
+          "We would rather help you measure whether the thing was any use — what changed for the educators who took part, and whether they would do it again."
+        ]
+      }
+    ],
+    "next": [
+      {
+        "label": "Agencies & Partners",
+        "href": "/agencies-and-partners/",
+        "blurb": "How we work alongside your existing agency."
+      },
+      {
+        "label": "Research",
+        "href": "/capabilities/research/",
+        "blurb": "Find out what educators actually need first."
+      },
+      {
+        "label": "Content creation",
+        "href": "/capabilities/content-creation/",
+        "blurb": "The resources the programme hands over."
+      },
+      {
+        "label": "Events & CPD",
+        "href": "/capabilities/events-and-cpd/",
+        "blurb": "Getting educators in the room."
+      },
+      {
+        "label": "Data Services",
+        "href": "/capabilities/data-services/",
+        "blurb": "Identifying and reaching the right schools."
+      },
+      {
+        "label": "Tell us what you’re trying to achieve",
+        "href": "/contact/"
+      }
+    ],
+    "standfirst": "All of it, or the part you don’t want to do.",
+    "lead": "A CSR programme in education only works if it is genuinely useful to schools. That means starting with what educators actually need, not with what makes a good report.",
+    "testimonialTheme": "EdCo feeling like part of the client team"
   },
   {
     "page": true,
