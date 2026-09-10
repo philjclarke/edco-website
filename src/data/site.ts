@@ -58,7 +58,6 @@ export const primaryNav: NavGroup[] = [
     children: [
       { label: 'What we’re hearing', href: '/what-we-think/what-were-hearing/' },
       { label: 'Opinion', href: '/what-we-think/opinion/' },
-      { label: 'Research & insight', href: '/what-we-think/research-and-insight/' },
     ],
   },
   {
@@ -73,12 +72,12 @@ export const primaryNav: NavGroup[] = [
       { label: 'All capabilities', href: '/capabilities/' },
     ],
   },
-  { label: 'For Educators', href: '/for-educators/' },
   { label: 'About', href: '/about/' },
   { label: 'Agencies & Partners', href: '/agencies-and-partners/' },
 ];
 
 export const utilityNav: NavLink[] = [
+  { label: 'For Educators', href: '/for-educators/' },
   { label: 'Customer login', href: '/customer/' },
   { label: 'Search', href: '/search/' },
 ];
@@ -110,6 +109,7 @@ export const footerNav: { heading: string; links: NavLink[] }[] = [
       { label: 'What We Think', href: '/what-we-think/' },
       { label: 'Case studies', href: '/case-studies/' },
       { label: 'Agencies & Partners', href: '/agencies-and-partners/' },
+      { label: 'For Educators', href: '/for-educators/' },
       { label: 'Customer login', href: '/customer/' },
       { label: 'Contact', href: '/contact/' },
     ],
