@@ -159,13 +159,15 @@ Not oversights. Each has a route reserved or a placeholder holding its place.
 
 ## 5. Open from the Sept 2026 snag list
 
-One annotation I could not place with confidence, and one structural question
-the new content raises. ("Remove, hearing will pick this up" turned out to mean
-Research & insight, now out of the nav dropdown — the stream and its page stay.)
+Every annotation is now actioned. "Remove, hearing will pick this up" meant
+Research & insight, out of the nav dropdown; "remove — we need the space" meant
+For Educators, moved to the utility bar to make room for Capabilities. Both
+pages stay and stay reachable.
+
+Two structural questions remain, neither of them blocking.
 
 | Item | What I need |
 | --- | --- |
-| "Remove — we need the space" | Points into the header, which holds a utility bar (customer login, search, phone) above the nav. Which of those goes? |
 | **EdNet is now the Engagement Hub in name only** | Every visible mention is renamed; the URL stays `/products/ednet/` by decision. Worth revisiting before launch — a visitor who notices the mismatch reads it as an unfinished rebrand, and changing it later costs a redirect that is free to add now. |
 | **Education IQ now says the same thing twice** | "What people use it for" (nine expandable cards, written from the brief) and "Ten ways to use it" (EdCo's own slide) cover much the same ground — analyse customers, identify risk, enrich CRM, improve targeting. I have kept both because only one was asked about. They should almost certainly merge, with EdCo's ten as the spine and the screenshots attached to them. |
 
