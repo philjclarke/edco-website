@@ -139,11 +139,14 @@ would have to live in Vercel's environment forever. Export any Pro glyph to
 
 Two treatments, and only two:
 
-- **In a grid** — a small icon on the line, inheriting the text colour. Used on
-  the Listen→Grow model.
-- **In a panel** — a gradient disc above the title. Used on the outcome,
-  product and capability cards, where it replaces the numeral (a card carries
-  one marker, not two, and those sets are options rather than sequences).
+**The icon always sits above the heading**, never on the line with it — on the
+line it competes with whatever else is there.
+
+- **In a grid** — the bare glyph in the accent colour. Used on the Listen→Grow
+  model.
+- **In a panel** — the glyph in a gradient disc. Used on the outcome, product
+  and capability cards, where it replaces the numeral (a card carries one
+  marker, not two, and those sets are options rather than sequences).
 
 Because an icon is a name, changing one is a text instruction rather than an
 asset request. Browse at icones.js.org.

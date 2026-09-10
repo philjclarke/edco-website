@@ -108,12 +108,10 @@ const iconExamples = [
     <Grid cols={3} class="mt-5">
       {
         iconExamples.map((e) => (
-          <div class="flex items-start gap-4 p-6">
-            <Icon name={e.icon} class="mt-0.5 h-5 w-5 shrink-0 text-pink" />
-            <div>
-              <p class="font-display text-base font-semibold">{e.label}</p>
-              <p class="mt-1 text-sm text-ink-muted">{e.note}</p>
-            </div>
+          <div class="p-6">
+            <Icon name={e.icon} class="mb-4 h-5 w-5 text-pink" />
+            <p class="font-display text-base font-semibold">{e.label}</p>
+            <p class="mt-1 text-sm text-ink-muted">{e.note}</p>
           </div>
         ))
       }
@@ -154,12 +152,10 @@ const iconExamples = [
     <Grid cols={3} tone="dark" class="mt-8">
       {
         iconExamples.map((e) => (
-          <div class="flex items-start gap-4 p-6">
-            <Icon name={e.icon} class="mt-0.5 h-5 w-5 shrink-0 text-orange" />
-            <div>
-              <p class="font-display text-base font-semibold">{e.label}</p>
-              <p class="mt-1 text-sm text-ondark-muted">{e.note}</p>
-            </div>
+          <div class="p-6">
+            <Icon name={e.icon} class="mb-4 h-5 w-5 text-orange" />
+            <p class="font-display text-base font-semibold">{e.label}</p>
+            <p class="mt-1 text-sm text-ondark-muted">{e.note}</p>
           </div>
         ))
       }
