@@ -1,0 +1,93 @@
+---
+/*
+  Photography for a hero banner, treated in CSS so no image ever needs opening
+  in Photoshop and nothing has to line up by hand.
+
+  Two edge treatments:
+    fade   — the photo dissolves into the section ground on its left edge.
+             Nothing to align, works with any crop. The safe default.
+    shape  — the photo is clipped into a curve echoing the brand ribbon.
+             More distinctive; the curve is defined in objectBoundingBox units
+             so it scales with the container rather than being a fixed asset.
+
+  `duotone` overlays the brand gradient through a luminosity blend, which pulls
+  any stock photograph onto the palette. Useful when a shot is usable but its
+  colours fight the navy.
+*/
+import { Image } from 'astro:assets';
+import { banners, isBannerKey } from '@/data/banners';
+
+interface Props {
+  /** A key from src/data/banners.ts. */
+  src: string;
+  alt?: string;
+  treatment?: 'fade' | 'shape';
+  duotone?: boolean;
+  /** Which part of the photo to keep when it crops. */
+  focus?: 'left' | 'centre' | 'right';
+  class?: string;
+}
+const {
+  src,
+  alt = '',
+  treatment = 'fade',
+  duotone = false,
+  focus = 'centre',
+  class: cls = '',
+} = Astro.props;
+
+const image = isBannerKey(src) ? banners[src] : null;
+const objectPos = { left: 'object-left', centre: 'object-center', right: 'object-right' }[focus];
+// Unique per instance: two shape banners on one page would otherwise both
+// resolve to whichever clipPath the browser saw first.
+const clipId = `banner-curve-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+{
+  image && (
+    <div class:list={['pointer-events-none absolute inset-y-0 right-0 w-[56%]', cls]} aria-hidden={alt ? undefined : 'true'}>
+      {treatment === 'shape' && (
+        <svg width="0" height="0" class="absolute" aria-hidden="true">
+          <defs>
+            <clipPath id={clipId} clipPathUnits="objectBoundingBox">
+              {/* An S-curve down the left edge, echoing the ribbon device. */}
+              <path d="M0.30,0 C0.12,0.26 0.40,0.56 0.20,0.82 C0.12,0.93 0.14,0.97 0.16,1 L1,1 L1,0 Z" />
+            </clipPath>
+          </defs>
+        </svg>
+      )}
+
+      <div
+        class:list={[
+          'relative h-full w-full',
+          duotone && 'bg-[linear-gradient(150deg,var(--color-navy-900)_10%,var(--color-orange)_120%)]',
+        ]}
+        style={treatment === 'shape' ? `clip-path: url(#${clipId})` : undefined}
+      >
+        <Image
+          src={image}
+          alt={alt}
+          widths={[700, 1100, 1600]}
+          sizes="56vw"
+          class:list={[
+            'h-full w-full object-cover',
+            objectPos,
+            duotone && 'opacity-90 mix-blend-luminosity grayscale contrast-[1.1]',
+          ]}
+          loading="eager"
+        />
+
+        {/* The copy always has to win. Fade dissolves the whole left edge;
+            shape only needs a short veil where the curve meets the text. */}
+        <div
+          class:list={[
+            'absolute inset-0',
+            treatment === 'fade'
+              ? 'bg-[linear-gradient(90deg,var(--color-navy-900)_0%,rgba(15,20,33,0.88)_22%,rgba(15,20,33,0)_62%)]'
+              : 'bg-[linear-gradient(90deg,rgba(15,20,33,0.55)_0%,rgba(15,20,33,0)_38%)]',
+          ]}
+        />
+      </div>
+    </div>
+  )
+}

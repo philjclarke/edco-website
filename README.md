@@ -122,6 +122,40 @@ written brand guideline. Anything marked `PROVISIONAL` needs EdCo sign-off.
 - Type is **Poppins** (display) and **Inter** (body), both provisional stand-ins loaded
   from Google Fonts. Swap for EdCo's licensed face and self-host.
 
+### Icons
+
+`astro-icon`, inlined as an SVG sprite at build — each unique glyph's path data
+appears once no matter how often it's used, and **no JavaScript ships**. Icons
+take `currentColor`, so they pick up the theme and the gradient for free.
+
+```astro
+<Icon name="fa6-solid:magnifying-glass" />   <!-- npm: @iconify-json/fa6-solid -->
+<Icon name="my-glyph" />                     <!-- a file in src/icons/ -->
+```
+
+Font Awesome **Pro** is deliberately not a build dependency: the licence token
+would have to live in Vercel's environment forever. Export any Pro glyph to
+`src/icons/` instead and commit the SVG — same licence, hermetic build.
+
+Because an icon is a name, changing one is a text instruction rather than an
+asset request. Browse at icones.js.org.
+
+### Banner photography
+
+`BannerImage` treats hero photography in CSS, so nothing needs opening in an
+image editor and nothing has to be aligned by hand.
+
+| Prop | Effect |
+| --- | --- |
+| `treatment="fade"` | The photo dissolves into the section ground on its left edge. Works with any crop. |
+| `treatment="shape"` | Clipped into a curve echoing the ribbon, in `objectBoundingBox` units so it scales. |
+| `duotone` | Brand gradient blended through via `mix-blend-mode: luminosity` — pulls any stock shot onto the palette. |
+| `focus` | Which part of the photo survives the crop. |
+
+Images live in `src/assets/banners/` and are named in `src/data/banners.ts`, so
+the copy JSON refers to one by key. An editor never handles a file: they
+describe the shot, it gets sourced and named in a line of JSON.
+
 ### Shape says whether a thing is clickable
 
 The one rule to hold on to. It came out of review — pills were being used for
