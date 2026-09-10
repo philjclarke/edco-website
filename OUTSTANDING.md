@@ -112,6 +112,13 @@ Twenty-four pages need more. Worth commissioning or licensing:
 - 3.4 Event and CPD photography
 - 3.5 Abstract/data-led imagery for the Education IQ and Data Services pages
 
+Every hero now carries a treated photograph (fade + duotone) in place of the
+ribbon. Nine Unsplash stand-ins cover roughly thirty heroes, so images repeat
+across sections — acceptable while the copy is being reviewed, not at launch.
+Commissioning around a dozen would remove the repetition entirely; each one is a
+file in `src/assets/banners/`, a line in `src/data/banners.ts`, and a key in the
+page's JSON.
+
 ### Product screenshots — EdCo feedback, Sept 2026
 
 Every product page now has framed slots waiting for real captures. Until they

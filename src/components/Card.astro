@@ -1,16 +1,20 @@
 ---
+import { Icon } from 'astro-icon/components';
+
 interface Props {
   href?: string;
+  /** Icon name. Renders in a gradient disc above the title. */
+  icon?: string;
   eyebrow?: string;
   /** Empty when the card is a content placeholder. */
   title: string;
   body?: string;
   meta?: string;
   tone?: 'dark' | 'light';
-  /** Numbered cards for the six outcomes / process steps. */
+  /** A numeral, shown only when there is no icon. */
   index?: number;
 }
-const { href, eyebrow, title, body, meta, tone = 'light', index } = Astro.props;
+const { href, icon, eyebrow, title, body, meta, tone = 'light', index } = Astro.props;
 const dark = tone === 'dark';
 const Tag = href ? 'a' : 'div';
 const linked = Boolean(href);
@@ -48,7 +52,19 @@ const linked = Boolean(href);
   }
 
   {
-    index !== undefined && (
+    icon && (
+      <span
+        class:list={[
+          'mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[linear-gradient(120deg,var(--color-orange),var(--color-pink))] text-white transition-transform duration-200',
+          linked && 'group-hover:scale-105',
+        ]}
+      >
+        <Icon name={icon} class="h-4 w-4" />
+      </span>
+    )
+  }
+  {
+    index !== undefined && !icon && (
       <span
         class:list={[
           'mb-3 font-display text-3xl font-bold leading-none grad-text transition-transform duration-200 md:text-4xl',

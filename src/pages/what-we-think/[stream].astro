@@ -25,7 +25,8 @@ const { stream, articles } = Astro.props;
 ---
 
 <Layout title={stream.label} description={stream.lead}>
-  <PageHero eyebrow="What We Think" title={stream.title} standfirst={stream.question} lead={stream.lead} />
+  <PageHero eyebrow="What We Think" title={stream.title} standfirst={stream.question} lead={stream.lead}
+    banner={{ src: 'lecture-hall', focus: 'centre' }} />
 
   <Section tone="light" size="lg">
     <ul class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">

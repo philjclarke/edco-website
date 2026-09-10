@@ -52,7 +52,12 @@
         "label": "Tell us what you’re trying to achieve",
         "href": "/contact/"
       }
-    ]
+    ],
+    "icon": "fa6-solid:magnifying-glass-chart",
+    "banner": {
+      "src": "workshop-group",
+      "focus": "centre"
+    }
   },
   {
     "slug": "build-your-reputation-and-audience",
@@ -107,7 +112,12 @@
         "label": "Tell us what you’re trying to achieve",
         "href": "/contact/"
       }
-    ]
+    ],
+    "icon": "fa6-solid:bullhorn",
+    "banner": {
+      "src": "teacher-board",
+      "focus": "right"
+    }
   },
   {
     "slug": "reach-and-engage-educators",
@@ -162,7 +172,12 @@
         "label": "Tell us what you’re trying to achieve",
         "href": "/contact/"
       }
-    ]
+    ],
+    "icon": "fa6-solid:people-group",
+    "banner": {
+      "src": "primary-classroom",
+      "focus": "right"
+    }
   },
   {
     "slug": "generate-leads-and-build-pipeline",
@@ -216,7 +231,12 @@
         "label": "Tell us what you’re trying to achieve",
         "href": "/contact/"
       }
-    ]
+    ],
+    "icon": "fa6-solid:arrow-trend-up",
+    "banner": {
+      "src": "meeting-table",
+      "focus": "centre"
+    }
   },
   {
     "slug": "grow-and-retain-customers",
@@ -272,7 +292,12 @@
         "label": "Tell us what you’re trying to achieve",
         "href": "/contact/"
       }
-    ]
+    ],
+    "icon": "fa6-solid:seedling",
+    "banner": {
+      "src": "laptop-charts",
+      "focus": "centre"
+    }
   },
   {
     "slug": "education-strategy",
@@ -329,6 +354,11 @@
         "label": "Tell us what you’re trying to achieve",
         "href": "/contact/"
       }
-    ]
+    ],
+    "icon": "fa6-solid:compass",
+    "banner": {
+      "src": "meeting-table",
+      "focus": "right"
+    }
   }
 ]

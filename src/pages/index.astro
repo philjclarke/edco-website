@@ -16,8 +16,7 @@ import { outcomes } from '@/data/outcomes';
 import { proofStats } from '@/data/proof';
 import { site } from '@/data/site';
 import home from '@/data/copy/home.json';
-import classroom from '@/assets/images/classroom.jpg';
-import ribbon from '@/assets/brand/ribbon-1.png';
+import BannerImage from '@/components/BannerImage.astro';
 import ribbonWave from '@/assets/brand/ribbon-4.png';
 ---
 
@@ -27,29 +26,7 @@ import ribbonWave from '@/assets/brand/ribbon-4.png';
 >
   <!-- ============================ Hero ============================ -->
   <section class="relative overflow-hidden bg-navy-900 text-ondark">
-    <!-- Image sits behind on desktop; the brand ribbon rides the seam. -->
-    <div class="pointer-events-none absolute inset-y-0 right-0 hidden w-[52%] lg:block">
-      <Image
-        src={classroom}
-        alt=""
-        aria-hidden="true"
-        widths={[900, 1400, 1800]}
-        sizes="52vw"
-        class="h-full w-full object-cover object-left"
-      />
-      <div
-        class="absolute inset-0 bg-[linear-gradient(90deg,var(--color-navy-900)_0%,rgba(15,20,33,0.85)_18%,rgba(15,20,33,0)_58%)]"
-      >
-      </div>
-    </div>
-    <Image
-      src={ribbon}
-      alt=""
-      aria-hidden="true"
-      widths={[400, 800]}
-      sizes="(min-width: 1024px) 360px, 200px"
-      class="pointer-events-none absolute -top-32 right-[-10%] h-[150%] w-auto opacity-20 lg:right-[18%] lg:opacity-95"
-    />
+    <BannerImage src="classroom" focus="centre" treatment="fade" duotone />
 
     <div class="relative mx-auto max-w-7xl px-6 pb-20 pt-12 md:pb-28 md:pt-16 lg:pb-32 lg:pt-20">
       <div class="max-w-2xl">
@@ -116,6 +93,7 @@ import ribbonWave from '@/assets/brand/ribbon-4.png';
           <li>
             <Card
               href={`/${o.slug}/`}
+              icon={o.icon}
               index={i + 1}
               title={o.navLabel}
               body={o.summary}

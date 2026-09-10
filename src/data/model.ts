@@ -10,6 +10,7 @@ export interface ModelStep {
   name: string;
   summary: string;
   methods: string[];
+  icon?: string;
 }
 export interface Belief {
   title: string;

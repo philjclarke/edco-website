@@ -11,7 +11,8 @@
         "Conversations",
         "Events",
         "Continual sector participation"
-      ]
+      ],
+      "icon": "fa6-solid:ear-listen"
     },
     {
       "name": "Understand",
@@ -22,7 +23,8 @@
         "Market intelligence",
         "School and trust data",
         "Segmentation"
-      ]
+      ],
+      "icon": "fa6-solid:magnifying-glass-chart"
     },
     {
       "name": "Give",
@@ -34,7 +36,8 @@
         "Guides and articles",
         "Tools and diagnostics",
         "Classroom resources"
-      ]
+      ],
+      "icon": "fa6-solid:gift"
     },
     {
       "name": "Engage",
@@ -46,7 +49,8 @@
         "The Curriculum Network",
         "Opted-in audiences",
         "Targeted communications"
-      ]
+      ],
+      "icon": "fa6-solid:bullhorn"
     },
     {
       "name": "Build",
@@ -56,7 +60,8 @@
         "SPIRIT",
         "Engagement Hub engagement intelligence",
         "Your existing CRM"
-      ]
+      ],
+      "icon": "fa6-solid:handshake"
     },
     {
       "name": "Grow",
@@ -67,7 +72,8 @@
         "Trust opportunities",
         "Cross-sell",
         "Deeper engagement"
-      ]
+      ],
+      "icon": "fa6-solid:arrow-trend-up"
     }
   ],
   "beliefs": [

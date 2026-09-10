@@ -18,6 +18,7 @@ import { products } from '@/data/products';
     title="Products built around understanding education"
     standfirst="They are part of EdCo, not separate businesses."
     lead="EdCo products are different ways of solving education-specific problems. Which of them is relevant depends entirely on what you’re trying to achieve."
+    banner={{ src: 'laptop-charts', focus: 'centre' }}
   />
 
   <Section tone="light" size="lg">
@@ -27,6 +28,7 @@ import { products } from '@/data/products';
           <li>
             <Card
               href={`/products/${p.slug}/`}
+              icon={p.icon}
               eyebrow={p.navLabel}
               title={p.standfirst ?? p.title}
               body={p.summary}

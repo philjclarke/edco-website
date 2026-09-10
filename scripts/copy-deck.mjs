@@ -46,6 +46,8 @@ const STRUCTURAL = new Set([
   'status',
   'outcome',
   'testimonialTheme',
+  'icon',
+  'banner',
 ]);
 
 /** Human labels for the field paths, so the deck reads like a document. */

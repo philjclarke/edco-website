@@ -45,4 +45,8 @@ export interface ContentPage {
    * there — only the label is.
    */
   externalSite?: { label: string; href: string };
+  /** Icon name — an Iconify set prefix, or a bare file in src/icons/. */
+  icon?: string;
+  /** Hero photography: a key from src/data/banners.ts plus its crop focus. */
+  banner?: { src: string; focus?: 'left' | 'centre' | 'right' };
 }

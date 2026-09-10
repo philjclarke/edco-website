@@ -20,6 +20,7 @@ import { routes } from '@/data/model';
     standfirst="You don’t need to know which EdCo product or team you need. That’s our job."
     lead="Tell us what you’re trying to achieve. We’ll work out what combination of intelligence, people, technology and engagement capability makes sense."
     size="lg"
+    banner={{ src: 'teacher-board', focus: 'centre' }}
   />
 
   <Section tone="light" size="lg">
@@ -29,6 +30,7 @@ import { routes } from '@/data/model';
           <li>
             <Card
               href={`/${o.slug}/`}
+              icon={o.icon}
               index={i + 1}
               title={o.navLabel}
               body={o.summary}

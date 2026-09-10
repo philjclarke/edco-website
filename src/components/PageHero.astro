@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import ribbon from '@/assets/brand/ribbon-1.png';
 import Button from './Button.astro';
+import BannerImage from './BannerImage.astro';
 import Placeholder from './Placeholder.astro';
 
 interface Props {
@@ -15,8 +16,11 @@ interface Props {
   /** A link off to the product's own website. Empty href = not live yet. */
   externalSite?: { label: string; href: string };
   size?: 'sm' | 'lg';
-  /** The brand ribbon device down the right edge. */
+  /** The brand ribbon device down the right edge — the fallback when a page
+      has no photography of its own. */
   ribbon?: boolean;
+  /** Hero photography. Supersedes the ribbon where it is set. */
+  banner?: { src: string; focus?: 'left' | 'centre' | 'right' };
 }
 const {
   eyebrow,
@@ -28,12 +32,14 @@ const {
   externalSite,
   size = 'sm',
   ribbon: showRibbon = true,
+  banner,
 } = Astro.props;
 ---
 
 <section class="relative overflow-hidden bg-navy-900 text-ondark">
+  {banner && <BannerImage src={banner.src} focus={banner.focus} treatment="fade" duotone />}
   {
-    showRibbon && (
+    !banner && showRibbon && (
       <Image
         src={ribbon}
         alt=""

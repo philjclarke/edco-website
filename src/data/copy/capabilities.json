@@ -84,7 +84,12 @@
         "label": "Tell us what you’re trying to achieve",
         "href": "/contact/"
       }
-    ]
+    ],
+    "icon": "fa6-solid:magnifying-glass",
+    "banner": {
+      "src": "workshop-group",
+      "focus": "right"
+    }
   },
   {
     "page": true,
@@ -173,7 +178,12 @@
         "label": "Tell us what you’re trying to achieve",
         "href": "/contact/"
       }
-    ]
+    ],
+    "icon": "fa6-solid:bullhorn",
+    "banner": {
+      "src": "laptop-charts",
+      "focus": "centre"
+    }
   },
   {
     "page": true,
@@ -246,7 +256,12 @@
         "label": "Tell us what you’re trying to achieve",
         "href": "/contact/"
       }
-    ]
+    ],
+    "icon": "fa6-solid:calendar-day",
+    "banner": {
+      "src": "teacher-board",
+      "focus": "right"
+    }
   },
   {
     "page": true,
@@ -311,7 +326,12 @@
         "label": "Tell us what you’re trying to achieve",
         "href": "/contact/"
       }
-    ]
+    ],
+    "icon": "fa6-solid:database",
+    "banner": {
+      "src": "data-screen",
+      "focus": "right"
+    }
   },
   {
     "page": true,
@@ -384,7 +404,12 @@
         "label": "Tell us what you’re trying to achieve",
         "href": "/contact/"
       }
-    ]
+    ],
+    "icon": "fa6-solid:file-lines",
+    "banner": {
+      "src": "students-laptops",
+      "focus": "centre"
+    }
   },
   {
     "page": true,
@@ -467,7 +492,12 @@
     ],
     "standfirst": "All of it, or the part you don’t want to do.",
     "lead": "A CSR programme in education only works if it is genuinely useful to schools. That means starting with what educators actually need, not with what makes a good report.",
-    "testimonialTheme": "EdCo feeling like part of the client team"
+    "testimonialTheme": "EdCo feeling like part of the client team",
+    "icon": "fa6-solid:hand-holding-heart",
+    "banner": {
+      "src": "primary-classroom",
+      "focus": "centre"
+    }
   },
   {
     "page": true,
@@ -532,7 +562,12 @@
         "label": "Tell us what you’re trying to achieve",
         "href": "/contact/"
       }
-    ]
+    ],
+    "icon": "fa6-solid:diagram-project",
+    "banner": {
+      "src": "data-screen",
+      "focus": "left"
+    }
   },
   {
     "page": true,
@@ -600,6 +635,11 @@
         "label": "Tell us what you’re trying to achieve",
         "href": "/contact/"
       }
-    ]
+    ],
+    "icon": "fa6-solid:screwdriver-wrench",
+    "banner": {
+      "src": "laptop-charts",
+      "focus": "left"
+    }
   }
 ]

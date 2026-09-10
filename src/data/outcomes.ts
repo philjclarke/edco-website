@@ -25,9 +25,11 @@ export interface Outcome {
   pull?: string;
   /** Which joined-up route in `routes` (brief §71) illustrates this outcome. */
   routeObjective: string;
+  icon?: string;
+  banner?: { src: string; focus?: 'left' | 'centre' | 'right' };
   next: NavLink[];
 }
 
-export const outcomes: Outcome[] = data;
+export const outcomes: Outcome[] = data as Outcome[];
 
 export const outcomeBySlug = Object.fromEntries(outcomes.map((o) => [o.slug, o]));

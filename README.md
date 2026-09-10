@@ -137,6 +137,14 @@ Font Awesome **Pro** is deliberately not a build dependency: the licence token
 would have to live in Vercel's environment forever. Export any Pro glyph to
 `src/icons/` instead and commit the SVG — same licence, hermetic build.
 
+Two treatments, and only two:
+
+- **In a grid** — a small icon on the line, inheriting the text colour. Used on
+  the Listen→Grow model.
+- **In a panel** — a gradient disc above the title. Used on the outcome,
+  product and capability cards, where it replaces the numeral (a card carries
+  one marker, not two, and those sets are options rather than sequences).
+
 Because an icon is a name, changing one is a text instruction rather than an
 asset request. Browse at icones.js.org.
 
@@ -153,8 +161,16 @@ image editor and nothing has to be aligned by hand.
 | `focus` | Which part of the photo survives the crop. |
 
 Images live in `src/assets/banners/` and are named in `src/data/banners.ts`, so
-the copy JSON refers to one by key. An editor never handles a file: they
-describe the shot, it gets sourced and named in a line of JSON.
+the copy JSON refers to one by key. **Every image must be registered there** —
+an unknown key throws at build rather than rendering an empty hero, which is a
+mistake that is otherwise silent.
+
+Every hero uses `fade` with `duotone`. The ribbon remains as the fallback when a
+page has no photography, and as the decorative wave on the homepage, but it is
+no longer the hero device.
+
+An editor never handles a file: they describe the shot, it gets sourced and
+named in a line of JSON.
 
 ### Shape says whether a thing is clickable
 

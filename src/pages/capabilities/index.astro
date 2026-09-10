@@ -19,6 +19,7 @@ import { capabilities } from '@/data/capabilities';
     title="The capabilities behind the outcomes"
     standfirst="Useful to know. Not the best place to start."
     lead="If you already know what you need, it’s all here. If you don’t, start with what you’re trying to achieve and let us do the diagnosis."
+    banner={{ src: 'workshop-group', focus: 'right' }}
   />
 
   <Section tone="light" size="lg">
@@ -28,6 +29,7 @@ import { capabilities } from '@/data/capabilities';
           <li>
             <Card
               href={c.page ? `/capabilities/${c.slug}/` : undefined}
+              icon={c.icon}
               eyebrow={c.navLabel}
               title={c.title}
               body={c.summary}

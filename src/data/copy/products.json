@@ -208,6 +208,11 @@
     "externalSite": {
       "label": "Visit Education IQ",
       "href": "https://www.educationiq.app/"
+    },
+    "icon": "fa6-solid:chart-simple",
+    "banner": {
+      "src": "data-screen",
+      "focus": "centre"
     }
   },
   {
@@ -313,6 +318,11 @@
     "externalSite": {
       "label": "Visit the Engagement Hub",
       "href": ""
+    },
+    "icon": "fa6-solid:network-wired",
+    "banner": {
+      "src": "students-laptops",
+      "focus": "right"
     }
   },
   {
@@ -394,6 +404,11 @@
     "externalSite": {
       "label": "Visit SPIRIT",
       "href": ""
+    },
+    "icon": "fa6-solid:handshake",
+    "banner": {
+      "src": "laptop-charts",
+      "focus": "right"
     }
   },
   {
@@ -464,6 +479,11 @@
     "externalSite": {
       "label": "Visit International Schools Network",
       "href": "https://isn.education/"
+    },
+    "icon": "fa6-solid:globe",
+    "banner": {
+      "src": "lecture-hall",
+      "focus": "centre"
     }
   },
   {
@@ -531,6 +551,11 @@
     "externalSite": {
       "label": "Visit The Curriculum Network",
       "href": ""
+    },
+    "icon": "fa6-solid:graduation-cap",
+    "banner": {
+      "src": "teacher-board",
+      "focus": "centre"
     }
   }
 ]

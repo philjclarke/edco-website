@@ -4,6 +4,7 @@
   conceptual model underpinning the whole site. Nothing here is a link, so it
   is a Grid, not a set of panels.
 */
+import { Icon } from 'astro-icon/components';
 import Grid from './Grid.astro';
 import { edcoModel } from '@/data/model';
 
@@ -19,7 +20,13 @@ const dark = tone === 'dark';
   {
     edcoModel.map((step, i) => (
       <li class="p-6 md:p-7">
-        <div class="flex items-baseline gap-3">
+        <div class="flex items-center gap-3">
+          {step.icon && (
+            <Icon
+              name={step.icon}
+              class:list={['h-4 w-4 shrink-0', dark ? 'text-orange' : 'text-pink']}
+            />
+          )}
           <span class="font-display text-sm font-bold grad-text">
             {String(i + 1).padStart(2, '0')}
           </span>

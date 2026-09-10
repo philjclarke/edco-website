@@ -30,6 +30,7 @@ const matchedRoute = routes.find((r) => r.objective === outcome.routeObjective)!
     eyebrow="What are you trying to achieve?"
     title={outcome.title}
     standfirst={outcome.standfirst}
+    banner={outcome.banner}
     size="lg"
   />
 
@@ -91,7 +92,13 @@ const matchedRoute = routes.find((r) => r.objective === outcome.routeObjective)!
       {
         others.map((o) => (
           <li>
-            <Card href={`/${o.slug}/`} title={o.navLabel} body={o.summary} meta="Explore this" />
+            <Card
+              href={`/${o.slug}/`}
+              icon={o.icon}
+              title={o.navLabel}
+              body={o.summary}
+              meta="Explore this"
+            />
           </li>
         ))
       }
