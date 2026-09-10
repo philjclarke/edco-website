@@ -166,6 +166,7 @@ the new content raises.
 | --- | --- |
 | "Remove — we need the space" | Points into the header, which holds a utility bar (customer login, search, phone) above the nav. Which of those goes? |
 | "Remove, hearing will pick this up" | Points at the What We Think dropdown — What we're hearing / Opinion / Research & insight. Which of the three is being absorbed? |
+| **EdNet is now the Engagement Hub in name only** | Every visible mention is renamed; the URL stays `/products/ednet/` by decision. Worth revisiting before launch — a visitor who notices the mismatch reads it as an unfinished rebrand, and changing it later costs a redirect that is free to add now. |
 | **Education IQ now says the same thing twice** | "What people use it for" (nine expandable cards, written from the brief) and "Ten ways to use it" (EdCo's own slide) cover much the same ground — analyse customers, identify risk, enrich CRM, improve targeting. I have kept both because only one was asked about. They should almost certainly merge, with EdCo's ten as the spine and the screenshots attached to them. |
 
 Also: the ten-ways slide reads "connect it your systems". I have restored the

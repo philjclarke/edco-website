@@ -214,7 +214,7 @@
     "slug": "ednet",
     "navLabel": "Engagement Hub",
     "title": "From digital brochure to education engagement platform.",
-    "standfirst": "Engagement Hub engagement intelligence",
+    "standfirst": "Schools don’t need more vendors. They need partners. Engagement Hub sites help suppliers become one.",
     "summary": "A website that demonstrates why schools should want to work with you, rather than listing what you sell.",
     "blocks": [
       {
@@ -222,15 +222,15 @@
         "title": "Most supplier websites are built backwards",
         "paras": [
           "Schools buy solutions to problems, not products from suppliers. A conventional supplier website usually begins: who we are → what we sell → why we’re good → contact us.",
-          "Schools don’t need more vendors. They need partners. Engagement Hub help suppliers become one."
+          "An Engagement Hub site behaves differently: your challenges → useful help → expertise → engagement → relationship → solution."
         ]
       },
       {
         "type": "shots",
-        "title": "What an EdNet site looks like",
+        "title": "What an Engagement Hub site looks like",
         "shots": [
           {
-            "caption": "An EdNet site — the visitor view"
+            "caption": "An Engagement Hub site — the visitor view"
           },
           {
             "caption": "Engagement intelligence — the administrator view"
@@ -239,7 +239,7 @@
       },
       {
         "type": "list",
-        "title": "What an EdNet site lets you give",
+        "title": "What an Engagement Hub site lets you give",
         "columns": 3,
         "items": [
           "Expert content",
@@ -256,7 +256,7 @@
       {
         "type": "steps",
         "title": "Anonymous traffic becomes a known relationship",
-        "lead": "EdNet is built to move visitors along a path, and to show you who is walking it.",
+        "lead": "An Engagement Hub site is built to move visitors along a path, and to show you who is walking it.",
         "steps": [
           "Reads an article",
           "Attends a webinar",
@@ -311,7 +311,7 @@
       }
     ],
     "externalSite": {
-      "label": "Visit EdNet",
+      "label": "Visit the Engagement Hub",
       "href": ""
     }
   },

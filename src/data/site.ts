@@ -46,7 +46,7 @@ export const primaryNav: NavGroup[] = [
     href: '/products/',
     children: [
       { label: 'Education IQ', href: '/products/education-iq/' },
-      { label: 'EdNet', href: '/products/ednet/' },
+      { label: 'Engagement Hub', href: '/products/ednet/' },
       { label: 'SPIRIT', href: '/products/spirit/' },
       { label: 'International Schools Network', href: '/products/international-schools-network/' },
       { label: 'The Curriculum Network', href: '/products/the-curriculum-network/' },
