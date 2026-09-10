@@ -2,6 +2,8 @@
 import type { Block } from '@/data/blocks';
 import TickList from './TickList.astro';
 import ProductShot from './ProductShot.astro';
+import Grid from './Grid.astro';
+import ProcessGrid from './ProcessGrid.astro';
 import Placeholder from './Placeholder.astro';
 
 interface Props {
@@ -47,20 +49,9 @@ const bg = (i: number) => (i % 2 === 1 ? 'bg-mist' : 'bg-paper');
               {block.title && <h2 class="text-title">{block.title}</h2>}
               {block.lead && <p class="mt-4 text-lead text-ink-muted">{block.lead}</p>}
             </div>
-            <ol class="mt-8 flex flex-wrap items-center gap-x-3 gap-y-3">
-              {block.steps.map((s, si) => (
-                <>
-                  <li class="rounded-md border-l-2 border-pink/50 bg-mist px-3.5 py-1.5 font-display text-sm font-semibold">
-                    {s}
-                  </li>
-                  {si < block.steps.length - 1 && (
-                    <li aria-hidden="true" class="font-display text-pink">
-                      →
-                    </li>
-                  )}
-                </>
-              ))}
-            </ol>
+            <div class="mt-8">
+              <ProcessGrid steps={block.steps} />
+            </div>
           </div>
         )}
 
@@ -72,9 +63,9 @@ const bg = (i: number) => (i % 2 === 1 ? 'bg-mist' : 'bg-paper');
                 {block.lead && <p class="mt-4 text-lead text-ink-muted">{block.lead}</p>}
               </div>
             )}
-            <ol class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <Grid cols={3} class="mt-10" as="ol">
               {block.items.map((w, i) => (
-                <li class="flex h-full flex-col rounded-card border border-line bg-paper p-6">
+                <li class="flex h-full flex-col p-6">
                   <span class="mb-4 inline-flex h-9 w-9 items-center justify-center rounded-full bg-[linear-gradient(120deg,var(--color-orange),var(--color-pink))] font-display text-sm font-bold text-white">
                     {i + 1}
                   </span>
@@ -99,7 +90,7 @@ const bg = (i: number) => (i % 2 === 1 ? 'bg-mist' : 'bg-paper');
                   </ul>
                 </li>
               ))}
-            </ol>
+            </Grid>
           </div>
         )}
 
@@ -140,7 +131,17 @@ const bg = (i: number) => (i % 2 === 1 ? 'bg-mist' : 'bg-paper');
                 {block.lead && <p class="mt-4 text-lead text-ink-muted">{block.lead}</p>}
               </div>
             )}
-            <div class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            <div class:list={['mt-8', block.items.some((i) => i.detail || i.shot) ? 'grid gap-5 md:grid-cols-2 lg:grid-cols-3' : '']}>
+              {!block.items.some((i) => i.detail || i.shot) ? (
+                <Grid cols={3}>
+                  {block.items.map((c) => (
+                    <div class="p-6">
+                      <h3 class="text-lg leading-snug">{c.title}</h3>
+                      <p class="mt-3 text-sm text-ink-muted">{c.body}</p>
+                    </div>
+                  ))}
+                </Grid>
+              ) : null}
               {block.items.map((c) =>
                 block.items.some((i) => i.detail || i.shot) ? (
                   /* <details> keeps this keyboard-accessible and working with
@@ -173,12 +174,7 @@ const bg = (i: number) => (i % 2 === 1 ? 'bg-mist' : 'bg-paper');
                       </div>
                     </div>
                   </details>
-                ) : (
-                  <div class="rounded-card border border-line bg-paper p-6">
-                    <h3 class="text-lg leading-snug">{c.title}</h3>
-                    <p class="mt-3 text-sm text-ink-muted">{c.body}</p>
-                  </div>
-                )
+                ) : null
               )}
             </div>
           </div>

@@ -122,6 +122,31 @@ written brand guideline. Anything marked `PROVISIONAL` needs EdCo sign-off.
 - Type is **Poppins** (display) and **Inter** (body), both provisional stand-ins loaded
   from Google Fonts. Swap for EdCo's licensed face and self-host.
 
+### Shape says whether a thing is clickable
+
+The one rule to hold on to. It came out of review — pills were being used for
+process steps that went nowhere, so people tried to click them.
+
+| | Panel | Grid |
+| --- | --- | --- |
+| Means | this goes somewhere | this is just information |
+| Form | own border, radius, gap between siblings | flush cells, shared hairlines, one outer radius |
+| Hover | lifts, gradient rule wipes across the top | none |
+| Built by | `Card.astro` (with `href`), `NextSteps.astro` | `Grid.astro`, `ProcessGrid.astro`, `TickList.astro` |
+
+Both take `tone="dark" | "light"`, because either can land on a navy or a paper
+section and the hairline has to come from the right palette.
+
+`ProcessGrid` is the sequence variant: numbered cells, no arrows. Anything that
+is a series of steps — "How it runs", the joined-up routes, the customer-analysis
+process — uses it, and none of them look like buttons any more.
+
+The trap when adding a Grid by hand is a part-filled last row: a `gap-px` over a
+coloured background leaves a stray block where a cell would have been.
+`Grid.astro` avoids it by having each cell draw its own bottom and right
+hairline and pull it back a pixel, so the count never matters. Use the component
+rather than rebuilding the pattern.
+
 ## Structure
 
 ```

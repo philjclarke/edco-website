@@ -1,0 +1,41 @@
+---
+/*
+  The non-clickable half of the affordance rule: shape says whether a thing can
+  be clicked. A Grid is flush hairline-divided cells with no radius and no hover
+  — it reads as a table of facts. Anything clickable is a Panel instead.
+
+  Children are plain elements; the cell borders are applied here so callers
+  don't have to remember the negative-margin trick that keeps a part-filled
+  last row from showing a stray edge.
+*/
+interface Props {
+  cols?: 2 | 3 | 4;
+  tone?: 'dark' | 'light';
+  as?: 'div' | 'ul' | 'ol' | 'dl';
+  class?: string;
+}
+const { cols = 3, tone = 'light', as: Tag = 'div', class: cls = '' } = Astro.props as Props;
+const dark = tone === 'dark';
+
+const columns = {
+  2: 'sm:grid-cols-2',
+  3: 'sm:grid-cols-2 lg:grid-cols-3',
+  4: 'sm:grid-cols-2 lg:grid-cols-4',
+};
+---
+
+<Tag
+  class:list={[
+    'grid overflow-hidden rounded-card border',
+    columns[cols],
+    dark ? 'border-navy-700 bg-navy-900' : 'border-line bg-paper',
+    // Each cell draws its own bottom and right hairline, then pulls it back a
+    // pixel so it lands under the neighbour's — or under the outer border on
+    // the last row and column, whatever the item count.
+    '[&>*]:-mb-px [&>*]:-mr-px [&>*]:border-b [&>*]:border-r',
+    dark ? '[&>*]:border-navy-700' : '[&>*]:border-line',
+    cls,
+  ]}
+>
+  <slot />
+</Tag>

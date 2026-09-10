@@ -9,6 +9,7 @@ import StatGrid from '@/components/StatGrid.astro';
 import NextSteps from '@/components/NextSteps.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import Placeholder from '@/components/Placeholder.astro';
+import Grid from '@/components/Grid.astro';
 import { beliefs } from '@/data/model';
 import { proofStats } from '@/data/proof';
 ---
@@ -26,10 +27,10 @@ import { proofStats } from '@/data/proof';
   />
 
   <Section tone="light" size="lg">
-    <ul class="grid gap-px overflow-hidden rounded-card border border-line bg-line md:grid-cols-2">
+    <Grid cols={2} as="ul">
       {
         beliefs.map((b, i) => (
-          <li class="bg-paper p-7 md:p-8">
+          <li class="p-7 md:p-8">
             <span class="font-display text-sm font-bold grad-text">
               {String(i + 1).padStart(2, '0')}
             </span>
@@ -38,7 +39,7 @@ import { proofStats } from '@/data/proof';
           </li>
         ))
       }
-    </ul>
+    </Grid>
   </Section>
 
   <!-- Brief §62: heritage as evidence, not the main proposition. -->
@@ -70,11 +71,11 @@ import { proofStats } from '@/data/proof';
       title="Everything begins with understanding education."
       lead="On top of that, EdCo has specialists in data, technology, research, marketing, content, events and strategy. And dedicated account managers whose job is to point that expertise at your objectives."
     />
-    <div class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+    <Grid cols={4} class="mt-12">
       {
         ['LEADERSHIP PROFILE', 'LEADERSHIP PROFILE', 'LEADERSHIP PROFILE', 'LEADERSHIP PROFILE'].map(
           (label, i) => (
-            <div class="rounded-card border border-line bg-paper p-6">
+            <div class="p-6">
               <div class="mb-5 aspect-square rounded-lg bg-mist" />
               <Placeholder label={label} note={`${i + 1} of 4`} block />
               <p class="mt-3 text-sm text-ink-muted">
@@ -84,7 +85,7 @@ import { proofStats } from '@/data/proof';
           )
         )
       }
-    </div>
+    </Grid>
     <p class="mt-6">
       <Placeholder label="MEET EDCO" note="broader team area — phase 2" />
     </p>

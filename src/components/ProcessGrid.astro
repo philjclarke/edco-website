@@ -1,0 +1,31 @@
+---
+/*
+  A sequence rendered as a Grid rather than a row of lozenges. The steps are not
+  clickable, so they must not look it; the numbering carries the order that the
+  old arrows used to.
+*/
+import Grid from './Grid.astro';
+
+interface Props {
+  steps: readonly string[];
+  tone?: 'dark' | 'light';
+}
+const { steps, tone = 'light' } = Astro.props;
+const dark = tone === 'dark';
+const cols = steps.length % 4 === 0 ? 4 : steps.length % 3 === 0 ? 3 : 4;
+---
+
+<Grid cols={cols as 3 | 4} tone={tone} as="ol">
+  {
+    steps.map((s, i) => (
+      <li class="flex items-baseline gap-3 px-5 py-4">
+        <span class="font-display text-xs font-bold grad-text">
+          {String(i + 1).padStart(2, '0')}
+        </span>
+        <span class:list={['font-display text-sm font-semibold', dark ? 'text-ondark' : 'text-ink']}>
+          {s}
+        </span>
+      </li>
+    ))
+  }
+</Grid>

@@ -5,6 +5,7 @@ import PageHero from '@/components/PageHero.astro';
 import Section from '@/components/Section.astro';
 import Card from '@/components/Card.astro';
 import CtaBand from '@/components/CtaBand.astro';
+import ProcessGrid from '@/components/ProcessGrid.astro';
 import { outcomes } from '@/data/outcomes';
 import { routes } from '@/data/model';
 ---
@@ -69,18 +70,9 @@ import { routes } from '@/data/model';
         routes.map((r) => (
           <li class="bg-paper p-6 md:p-8">
             <p class="font-display text-lg font-semibold md:text-xl">“{r.objective}”</p>
-            <ol class="mt-5 flex flex-wrap items-center gap-x-2.5 gap-y-2">
-              {r.steps.map((s, i) => (
-                <>
-                  <li class="rounded-md bg-mist px-3 py-1.5 text-[0.8125rem] font-medium">{s}</li>
-                  {i < r.steps.length - 1 && (
-                    <li aria-hidden="true" class="text-sm text-pink">
-                      →
-                    </li>
-                  )}
-                </>
-              ))}
-            </ol>
+            <div class="mt-5">
+              <ProcessGrid steps={r.steps} />
+            </div>
           </li>
         ))
       }

@@ -1,8 +1,10 @@
 ---
 /*
   Brief §5: LISTEN → UNDERSTAND → GIVE → ENGAGE → BUILD → GROW is the
-  conceptual model underpinning the whole site.
+  conceptual model underpinning the whole site. Nothing here is a link, so it
+  is a Grid, not a set of panels.
 */
+import Grid from './Grid.astro';
 import { edcoModel } from '@/data/model';
 
 interface Props {
@@ -13,28 +15,30 @@ const { tone = 'dark', compact = false } = Astro.props;
 const dark = tone === 'dark';
 ---
 
-<ol class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+<Grid cols={3} tone={tone} as="ol">
   {
     edcoModel.map((step, i) => (
-      <li
-        class:list={[
-          'relative rounded-card border p-6',
-          dark ? 'border-navy-700 bg-navy-800' : 'border-line bg-paper',
-        ]}
-      >
+      <li class="p-6 md:p-7">
         <div class="flex items-baseline gap-3">
-          <span class="font-display text-sm font-bold grad-text">{String(i + 1).padStart(2, '0')}</span>
+          <span class="font-display text-sm font-bold grad-text">
+            {String(i + 1).padStart(2, '0')}
+          </span>
           <h3 class="font-display text-xl font-bold">{step.name}</h3>
         </div>
         <p class:list={['mt-3 text-sm', dark ? 'text-ondark-muted' : 'text-ink-muted']}>
           {step.summary}
         </p>
         {!compact && (
-          <p class:list={['mt-4 text-xs leading-relaxed', dark ? 'text-ondark-muted/70' : 'text-ink-muted/80']}>
+          <p
+            class:list={[
+              'mt-4 text-xs leading-relaxed',
+              dark ? 'text-ondark-muted/70' : 'text-ink-muted/80',
+            ]}
+          >
             {step.methods.join(' · ')}
           </p>
         )}
       </li>
     ))
   }
-</ol>
+</Grid>

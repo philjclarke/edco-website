@@ -8,6 +8,7 @@ import NextSteps from '@/components/NextSteps.astro';
 import Testimonial from '@/components/Testimonial.astro';
 import Button from '@/components/Button.astro';
 import Placeholder from '@/components/Placeholder.astro';
+import ProcessGrid from '@/components/ProcessGrid.astro';
 import TickList from '@/components/TickList.astro';
 
 const findings = [
@@ -50,22 +51,10 @@ const findings = [
   <Section tone="dark" size="lg">
     <div class="mx-auto max-w-4xl text-center">
       <p class="eyebrow grad-text mb-6">What actually happens</p>
-      <ol class="flex flex-wrap items-center justify-center gap-x-3 gap-y-3">
-        {
-          ['Data', 'Intelligence', 'Human interpretation', 'Challenge', 'Action'].map((s, i, a) => (
-            <>
-              <li class="rounded-md border-l-2 border-pink/60 bg-navy-800 px-4 py-2 font-display text-sm font-semibold">
-                {s}
-              </li>
-              {i < a.length - 1 && (
-                <li aria-hidden="true" class="font-display text-pink">
-                  →
-                </li>
-              )}
-            </>
-          ))
-        }
-      </ol>
+      <ProcessGrid
+        steps={['Data', 'Intelligence', 'Human interpretation', 'Challenge', 'Action']}
+        tone="dark"
+      />
       <p class="mt-8 text-lead text-ondark-muted">
         A person who understands education looks at what came out, tells you what they think it
         means, and is prepared to disagree with you about it.
