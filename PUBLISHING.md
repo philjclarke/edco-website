@@ -83,6 +83,11 @@ are indistinguishable without a base. Those are refused outright.
 **Re-exporting is therefore a convenience, not a requirement** — it refreshes the
 *Current copy* column so it reads true again.
 
+Re-importing uses *Replace spreadsheet*, which wipes the sheet, so `csv` reads
+the live deck first and carries any filled-in *New copy* and *Notes* across into
+the new export, matched on `Ref`. Unpublished edits survive a re-import.
+`--no-carry` skips that if a clean sheet is genuinely wanted.
+
 ```bash
 node scripts/copy-deck.mjs csv     # writes copy-deck.csv, stamped with HEAD
 ```

@@ -272,8 +272,34 @@ function sectionOf(dotted) {
   return /^\d+$/.test(head) ? '' : sentence(head);
 }
 
-async function csv() {
+async function csv({ carry = true } = {}) {
   await pack();
+
+  /*
+    Re-importing with "Replace spreadsheet" wipes everything, so a fresh export
+    would throw away edits that hadn't been published yet. Carry the New copy
+    and Notes columns over from the live deck, matched on Ref, so re-importing
+    is safe to do at any time.
+  */
+  let carried = new Map();
+  if (carry) {
+    try {
+      const existing = parseCsv(await fetchDeck(DECK_URL));
+      const head = existing.shift().map((h) => h.replace(/^\uFEFF/, '').trim());
+      const iRef = head.indexOf('Ref');
+      const iNew = head.indexOf('New copy');
+      const iNotes = head.indexOf('Notes');
+      for (const r of existing) {
+        const ref = (r[iRef] ?? '').trim();
+        const nw = iNew >= 0 ? (r[iNew] ?? '') : '';
+        const notes = iNotes >= 0 ? (r[iNotes] ?? '') : '';
+        if (ref && (nw.trim() || notes.trim())) carried.set(ref, { nw, notes });
+      }
+      if (carried.size) console.log(`carrying ${carried.size} edited row(s) over from the live deck`);
+    } catch (err) {
+      console.warn(`could not read the live deck to carry edits over: ${err.message}`);
+    }
+  }
   const index = JSON.parse(await readFile(path.join(OUT_DIR, '_index.json'), 'utf8'));
   // A BOM keeps curly quotes and em dashes intact when Sheets and Excel open it.
   const lines = ['\uFEFF' + HEADERS.map(cell).join(',')];
@@ -296,15 +322,17 @@ async function csv() {
   for (const entry of index) {
     const doc = JSON.parse(await readFile(path.join(OUT_DIR, `${entry.docId}.json`), 'utf8'));
     for (const f of doc.fields) {
+      const ref = `${doc.docId}::${f.path}`;
+      const kept = carried.get(ref);
       lines.push(
         [
           doc.title,
           sectionOf(f.path),
           f.label,
-          `${doc.docId}::${f.path}`,
+          ref,
           doc.values[f.path] ?? '',
-          '',
-          '',
+          kept?.nw ?? '',
+          kept?.notes ?? '',
         ]
           .map(cell)
           .join(',')
@@ -554,7 +582,7 @@ const [cmd, arg] = process.argv.slice(2);
 try {
   if (cmd === 'pack') await pack();
   else if (cmd === 'apply') await apply(arg ?? OUT_DIR);
-  else if (cmd === 'csv') await csv();
+  else if (cmd === 'csv') await csv({ carry: !process.argv.includes('--no-carry') });
   else if (cmd === 'apply-csv') await applyCsv(arg);
   else if (cmd === 'reconcile')
     await reconcile(arg, { write: process.argv.includes('--write') });
