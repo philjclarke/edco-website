@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { cookieIsValid, COOKIE_NAME, sameOrigin } from '@/lib/auth';
 import { readJson, commitFiles, currentCopyCommit } from '@/lib/github';
 import { requireEnv } from '@/lib/env';
-import { diffDeck, applyDiff, SOURCES, COPY_DIR } from '@/lib/deck';
+import { diffDeck, applyDiff, fetchDeck, SOURCES, COPY_DIR } from '@/lib/deck';
 
 export const prerender = false;
 
@@ -18,9 +18,7 @@ export const POST: APIRoute = async ({ cookies, request }) => {
     const form = await request.formData();
     const who = String(form.get('who') ?? '').trim();
 
-    const res = await fetch(requireEnv('DECK_CSV_URL'), { redirect: 'follow' });
-    if (!res.ok) throw new Error(`Could not read the sheet (${res.status}).`);
-    const csv = await res.text();
+    const csv = await fetchDeck(requireEnv('DECK_CSV_URL'));
 
     // Read every file fresh, so the publish is based on what is actually live
     // rather than on whatever this deployment was built from.

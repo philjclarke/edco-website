@@ -80,7 +80,7 @@ Set in the Vercel project, not in the repo. `.env.example` lists them.
 | `GITHUB_TOKEN` | Fine-grained PAT, **this repository only**, Contents: read and write |
 | `GITHUB_REPO` | `philjclarke/edco-website` |
 | `GITHUB_BRANCH` | `main` |
-| `DECK_CSV_URL` | The sheet's CSV export URL |
+| `DECK_CSV_URL` | The sheet's URL. Either the `/edit` link from the browser or the `/export?format=csv` form — an edit link is rewritten automatically. |
 
 The sheet must stay shared as *anyone with the link can view* for the console to
 read it.

@@ -215,3 +215,44 @@ export function applyDiff(changes: FieldChange[], files: Record<string, any>): s
   }
   return [...touched];
 }
+
+/* ------------------------------------------------------- fetching it */
+
+/**
+ * Accept either form of a Google Sheets link.
+ *
+ * Copying the URL out of the browser gives the `/edit` address, which serves
+ * the spreadsheet application rather than the data. Rewriting it here means the
+ * setting works whichever one gets pasted in.
+ */
+export function normaliseDeckUrl(url: string): string {
+  const sheet = url.match(/docs\.google\.com\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/);
+  if (!sheet) return url;
+  if (/[?&]format=csv/.test(url)) return url;
+
+  // Keep the tab if the link points at one.
+  const gid = url.match(/[#&?]gid=(\d+)/)?.[1];
+  const base = `https://docs.google.com/spreadsheets/d/${sheet[1]}/export?format=csv`;
+  return gid ? `${base}&gid=${gid}` : base;
+}
+
+/** Fetch the deck as CSV, with errors that say what to do about them. */
+export async function fetchDeck(url: string): Promise<string> {
+  const res = await fetch(normaliseDeckUrl(url), { redirect: 'follow' });
+  if (!res.ok) {
+    throw new Error(
+      res.status === 404 || res.status === 403
+        ? 'The copy deck could not be read. It needs to be shared as “anyone with the link can view”.'
+        : `The copy deck could not be read (${res.status}).`
+    );
+  }
+  const text = await res.text();
+  if (text.trimStart().startsWith('<')) {
+    throw new Error(
+      'That link returned a web page rather than the spreadsheet data. ' +
+        'Check DECK_CSV_URL points at the sheet, and that it is shared as ' +
+        '“anyone with the link can view”.'
+    );
+  }
+  return text;
+}
