@@ -167,12 +167,21 @@ for (const c of diff?.changes ?? []) {
           </div>
         )}
 
-        {diff && !unstamped && diff.changes.length === 0 && diff.conflicts.length === 0 && (
+        {diff && diff.changes.length === 0 && (
           <div class="mt-8 rounded-card border border-line bg-mist p-7">
             <h2 class="text-title">Everything is up to date</h2>
             <p class="mt-3 text-ink-muted">
-              The website already says what the copy deck says. Checked all {diff.rows} fields.
+              Nothing is waiting to be published. Checked all {diff.rows} fields.
             </p>
+            {diff.inPlaceEdits.length > 0 && (
+              <p class="mt-4 rounded-card border border-orange/40 bg-orange/5 px-5 py-4 text-ink-muted">
+                {diff.inPlaceEdits.length} row{diff.inPlaceEdits.length === 1 ? ' has' : 's have'}{' '}
+                wording typed over <strong class="font-semibold text-ink">Current copy</strong>,
+                which is only a reference and is never published. Move{' '}
+                {diff.inPlaceEdits.length === 1 ? 'it' : 'them'} into{' '}
+                <strong class="font-semibold text-ink">New copy</strong> to publish.
+              </p>
+            )}
             <p class="mt-5 text-sm text-ink-muted">
               <a
                 href="https://docs.google.com/spreadsheets/d/1tIJqD10Xente09Q4pjejPsd7qyaYfcGevYmNA3Sbj4o/edit"
@@ -187,7 +196,7 @@ for (const c of diff?.changes ?? []) {
           </div>
         )}
 
-        {diff && !unstamped && (diff.changes.length > 0 || diff.conflicts.length > 0) && (
+        {diff && diff.changes.length > 0 && (
           <>
             <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 rounded-card border border-line bg-mist px-6 py-5">
               <p class="font-display text-lg font-bold">
@@ -195,7 +204,6 @@ for (const c of diff?.changes ?? []) {
               </p>
               <p class="text-sm text-ink-muted">
                 across {byPage.size} page{byPage.size === 1 ? '' : 's'} · checked {diff.rows} fields
-                {diff.movedOn > 0 && ` · ${diff.movedOn} already updated on the site`}
               </p>
             </div>
 
@@ -223,33 +231,24 @@ for (const c of diff?.changes ?? []) {
               ))}
             </div>
 
-            {diff.conflicts.length > 0 && (
+            {diff.inPlaceEdits.length > 0 && (
               <div class="mt-10 rounded-card border border-orange/50 bg-orange/5 p-7">
                 <h2 class="text-title">
-                  {diff.conflicts.length} change{diff.conflicts.length === 1 ? '' : 's'} need a
-                  decision
+                  {diff.inPlaceEdits.length} edit{diff.inPlaceEdits.length === 1 ? '' : 's'} in the
+                  wrong column
                 </h2>
                 <p class="mt-3 max-w-2xl text-ink-muted">
-                  These were edited in the deck, but the wording on the site has also changed since
-                  the deck was made. Publishing won’t touch them — someone needs to say which is
-                  right.
+                  These were typed over <strong class="font-semibold text-ink">Current copy</strong>,
+                  which is only a reference. Move them into
+                  <strong class="font-semibold text-ink"> New copy</strong> and they'll publish.
                 </p>
                 <ul class="mt-6 divide-y divide-orange/30 border-y border-orange/30">
-                  {diff.conflicts.map((c) => (
-                    <li class="py-5">
+                  {diff.inPlaceEdits.map((e) => (
+                    <li class="py-4">
                       <p class="font-display text-sm font-semibold">
-                        {c.page} · {c.field}
+                        {e.page} · {e.field}
                       </p>
-                      <dl class="mt-3 space-y-1.5 text-[0.9375rem]">
-                        <div class="flex gap-3">
-                          <dt class="w-28 shrink-0 text-sm text-ink-muted">In the deck</dt>
-                          <dd>{c.to}</dd>
-                        </div>
-                        <div class="flex gap-3">
-                          <dt class="w-28 shrink-0 text-sm text-ink-muted">On the site</dt>
-                          <dd>{c.from}</dd>
-                        </div>
-                      </dl>
+                      <p class="mt-2 text-[0.9375rem] text-ink-muted">{e.value}</p>
                     </li>
                   ))}
                 </ul>

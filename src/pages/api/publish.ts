@@ -61,9 +61,7 @@ export const POST: APIRoute = async ({ cookies, request }) => {
         JSON.stringify({
           ok: true,
           changed: 0,
-          message: diff.conflicts.length
-            ? 'Nothing could be published — every change needs a decision first.'
-            : 'Nothing to publish.',
+          message: 'Nothing to publish.',
         }),
         { status: 200 }
       );

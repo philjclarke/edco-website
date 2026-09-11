@@ -19,20 +19,24 @@ repo, and nothing about the layout can be changed this way.
 
 The site rebuilds and the new wording is live in about a minute.
 
-### What happens to the sheet
+### The one rule
 
-**Nothing.** Publishing doesn't rewrite the deck: your wording stays in *New
-copy*, and *Current copy* keeps showing what the site said when the deck was
-made.
+**"New copy" is the instruction.** Filled in, it says what that field should
+say. Empty, it says nothing at all and that field is left alone.
 
-That's deliberate, and it doesn't cause a problem. Once a change is live, that
-row simply stops producing a change — the site already says what the deck says.
-You can publish again straight away, leave *New copy* filled in, or clear it.
-None of it matters.
+Everything follows from that:
 
-*Current copy* does drift out of date as you publish. It's only a reference, so
-that's cosmetic — but it's why a fresh export is worth asking for every so
-often, so the column reads true again.
+- **To change something**, type the new wording into *New copy*.
+- **To change it back**, type the previous wording into *New copy*. Clearing the
+  cell does not undo a publish — it just means "no instruction".
+- **You can publish as often as you like.** Once a change is live, that row
+  stops producing a change because the site already says it. Leave *New copy*
+  filled or clear it; neither matters.
+
+**"Current copy" is only a reference.** It's a printout of what the site said
+when the deck was made, and nothing typed there is ever published. It goes out
+of date as you publish — that's expected. If something does get typed over it by
+mistake, the console says so rather than losing it quietly.
 
 ### Things worth knowing
 
@@ -41,10 +45,6 @@ nothing on the website.
 
 **You can only change words.** Page addresses, links, layouts and which sections
 exist are not editable from the deck — so nothing typed there can break a page.
-
-**If something "needs a decision"**, it means that wording was edited in the deck
-*and* changed on the website since the deck was made. The console shows both and
-publishes neither. Ask which is right.
 
 **Every publish is recorded** — who, when, and exactly what changed. The last
 five are listed at the bottom of the console, and any of them can be undone.
@@ -61,24 +61,20 @@ database, and every publish is an ordinary commit with a diff and an author.
 `src/lib/deck.ts` holds the comparison logic, shared with
 `scripts/copy-deck.mjs` so the console and the command line agree.
 
-### The export stamp, and the three-way merge
+### The export stamp
 
-Every CSV export carries the commit it was taken from, in a `__meta__` row. That
-stamp is the merge base: the console fetches the copy as it stood at that commit
-and compares three versions rather than two.
+Every CSV export carries the commit it was taken from, in a `__meta__` row.
 
-| | Result |
-| --- | --- |
-| Edited in the deck, unchanged on the site | Published |
-| Changed on the site, untouched in the deck | Left alone |
-| Both changed, differently | Shown as a conflict, never published |
+It is *not* used to decide what publishes — only *New copy* does that, which is
+what keeps the rules predictable and the deck usable indefinitely. The stamp
+exists so the console can fetch the copy as it stood at export time and spot
+wording typed over *Current copy*, which would otherwise be silently ignored.
 
-This is what keeps a deck usable indefinitely. A two-way comparison would have
-had to refuse any deck the site had moved past — which, since publishing itself
-moves the site on, meant the deck expired the moment it was first used.
-
-A deck with **no stamp** can't be merged, because an edit and an out-of-date cell
-are indistinguishable without a base. Those are refused outright.
+Two earlier designs were wrong and are worth not repeating. Treating a stale
+deck as invalid expired it the moment it was first used, because publishing
+itself moves the site on. Falling back to *Current copy* when *New copy* was
+empty made an empty cell mean two things, and made reverting a published change
+impossible.
 
 **Re-exporting is therefore a convenience, not a requirement** — it refreshes the
 *Current copy* column so it reads true again.

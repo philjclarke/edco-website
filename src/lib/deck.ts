@@ -133,17 +133,15 @@ export interface FieldChange {
   to: string;
 }
 
-export interface Conflict extends FieldChange {
-  /** What the site said when this deck was exported. */
-  base: string;
-}
-
 export interface DeckDiff {
   changes: FieldChange[];
-  /** Edited in the deck *and* changed on the site since the export. Never applied. */
-  conflicts: Conflict[];
-  /** Changed on the site since the export, untouched in the deck. Left alone. */
-  movedOn: number;
+  /**
+   * Rows where someone typed over "Current copy" instead of filling in
+   * "New copy". Reported so it can be corrected — never published, because
+   * an edited reference column is indistinguishable from one the site has
+   * simply moved past.
+   */
+  inPlaceEdits: { page: string; field: string; value: string }[];
   /** Rows whose Ref no longer matches anything in the content. */
   unmatched: { ref: string; reason: string }[];
   rows: number;
@@ -154,21 +152,19 @@ export interface DeckDiff {
 /**
  * Compare the sheet against the live content.
  *
- * A reviewer may type into "New copy" (the intended column) or edit "Current
- * copy" in place (which has happened). Both are honoured: New copy wins where
- * it is filled in, otherwise a Current copy that differs from what is live is
- * treated as the edit.
+ * One rule: **"New copy" is the instruction.** Filled in, it says what that
+ * field should say; empty, it says nothing at all. Nothing else on the sheet
+ * changes the site.
  *
- * Given `base` — the content as it stood at the deck's export stamp — this
- * becomes a three-way merge, which is what lets a deck stay usable after the
- * site has moved on:
+ * "Current copy" is a reference, printed at export time, and is never used as
+ * an instruction. It goes out of date as things are published, which is
+ * harmless — but if someone types over it by mistake, that edit would otherwise
+ * vanish silently, so those rows are reported. Spotting them needs `base`: the
+ * content as it stood at the deck's export stamp.
  *
- *   deck changed, site didn't    -> publish it
- *   site changed, deck didn't    -> leave it alone (counted in `movedOn`)
- *   both changed, differently    -> a conflict; shown, never applied
- *
- * Without a base every difference is ambiguous, and publishing could silently
- * revert whatever changed in between.
+ * An earlier version treated an empty "New copy" as "use Current copy", which
+ * made an empty cell mean two different things and made reverting a published
+ * change impossible.
  */
 export function diffDeck(
   csv: string,
@@ -176,21 +172,19 @@ export function diffDeck(
   base?: Record<string, any>
 ): DeckDiff {
   const rows = parseCsv(csv);
-  const header = rows.shift()!.map((h) => h.replace(/^﻿/, '').trim());
+  const header = rows.shift()!.map((h) => h.replace(/^\uFEFF/, '').trim());
   const iRef = header.indexOf('Ref');
   const iCur = header.indexOf('Current copy');
   const iNew = header.indexOf('New copy');
   const iPage = header.indexOf('Page');
   const iField = header.indexOf('Field');
-  if (iRef < 0 || iCur < 0) {
-    throw new Error('That sheet has no Ref / Current copy columns — is it the copy deck?');
+  if (iRef < 0 || iNew < 0) {
+    throw new Error('That sheet has no Ref / New copy columns — is it the copy deck?');
   }
 
   const changes: FieldChange[] = [];
-  const conflicts: Conflict[] = [];
+  const inPlaceEdits: { page: string; field: string; value: string }[] = [];
   const unmatched: { ref: string; reason: string }[] = [];
-  let movedOn = 0;
-
   let exportedFrom: string | null = null;
 
   for (const r of rows) {
@@ -203,8 +197,6 @@ export function diffDeck(
       continue;
     }
 
-    const proposed = (r[iNew] ?? '').trim() !== '' ? r[iNew] : (r[iCur] ?? '');
-
     const doc = resolveDoc(docId, files);
     if (!doc) {
       unmatched.push({ ref, reason: 'page no longer exists' });
@@ -215,37 +207,30 @@ export function diffDeck(
       unmatched.push({ ref, reason: 'field no longer exists' });
       continue;
     }
-    if (proposed === live) continue;
 
-    const entry = {
-      docId,
-      page: r[iPage] ?? docId,
-      field: r[iField] ?? fieldPath,
-      path: fieldPath,
-      file: doc.file,
-      from: live,
-      to: proposed,
-    };
+    const page = r[iPage] ?? docId;
+    const field = r[iField] ?? fieldPath;
+    const proposed = r[iNew] ?? '';
 
-    if (base) {
-      const baseDoc = resolveDoc(docId, base);
-      const was = baseDoc ? readPath(baseDoc.root, fieldPath) : undefined;
-      if (was !== undefined && was !== live) {
-        // The site moved on since the export.
-        if (proposed === was) {
-          // The deck is simply out of date here — it still holds the old text.
-          movedOn += 1;
-          continue;
+    if (proposed.trim() === '') {
+      // Nothing asked for here. Flag a typed-over reference so it isn't lost.
+      if (base) {
+        const baseDoc = resolveDoc(docId, base);
+        const was = baseDoc ? readPath(baseDoc.root, fieldPath) : undefined;
+        const current = r[iCur] ?? '';
+        if (was !== undefined && current !== was) {
+          inPlaceEdits.push({ page, field, value: current });
         }
-        conflicts.push({ ...entry, base: was });
-        continue;
       }
+      continue;
     }
 
-    changes.push(entry);
+    if (proposed === live) continue;
+
+    changes.push({ docId, page, field, path: fieldPath, file: doc.file, from: live, to: proposed });
   }
 
-  return { changes, conflicts, movedOn, unmatched, rows: rows.length, exportedFrom };
+  return { changes, inPlaceEdits, unmatched, rows: rows.length, exportedFrom };
 }
 
 /** Apply a diff to the parsed files. Returns the filenames that changed. */
