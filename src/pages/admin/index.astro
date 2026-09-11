@@ -12,6 +12,7 @@ import Layout from '@/layouts/Layout.astro';
 import Section from '@/components/Section.astro';
 import { cookieIsValid, missingConfig, COOKIE_NAME } from '@/lib/auth';
 import { readJson, recentPublishes, currentCopyCommit } from '@/lib/github';
+import { requireEnv } from '@/lib/env';
 import { diffDeck, SOURCES, COPY_DIR, type DeckDiff } from '@/lib/deck';
 
 export const prerender = false;
@@ -30,7 +31,7 @@ let liveCommit = '';
 
 if (signedIn) {
   try {
-    const res = await fetch(import.meta.env.DECK_CSV_URL, { redirect: 'follow' });
+    const res = await fetch(requireEnv('DECK_CSV_URL'), { redirect: 'follow' });
     if (!res.ok) throw new Error(`Could not read the copy deck (${res.status}).`);
     const csv = await res.text();
 

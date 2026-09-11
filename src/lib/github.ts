@@ -9,19 +9,17 @@
   The commit is what triggers Vercel to rebuild; nothing here talks to Vercel.
 */
 
+import { env, requireEnv } from './env';
+
 const API = 'https://api.github.com';
 const COPY_PATH = 'src/data/copy';
 
 function config() {
-  const token = import.meta.env.GITHUB_TOKEN;
-  const repo = import.meta.env.GITHUB_REPO;
-  const branch = import.meta.env.GITHUB_BRANCH || 'main';
-  if (!token || !repo) {
-    throw new Error(
-      'Publishing is not configured. GITHUB_TOKEN and GITHUB_REPO must be set in the Vercel project.'
-    );
-  }
-  return { token, repo, branch };
+  return {
+    token: requireEnv('GITHUB_TOKEN'),
+    repo: requireEnv('GITHUB_REPO'),
+    branch: env('GITHUB_BRANCH') ?? 'main',
+  };
 }
 
 async function gh(path: string, init: RequestInit = {}) {

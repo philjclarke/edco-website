@@ -1,11 +1,10 @@
 import type { APIRoute } from 'astro';
 import { cookieIsValid, COOKIE_NAME, sameOrigin } from '@/lib/auth';
 import { readJson, commitFiles, currentCopyCommit } from '@/lib/github';
+import { requireEnv } from '@/lib/env';
 import { diffDeck, applyDiff, SOURCES, COPY_DIR } from '@/lib/deck';
 
 export const prerender = false;
-
-const DECK_URL = import.meta.env.DECK_CSV_URL;
 
 export const POST: APIRoute = async ({ cookies, request }) => {
   if (!sameOrigin(request)) {
@@ -19,7 +18,7 @@ export const POST: APIRoute = async ({ cookies, request }) => {
     const form = await request.formData();
     const who = String(form.get('who') ?? '').trim();
 
-    const res = await fetch(DECK_URL, { redirect: 'follow' });
+    const res = await fetch(requireEnv('DECK_CSV_URL'), { redirect: 'follow' });
     if (!res.ok) throw new Error(`Could not read the sheet (${res.status}).`);
     const csv = await res.text();
 

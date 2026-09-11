@@ -7,14 +7,12 @@
   expires after a week.
 */
 
+import { env, requireEnv } from './env';
+
 const COOKIE = 'edco_admin';
 const MAX_AGE = 60 * 60 * 24 * 7;
 
-function secret() {
-  const s = import.meta.env.AUTH_SECRET;
-  if (!s) throw new Error('AUTH_SECRET is not set in the Vercel project.');
-  return s;
-}
+const secret = () => requireEnv('AUTH_SECRET');
 
 async function sign(value: string): Promise<string> {
   const key = await crypto.subtle.importKey(
@@ -39,9 +37,7 @@ function same(a: string, b: string) {
 }
 
 export function passwordMatches(input: string) {
-  const expected = import.meta.env.ADMIN_PASSWORD;
-  if (!expected) throw new Error('ADMIN_PASSWORD is not set in the Vercel project.');
-  return same(input, expected);
+  return same(input, requireEnv('ADMIN_PASSWORD'));
 }
 
 export async function issueCookie(): Promise<string> {
@@ -95,11 +91,11 @@ export function sameOrigin(request: Request): boolean {
 export function missingConfig(): string[] {
   return (
     [
-      ['ADMIN_PASSWORD', import.meta.env.ADMIN_PASSWORD],
-      ['AUTH_SECRET', import.meta.env.AUTH_SECRET],
-      ['GITHUB_TOKEN', import.meta.env.GITHUB_TOKEN],
-      ['GITHUB_REPO', import.meta.env.GITHUB_REPO],
-      ['DECK_CSV_URL', import.meta.env.DECK_CSV_URL],
+      ['ADMIN_PASSWORD', env('ADMIN_PASSWORD')],
+      ['AUTH_SECRET', env('AUTH_SECRET')],
+      ['GITHUB_TOKEN', env('GITHUB_TOKEN')],
+      ['GITHUB_REPO', env('GITHUB_REPO')],
+      ['DECK_CSV_URL', env('DECK_CSV_URL')],
     ] as const
   )
     .filter(([, v]) => !v)
