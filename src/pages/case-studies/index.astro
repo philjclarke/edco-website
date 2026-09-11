@@ -1,4 +1,5 @@
 ---
+import copy from '@/data/copy/pages.json';
 /* Brief §56–§57. Organised around what the customer was trying to achieve,
    never around EdCo's internal departments. */
 import { getCollection } from 'astro:content';
@@ -17,14 +18,14 @@ const outcomeLabel = (slug: string) =>
 ---
 
 <Layout
-  title="Case studies"
-  description="What organisations were trying to achieve, what we found, what we recommended and what changed."
+  title={copy.caseStudies.metaTitle}
+  description={copy.caseStudies.metaDescription}
 >
   <PageHero
-    eyebrow="Case studies"
-    title="What were they trying to achieve?"
-    standfirst="Every case study on this site answers the same seven questions."
-    lead="Including, in one or two of them, the awkward one: they asked us for X and we told them they needed Y."
+    eyebrow={copy.caseStudies.heroEyebrow}
+    title={copy.caseStudies.heroTitle}
+    standfirst={copy.caseStudies.heroStandfirst}
+    lead={copy.caseStudies.heroLead}
     banner={{ src: 'meeting-table', focus: 'centre' }}
   />
 
@@ -49,12 +50,8 @@ const outcomeLabel = (slug: string) =>
   <Section tone="mist" size="lg">
     <div class="max-w-3xl">
       <p class="eyebrow grad-text mb-4">Still to source</p>
-      <h2 class="text-display">Eight to twelve substantial cases at launch</h2>
-      <p class="mt-6 text-lead text-ink-muted">
-        These are the themes the brief asks the launch set to cover. No case study goes live until
-        the client facts, metrics and testimonial are verified and approved — nothing here is
-        invented.
-      </p>
+      <h2 class="text-display">{copy.caseStudies.heading}</h2>
+      <p class="mt-6 text-lead text-ink-muted">{copy.caseStudies.body}</p>
     </div>
     <ul class="mt-10 grid gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-2">
       {

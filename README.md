@@ -44,6 +44,7 @@ rather than a rewrite.
 | `src/data/proof.ts` | Stats, logo candidates, testimonial and case themes | Settings / repeatable |
 | `src/data/blocks.ts` | The five-block page vocabulary | Component / blocks model |
 | `src/content/articles/` | What We're Hearing, Opinion, Research & Insight | "Post" type |
+| `src/data/copy/pages.json` | Copy for pages that aren't part of a family — hubs, about, contact, for educators | Singleton per page |
 | `src/content/case-studies/` | Case studies | "Case study" type |
 
 Product and capability pages are assembled from five block types only — `prose`, `list`,

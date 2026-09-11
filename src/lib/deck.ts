@@ -32,6 +32,7 @@ export const SOURCES = [
   { file: 'model.json', docId: 'model', split: false },
   { file: 'proof.json', docId: 'proof', split: false },
   { file: 'streams.json', docId: 'streams', split: false },
+  { file: 'pages.json', splitKeys: true },
 ] as const;
 
 export const COPY_DIR = 'src/data/copy';
@@ -108,7 +109,17 @@ export function writePath(root: unknown, dotted: string, value: string): boolean
 export function resolveDoc(docId: string, files: Record<string, any>) {
   for (const src of SOURCES) {
     const stem = src.file.replace('.json', '');
-    if (!src.split) {
+
+    // pages.json is an object of pages, keyed by name rather than indexed.
+    if ((src as any).splitKeys) {
+      if (!docId.startsWith(`${stem}-`)) continue;
+      const key = docId.slice(stem.length + 1);
+      const root = files[src.file]?.[key];
+      if (root) return { file: src.file, root };
+      continue;
+    }
+
+    if (!(src as any).split) {
       if (docId === (src as any).docId) return { file: src.file, root: files[src.file] };
       continue;
     }

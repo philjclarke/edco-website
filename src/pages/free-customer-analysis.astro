@@ -1,4 +1,5 @@
 ---
+import copy from '@/data/copy/pages.json';
 /* Brief §29. The site's major conversion offer, so it gets its own page and
    is linked from Education IQ, Data Services and Grow & Retain Customers. */
 import Layout from '@/layouts/Layout.astro';
@@ -23,14 +24,14 @@ const findings = [
 ---
 
 <Layout
-  title="Free customer analysis"
-  description="Send us your customer list and we’ll analyse it through Education IQ — then an EdCo person will review the findings with you."
+  title={copy.freeAnalysis.metaTitle}
+  description={copy.freeAnalysis.metaDescription}
 >
   <PageHero
-    eyebrow="Free customer analysis"
-    title="What don’t you know about your customers?"
-    standfirst="Send us your customer list. We’ll analyse it through Education IQ."
-    lead="Then an EdCo person reviews the findings with you. This is not an automated PDF report."
+    eyebrow={copy.freeAnalysis.heroEyebrow}
+    title={copy.freeAnalysis.heroTitle}
+    standfirst={copy.freeAnalysis.heroStandfirst}
+    lead={copy.freeAnalysis.heroLead}
     primaryCta={{ label: 'Analyse my customers', href: '/contact/?intent=customer-analysis' }}
     size="lg"
     banner={{ src: 'data-screen', focus: 'centre' }}
@@ -40,10 +41,7 @@ const findings = [
     <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-20">
       <div>
         <h2 class="text-display">We might find</h2>
-        <p class="mt-6 text-lead text-ink-muted">
-          Most organisations know who their customers are. Rather fewer know what they have in
-          common, which of them are at risk, or where the next twenty sit.
-        </p>
+        <p class="mt-6 text-lead text-ink-muted">{copy.freeAnalysis.body}</p>
       </div>
       <TickList items={findings} columns={1} />
     </div>
@@ -51,15 +49,12 @@ const findings = [
 
   <Section tone="dark" size="lg">
     <div class="mx-auto max-w-4xl text-center">
-      <p class="eyebrow grad-text mb-6">What actually happens</p>
+      <p class="eyebrow grad-text mb-6">{copy.freeAnalysis.body2}</p>
       <ProcessGrid
         steps={['Data', 'Intelligence', 'Human interpretation', 'Challenge', 'Action']}
         tone="dark"
       />
-      <p class="mt-8 text-lead text-ondark-muted">
-        A person who understands education looks at what came out, tells you what they think it
-        means, and is prepared to disagree with you about it.
-      </p>
+      <p class="mt-8 text-lead text-ondark-muted">{copy.freeAnalysis.body3}</p>
       <div class="mt-10 flex justify-center">
         <Button href="/contact/?intent=customer-analysis" size="lg">Analyse my customers</Button>
       </div>
@@ -70,9 +65,7 @@ const findings = [
     <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:items-center">
       <div>
         <h2 class="text-title">The practical bits</h2>
-        <p class="mt-4 text-ink-muted">
-          What we need from you, what we do with it, and how long it takes.
-        </p>
+        <p class="mt-4 text-ink-muted">{copy.freeAnalysis.body4}</p>
       </div>
       <div class="space-y-3">
         <Placeholder label="DATA HANDLING / GDPR STATEMENT" note="legal sign-off required" block />
@@ -85,8 +78,8 @@ const findings = [
   <Section tone="light" size="md">
     <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:items-center">
       <div>
-        <p class="eyebrow grad-text mb-4">Proof beside the claim</p>
-        <h2 class="text-title">Somebody has already done this.</h2>
+        <p class="eyebrow grad-text mb-4">{copy.freeAnalysis.body5}</p>
+        <h2 class="text-title">{copy.freeAnalysis.heading}</h2>
       </div>
       <Testimonial prompt="EdCo understanding both education and the client’s business" />
     </div>

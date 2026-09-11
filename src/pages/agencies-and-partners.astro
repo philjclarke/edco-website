@@ -1,4 +1,5 @@
 ---
+import copy from '@/data/copy/pages.json';
 /* Brief §44–§45. The one audience that warrants its own route, because the
    commercial relationship is materially different. */
 import Layout from '@/layouts/Layout.astro';
@@ -25,14 +26,14 @@ const capabilities = [
 ---
 
 <Layout
-  title="Agencies & Partners"
-  description="Bring EdCo into your team when you need specialist education capability. Your client stays your client."
+  title={copy.agencies.metaTitle}
+  description={copy.agencies.metaDescription}
 >
   <PageHero
-    eyebrow="Agencies & Partners"
-    title="You know your client. We know education."
-    standfirst="Your client stays your client."
-    lead="Bring EdCo into your team when you need specialist education capability. We can work visibly alongside you, under your brand, or quietly behind the scenes."
+    eyebrow={copy.agencies.heroEyebrow}
+    title={copy.agencies.heroTitle}
+    standfirst={copy.agencies.heroStandfirst}
+    lead={copy.agencies.heroLead}
     size="lg"
     banner={{ src: 'meeting-table', focus: 'left' }}
   />
@@ -40,12 +41,9 @@ const capabilities = [
   <Section tone="light" size="lg">
     <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-20">
       <div>
-        <p class="eyebrow grad-text mb-4">Your client. Our education expertise.</p>
-        <h2 class="text-display">What you can bring us in for</h2>
-        <p class="mt-6 text-lead text-ink-muted">
-          All of it, or one piece of it. White-label work is explicitly on the table — EdCo does not
-          need to be the hero.
-        </p>
+        <p class="eyebrow grad-text mb-4">{copy.agencies.body}</p>
+        <h2 class="text-display">{copy.agencies.heading}</h2>
+        <p class="mt-6 text-lead text-ink-muted">{copy.agencies.body2}</p>
       </div>
       <TickList items={capabilities} columns={2} />
     </div>
@@ -54,21 +52,17 @@ const capabilities = [
   <Section tone="dark" size="md">
     <div class="mx-auto max-w-3xl text-center">
       <div class="mx-auto mb-8 h-1 w-16 rounded-full grad-rule"></div>
-      <p class="font-display text-display font-bold">Your client stays your client.</p>
-      <p class="mt-6 text-lead text-ondark-muted">
-        We work alongside professional CSR agencies, marketing agencies and consultancies regularly.
-        We are not trying to take ownership of your client relationship, and we’ll put that in
-        writing if it helps.
-      </p>
+      <p class="font-display text-display font-bold">{copy.agencies.body3}</p>
+      <p class="mt-6 text-lead text-ondark-muted">{copy.agencies.body4}</p>
     </div>
   </Section>
 
   <!-- Brief §45: a modest partner section, not a directory. -->
   <Section tone="light" size="lg">
     <SectionHead
-      eyebrow="Partner ecosystem"
-      title="And we bring other specialists in too"
-      lead="Where a piece of work needs expertise we don’t have, we’d rather find the right people than pretend."
+      eyebrow={copy.agencies.sectionEyebrow}
+      title={copy.agencies.sectionTitle}
+      lead={copy.agencies.sectionLead}
     />
     <ul class="mt-12 grid gap-5 md:grid-cols-3">
       {
@@ -85,14 +79,14 @@ const capabilities = [
         ))
       }
     </ul>
-    <p class="mt-4 text-xs text-ink-muted">Only approved relationships appear here.</p>
+    <p class="mt-4 text-xs text-ink-muted">{copy.agencies.body5}</p>
   </Section>
 
   <Section tone="mist" size="md">
     <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:items-center">
       <div>
-        <p class="eyebrow grad-text mb-4">Proof beside the claim</p>
-        <h2 class="text-title">Ask an agency we’ve worked with.</h2>
+        <p class="eyebrow grad-text mb-4">{copy.agencies.body6}</p>
+        <h2 class="text-title">{copy.agencies.heading2}</h2>
       </div>
       <Testimonial prompt="EdCo feeling like part of the client team" />
     </div>
@@ -109,7 +103,7 @@ const capabilities = [
   </Section>
 
   <CtaBand
-    title="Got a client brief with education in it?"
-    body="Tell us what your client is trying to achieve. We’ll tell you honestly whether we’re the right people, and what we’d bring."
+    title={copy.agencies.ctaTitle}
+    body={copy.agencies.ctaBody}
   />
 </Layout>

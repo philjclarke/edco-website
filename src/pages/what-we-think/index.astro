@@ -1,4 +1,5 @@
 ---
+import copy from '@/data/copy/pages.json';
 /* Brief §46. The umbrella area for EdCo's public thinking. */
 import { getCollection } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
@@ -15,14 +16,14 @@ const all = (await getCollection('articles')).sort(
 ---
 
 <Layout
-  title="What We Think"
-  description="What we’re hearing from educators, what we think about it, and the research underneath."
+  title={copy.whatWeThink.metaTitle}
+  description={copy.whatWeThink.metaDescription}
 >
   <PageHero
-    eyebrow="What We Think"
-    title="Listening, out loud."
-    standfirst="Worth knowing. Occasionally worth arguing about."
-    lead="Three different things, kept deliberately separate: what the sector is telling us, what we think about it, and what the evidence actually says."
+    eyebrow={copy.whatWeThink.heroEyebrow}
+    title={copy.whatWeThink.heroTitle}
+    standfirst={copy.whatWeThink.heroStandfirst}
+    lead={copy.whatWeThink.heroLead}
     banner={{ src: 'lecture-hall', focus: 'right' }}
   />
 
@@ -57,9 +58,9 @@ const all = (await getCollection('articles')).sort(
   </Section>
 
   <CtaBand
-    title="Keep listening with us."
-    body="Get the most useful things we’re hearing from educators, new research, EdCo opinion and invitations to events. No generic education-news roundup."
-    ctaLabel="Subscribe"
+    title={copy.whatWeThink.ctaTitle}
+    body={copy.whatWeThink.ctaBody}
+    ctaLabel={copy.whatWeThink.ctaCtaLabel}
     ctaHref="/contact/"
   />
 </Layout>

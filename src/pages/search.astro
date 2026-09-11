@@ -1,4 +1,5 @@
 ---
+import copy from '@/data/copy/pages.json';
 /* Brief §64. Prominent site-wide search across every content type, so someone
    searching "SEND" or "MATs" finds articles, products, capabilities and cases
    together. Powered by Pagefind, which indexes the built site — no server,
@@ -8,15 +9,12 @@ import Layout from '@/layouts/Layout.astro';
 import Section from '@/components/Section.astro';
 ---
 
-<Layout title="Search" headerTone="light">
+<Layout title={copy.search.metaTitle} headerTone="light">
   <Section tone="light" size="md">
     <div class="max-w-2xl">
       <p class="eyebrow grad-text mb-4">Search</p>
-      <h1 class="text-display">Look for a theme, not a department.</h1>
-      <p class="mt-6 text-lead text-ink-muted">
-        SEND. MATs. School finance. Lead generation. Salesforce. Teacher workload. Whatever you’re
-        dealing with — this searches everything we’ve published.
-      </p>
+      <h1 class="text-display">{copy.search.heading}</h1>
+      <p class="mt-6 text-lead text-ink-muted">{copy.search.body}</p>
     </div>
     <div id="search" class="mt-10"></div>
   </Section>

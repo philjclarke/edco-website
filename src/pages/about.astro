@@ -1,4 +1,5 @@
 ---
+import copy from '@/data/copy/pages.json';
 /* Brief §61–§63. Lead with beliefs, not a corporate timeline.
    No careers section — recruitment is handled elsewhere. */
 import Layout from '@/layouts/Layout.astro';
@@ -15,14 +16,14 @@ import { proofStats } from '@/data/proof';
 ---
 
 <Layout
-  title="About EdCo"
-  description="What we believe, how we got here and the people who do the work."
+  title={copy.about.metaTitle}
+  description={copy.about.metaDescription}
 >
   <PageHero
-    eyebrow="About EdCo"
-    title="What we believe"
-    standfirst="Partnership is demonstrated, not claimed."
-    lead="We could open with a timeline. It seems more useful to tell you how we think, so you can work out whether you want us anywhere near your plans."
+    eyebrow={copy.about.heroEyebrow}
+    title={copy.about.heroTitle}
+    standfirst={copy.about.heroStandfirst}
+    lead={copy.about.heroLead}
     size="lg"
     banner={{ src: 'lecture-hall', focus: 'centre' }}
   />
@@ -48,16 +49,11 @@ import { proofStats } from '@/data/proof';
     <div class="grid gap-12 lg:grid-cols-2 lg:gap-20">
       <div>
         <p class="eyebrow grad-text mb-4">Heritage</p>
-        <h2 class="text-display">We’ve been listening to educators since before email.</h2>
+        <h2 class="text-display">{copy.about.heading}</h2>
       </div>
       <div class="text-lead text-ondark-muted">
-        <p>
-          Channels have changed. Technology has changed. Education has changed almost beyond
-          recognition.
-        </p>
-        <p class="mt-5">
-          The need to understand educators before trying to engage them has not.
-        </p>
+        <p>{copy.about.body}</p>
+        <p class="mt-5">{copy.about.body2}</p>
       </div>
     </div>
     <div class="mt-14">
@@ -68,9 +64,9 @@ import { proofStats } from '@/data/proof';
   <!-- Brief §63: people as evidence of expertise, not a wall of 50 biographies. -->
   <Section tone="light" size="lg">
     <SectionHead
-      eyebrow="People"
-      title="Everything begins with understanding education."
-      lead="On top of that, EdCo has specialists in data, technology, research, marketing, content, events and strategy. And dedicated account managers whose job is to point that expertise at your objectives."
+      eyebrow={copy.about.sectionEyebrow}
+      title={copy.about.sectionTitle}
+      lead={copy.about.sectionLead}
     />
     <Grid cols={4} class="mt-12">
       {
@@ -79,9 +75,7 @@ import { proofStats } from '@/data/proof';
             <div class="p-6">
               <div class="mb-5 aspect-square rounded-lg bg-mist" />
               <Placeholder label={label} note={`${i + 1} of 4`} block />
-              <p class="mt-3 text-sm text-ink-muted">
-                Name, role, and one line on what they actually know about.
-              </p>
+              <p class="mt-3 text-sm text-ink-muted">{copy.about.body3}</p>
             </div>
           )
         )
@@ -96,20 +90,12 @@ import { proofStats } from '@/data/proof';
   <Section tone="mist" size="lg">
     <div class="grid gap-12 lg:grid-cols-2 lg:gap-20">
       <div>
-        <p class="eyebrow grad-text mb-4">Dedicated account management</p>
-        <h2 class="text-display">Your objectives become our objectives.</h2>
+        <p class="eyebrow grad-text mb-4">{copy.about.body4}</p>
+        <h2 class="text-display">{copy.about.heading2}</h2>
       </div>
       <div class="text-lead text-ink-muted">
-        <p>
-          You should have one relationship with EdCo, not separate relationships with several
-          departments.
-        </p>
-        <p class="mt-5">
-          Your Account Manager’s job isn’t to sell you whichever EdCo service happens to be next.
-          It’s to understand what you’re trying to achieve and bring together the people who can
-          help — then keep the work aligned to it, track progress, and challenge the assumptions
-          when they need challenging.
-        </p>
+        <p>{copy.about.body5}</p>
+        <p class="mt-5">{copy.about.body6}</p>
       </div>
     </div>
   </Section>

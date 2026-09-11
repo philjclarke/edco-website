@@ -1,4 +1,5 @@
 ---
+import copy from '@/data/copy/pages.json';
 /* Brief §27. Products come after the broader proposition, never before it. */
 import Layout from '@/layouts/Layout.astro';
 import PageHero from '@/components/PageHero.astro';
@@ -10,14 +11,14 @@ import { products } from '@/data/products';
 ---
 
 <Layout
-  title="Products"
-  description="Education IQ, the Engagement Hub, SPIRIT, the International Schools Network and The Curriculum Network — different ways of solving education-specific problems."
+  title={copy.productsHub.metaTitle}
+  description={copy.productsHub.metaDescription}
 >
   <PageHero
-    eyebrow="Products"
-    title="Products built around understanding education"
-    standfirst="They are part of EdCo, not separate businesses."
-    lead="EdCo products are different ways of solving education-specific problems. Which of them is relevant depends entirely on what you’re trying to achieve."
+    eyebrow={copy.productsHub.heroEyebrow}
+    title={copy.productsHub.heroTitle}
+    standfirst={copy.productsHub.heroStandfirst}
+    lead={copy.productsHub.heroLead}
     banner={{ src: 'laptop-charts', focus: 'centre' }}
   />
 
@@ -43,11 +44,8 @@ import { products } from '@/data/products';
   <Section tone="dark" size="md">
     <div class="mx-auto max-w-3xl text-center">
       <div class="mx-auto mb-8 h-1 w-16 rounded-full grad-rule"></div>
-      <p class="font-display text-display font-bold">Your technology doesn’t need our logo on it.</p>
-      <p class="mt-6 text-lead text-ondark-muted">
-        If you already have a CRM you like — Salesforce, HubSpot, Microsoft Dynamics or anything
-        else — we’ll help make that environment more valuable. SPIRIT is an option, not an agenda.
-      </p>
+      <p class="font-display text-display font-bold">{copy.productsHub.body}</p>
+      <p class="mt-6 text-lead text-ondark-muted">{copy.productsHub.body2}</p>
     </div>
   </Section>
 

@@ -1,4 +1,5 @@
 ---
+import copy from '@/data/copy/pages.json';
 /* Brief §54. A clearly defined route for educators who arrive — without
    turning the corporate site into an educator site. */
 import Layout from '@/layouts/Layout.astro';
@@ -10,22 +11,22 @@ import Placeholder from '@/components/Placeholder.astro';
 ---
 
 <Layout
-  title="For educators"
-  description="Events, CPD, resources and research you can take part in — through the International Schools Network and The Curriculum Network."
+  title={copy.forEducators.metaTitle}
+  description={copy.forEducators.metaDescription}
 >
   <PageHero
-    eyebrow="For educators"
-    title="If you’re an educator, this bit is for you."
-    standfirst="We spend a lot of time asking educators what they need. Occasionally we have something to give back."
-    lead="Most of this site is aimed at organisations that want to work with education. This part isn’t."
+    eyebrow={copy.forEducators.heroEyebrow}
+    title={copy.forEducators.heroTitle}
+    standfirst={copy.forEducators.heroStandfirst}
+    lead={copy.forEducators.heroLead}
     banner={{ src: 'primary-classroom', focus: 'left' }}
   />
 
   <Section tone="light" size="lg">
     <SectionHead
-      eyebrow="Networks"
-      title="Where you’ll actually find us"
-      lead="Two communities EdCo runs, both free to join for educators."
+      eyebrow={copy.forEducators.sectionEyebrow}
+      title={copy.forEducators.sectionTitle}
+      lead={copy.forEducators.sectionLead}
     />
     <ul class="mt-12 grid gap-5 md:grid-cols-2">
       <li>
@@ -54,7 +55,7 @@ import Placeholder from '@/components/Placeholder.astro';
   </Section>
 
   <Section tone="mist" size="lg">
-    <SectionHead eyebrow="What’s on" title="Events and CPD coming up" />
+    <SectionHead eyebrow={copy.forEducators.sectionEyebrow2} title={copy.forEducators.sectionTitle2} />
     <ul class="mt-12 grid gap-5 md:grid-cols-3">
       {
         [1, 2, 3].map((n) => (
@@ -72,11 +73,8 @@ import Placeholder from '@/components/Placeholder.astro';
     <div class="grid gap-12 lg:grid-cols-2 lg:gap-20">
       <div>
         <p class="eyebrow grad-text mb-4">Take part</p>
-        <h2 class="text-display">Tell us what you’re dealing with</h2>
-        <p class="mt-6 text-lead text-ink-muted">
-          We run interviews, focus groups and research studies with educators all year round.
-          Sometimes they’re paid. Always they’re short, and we’ll tell you what we found.
-        </p>
+        <h2 class="text-display">{copy.forEducators.heading}</h2>
+        <p class="mt-6 text-lead text-ink-muted">{copy.forEducators.body}</p>
       </div>
       <div class="space-y-3">
         <Placeholder label="RESEARCH PARTICIPATION SIGN-UP" block />

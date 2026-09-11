@@ -1,4 +1,5 @@
 ---
+import copy from '@/data/copy/pages.json';
 /* Brief §11, §13. The overview of the six outcome routes. */
 import Layout from '@/layouts/Layout.astro';
 import PageHero from '@/components/PageHero.astro';
@@ -11,14 +12,14 @@ import { routes } from '@/data/model';
 ---
 
 <Layout
-  title="What are you trying to achieve?"
-  description="Start with your objective, not our organisation chart. Six routes into EdCo."
+  title={copy.outcomesHub.metaTitle}
+  description={copy.outcomesHub.metaDescription}
 >
   <PageHero
-    eyebrow="Start here"
-    title="Start with your objective. Not our organisation chart."
-    standfirst="You don’t need to know which EdCo product or team you need. That’s our job."
-    lead="Tell us what you’re trying to achieve. We’ll work out what combination of intelligence, people, technology and engagement capability makes sense."
+    eyebrow={copy.outcomesHub.heroEyebrow}
+    title={copy.outcomesHub.heroTitle}
+    standfirst={copy.outcomesHub.heroStandfirst}
+    lead={copy.outcomesHub.heroLead}
     size="lg"
     banner={{ src: 'teacher-board', focus: 'centre' }}
   />
@@ -47,26 +48,19 @@ import { routes } from '@/data/model';
     <div class="grid gap-12 lg:grid-cols-2 lg:gap-20">
       <div>
         <p class="eyebrow grad-text mb-4">Why we start here</p>
-        <h2 class="text-display">Different problems need different answers.</h2>
+        <h2 class="text-display">{copy.outcomesHub.heading}</h2>
       </div>
       <div class="text-lead text-ondark-muted">
-        <p>
-          A marketing agency is likely to suggest marketing. A data provider is likely to suggest
-          data. A software company is likely to suggest software.
-        </p>
-        <p class="mt-5">That isn’t necessarily wrong. But it isn’t how we start.</p>
-        <p class="mt-5 font-display font-semibold text-ondark">
-          Because sometimes the answer is a campaign. Sometimes it’s research. Sometimes it’s better
-          intelligence. Sometimes it’s something useful to give educators. Sometimes it’s
-          technology. Often it’s several things working together.
-        </p>
+        <p>{copy.outcomesHub.body}</p>
+        <p class="mt-5">{copy.outcomesHub.body2}</p>
+        <p class="mt-5 font-display font-semibold text-ondark">{copy.outcomesHub.body3}</p>
       </div>
     </div>
   </Section>
 
   <!-- Brief §71: real objectives, and one way EdCo might approach each. -->
   <Section tone="light" size="lg">
-    <h2 class="text-display">Some things people actually say to us</h2>
+    <h2 class="text-display">{copy.outcomesHub.heading2}</h2>
     <ul class="mt-12 space-y-px overflow-hidden rounded-card border border-line bg-line">
       {
         routes.map((r) => (
@@ -79,10 +73,7 @@ import { routes } from '@/data/model';
         ))
       }
     </ul>
-    <p class="mt-8 max-w-2xl text-ink-muted">
-      None of these is a fixed process. They’re examples of how intelligence, people, content and
-      engagement combine around an objective.
-    </p>
+    <p class="mt-8 max-w-2xl text-ink-muted">{copy.outcomesHub.body4}</p>
   </Section>
 
   <CtaBand />

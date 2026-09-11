@@ -72,7 +72,27 @@ const FIELD_LABELS = {
   value: 'Figure',
   objective: 'Objective',
   description: 'Meta description',
+  metaTitle: 'Browser tab title',
+  metaDescription: 'Search engine description',
+  heroEyebrow: 'Hero — small label',
+  heroTitle: 'Hero — heading',
+  heroStandfirst: 'Hero — standfirst',
+  heroLead: 'Hero — intro paragraph',
+  sectionEyebrow: 'Section — small label',
+  sectionTitle: 'Section — heading',
+  sectionLead: 'Section — intro paragraph',
+  ctaTitle: 'Closing call to action — heading',
+  ctaBody: 'Closing call to action — body',
+  ctaCtaLabel: 'Closing call to action — button',
 };
+
+/* Repeated roles get a number: heroTitle2, body3. Label them in sequence. */
+function roleLabel(leaf) {
+  const m = /^([a-zA-Z]+?)(\d+)$/.exec(leaf);
+  if (!m) return FIELD_LABELS[leaf];
+  const base = FIELD_LABELS[m[1]];
+  return base ? `${base} ${m[2]}` : undefined;
+}
 
 /* ------------------------------------------------------------------ */
 
@@ -126,6 +146,8 @@ function unflatten(target, values) {
 function labelFor(dotted) {
   const leaf = dotted.split('.').at(-1);
   if (FIELD_LABELS[leaf]) return FIELD_LABELS[leaf];
+  const seq = roleLabel(leaf);
+  if (seq) return seq;
   if (/^\d+$/.test(leaf)) {
     const parent = dotted.split('.').at(-2);
     const n = Number(leaf) + 1;
@@ -146,7 +168,11 @@ const SOURCES = [
   { file: 'model.json', group: 'Shared', split: false, docId: 'model', title: 'Model, beliefs & routes' },
   { file: 'proof.json', group: 'Shared', split: false, docId: 'proof', title: 'Proof, logos & themes' },
   { file: 'streams.json', group: 'Shared', split: false, docId: 'streams', title: 'What We Think streams' },
+  { file: 'pages.json', group: 'Other pages', splitKeys: true },
 ];
+
+/* Human titles for the page keys in pages.json. */
+const PAGE_TITLES = {"outcomesHub": "What are you trying to achieve?", "productsHub": "Products (hub)", "capabilitiesHub": "Capabilities (hub)", "freeAnalysis": "Free customer analysis", "agencies": "Agencies & Partners", "about": "About EdCo", "contact": "Contact", "customer": "Customer login", "forEducators": "For educators", "whatWeThink": "What We Think (hub)", "caseStudies": "Case studies (hub)", "search": "Search", "notFound": "Page not found"};
 
 async function pack() {
   await mkdir(OUT_DIR, { recursive: true });
@@ -174,7 +200,12 @@ async function pack() {
       index.push({ docId, title, group: src.group, count: fields.length });
     };
 
-    if (src.split && Array.isArray(raw)) {
+    if (src.splitKeys) {
+      // pages.json is an object of pages rather than an array of items.
+      for (const [key, payload] of Object.entries(raw)) {
+        await emit(`pages-${key}`, PAGE_TITLES[key] ?? key, payload, key);
+      }
+    } else if (src.split && Array.isArray(raw)) {
       for (const [i, item] of raw.entries()) {
         await emit(
           `${src.file.replace('.json', '')}-${item.slug}`,
@@ -212,7 +243,8 @@ async function apply(dir) {
       loaded.set(srcFile, JSON.parse(await readFile(path.join(COPY_DIR, srcFile), 'utf8')));
     }
     const root = loaded.get(srcFile);
-    const target = doc.source.path === '' ? root : root[Number(doc.source.path)];
+    const key = doc.source.path;
+    const target = key === '' ? root : /^\d+$/.test(key) ? root[Number(key)] : root[key];
     const n = unflatten(target, doc.values);
     if (n) console.log(`${doc.title}: ${n} field${n === 1 ? '' : 's'} changed`);
     changed += n;
@@ -269,7 +301,13 @@ function parseCsv(text) {
 /** The section a field belongs to — the first segment of its path, humanised. */
 function sectionOf(dotted) {
   const head = dotted.split('.')[0];
-  return /^\d+$/.test(head) ? '' : sentence(head);
+  if (/^\d+$/.test(head)) return '';
+  // Extracted page copy is keyed by role rather than by section.
+  const role = /^(meta|hero|section|cta|heading|body|close|turn)/.exec(head);
+  if (role && dotted.split('.').length === 1) {
+    return { meta: 'Page settings', hero: 'Hero', section: 'Sections', cta: 'Closing CTA' }[role[1]] ?? 'Body';
+  }
+  return sentence(head);
 }
 
 async function csv({ carry = true } = {}) {
@@ -405,7 +443,8 @@ async function applyCsv(fileArg) {
       loaded.set(srcFile, JSON.parse(await readFile(path.join(COPY_DIR, srcFile), 'utf8')));
     }
     const root = loaded.get(srcFile);
-    const target = doc.source.path === '' ? root : root[Number(doc.source.path)];
+    const key = doc.source.path;
+    const target = key === '' ? root : /^\d+$/.test(key) ? root[Number(key)] : root[key];
     const n = unflatten(target, values);
     if (n) console.log(`${doc.title}: ${n} field${n === 1 ? '' : 's'} changed`);
     changed += n;

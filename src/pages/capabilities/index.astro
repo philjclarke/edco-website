@@ -1,4 +1,5 @@
 ---
+import copy from '@/data/copy/pages.json';
 /* Brief §11: capabilities are a secondary route. This page exists so the
    detail is findable, not so it competes with the outcome routes. */
 import Layout from '@/layouts/Layout.astro';
@@ -11,14 +12,14 @@ import { capabilities } from '@/data/capabilities';
 ---
 
 <Layout
-  title="Capabilities"
-  description="Research, marketing, events and CPD, content, data, technology, CSR programmes and education strategy — the capabilities behind the outcomes."
+  title={copy.capabilitiesHub.metaTitle}
+  description={copy.capabilitiesHub.metaDescription}
 >
   <PageHero
-    eyebrow="Capabilities"
-    title="The capabilities behind the outcomes"
-    standfirst="Useful to know. Not the best place to start."
-    lead="If you already know what you need, it’s all here. If you don’t, start with what you’re trying to achieve and let us do the diagnosis."
+    eyebrow={copy.capabilitiesHub.heroEyebrow}
+    title={copy.capabilitiesHub.heroTitle}
+    standfirst={copy.capabilitiesHub.heroStandfirst}
+    lead={copy.capabilitiesHub.heroLead}
     banner={{ src: 'workshop-group', focus: 'right' }}
   />
 
@@ -50,12 +51,8 @@ import { capabilities } from '@/data/capabilities';
   <Section tone="dark" size="md">
     <div class="mx-auto max-w-3xl text-center">
       <div class="mx-auto mb-8 h-1 w-16 rounded-full grad-rule"></div>
-      <p class="font-display text-display font-bold">Diagnose before you prescribe.</p>
-      <p class="mt-6 text-lead text-ondark-muted">
-        A customer asks for an email campaign. We might find the targeting is fine and the
-        proposition is weak — in which case the right answer is research and proposition work
-        before anybody writes a campaign.
-      </p>
+      <p class="font-display text-display font-bold">{copy.capabilitiesHub.body}</p>
+      <p class="mt-6 text-lead text-ondark-muted">{copy.capabilitiesHub.body2}</p>
     </div>
   </Section>
 
