@@ -86,3 +86,22 @@ export function sameOrigin(request: Request): boolean {
     return false;
   }
 }
+
+/*
+  Which of the required variables are missing, by name only — never a value.
+  A 500 with a blank body tells whoever is setting this up nothing; a list of
+  the variables that aren't set tells them exactly what to do.
+*/
+export function missingConfig(): string[] {
+  return (
+    [
+      ['ADMIN_PASSWORD', import.meta.env.ADMIN_PASSWORD],
+      ['AUTH_SECRET', import.meta.env.AUTH_SECRET],
+      ['GITHUB_TOKEN', import.meta.env.GITHUB_TOKEN],
+      ['GITHUB_REPO', import.meta.env.GITHUB_REPO],
+      ['DECK_CSV_URL', import.meta.env.DECK_CSV_URL],
+    ] as const
+  )
+    .filter(([, v]) => !v)
+    .map(([k]) => k);
+}

@@ -10,13 +10,16 @@
 */
 import Layout from '@/layouts/Layout.astro';
 import Section from '@/components/Section.astro';
-import { cookieIsValid, COOKIE_NAME } from '@/lib/auth';
+import { cookieIsValid, missingConfig, COOKIE_NAME } from '@/lib/auth';
 import { readJson, recentPublishes, currentCopyCommit } from '@/lib/github';
 import { diffDeck, SOURCES, COPY_DIR, type DeckDiff } from '@/lib/deck';
 
 export const prerender = false;
 
-const signedIn = await cookieIsValid(Astro.cookies.get(COOKIE_NAME)?.value);
+const missing = missingConfig();
+const signedIn = missing.length
+  ? false
+  : await cookieIsValid(Astro.cookies.get(COOKIE_NAME)?.value);
 const loginFailed = Astro.url.searchParams.has('error');
 
 let diff: DeckDiff | null = null;
@@ -62,7 +65,28 @@ for (const c of diff?.changes ?? []) {
   </Fragment>
 
   {
-    !signedIn && (
+    !signedIn && missing.length > 0 && (
+      <Section tone="light" size="md" width="narrow">
+        <p class="eyebrow grad-text mb-3">EdCo</p>
+        <h1 class="text-display">Not set up yet</h1>
+        <p class="mt-5 text-lead text-ink-muted">
+          The publish console needs a few settings before it can run. These are environment
+          variables on the Vercel project — none of them live in the repository.
+        </p>
+        <ul class="mt-8 divide-y divide-line border-y border-line font-mono text-sm">
+          {missing.map((k) => (
+            <li class="py-3">{k}</li>
+          ))}
+        </ul>
+        <p class="mt-6 text-sm text-ink-muted">
+          PUBLISHING.md explains what each one is. Redeploy after adding them.
+        </p>
+      </Section>
+    )
+  }
+
+  {
+    !signedIn && missing.length === 0 && (
       <Section tone="light" size="md" width="narrow">
         <p class="eyebrow grad-text mb-3">EdCo</p>
         <h1 class="text-display">Publish copy</h1>
