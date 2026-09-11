@@ -19,6 +19,21 @@ repo, and nothing about the layout can be changed this way.
 
 The site rebuilds and the new wording is live in about a minute.
 
+### What happens to the sheet
+
+**Nothing.** Publishing doesn't rewrite the deck: your wording stays in *New
+copy*, and *Current copy* keeps showing what the site said when the deck was
+made.
+
+That's deliberate, and it doesn't cause a problem. Once a change is live, that
+row simply stops producing a change — the site already says what the deck says.
+You can publish again straight away, leave *New copy* filled in, or clear it.
+None of it matters.
+
+*Current copy* does drift out of date as you publish. It's only a reference, so
+that's cosmetic — but it's why a fresh export is worth asking for every so
+often, so the column reads true again.
+
 ### Things worth knowing
 
 **Nothing is published until you press the button.** Editing the sheet changes
@@ -27,16 +42,12 @@ nothing on the website.
 **You can only change words.** Page addresses, links, layouts and which sections
 exist are not editable from the deck — so nothing typed there can break a page.
 
-**If the console says the deck is out of date**, stop and ask for a fresh
-export. It means the website changed after the deck was made, so the sheet no
-longer knows what the site currently says. Publishing anyway would undo those
-changes, which is why the button disappears. Anything already typed into *New
-copy* survives a re-export.
+**If something "needs a decision"**, it means that wording was edited in the deck
+*and* changed on the website since the deck was made. The console shows both and
+publishes neither. Ask which is right.
 
 **Every publish is recorded** — who, when, and exactly what changed. The last
 five are listed at the bottom of the console, and any of them can be undone.
-
----
 
 ## For whoever maintains it
 
@@ -50,18 +61,27 @@ database, and every publish is an ordinary commit with a diff and an author.
 `src/lib/deck.ts` holds the comparison logic, shared with
 `scripts/copy-deck.mjs` so the console and the command line agree.
 
-### The export stamp
+### The export stamp, and the three-way merge
 
-Every CSV export carries the commit it was taken from, in a `__meta__` row.
-Before publishing, the console checks that stamp against the live commit for
-`src/data/copy`. If they differ, publishing is refused — in the console and
-again in the API, because a hidden button is not a safety mechanism.
+Every CSV export carries the commit it was taken from, in a `__meta__` row. That
+stamp is the merge base: the console fetches the copy as it stood at that commit
+and compares three versions rather than two.
 
-This exists because it nearly went wrong: a deck exported before a week of edits
-would have reverted all of them, and nothing in the sheet showed that.
+| | Result |
+| --- | --- |
+| Edited in the deck, unchanged on the site | Published |
+| Changed on the site, untouched in the deck | Left alone |
+| Both changed, differently | Shown as a conflict, never published |
 
-**So: re-export and re-import the sheet after any copy change made from the
-repo.**
+This is what keeps a deck usable indefinitely. A two-way comparison would have
+had to refuse any deck the site had moved past — which, since publishing itself
+moves the site on, meant the deck expired the moment it was first used.
+
+A deck with **no stamp** can't be merged, because an edit and an out-of-date cell
+are indistinguishable without a base. Those are refused outright.
+
+**Re-exporting is therefore a convenience, not a requirement** — it refreshes the
+*Current copy* column so it reads true again.
 
 ```bash
 node scripts/copy-deck.mjs csv     # writes copy-deck.csv, stamped with HEAD

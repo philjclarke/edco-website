@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { cookieIsValid, COOKIE_NAME, sameOrigin } from '@/lib/auth';
-import { readJson, commitFiles, currentCopyCommit } from '@/lib/github';
+import { readJson, readJsonAt, commitFiles, currentCopyCommit } from '@/lib/github';
 import { requireEnv } from '@/lib/env';
 import { diffDeck, applyDiff, fetchDeck, SOURCES, COPY_DIR } from '@/lib/deck';
 
@@ -30,25 +30,43 @@ export const POST: APIRoute = async ({ cookies, request }) => {
       shas[src.file] = sha;
     }
 
-    const diff = diffDeck(csv, files);
-
-    // The console hides the button in this case; this is the check that matters.
     const live = await currentCopyCommit();
-    if (!diff.exportedFrom || diff.exportedFrom !== live) {
+    const stamp = diffDeck(csv, files).exportedFrom;
+
+    // Without a stamp there is no merge base, so an edit can't be told apart
+    // from a cell the site has since moved past. The console hides the button
+    // in that case; this is the check that actually enforces it.
+    if (!stamp) {
       return new Response(
         JSON.stringify({
           error:
-            'This copy deck was exported from an older version of the site. ' +
-            'Publishing it would undo later changes. Ask for a fresh export.',
+            'This copy deck predates export stamps, so its edits cannot be told apart from ' +
+            'out-of-date cells. Ask for a fresh export.',
         }),
         { status: 409 }
       );
     }
 
+    let base: Record<string, any> | undefined;
+    if (stamp !== live) {
+      base = {};
+      for (const src of SOURCES) {
+        base[src.file] = await readJsonAt(`${COPY_DIR}/${src.file}`, stamp);
+      }
+    }
+    const diff = diffDeck(csv, files, base);
+
     if (!diff.changes.length) {
-      return new Response(JSON.stringify({ ok: true, changed: 0, message: 'Nothing to publish.' }), {
-        status: 200,
-      });
+      return new Response(
+        JSON.stringify({
+          ok: true,
+          changed: 0,
+          message: diff.conflicts.length
+            ? 'Nothing could be published — every change needs a decision first.'
+            : 'Nothing to publish.',
+        }),
+        { status: 200 }
+      );
     }
 
     const touched = applyDiff(diff.changes, files);

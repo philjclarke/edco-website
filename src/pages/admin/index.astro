@@ -11,7 +11,7 @@
 import Layout from '@/layouts/Layout.astro';
 import Section from '@/components/Section.astro';
 import { cookieIsValid, missingConfig, COOKIE_NAME } from '@/lib/auth';
-import { readJson, recentPublishes, currentCopyCommit } from '@/lib/github';
+import { readJson, readJsonAt, recentPublishes, currentCopyCommit } from '@/lib/github';
 import { requireEnv } from '@/lib/env';
 import { diffDeck, fetchDeck, SOURCES, COPY_DIR, type DeckDiff } from '@/lib/deck';
 
@@ -26,7 +26,7 @@ const loginFailed = Astro.url.searchParams.has('error');
 let diff: DeckDiff | null = null;
 let history: Awaited<ReturnType<typeof recentPublishes>> = [];
 let problem: string | null = null;
-let stale = false;
+let unstamped = false;
 let liveCommit = '';
 
 if (signedIn) {
@@ -37,13 +37,23 @@ if (signedIn) {
     for (const src of SOURCES) {
       files[src.file] = (await readJson(`${COPY_DIR}/${src.file}`)).data;
     }
-    diff = diffDeck(csv, files);
-
-    // If the site has moved on since the deck was exported, "Current copy" no
-    // longer means "what the site says" — publishing would revert whatever
-    // changed in between. Refuse rather than guess.
     liveCommit = await currentCopyCommit();
-    stale = !diff.exportedFrom || diff.exportedFrom !== liveCommit;
+
+    // The export stamp gives us the content as it stood when the deck was made,
+    // which turns this into a three-way merge: the deck stays usable after the
+    // site moves on, and anything genuinely ambiguous surfaces as a conflict
+    // rather than being applied.
+    const stamp = diffDeck(csv, files).exportedFrom;
+    unstamped = !stamp;
+
+    let base: Record<string, any> | undefined;
+    if (stamp && stamp !== liveCommit) {
+      base = {};
+      for (const src of SOURCES) {
+        base[src.file] = await readJsonAt(`${COPY_DIR}/${src.file}`, stamp);
+      }
+    }
+    diff = diffDeck(csv, files, base);
 
     history = await recentPublishes(5);
   } catch (err) {
@@ -142,24 +152,22 @@ for (const c of diff?.changes ?? []) {
           </div>
         )}
 
-        {diff && stale && (
+        {diff && unstamped && (
           <div class="mt-8 rounded-card border border-orange/50 bg-orange/5 p-7">
-            <h2 class="text-title">This copy deck is out of date</h2>
+            <h2 class="text-title">This copy deck needs replacing</h2>
             <p class="mt-3 text-ink-muted">
-              The website has changed since this deck was exported, so the “Current copy” column no
-              longer matches what the site says. Publishing it now would undo those changes.
+              It was made before the deck started recording which version of the site it came from,
+              so there’s no safe way to tell an edit apart from an out-of-date cell. Publishing is
+              switched off until it’s re-imported.
             </p>
             <p class="mt-4 text-ink-muted">
-              Ask for a fresh export before making any more edits. Anything already typed into
-              <strong class="font-semibold text-ink">New copy</strong> will carry across.
-            </p>
-            <p class="mt-5 font-mono text-xs text-ink-muted">
-              deck: {diff.exportedFrom?.slice(0, 7) ?? 'no stamp'} · live: {liveCommit.slice(0, 7)}
+              Ask for a fresh export. Anything already typed into
+              <strong class="font-semibold text-ink"> New copy</strong> will carry across.
             </p>
           </div>
         )}
 
-        {diff && !stale && diff.changes.length === 0 && (
+        {diff && !unstamped && diff.changes.length === 0 && diff.conflicts.length === 0 && (
           <div class="mt-8 rounded-card border border-line bg-mist p-7">
             <h2 class="text-title">Everything is up to date</h2>
             <p class="mt-3 text-ink-muted">
@@ -179,7 +187,7 @@ for (const c of diff?.changes ?? []) {
           </div>
         )}
 
-        {diff && !stale && diff.changes.length > 0 && (
+        {diff && !unstamped && (diff.changes.length > 0 || diff.conflicts.length > 0) && (
           <>
             <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 rounded-card border border-line bg-mist px-6 py-5">
               <p class="font-display text-lg font-bold">
@@ -187,6 +195,7 @@ for (const c of diff?.changes ?? []) {
               </p>
               <p class="text-sm text-ink-muted">
                 across {byPage.size} page{byPage.size === 1 ? '' : 's'} · checked {diff.rows} fields
+                {diff.movedOn > 0 && ` · ${diff.movedOn} already updated on the site`}
               </p>
             </div>
 
@@ -214,6 +223,39 @@ for (const c of diff?.changes ?? []) {
               ))}
             </div>
 
+            {diff.conflicts.length > 0 && (
+              <div class="mt-10 rounded-card border border-orange/50 bg-orange/5 p-7">
+                <h2 class="text-title">
+                  {diff.conflicts.length} change{diff.conflicts.length === 1 ? '' : 's'} need a
+                  decision
+                </h2>
+                <p class="mt-3 max-w-2xl text-ink-muted">
+                  These were edited in the deck, but the wording on the site has also changed since
+                  the deck was made. Publishing won’t touch them — someone needs to say which is
+                  right.
+                </p>
+                <ul class="mt-6 divide-y divide-orange/30 border-y border-orange/30">
+                  {diff.conflicts.map((c) => (
+                    <li class="py-5">
+                      <p class="font-display text-sm font-semibold">
+                        {c.page} · {c.field}
+                      </p>
+                      <dl class="mt-3 space-y-1.5 text-[0.9375rem]">
+                        <div class="flex gap-3">
+                          <dt class="w-28 shrink-0 text-sm text-ink-muted">In the deck</dt>
+                          <dd>{c.to}</dd>
+                        </div>
+                        <div class="flex gap-3">
+                          <dt class="w-28 shrink-0 text-sm text-ink-muted">On the site</dt>
+                          <dd>{c.from}</dd>
+                        </div>
+                      </dl>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             {diff.unmatched.length > 0 && (
               <div class="mt-10 rounded-card border border-orange/40 bg-orange/5 p-6">
                 <h2 class="font-display text-base font-bold">
@@ -233,6 +275,7 @@ for (const c of diff?.changes ?? []) {
               </div>
             )}
 
+            {diff.changes.length > 0 && (
             <form id="publish" class="mt-10 flex flex-wrap items-end gap-4">
               <div>
                 <label for="who" class="mb-2 block text-sm font-medium">
@@ -254,6 +297,7 @@ for (const c of diff?.changes ?? []) {
               </button>
               <p id="publish-status" class="text-sm text-ink-muted" role="status" aria-live="polite" />
             </form>
+            )}
           </>
         )}
 

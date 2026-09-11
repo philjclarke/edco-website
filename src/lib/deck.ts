@@ -133,8 +133,17 @@ export interface FieldChange {
   to: string;
 }
 
+export interface Conflict extends FieldChange {
+  /** What the site said when this deck was exported. */
+  base: string;
+}
+
 export interface DeckDiff {
   changes: FieldChange[];
+  /** Edited in the deck *and* changed on the site since the export. Never applied. */
+  conflicts: Conflict[];
+  /** Changed on the site since the export, untouched in the deck. Left alone. */
+  movedOn: number;
   /** Rows whose Ref no longer matches anything in the content. */
   unmatched: { ref: string; reason: string }[];
   rows: number;
@@ -149,8 +158,23 @@ export interface DeckDiff {
  * copy" in place (which has happened). Both are honoured: New copy wins where
  * it is filled in, otherwise a Current copy that differs from what is live is
  * treated as the edit.
+ *
+ * Given `base` — the content as it stood at the deck's export stamp — this
+ * becomes a three-way merge, which is what lets a deck stay usable after the
+ * site has moved on:
+ *
+ *   deck changed, site didn't    -> publish it
+ *   site changed, deck didn't    -> leave it alone (counted in `movedOn`)
+ *   both changed, differently    -> a conflict; shown, never applied
+ *
+ * Without a base every difference is ambiguous, and publishing could silently
+ * revert whatever changed in between.
  */
-export function diffDeck(csv: string, files: Record<string, any>): DeckDiff {
+export function diffDeck(
+  csv: string,
+  files: Record<string, any>,
+  base?: Record<string, any>
+): DeckDiff {
   const rows = parseCsv(csv);
   const header = rows.shift()!.map((h) => h.replace(/^﻿/, '').trim());
   const iRef = header.indexOf('Ref');
@@ -163,7 +187,9 @@ export function diffDeck(csv: string, files: Record<string, any>): DeckDiff {
   }
 
   const changes: FieldChange[] = [];
+  const conflicts: Conflict[] = [];
   const unmatched: { ref: string; reason: string }[] = [];
+  let movedOn = 0;
 
   let exportedFrom: string | null = null;
 
@@ -191,7 +217,7 @@ export function diffDeck(csv: string, files: Record<string, any>): DeckDiff {
     }
     if (proposed === live) continue;
 
-    changes.push({
+    const entry = {
       docId,
       page: r[iPage] ?? docId,
       field: r[iField] ?? fieldPath,
@@ -199,10 +225,27 @@ export function diffDeck(csv: string, files: Record<string, any>): DeckDiff {
       file: doc.file,
       from: live,
       to: proposed,
-    });
+    };
+
+    if (base) {
+      const baseDoc = resolveDoc(docId, base);
+      const was = baseDoc ? readPath(baseDoc.root, fieldPath) : undefined;
+      if (was !== undefined && was !== live) {
+        // The site moved on since the export.
+        if (proposed === was) {
+          // The deck is simply out of date here — it still holds the old text.
+          movedOn += 1;
+          continue;
+        }
+        conflicts.push({ ...entry, base: was });
+        continue;
+      }
+    }
+
+    changes.push(entry);
   }
 
-  return { changes, unmatched, rows: rows.length, exportedFrom };
+  return { changes, conflicts, movedOn, unmatched, rows: rows.length, exportedFrom };
 }
 
 /** Apply a diff to the parsed files. Returns the filenames that changed. */

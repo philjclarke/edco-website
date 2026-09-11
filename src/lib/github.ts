@@ -94,6 +94,13 @@ export async function commitFiles(
   return { sha: commit.sha, url: `https://github.com/${repo}/commit/${commit.sha}` };
 }
 
+/** One file as it stood at a particular commit — the merge base. */
+export async function readJsonAt(path: string, ref: string): Promise<any> {
+  const { repo } = config();
+  const file = await gh(`/repos/${repo}/contents/${encodeURI(path)}?ref=${ref}`);
+  return JSON.parse(Buffer.from(file.content, 'base64').toString('utf8'));
+}
+
 /** The commit the live copy is at — compared against the deck's export stamp. */
 export async function currentCopyCommit(): Promise<string> {
   const { repo, branch } = config();
