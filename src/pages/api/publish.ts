@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { cookieIsValid, COOKIE_NAME } from '@/lib/auth';
+import { cookieIsValid, COOKIE_NAME, sameOrigin } from '@/lib/auth';
 import { readJson, commitFiles, currentCopyCommit } from '@/lib/github';
 import { diffDeck, applyDiff, SOURCES, COPY_DIR } from '@/lib/deck';
 
@@ -8,6 +8,9 @@ export const prerender = false;
 const DECK_URL = import.meta.env.DECK_CSV_URL;
 
 export const POST: APIRoute = async ({ cookies, request }) => {
+  if (!sameOrigin(request)) {
+    return new Response(JSON.stringify({ error: 'Forbidden.' }), { status: 403 });
+  }
   if (!(await cookieIsValid(cookies.get(COOKIE_NAME)?.value))) {
     return new Response(JSON.stringify({ error: 'Not signed in.' }), { status: 401 });
   }

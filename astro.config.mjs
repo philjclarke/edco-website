@@ -29,5 +29,12 @@ export default defineConfig({
     icon({ iconDir: 'src/icons' }),
   ],
   adapter: vercel(),
+  /*
+    Astro's origin check compares Origin against its own request URL, which is
+    wrong behind Vercel's proxy and 403s every legitimate form post. The API
+    routes do the equivalent check on hosts instead — see sameOrigin() in
+    src/lib/auth.ts.
+  */
+  security: { checkOrigin: false },
   vite: { plugins: [tailwindcss()] },
 });
