@@ -6,10 +6,13 @@ A new corporate site for The Education Company, built to the *EdCo Website — M
 ```bash
 npm install
 npm run dev      # http://localhost:4321
-npm run build    # static site into dist/, then builds the search index
-npm run preview  # serve dist/
+npm run build    # builds into .vercel/output/, then the search index
+npm run preview  # serve the built static output
 npm run check    # type-check
 ```
+
+Every page is prerendered to HTML. The only exception is `/admin`, the publish
+console, which is server-rendered — see [PUBLISHING.md](PUBLISHING.md).
 
 Node 22 (pinned via Volta in `package.json`).
 
@@ -78,9 +81,14 @@ never exposed to the deck and never written back, so no edit made there can brea
 a route or a layout. Everything under `src/content/` (articles, case studies) is
 edited as markdown in the repo, not in the deck.
 
-**Pushing edits live**: `apply-csv`, `npm run build` to check, commit, push. Then
-re-run `csv` and re-import if the sheet needs its *Current copy* column brought
-back in line with what shipped.
+**EdCo publish their own copy changes** through `/admin` — the deck is compared
+against what's committed, shown as a diff, and published as a commit. See
+[PUBLISHING.md](PUBLISHING.md).
+
+Every export is stamped with the commit it came from, and publishing a deck
+that's behind the site is refused. **So re-export and re-import the sheet after
+any copy change made from the repo**, or the console will block EdCo until you
+do.
 
 There is also a JSON form of the same data, used to seed a database-backed
 editor:

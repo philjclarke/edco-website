@@ -229,6 +229,19 @@ async function apply(dir) {
 const CSV_FILE = 'copy-deck.csv';
 const HEADERS = ['Page', 'Section', 'Field', 'Ref', 'Current copy', 'New copy', 'Notes'];
 
+/*
+  Every export is stamped with the commit the copy was read from. The publish
+  console compares that stamp against what is live: if the site has moved on
+  since the export, "Current copy" no longer means "what the site says", and
+  publishing the sheet would quietly revert whatever changed in between. The
+  stamp turns that from an invisible risk into a refusal.
+*/
+function copyCommit() {
+  return execFileSync('git', ['log', '-1', '--format=%H', '--', COPY_DIR], {
+    encoding: 'utf8',
+  }).trim();
+}
+
 /** RFC 4180: quote everything, double any embedded quote. */
 const cell = (v) => '"' + String(v ?? '').replace(/"/g, '""') + '"';
 
@@ -265,6 +278,21 @@ async function csv() {
   // A BOM keeps curly quotes and em dashes intact when Sheets and Excel open it.
   const lines = ['\uFEFF' + HEADERS.map(cell).join(',')];
 
+  const stamp = copyCommit();
+  lines.push(
+    [
+      'Do not edit or delete this row',
+      '',
+      'Export stamp',
+      '__meta__::exportedFrom',
+      stamp,
+      '',
+      'Identifies the version of the site this deck was taken from.',
+    ]
+      .map(cell)
+      .join(',')
+  );
+
   for (const entry of index) {
     const doc = JSON.parse(await readFile(path.join(OUT_DIR, `${entry.docId}.json`), 'utf8'));
     for (const f of doc.fields) {
@@ -285,7 +313,7 @@ async function csv() {
   }
 
   await writeFile(CSV_FILE, lines.join('\n') + '\n');
-  console.log(`wrote ${CSV_FILE} — ${lines.length - 1} rows`);
+  console.log(`wrote ${CSV_FILE} — ${lines.length - 2} fields, stamped ${stamp.slice(0, 7)}`);
   console.log('Import into Google Sheets: File > Import > Upload, "Replace spreadsheet".');
 }
 

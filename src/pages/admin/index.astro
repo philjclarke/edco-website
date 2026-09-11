@@ -1,0 +1,289 @@
+---
+/*
+  The publish console. Server-rendered, password-protected, and the only part of
+  this site that isn't static.
+
+  It does one thing: show exactly what the copy deck would change on the live
+  site, and let someone commit it. The "show exactly what changes, before you
+  commit" step is the safety mechanism — more useful than a preview URL, because
+  a list of 12 old-versus-new strings is read and a preview URL usually isn't.
+*/
+import Layout from '@/layouts/Layout.astro';
+import Section from '@/components/Section.astro';
+import { cookieIsValid, COOKIE_NAME } from '@/lib/auth';
+import { readJson, recentPublishes, currentCopyCommit } from '@/lib/github';
+import { diffDeck, SOURCES, COPY_DIR, type DeckDiff } from '@/lib/deck';
+
+export const prerender = false;
+
+const signedIn = await cookieIsValid(Astro.cookies.get(COOKIE_NAME)?.value);
+const loginFailed = Astro.url.searchParams.has('error');
+
+let diff: DeckDiff | null = null;
+let history: Awaited<ReturnType<typeof recentPublishes>> = [];
+let problem: string | null = null;
+let stale = false;
+let liveCommit = '';
+
+if (signedIn) {
+  try {
+    const res = await fetch(import.meta.env.DECK_CSV_URL, { redirect: 'follow' });
+    if (!res.ok) throw new Error(`Could not read the copy deck (${res.status}).`);
+    const csv = await res.text();
+
+    const files: Record<string, any> = {};
+    for (const src of SOURCES) {
+      files[src.file] = (await readJson(`${COPY_DIR}/${src.file}`)).data;
+    }
+    diff = diffDeck(csv, files);
+
+    // If the site has moved on since the deck was exported, "Current copy" no
+    // longer means "what the site says" — publishing would revert whatever
+    // changed in between. Refuse rather than guess.
+    liveCommit = await currentCopyCommit();
+    stale = !diff.exportedFrom || diff.exportedFrom !== liveCommit;
+
+    history = await recentPublishes(5);
+  } catch (err) {
+    problem = (err as Error).message;
+  }
+}
+
+const byPage = new Map<string, NonNullable<typeof diff>['changes']>();
+for (const c of diff?.changes ?? []) {
+  if (!byPage.has(c.page)) byPage.set(c.page, []);
+  byPage.get(c.page)!.push(c);
+}
+---
+
+<Layout title="Publish copy" description="Internal.">
+  <Fragment slot="head">
+    <meta name="robots" content="noindex, nofollow" />
+  </Fragment>
+
+  {
+    !signedIn && (
+      <Section tone="light" size="md" width="narrow">
+        <p class="eyebrow grad-text mb-3">EdCo</p>
+        <h1 class="text-display">Publish copy</h1>
+        <p class="mt-5 text-lead text-ink-muted">
+          Sign in to see what the copy deck would change, and to put it live.
+        </p>
+        {loginFailed && (
+          <p class="mt-6 rounded-card border border-pink/40 bg-pink/5 px-5 py-3 text-sm">
+            That password didn’t work. Try again.
+          </p>
+        )}
+        <form method="POST" action="/api/login" class="mt-8 flex flex-wrap gap-3">
+          <label class="sr-only" for="password">
+            Password
+          </label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+            class="min-w-0 flex-1 rounded-xl border border-line bg-paper px-4 py-3 text-[0.9375rem]"
+          />
+          <button
+            type="submit"
+            class="rounded-full bg-[linear-gradient(96deg,var(--color-orange),var(--color-pink))] px-6 py-3 font-display text-sm font-semibold text-white transition hover:brightness-110"
+          >
+            Sign in
+          </button>
+        </form>
+      </Section>
+    )
+  }
+
+  {
+    signedIn && (
+      <Section tone="light" size="md">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="eyebrow grad-text mb-3">EdCo</p>
+            <h1 class="text-display">Publish copy</h1>
+          </div>
+          <form method="POST" action="/api/logout">
+            <button class="text-sm text-ink-muted underline decoration-line underline-offset-4 hover:text-ink">
+              Sign out
+            </button>
+          </form>
+        </div>
+
+        {problem && (
+          <div class="mt-8 rounded-card border border-pink/40 bg-pink/5 p-6">
+            <h2 class="font-display text-base font-bold">Couldn’t read the deck</h2>
+            <p class="mt-2 text-sm text-ink-muted">{problem}</p>
+          </div>
+        )}
+
+        {diff && stale && (
+          <div class="mt-8 rounded-card border border-orange/50 bg-orange/5 p-7">
+            <h2 class="text-title">This copy deck is out of date</h2>
+            <p class="mt-3 text-ink-muted">
+              The website has changed since this deck was exported, so the “Current copy” column no
+              longer matches what the site says. Publishing it now would undo those changes.
+            </p>
+            <p class="mt-4 text-ink-muted">
+              Ask for a fresh export before making any more edits. Anything already typed into
+              <strong class="font-semibold text-ink">New copy</strong> will carry across.
+            </p>
+            <p class="mt-5 font-mono text-xs text-ink-muted">
+              deck: {diff.exportedFrom?.slice(0, 7) ?? 'no stamp'} · live: {liveCommit.slice(0, 7)}
+            </p>
+          </div>
+        )}
+
+        {diff && !stale && diff.changes.length === 0 && (
+          <div class="mt-8 rounded-card border border-line bg-mist p-7">
+            <h2 class="text-title">Everything is up to date</h2>
+            <p class="mt-3 text-ink-muted">
+              The website already says what the copy deck says. Checked all {diff.rows} fields.
+            </p>
+            <p class="mt-5 text-sm text-ink-muted">
+              <a
+                href="https://docs.google.com/spreadsheets/d/1tIJqD10Xente09Q4pjejPsd7qyaYfcGevYmNA3Sbj4o/edit"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="underline decoration-pink underline-offset-4"
+              >
+                Open the copy deck
+              </a>{' '}
+              to make a change, then come back here.
+            </p>
+          </div>
+        )}
+
+        {diff && !stale && diff.changes.length > 0 && (
+          <>
+            <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 rounded-card border border-line bg-mist px-6 py-5">
+              <p class="font-display text-lg font-bold">
+                {diff.changes.length} change{diff.changes.length === 1 ? '' : 's'} ready
+              </p>
+              <p class="text-sm text-ink-muted">
+                across {byPage.size} page{byPage.size === 1 ? '' : 's'} · checked {diff.rows} fields
+              </p>
+            </div>
+
+            <p class="mt-6 max-w-2xl text-ink-muted">
+              Read these through before publishing. Once you publish, the website rebuilds and the
+              new wording is live in about a minute.
+            </p>
+
+            <div class="mt-8 space-y-10">
+              {[...byPage.entries()].map(([page, items]) => (
+                <div>
+                  <h2 class="font-display text-lg font-bold">{page}</h2>
+                  <ul class="mt-4 divide-y divide-line border-y border-line">
+                    {items.map((c) => (
+                      <li class="py-5">
+                        <p class="font-display text-sm font-semibold">{c.field}</p>
+                        <p class="mt-3 text-[0.9375rem] text-ink-muted line-through decoration-pink/50">
+                          {c.from}
+                        </p>
+                        <p class="mt-2 text-[0.9375rem]">{c.to}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+
+            {diff.unmatched.length > 0 && (
+              <div class="mt-10 rounded-card border border-orange/40 bg-orange/5 p-6">
+                <h2 class="font-display text-base font-bold">
+                  {diff.unmatched.length} row{diff.unmatched.length === 1 ? '' : 's'} skipped
+                </h2>
+                <p class="mt-2 text-sm text-ink-muted">
+                  These rows don’t match anything on the site any more — usually because the page
+                  changed after the deck was exported. They won’t be published.
+                </p>
+                <ul class="mt-3 space-y-1 font-mono text-xs text-ink-muted">
+                  {diff.unmatched.slice(0, 10).map((u) => (
+                    <li>
+                      {u.ref} — {u.reason}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <form id="publish" class="mt-10 flex flex-wrap items-end gap-4">
+              <div>
+                <label for="who" class="mb-2 block text-sm font-medium">
+                  Your name
+                </label>
+                <input
+                  id="who"
+                  name="who"
+                  required
+                  placeholder="So we know who published"
+                  class="rounded-xl border border-line bg-paper px-4 py-3 text-[0.9375rem]"
+                />
+              </div>
+              <button
+                type="submit"
+                class="rounded-full bg-[linear-gradient(96deg,var(--color-orange),var(--color-pink))] px-7 py-3.5 font-display text-base font-semibold text-white transition hover:brightness-110 disabled:opacity-50"
+              >
+                Publish {diff.changes.length} change{diff.changes.length === 1 ? '' : 's'}
+              </button>
+              <p id="publish-status" class="text-sm text-ink-muted" role="status" aria-live="polite" />
+            </form>
+          </>
+        )}
+
+        {history.length > 0 && (
+          <div class="mt-16 border-t border-line pt-8">
+            <h2 class="font-display text-sm font-semibold uppercase tracking-[0.14em] text-ink-muted">
+              Recent publishes
+            </h2>
+            <ul class="mt-4 space-y-2 text-sm">
+              {history.map((h) => (
+                <li class="flex flex-wrap gap-x-3 text-ink-muted">
+                  <time datetime={h.when}>
+                    {new Date(h.when).toLocaleString('en-GB', {
+                      day: 'numeric',
+                      month: 'short',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </time>
+                  <span class="text-ink">{h.message}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </Section>
+    )
+  }
+</Layout>
+
+<script>
+  const form = document.getElementById('publish') as HTMLFormElement | null;
+  const status = document.getElementById('publish-status');
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const button = form.querySelector('button')!;
+    button.disabled = true;
+    if (status) status.textContent = 'Publishing…';
+
+    try {
+      const res = await fetch('/api/publish', { method: 'POST', body: new FormData(form) });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? 'Something went wrong.');
+      if (status) {
+        status.textContent = data.changed
+          ? `Published ${data.changed} changes. The site rebuilds in about a minute.`
+          : 'Nothing needed publishing.';
+      }
+      // Reload after a beat so the page reflects the new baseline.
+      setTimeout(() => location.reload(), 4000);
+    } catch (err) {
+      if (status) status.textContent = (err as Error).message;
+      button.disabled = false;
+    }
+  });
+</script>
