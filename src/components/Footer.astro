@@ -1,6 +1,4 @@
 ---
-import { Image } from 'astro:assets';
-import logo from '@/assets/brand/edco-logo-reversed.png';
 import { footerNav, contact, site } from '@/data/site';
 import Placeholder from './Placeholder.astro';
 ---
@@ -55,7 +53,17 @@ import Placeholder from './Placeholder.astro';
   <div class="mx-auto max-w-7xl px-6 py-14">
     <div class="grid gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,3fr)]">
       <div>
-        <Image src={logo} alt={site.name} widths={[200, 400]} sizes="170px" class="h-12 w-auto" />
+        {/* Pre-built rather than astro:assets — see the note in Header.astro. */}
+        <img
+          src="/brand/edco-logo-reversed-200.webp"
+          srcset="/brand/edco-logo-reversed-200.webp 200w, /brand/edco-logo-reversed-400.webp 400w"
+          sizes="170px"
+          width="200"
+          height="82"
+          alt={site.name}
+          class="h-12 w-auto"
+          loading="lazy"
+        />
         <address class="mt-6 text-sm not-italic text-ondark-muted">
           {contact.address.map((line) => <span class="block">{line}</span>)}
           <a href={contact.phoneHref} class="mt-3 block hover:text-orange">{contact.phone}</a>

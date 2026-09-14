@@ -1,7 +1,4 @@
 ---
-import { Image } from 'astro:assets';
-import logoReversed from '@/assets/brand/edco-logo-reversed.png';
-import logoPositive from '@/assets/brand/edco-logo-positive.png';
 import { primaryNav, utilityNav, site, contact } from '@/data/site';
 import Button from './Button.astro';
 
@@ -45,13 +42,23 @@ const path = Astro.url.pathname;
 
   <div class="mx-auto flex max-w-7xl items-center justify-between gap-8 px-6 py-3">
     <a href="/" class="shrink-0" aria-label="The Education Company — home">
-      <Image
-        src={dark ? logoReversed : logoPositive}
+      {/*
+        A plain <img> against pre-built files rather than astro:assets. On a
+        server-rendered page astro:assets emits /_image?… , which needs a
+        runtime image endpoint this deployment doesn't have — so the logo broke
+        on /admin while every static page was fine. The logo is one fixed asset
+        at one size on every page, so pre-generating it is simpler than adding
+        an image service, and keeps the header identical everywhere.
+      */}
+      <img
+        src={`/brand/edco-logo-${dark ? 'reversed' : 'positive'}-200.webp`}
+        srcset={`/brand/edco-logo-${dark ? 'reversed' : 'positive'}-200.webp 200w, /brand/edco-logo-${dark ? 'reversed' : 'positive'}-400.webp 400w`}
+        sizes="200px"
+        width="200"
+        height="82"
         alt="The Education Company"
-        widths={[320, 640]}
-        sizes="300px"
         class="h-16 w-auto md:h-[4.5rem] lg:h-20"
-        loading="eager"
+        fetchpriority="high"
       />
     </a>
 
