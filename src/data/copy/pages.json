@@ -45,7 +45,25 @@
     "body3": "A person who understands education looks at what came out, tells you what they think it means, and is prepared to disagree with you about it.",
     "body4": "What we need from you, what we do with it, and how long it takes.",
     "body5": "Proof beside the claim",
-    "heading": "Somebody has already done this."
+    "heading": "Somebody has already done this.",
+    "findings": [
+      "Customers under significant financial pressure",
+      "Trusts where you already serve some schools but not others",
+      "Customers sitting inside trusts where you have no central relationship",
+      "Changes in leadership or structure",
+      "Organisations similar to your strongest customers",
+      "Areas of customer risk",
+      "Areas of potential growth"
+    ],
+    "findingIcons": [
+      "fa6-solid:sterling-sign",
+      "fa6-solid:sitemap",
+      "fa6-solid:link-slash",
+      "fa6-solid:arrows-rotate",
+      "fa6-solid:clone",
+      "fa6-solid:triangle-exclamation",
+      "fa6-solid:arrow-trend-up"
+    ]
   },
   "agencies": {
     "metaTitle": "Agencies & Partners",
@@ -66,7 +84,29 @@
     "body4": "We work alongside professional CSR agencies, marketing agencies and consultancies regularly. We are not trying to take ownership of your client relationship, and we’ll put that in writing if it helps.",
     "body5": "Only approved relationships appear here.",
     "body6": "Proof beside the claim",
-    "heading2": "Ask an agency we’ve worked with."
+    "heading2": "Ask an agency we’ve worked with.",
+    "capabilities": [
+      "Education intelligence",
+      "Research",
+      "Educator recruitment",
+      "Data",
+      "Content",
+      "Events",
+      "Marketing",
+      "Technology",
+      "Programme delivery"
+    ],
+    "capabilityIcons": [
+      "fa6-solid:chart-simple",
+      "fa6-solid:flask",
+      "fa6-solid:user-plus",
+      "fa6-solid:database",
+      "fa6-solid:file-lines",
+      "fa6-solid:calendar-day",
+      "fa6-solid:bullhorn",
+      "fa6-solid:laptop-code",
+      "fa6-solid:truck-fast"
+    ]
   },
   "about": {
     "metaTitle": "About EdCo",

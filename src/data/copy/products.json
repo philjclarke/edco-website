@@ -275,6 +275,17 @@
           "Diagnostics",
           "Audits",
           "On-demand content"
+        ],
+        "icons": [
+          "fa6-solid:award",
+          "fa6-solid:folder-open",
+          "fa6-solid:microchip",
+          "fa6-solid:graduation-cap",
+          "fa6-solid:video",
+          "fa6-solid:calendar-day",
+          "fa6-solid:stethoscope",
+          "fa6-solid:list-check",
+          "fa6-solid:circle-play"
         ]
       },
       {
@@ -363,6 +374,14 @@
           "Simple to use",
           "Strong support for selling across trusts",
           "Dedicated account management"
+        ],
+        "icons": [
+          "fa6-solid:sterling-sign",
+          "fa6-solid:shield-halved",
+          "fa6-solid:layer-group",
+          "fa6-solid:thumbs-up",
+          "fa6-solid:sitemap",
+          "fa6-solid:user-tie"
         ]
       },
       {
@@ -450,6 +469,14 @@
           "Engagement",
           "Research participation",
           "Continued listening to international educators"
+        ],
+        "icons": [
+          "fa6-solid:users",
+          "fa6-solid:calendar-plus",
+          "fa6-solid:graduation-cap",
+          "fa6-solid:comments",
+          "fa6-solid:clipboard-question",
+          "fa6-solid:ear-listen"
         ]
       },
       {
@@ -526,6 +553,14 @@
           "Events",
           "Content",
           "Educator engagement"
+        ],
+        "icons": [
+          "fa6-solid:video",
+          "fa6-solid:graduation-cap",
+          "fa6-solid:flask",
+          "fa6-solid:calendar-day",
+          "fa6-solid:file-lines",
+          "fa6-solid:comments"
         ]
       },
       {

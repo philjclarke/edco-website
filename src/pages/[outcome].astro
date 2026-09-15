@@ -4,12 +4,11 @@
 import Layout from '@/layouts/Layout.astro';
 import PageHero from '@/components/PageHero.astro';
 import Section from '@/components/Section.astro';
-import NextSteps from '@/components/NextSteps.astro';
 import Testimonial from '@/components/Testimonial.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import Card from '@/components/Card.astro';
 import TickList from '@/components/TickList.astro';
-import ProcessGrid from '@/components/ProcessGrid.astro';
+import RouteSteps from '@/components/RouteSteps.astro';
 import { outcomes } from '@/data/outcomes';
 import { routes } from '@/data/model';
 
@@ -44,7 +43,7 @@ const matchedRoute = routes.find((r) => r.objective === outcome.routeObjective)!
       <div>
         <h2 class="text-title">{outcome.helpTitle}</h2>
         <div class="mt-6">
-          <TickList items={outcome.help} columns={2} />
+          <TickList items={outcome.help} icons={outcome.helpIcons} columns={2} />
         </div>
       </div>
     </div>
@@ -61,17 +60,19 @@ const matchedRoute = routes.find((r) => r.objective === outcome.routeObjective)!
     )
   }
 
-  <!-- Brief §71: show a joined-up route rather than a list of services. -->
+  <!-- Brief §71 and §70 together: a worked example of the route, where every
+       step links to the place it's done. Replaces a separate "Where might you
+       go next?" block, which review found read as a repeat of this. -->
   <Section tone="mist" size="md">
-    <p class="eyebrow grad-text mb-4">One way this can work</p>
+    <p class="eyebrow grad-text mb-4">Where might you go next?</p>
     <h2 class="text-title">“{matchedRoute.objective}”</h2>
-    <div class="mt-8">
-      <ProcessGrid steps={matchedRoute.steps} />
-    </div>
-    <p class="mt-6 max-w-2xl text-ink-muted">
-      Not a fixed process. One example of how intelligence, people, content and engagement combine
-      around an objective — which is why we’d rather start with yours than with a service.
+    <p class="mt-4 max-w-2xl text-ink-muted">
+      One example of how it could come together — not a fixed process. Each step takes you to
+      where we do it.
     </p>
+    <div class="mt-8">
+      <RouteSteps steps={matchedRoute.steps} hrefs={matchedRoute.stepHrefs} />
+    </div>
   </Section>
 
   <Section tone="light" size="md">
@@ -84,9 +85,6 @@ const matchedRoute = routes.find((r) => r.objective === outcome.routeObjective)!
     </div>
   </Section>
 
-  <Section tone="mist" size="md">
-    <NextSteps links={outcome.next} />
-  </Section>
 
   <Section tone="light" size="md">
     <h2 class="text-title">Trying to achieve something else?</h2>

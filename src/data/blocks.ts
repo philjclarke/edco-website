@@ -7,7 +7,7 @@
 
 export type Block =
   | { type: 'prose'; paras: string[]; title?: string }
-  | { type: 'list'; title: string; items: string[]; lead?: string; columns?: 2 | 3 }
+  | { type: 'list'; title: string; items: string[]; icons?: string[]; lead?: string; columns?: 2 | 3 }
   | { type: 'steps'; title?: string; lead?: string; steps: string[] }
   | { type: 'pull'; text: string; sub?: string }
   | {

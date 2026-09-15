@@ -136,6 +136,14 @@
         "Useful content",
         "Targeted engagement",
         "Sales intelligence"
+      ],
+      "stepHrefs": [
+        "/free-customer-analysis/",
+        "/products/education-iq/",
+        "/capabilities/research/",
+        "/capabilities/content-creation/",
+        "/capabilities/marketing-services/",
+        "/products/education-iq/"
       ]
     },
     {
@@ -148,6 +156,15 @@
         "Opted-in audience",
         "Relationship building",
         "Pipeline"
+      ],
+      "stepHrefs": [
+        "/capabilities/research/",
+        "/what-we-think/",
+        "/capabilities/events-and-cpd/",
+        "/capabilities/content-creation/",
+        "/capabilities/marketing-services/",
+        "/products/ednet/",
+        "/generate-leads-and-build-pipeline/"
       ]
     },
     {
@@ -160,6 +177,15 @@
         "Launch campaign",
         "Engagement",
         "Pipeline"
+      ],
+      "stepHrefs": [
+        "/capabilities/research/",
+        "/capabilities/research/",
+        "/capabilities/data-services/",
+        "/capabilities/content-creation/",
+        "/capabilities/marketing-services/",
+        "/reach-and-engage-educators/",
+        "/generate-leads-and-build-pipeline/"
       ]
     },
     {
@@ -170,6 +196,13 @@
         "Customer & prospect intelligence",
         "Engagement activity",
         "CRM context"
+      ],
+      "stepHrefs": [
+        "/products/education-iq/",
+        "/capabilities/data-services/",
+        "/products/education-iq/",
+        "/capabilities/marketing-services/",
+        "/capabilities/technology-and-integration/"
       ]
     },
     {
@@ -180,6 +213,13 @@
         "Segmentation",
         "Retention strategy",
         "Customer engagement"
+      ],
+      "stepHrefs": [
+        "/free-customer-analysis/",
+        "/capabilities/research/",
+        "/capabilities/data-services/",
+        "/grow-and-retain-customers/",
+        "/capabilities/marketing-services/"
       ]
     },
     {
@@ -191,6 +231,14 @@
         "Opted-in audience",
         "Ongoing engagement",
         "Qualified commercial conversations"
+      ],
+      "stepHrefs": [
+        "/capabilities/research/",
+        "/capabilities/content-creation/",
+        "/capabilities/events-and-cpd/",
+        "/capabilities/marketing-services/",
+        "/products/ednet/",
+        "/generate-leads-and-build-pipeline/"
       ]
     }
   ]

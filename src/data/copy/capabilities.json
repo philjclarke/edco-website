@@ -51,6 +51,12 @@
           "Client branded",
           "Co-branded",
           "Completely white-labelled"
+        ],
+        "icons": [
+          "fa6-solid:certificate",
+          "fa6-solid:tag",
+          "fa6-solid:handshake",
+          "fa6-solid:eye-slash"
         ]
       }
     ],
@@ -223,6 +229,23 @@
           "On-demand content",
           "Follow-up",
           "Engagement analysis"
+        ],
+        "icons": [
+          "fa6-solid:lightbulb",
+          "fa6-solid:microphone",
+          "fa6-solid:file-lines",
+          "fa6-solid:user-plus",
+          "fa6-solid:bullhorn",
+          "fa6-solid:clipboard-list",
+          "fa6-solid:bell",
+          "fa6-solid:video",
+          "fa6-solid:location-dot",
+          "fa6-solid:laptop",
+          "fa6-solid:laptop",
+          "fa6-solid:clipboard-check",
+          "fa6-solid:circle-play",
+          "fa6-solid:reply",
+          "fa6-solid:chart-column"
         ]
       },
       {
@@ -297,6 +320,19 @@
           "Database management",
           "APIs",
           "Customer-data analysis"
+        ],
+        "icons": [
+          "fa6-solid:school",
+          "fa6-solid:address-book",
+          "fa6-solid:broom",
+          "fa6-solid:circle-check",
+          "fa6-solid:plus",
+          "fa6-solid:plug",
+          "fa6-solid:link",
+          "fa6-solid:layer-group",
+          "fa6-solid:database",
+          "fa6-solid:code",
+          "fa6-solid:magnifying-glass-chart"
         ]
       },
       {
@@ -378,6 +414,21 @@
           "AI-enabled tools",
           "Downloadable resources",
           "Thought leadership"
+        ],
+        "icons": [
+          "fa6-solid:graduation-cap",
+          "fa6-solid:video",
+          "fa6-solid:newspaper",
+          "fa6-solid:book-open",
+          "fa6-solid:chalkboard",
+          "fa6-solid:file-lines",
+          "fa6-solid:film",
+          "fa6-solid:stethoscope",
+          "fa6-solid:list-check",
+          "fa6-solid:hand-pointer",
+          "fa6-solid:wand-magic-sparkles",
+          "fa6-solid:download",
+          "fa6-solid:lightbulb"
         ]
       },
       {
@@ -447,6 +498,19 @@
           "Technology",
           "Events",
           "Measurement"
+        ],
+        "icons": [
+          "fa6-solid:magnifying-glass",
+          "fa6-solid:diagram-project",
+          "fa6-solid:lightbulb",
+          "fa6-solid:flask",
+          "fa6-solid:folder-open",
+          "fa6-solid:school",
+          "fa6-solid:user-plus",
+          "fa6-solid:truck-fast",
+          "fa6-solid:laptop-code",
+          "fa6-solid:calendar-day",
+          "fa6-solid:ruler"
         ]
       },
       {
@@ -533,6 +597,17 @@
           "AI-enabled functionality",
           "Technical consultancy",
           "Bespoke applications"
+        ],
+        "icons": [
+          "fa6-solid:code",
+          "fa6-solid:plug",
+          "fa6-solid:plug",
+          "fa6-solid:arrow-right-arrow-left",
+          "fa6-solid:gears",
+          "fa6-solid:microchip",
+          "fa6-solid:wand-magic-sparkles",
+          "fa6-solid:user-gear",
+          "fa6-solid:screwdriver-wrench"
         ]
       },
       {

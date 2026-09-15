@@ -7,7 +7,6 @@
   This file owns the shape; the JSON owns the content.
 */
 
-import type { NavLink } from './site';
 import data from './copy/outcomes.json';
 
 export interface Outcome {
@@ -24,12 +23,14 @@ export interface Outcome {
   intro: string[];
   helpTitle: string;
   help: string[];
+  /** One icon per help item, by position. */
+  helpIcons?: string[];
   pull?: string;
   /** Which joined-up route in `routes` (brief §71) illustrates this outcome. */
   routeObjective: string;
   icon?: string;
   banner?: { src: string; focus?: 'left' | 'centre' | 'right' };
-  next: NavLink[];
+
 }
 
 export const outcomes: Outcome[] = data as Outcome[];

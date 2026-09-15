@@ -20,6 +20,11 @@ export const STRUCTURAL = new Set([
   'outcome',
   'testimonialTheme',
   'icon',
+  'icons',
+  'helpIcons',
+  'capabilityIcons',
+  'findingIcons',
+  'stepHrefs',
   'banner',
 ]);
 

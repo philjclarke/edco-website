@@ -3,7 +3,8 @@ import { getCollection, render } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
 import Section from '@/components/Section.astro';
 import CtaBand from '@/components/CtaBand.astro';
-import NextSteps from '@/components/NextSteps.astro';
+import RouteSteps from '@/components/RouteSteps.astro';
+import { routes } from '@/data/model';
 import Placeholder from '@/components/Placeholder.astro';
 import { outcomes } from '@/data/outcomes';
 
@@ -16,6 +17,7 @@ const { study } = Astro.props;
 const { Content } = await render(study);
 const d = study.data;
 const outcome = outcomes.find((o) => o.slug === d.outcome);
+const route = outcome ? routes.find((r) => r.objective === outcome.routeObjective) : undefined;
 const draft = d.status === 'placeholder';
 
 /* Brief §56: this seven-part structure is required and shouldn't be varied. */
@@ -97,9 +99,18 @@ const sections: { q: string; a: string | string[] }[] = [
   </Section>
 
   {
-    outcome && (
+    outcome && route && (
       <Section tone="mist" size="md">
-        <NextSteps links={outcome.next.slice(0, 3)} title="Trying to do something similar?" />
+        <p class="eyebrow grad-text mb-4">Trying to do something similar?</p>
+        <h2 class="text-title">
+          <a href={`/${outcome.slug}/`} class="underline decoration-pink/40 underline-offset-4 hover:decoration-pink">
+            {outcome.navLabel}
+          </a>
+        </h2>
+        <p class="mt-4 max-w-2xl text-ink-muted">One way it could come together.</p>
+        <div class="mt-8">
+          <RouteSteps steps={route.steps} hrefs={route.stepHrefs} />
+        </div>
       </Section>
     )
   }

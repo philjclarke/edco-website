@@ -22,43 +22,22 @@
       "Understand schools and trusts individually"
     ],
     "pull": "Don’t guess what educators need. Ask them.",
-    "next": [
-      {
-        "label": "Research",
-        "href": "/capabilities/research/",
-        "blurb": "Tell us who you need to hear from. We’ll find them."
-      },
-      {
-        "label": "Education IQ",
-        "href": "/products/education-iq/",
-        "blurb": "Understand individual schools, trusts and the sector."
-      },
-      {
-        "label": "Free customer analysis",
-        "href": "/free-customer-analysis/",
-        "blurb": "What don’t you know about your customers?"
-      },
-      {
-        "label": "Data Services",
-        "href": "/capabilities/data-services/",
-        "blurb": "The foundation underneath the intelligence."
-      },
-      {
-        "label": "Research & insight",
-        "href": "/what-we-think/research-and-insight/",
-        "blurb": "What our research is telling us."
-      },
-      {
-        "label": "Tell us what you’re trying to achieve",
-        "href": "/contact/"
-      }
-    ],
     "icon": "fa6-solid:magnifying-glass-chart",
     "banner": {
       "src": "workshop-group",
       "focus": "centre"
     },
-    "lead": "Replace assumptions about schools, trusts and educators with evidence you can act on."
+    "lead": "Replace assumptions about schools, trusts and educators with evidence you can act on.",
+    "helpIcons": [
+      "fa6-solid:ear-listen",
+      "fa6-solid:flask",
+      "fa6-solid:magnifying-glass",
+      "fa6-solid:users",
+      "fa6-solid:chart-line",
+      "fa6-solid:user-plus",
+      "fa6-solid:vial",
+      "fa6-solid:school"
+    ]
   },
   {
     "slug": "build-your-reputation-and-audience",
@@ -83,43 +62,22 @@
       "Useful newsletters and opted-in audiences"
     ],
     "pull": "Build an audience you have permission to talk to.",
-    "next": [
-      {
-        "label": "Marketing Services",
-        "href": "/capabilities/marketing-services/",
-        "blurb": "Start with what you want marketing to achieve."
-      },
-      {
-        "label": "Research",
-        "href": "/capabilities/research/",
-        "blurb": "Something worth talking about comes first."
-      },
-      {
-        "label": "Events & CPD",
-        "href": "/capabilities/events-and-cpd/",
-        "blurb": "An event shouldn’t be a moment."
-      },
-      {
-        "label": "Engagement Hub",
-        "href": "/products/ednet/",
-        "blurb": "From digital brochure to engagement platform."
-      },
-      {
-        "label": "The Curriculum Network",
-        "href": "/products/the-curriculum-network/",
-        "blurb": "Where we meet UK educators."
-      },
-      {
-        "label": "Tell us what you’re trying to achieve",
-        "href": "/contact/"
-      }
-    ],
     "icon": "fa6-solid:bullhorn",
     "banner": {
       "src": "teacher-board",
       "focus": "right"
     },
-    "lead": "Reputation in education is earned by understanding educators’ challenges — then developing and delivering solutions that genuinely help"
+    "lead": "Reputation in education is earned by understanding educators’ challenges — then developing and delivering solutions that genuinely help",
+    "helpIcons": [
+      "fa6-solid:flask",
+      "fa6-solid:lightbulb",
+      "fa6-solid:graduation-cap",
+      "fa6-solid:calendar-day",
+      "fa6-solid:book-open",
+      "fa6-solid:toolbox",
+      "fa6-solid:newspaper",
+      "fa6-solid:envelope-open-text"
+    ]
   },
   {
     "slug": "reach-and-engage-educators",
@@ -144,43 +102,23 @@
       "Account-based engagement"
     ],
     "pull": "Teachers use social media. That doesn’t mean they’re there to hear from your brand.",
-    "next": [
-      {
-        "label": "Marketing Services",
-        "href": "/capabilities/marketing-services/",
-        "blurb": "Channels are tools, not a strategy."
-      },
-      {
-        "label": "Events & CPD",
-        "href": "/capabilities/events-and-cpd/",
-        "blurb": "Live, on-demand and everything after."
-      },
-      {
-        "label": "International Schools Network",
-        "href": "/products/international-schools-network/",
-        "blurb": "A community of international-school educators."
-      },
-      {
-        "label": "The Curriculum Network",
-        "href": "/products/the-curriculum-network/",
-        "blurb": "CPD, webinars and research with UK educators."
-      },
-      {
-        "label": "Data Services",
-        "href": "/capabilities/data-services/",
-        "blurb": "Knowing who exists is useful. Knowing who matters is better."
-      },
-      {
-        "label": "Tell us what you’re trying to achieve",
-        "href": "/contact/"
-      }
-    ],
     "icon": "fa6-solid:people-group",
     "banner": {
       "src": "primary-classroom",
       "focus": "right"
     },
-    "lead": "Identify the educators who matter and create reasons for them to engage with you."
+    "lead": "Identify the educators who matter and create reasons for them to engage with you.",
+    "helpIcons": [
+      "fa6-solid:bullseye",
+      "fa6-solid:calendar-plus",
+      "fa6-solid:share-nodes",
+      "fa6-solid:network-wired",
+      "fa6-solid:user-check",
+      "fa6-solid:clipboard-question",
+      "fa6-solid:graduation-cap",
+      "fa6-solid:folder-open",
+      "fa6-solid:building"
+    ]
   },
   {
     "slug": "generate-leads-and-build-pipeline",
@@ -204,43 +142,21 @@
       "Give salespeople better context before they make contact"
     ],
     "pull": "Start with something worth talking about.",
-    "next": [
-      {
-        "label": "Education IQ",
-        "href": "/products/education-iq/",
-        "blurb": "The right context, at the point it matters."
-      },
-      {
-        "label": "Marketing Services",
-        "href": "/capabilities/marketing-services/",
-        "blurb": "Campaigns with something worth saying."
-      },
-      {
-        "label": "Research",
-        "href": "/capabilities/research/",
-        "blurb": "Start with something worth talking about."
-      },
-      {
-        "label": "Events & CPD",
-        "href": "/capabilities/events-and-cpd/",
-        "blurb": "Engagement you can follow up properly."
-      },
-      {
-        "label": "SPIRIT",
-        "href": "/products/spirit/",
-        "blurb": "An education CRM without the enterprise headache."
-      },
-      {
-        "label": "Tell us what you’re trying to achieve",
-        "href": "/contact/"
-      }
-    ],
     "icon": "fa6-solid:arrow-trend-up",
     "banner": {
       "src": "meeting-table",
       "focus": "centre"
     },
-    "lead": "Give your sales team genuine reasons to start conversations — not just a longer list of email addresses."
+    "lead": "Give your sales team genuine reasons to start conversations — not just a longer list of email addresses.",
+    "helpIcons": [
+      "fa6-solid:crosshairs",
+      "fa6-solid:heart",
+      "fa6-solid:gift",
+      "fa6-solid:eye",
+      "fa6-solid:filter",
+      "fa6-solid:filter",
+      "fa6-solid:id-card"
+    ]
   },
   {
     "slug": "grow-and-retain-customers",
@@ -266,43 +182,24 @@
       "Find organisations that resemble your best customers"
     ],
     "pull": "What don’t you know about your customers?",
-    "next": [
-      {
-        "label": "Free customer analysis",
-        "href": "/free-customer-analysis/",
-        "blurb": "Send us your customer list. We’ll tell you what’s in it."
-      },
-      {
-        "label": "Education IQ",
-        "href": "/products/education-iq/",
-        "blurb": "Understand individual schools and trusts."
-      },
-      {
-        "label": "Research",
-        "href": "/capabilities/research/",
-        "blurb": "Find out why customers really leave."
-      },
-      {
-        "label": "Events & CPD",
-        "href": "/capabilities/events-and-cpd/",
-        "blurb": "Keep giving customers reasons to stay close."
-      },
-      {
-        "label": "Data Services",
-        "href": "/capabilities/data-services/",
-        "blurb": "Cleanse, enrich and match your customer data."
-      },
-      {
-        "label": "Tell us what you’re trying to achieve",
-        "href": "/contact/"
-      }
-    ],
     "icon": "fa6-solid:seedling",
     "banner": {
       "src": "laptop-charts",
       "focus": "centre"
     },
-    "lead": "The organisations that already know you are often the biggest opportunity you have."
+    "lead": "The organisations that already know you are often the biggest opportunity you have.",
+    "helpIcons": [
+      "fa6-solid:triangle-exclamation",
+      "fa6-solid:arrows-rotate",
+      "fa6-solid:chart-pie",
+      "fa6-solid:sitemap",
+      "fa6-solid:sitemap",
+      "fa6-solid:arrow-trend-up",
+      "fa6-solid:envelope-open-text",
+      "fa6-solid:calendar-check",
+      "fa6-solid:envelope",
+      "fa6-solid:clone"
+    ]
   },
   {
     "slug": "education-strategy",
@@ -329,42 +226,23 @@
       "Technology and product discovery"
     ],
     "pull": "Sometimes the right answer is not to market it yet.",
-    "next": [
-      {
-        "label": "Research",
-        "href": "/capabilities/research/",
-        "blurb": "Evidence before recommendations."
-      },
-      {
-        "label": "Education IQ",
-        "href": "/products/education-iq/",
-        "blurb": "Understand the market you’re planning against."
-      },
-      {
-        "label": "All capabilities",
-        "href": "/capabilities/",
-        "blurb": "Everything EdCo can bring to a plan."
-      },
-      {
-        "label": "What We Think",
-        "href": "/what-we-think/",
-        "blurb": "How we argue about this in public."
-      },
-      {
-        "label": "Case studies",
-        "href": "/case-studies/",
-        "blurb": "They asked us for X. We found they needed Y."
-      },
-      {
-        "label": "Tell us what you’re trying to achieve",
-        "href": "/contact/"
-      }
-    ],
     "icon": "fa6-solid:compass",
     "banner": {
       "src": "meeting-table",
       "focus": "right"
     },
-    "lead": "The critical-friend engagement. “We want to grow in education. Help us work out how.”"
+    "lead": "The critical-friend engagement. “We want to grow in education. Help us work out how.”",
+    "helpIcons": [
+      "fa6-solid:flask",
+      "fa6-solid:microphone",
+      "fa6-solid:chart-simple",
+      "fa6-solid:magnifying-glass-chart",
+      "fa6-solid:chart-line",
+      "fa6-solid:lightbulb",
+      "fa6-solid:route",
+      "fa6-solid:file-contract",
+      "fa6-solid:people-group",
+      "fa6-solid:compass"
+    ]
   }
 ]

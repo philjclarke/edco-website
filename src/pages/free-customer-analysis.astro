@@ -12,15 +12,6 @@ import Placeholder from '@/components/Placeholder.astro';
 import ProcessGrid from '@/components/ProcessGrid.astro';
 import TickList from '@/components/TickList.astro';
 
-const findings = [
-  'Customers under significant financial pressure',
-  'Trusts where you already serve some schools but not others',
-  'Customers sitting inside trusts where you have no central relationship',
-  'Changes in leadership or structure',
-  'Organisations similar to your strongest customers',
-  'Areas of customer risk',
-  'Areas of potential growth',
-];
 ---
 
 <Layout
@@ -43,7 +34,7 @@ const findings = [
         <h2 class="text-display">We might find</h2>
         <p class="mt-6 text-lead text-ink-muted">{copy.freeAnalysis.body}</p>
       </div>
-      <TickList items={findings} columns={1} />
+      <TickList items={copy.freeAnalysis.findings} icons={copy.freeAnalysis.findingIcons} columns={2} />
     </div>
   </Section>
 

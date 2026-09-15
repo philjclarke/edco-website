@@ -19,6 +19,8 @@ export interface Belief {
 export interface Route {
   objective: string;
   steps: string[];
+  /** Where each step is done, by position — every step links somewhere. */
+  stepHrefs: string[];
 }
 
 /* LISTEN → UNDERSTAND → GIVE → ENGAGE → BUILD → GROW */

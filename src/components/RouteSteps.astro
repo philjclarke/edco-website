@@ -1,0 +1,66 @@
+---
+/*
+  A worked example of how EdCo would tackle an objective, where every step is
+  a link to the place that step is done.
+
+  Review found this and "Where might you go next?" reading as the same thing —
+  one a sequence, one a set of links, sitting a section apart. Merged, it
+  explains and navigates at once. Because each step goes somewhere, these are
+  panels under the site's affordance rule, not a grid.
+*/
+import { primaryNav, footerNav } from '@/data/site';
+
+interface Props {
+  steps: readonly string[];
+  hrefs: readonly string[];
+}
+const { steps, hrefs } = Astro.props;
+
+// Name the destination from the navigation, so a step reads "Data enrichment →
+// Data Services" without that label having to be maintained twice.
+const labels = new Map<string, string>();
+for (const g of primaryNav) {
+  labels.set(g.href, g.label);
+  for (const c of g.children ?? []) labels.set(c.href, c.label);
+}
+for (const g of footerNav) for (const l of g.links) if (!labels.has(l.href)) labels.set(l.href, l.label);
+labels.set('/what-we-think/', 'What We Think');
+---
+
+<ol class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  {
+    steps.map((step, i) => {
+      const href = hrefs[i];
+      return (
+        <li>
+          <a
+            href={href}
+            class="group relative isolate flex h-full flex-col overflow-hidden rounded-card border border-line bg-paper p-5 transition duration-200 hover:-translate-y-1 hover:border-transparent hover:shadow-xl hover:shadow-navy-900/10"
+          >
+            <span
+              aria-hidden="true"
+              class="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 grad-rule transition-transform duration-300 group-hover:scale-x-100"
+            />
+            <span class="font-display text-xs font-bold grad-text">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <span class="mt-2 font-display text-base font-semibold leading-snug">{step}</span>
+            <span class="mt-auto flex items-center gap-2 pt-4 text-sm text-ink-muted">
+              {labels.get(href) ?? 'Find out more'}
+              <svg
+                class="h-3.5 w-3.5 text-pink transition-transform duration-200 group-hover:translate-x-1"
+                viewBox="0 0 14 14"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.9"
+                aria-hidden="true"
+              >
+                <path d="M2 7h10M8 3l4 4-4 4" />
+              </svg>
+            </span>
+          </a>
+        </li>
+      );
+    })
+  }
+</ol>

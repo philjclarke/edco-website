@@ -12,17 +12,6 @@ import CtaBand from '@/components/CtaBand.astro';
 import Placeholder from '@/components/Placeholder.astro';
 import TickList from '@/components/TickList.astro';
 
-const capabilities = [
-  'Education intelligence',
-  'Research',
-  'Educator recruitment',
-  'Data',
-  'Content',
-  'Events',
-  'Marketing',
-  'Technology',
-  'Programme delivery',
-];
 ---
 
 <Layout
@@ -45,7 +34,7 @@ const capabilities = [
         <h2 class="text-display">{copy.agencies.heading}</h2>
         <p class="mt-6 text-lead text-ink-muted">{copy.agencies.body2}</p>
       </div>
-      <TickList items={capabilities} columns={2} />
+      <TickList items={copy.agencies.capabilities} icons={copy.agencies.capabilityIcons} columns={3} />
     </div>
   </Section>
 

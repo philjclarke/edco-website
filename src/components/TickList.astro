@@ -1,44 +1,40 @@
 ---
-/* Ruled tick list. Deliberately not a bordered grid: a bordered grid leaves an
-   empty cell whenever the item count doesn't divide by the column count, and
-   these lists are all odd lengths. */
+/*
+  A list of short items, shown as an icon grid: a glyph above each item, in the
+  same Grid as the other non-clickable sets on the site.
+
+  It was a ruled list with a tick against every line. Review found that flat —
+  every item wore the same mark, so the mark said nothing. An icon per item
+  gives the eye somewhere to land and says something about each one.
+
+  Icons come in a parallel array, matched by position rather than by wording,
+  so rewording an item in the copy deck keeps its icon. An item without one
+  falls back to a tick.
+*/
+import { Icon } from 'astro-icon/components';
+import Grid from './Grid.astro';
+
 interface Props {
   items: readonly string[];
+  icons?: readonly string[];
   columns?: 1 | 2 | 3;
   tone?: 'dark' | 'light';
 }
-const { items, columns = 2, tone = 'light' } = Astro.props;
+const { items, icons = [], columns = 2, tone = 'light' } = Astro.props;
 const dark = tone === 'dark';
-const cols = { 1: '', 2: 'sm:grid-cols-2', 3: 'sm:grid-cols-2 lg:grid-cols-3' };
+const cols = (columns === 1 ? 2 : columns) as 2 | 3;
 ---
 
-<ul
-  class:list={[
-    'grid gap-x-10 border-t',
-    cols[columns],
-    dark ? 'border-navy-700' : 'border-line',
-  ]}
->
+<Grid cols={cols} tone={tone} as="ul">
   {
-    items.map((item) => (
-      <li
-        class:list={[
-          'flex items-start gap-3 border-b py-3.5',
-          dark ? 'border-navy-700' : 'border-line',
-        ]}
-      >
-        <svg
-          class="mt-1.5 h-3 w-3 shrink-0 text-pink"
-          viewBox="0 0 12 12"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          aria-hidden="true"
-        >
-          <path d="M2 6.5 4.8 9.2 10 3.2" />
-        </svg>
-        <span class="text-[0.9375rem]">{item}</span>
+    items.map((item, i) => (
+      <li class="p-5 md:p-6">
+        <Icon
+          name={icons[i] ?? 'fa6-solid:circle-check'}
+          class:list={['mb-3 h-5 w-5', dark ? 'text-orange' : 'text-pink']}
+        />
+        <span class="block text-[0.9375rem] font-medium leading-snug">{item}</span>
       </li>
     ))
   }
-</ul>
+</Grid>
