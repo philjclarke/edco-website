@@ -6,7 +6,14 @@ import BannerImage from './BannerImage.astro';
 import Placeholder from './Placeholder.astro';
 
 interface Props {
+  /** The page's own name, shown in the small label above the heading. */
   eyebrow?: string;
+  /**
+   * The section this page sits in. When set, the label becomes a breadcrumb —
+   * "Capabilities / Data Services" — so a visitor can always see which page
+   * they're on and step back up to the section.
+   */
+  parent?: { label: string; href: string };
   title: string;
   /** The second-line proposition that sits directly under the H1. */
   standfirst?: string;
@@ -24,6 +31,7 @@ interface Props {
 }
 const {
   eyebrow,
+  parent,
   title,
   standfirst,
   lead,
@@ -57,7 +65,23 @@ const {
     ]}
   >
     <div class="max-w-3xl">
-      {eyebrow && <p class="eyebrow mb-5 text-ondark-muted">{eyebrow}</p>}
+      {
+        parent ? (
+          <nav aria-label="Breadcrumb" class="eyebrow mb-5">
+            <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
+              <li>
+                <a href={parent.href} class="text-ondark-muted transition-colors hover:text-orange">
+                  {parent.label}
+                </a>
+              </li>
+              <li aria-hidden="true" class="text-ondark-muted/50">/</li>
+              <li aria-current="page" class="text-orange">{eyebrow}</li>
+            </ol>
+          </nav>
+        ) : (
+          eyebrow && <p class="eyebrow mb-5 text-ondark-muted">{eyebrow}</p>
+        )
+      }
       <h1 class:list={[size === 'lg' ? 'text-hero' : 'text-display']}>{title}</h1>
       {standfirst && <p class="mt-6 font-display text-lead font-medium grad-text">{standfirst}</p>}
       {lead && <p class="mt-5 max-w-2xl text-lead text-ondark-muted">{lead}</p>}

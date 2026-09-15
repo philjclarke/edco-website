@@ -15,7 +15,7 @@ export type Block =
       title?: string;
       lead?: string;
       /** With `detail`, each card expands to reveal it plus a screenshot. */
-      items: { title: string; body: string; detail?: string; shot?: string }[];
+      items: { title: string; body: string; detail?: string; shot?: string; icon?: string }[];
     }
   | { type: 'shots'; title?: string; lead?: string; shots: { caption: string; src?: string }[] }
   | {
@@ -23,7 +23,7 @@ export type Block =
       title?: string;
       lead?: string;
       /** Numbered because they are a menu of options, not a sequence. */
-      items: { title: string; body: string; points: string[] }[];
+      items: { title: string; body: string; points: string[]; icon?: string }[];
     };
 
 export interface ContentPage {

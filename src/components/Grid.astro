@@ -9,7 +9,7 @@
   last row from showing a stray edge.
 */
 interface Props {
-  cols?: 2 | 3 | 4;
+  cols?: 2 | 3 | 4 | 5 | 6;
   tone?: 'dark' | 'light';
   as?: 'div' | 'ul' | 'ol' | 'dl';
   class?: string;
@@ -21,6 +21,8 @@ const columns = {
   2: 'sm:grid-cols-2',
   3: 'sm:grid-cols-2 lg:grid-cols-3',
   4: 'sm:grid-cols-2 lg:grid-cols-4',
+  5: 'sm:grid-cols-2 lg:grid-cols-5',
+  6: 'sm:grid-cols-3 lg:grid-cols-6',
 };
 ---
 
@@ -33,6 +35,9 @@ const columns = {
     // pixel so it lands under the neighbour's — or under the outer border on
     // the last row and column, whatever the item count.
     '[&>*]:-mb-px [&>*]:-mr-px [&>*]:border-b [&>*]:border-r',
+    // On a part-filled last row the final cell's right edge sits mid-row
+    // rather than under the outer border, and reads as a stray line.
+    '[&>*:last-child]:border-r-0',
     dark ? '[&>*]:border-navy-700' : '[&>*]:border-line',
     cls,
   ]}

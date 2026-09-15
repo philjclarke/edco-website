@@ -57,7 +57,8 @@
     "banner": {
       "src": "workshop-group",
       "focus": "centre"
-    }
+    },
+    "lead": "Replace assumptions about schools, trusts and educators with evidence you can act on."
   },
   {
     "slug": "build-your-reputation-and-audience",
@@ -117,7 +118,8 @@
     "banner": {
       "src": "teacher-board",
       "focus": "right"
-    }
+    },
+    "lead": "Reputation in education is earned by understanding educators’ challenges — then developing and delivering solutions that genuinely help"
   },
   {
     "slug": "reach-and-engage-educators",
@@ -177,7 +179,8 @@
     "banner": {
       "src": "primary-classroom",
       "focus": "right"
-    }
+    },
+    "lead": "Identify the educators who matter and create reasons for them to engage with you."
   },
   {
     "slug": "generate-leads-and-build-pipeline",
@@ -236,7 +239,8 @@
     "banner": {
       "src": "meeting-table",
       "focus": "centre"
-    }
+    },
+    "lead": "Give your sales team genuine reasons to start conversations — not just a longer list of email addresses."
   },
   {
     "slug": "grow-and-retain-customers",
@@ -297,7 +301,8 @@
     "banner": {
       "src": "laptop-charts",
       "focus": "centre"
-    }
+    },
+    "lead": "The organisations that already know you are often the biggest opportunity you have."
   },
   {
     "slug": "education-strategy",
@@ -359,6 +364,7 @@
     "banner": {
       "src": "meeting-table",
       "focus": "right"
-    }
+    },
+    "lead": "The critical-friend engagement. “We want to grow in education. Help us work out how.”"
   }
 ]

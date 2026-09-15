@@ -15,46 +15,55 @@
           {
             "title": "Understand individual schools",
             "body": "Who they are, how they’re structured, what’s changing and what that might mean.",
-            "shot": "eiq/school-overview"
+            "shot": "eiq/school-overview",
+            "icon": "fa6-solid:school"
           },
           {
             "title": "Understand trusts",
             "body": "How a trust is composed, where decisions sit, and which schools sit inside it.",
-            "shot": "eiq/trust-overview"
+            "shot": "eiq/trust-overview",
+            "icon": "fa6-solid:sitemap"
           },
           {
             "title": "Identify likely need",
             "body": "Find the organisations whose circumstances suggest they need what you do.",
-            "shot": "eiq/top-list-financial"
+            "shot": "eiq/top-list-financial",
+            "icon": "fa6-solid:magnifying-glass"
           },
           {
             "title": "Analyse your customers",
             "body": "Understand the organisations you already serve — and what they have in common.",
-            "shot": "eiq/projects-analyse"
+            "shot": "eiq/projects-analyse",
+            "icon": "fa6-solid:chart-pie"
           },
           {
             "title": "Find opportunities across trusts",
             "body": "You serve four schools in a trust of nineteen. Now what?",
-            "shot": "eiq/trust-comparisons"
+            "shot": "eiq/trust-comparisons",
+            "icon": "fa6-solid:diagram-project"
           },
           {
             "title": "Identify risk",
             "body": "Leadership change, financial pressure, structural change — before renewal.",
-            "shot": "eiq/school-ofsted-finance"
+            "shot": "eiq/school-ofsted-finance",
+            "icon": "fa6-solid:triangle-exclamation"
           },
           {
             "title": "Find lookalikes",
-            "body": "Find organisations that resemble your strongest customers."
+            "body": "Find organisations that resemble your strongest customers.",
+            "icon": "fa6-solid:clone"
           },
           {
             "title": "Improve targeting",
             "body": "Fewer, better-aimed conversations rather than more of them.",
-            "shot": "eiq/search"
+            "shot": "eiq/search",
+            "icon": "fa6-solid:crosshairs"
           },
           {
             "title": "Enrich your CRM",
             "body": "Put education context next to the records your team already works in.",
-            "shot": "eiq/pitch-briefing"
+            "shot": "eiq/pitch-briefing",
+            "icon": "fa6-solid:database"
           }
         ]
       },
@@ -84,7 +93,8 @@
             "points": [
               "Understand context and changes",
               "Quickly find the facts you need"
-            ]
+            ],
+            "icon": "fa6-solid:desktop"
           },
           {
             "title": "CRM click-thru for instant context",
@@ -92,7 +102,8 @@
             "points": [
               "Prepare for calls and meetings",
               "Produce winning proposals"
-            ]
+            ],
+            "icon": "fa6-solid:arrow-pointer"
           },
           {
             "title": "API enrichment for your CRM data",
@@ -100,7 +111,8 @@
             "points": [
               "Improve data quality",
               "Reduce maintenance costs"
-            ]
+            ],
+            "icon": "fa6-solid:cloud-arrow-down"
           },
           {
             "title": "Build your own apps with our data and APIs",
@@ -108,7 +120,8 @@
             "points": [
               "Power internal and external apps",
               "Build AI and vibe-coded solutions"
-            ]
+            ],
+            "icon": "fa6-solid:code"
           },
           {
             "title": "Build target lists for sales and marketing",
@@ -116,7 +129,8 @@
             "points": [
               "Find your best opportunities",
               "Improve campaign performance"
-            ]
+            ],
+            "icon": "fa6-solid:users-viewfinder"
           },
           {
             "title": "Analyse your customer base",
@@ -124,7 +138,8 @@
             "points": [
               "Find more customers",
               "Understand what drives buying"
-            ]
+            ],
+            "icon": "fa6-solid:magnifying-glass-chart"
           },
           {
             "title": "Identify at-risk customers and protect revenue",
@@ -132,7 +147,8 @@
             "points": [
               "Spot risk early",
               "Take action to retain customers"
-            ]
+            ],
+            "icon": "fa6-solid:shield-halved"
           },
           {
             "title": "Monitor changes and get alerts",
@@ -140,7 +156,8 @@
             "points": [
               "React to opportunities",
               "Stay informed"
-            ]
+            ],
+            "icon": "fa6-solid:bell"
           },
           {
             "title": "Personalise pitches, proposals and campaigns",
@@ -148,7 +165,8 @@
             "points": [
               "Create relevant messages",
               "Improve win rates"
-            ]
+            ],
+            "icon": "fa6-solid:bullhorn"
           },
           {
             "title": "Automate workflows and processes",
@@ -156,7 +174,8 @@
             "points": [
               "Trigger workflows and tasks",
               "Make data-informed decisions"
-            ]
+            ],
+            "icon": "fa6-solid:gears"
           }
         ]
       },
@@ -323,7 +342,8 @@
     "banner": {
       "src": "students-laptops",
       "focus": "right"
-    }
+    },
+    "lead": "A website that demonstrates why schools should want to work with you, rather than listing what you sell."
   },
   {
     "slug": "spirit",
@@ -409,7 +429,8 @@
     "banner": {
       "src": "laptop-charts",
       "focus": "right"
-    }
+    },
+    "lead": "A fully managed, education-specific CRM — for organisations that want one. If you already have a CRM you like, we’ll work with that instead."
   },
   {
     "slug": "international-schools-network",
@@ -484,7 +505,8 @@
     "banner": {
       "src": "lecture-hall",
       "focus": "centre"
-    }
+    },
+    "lead": "ISN serves international-school educators, and gives organisations a credible route to engage with them."
   },
   {
     "slug": "the-curriculum-network",
@@ -556,6 +578,7 @@
     "banner": {
       "src": "teacher-board",
       "focus": "centre"
-    }
+    },
+    "lead": "The Curriculum Network connects EdCo with UK educators through webinars, CPD, research, events and content."
   }
 ]

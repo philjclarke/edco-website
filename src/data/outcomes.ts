@@ -19,6 +19,8 @@ export interface Outcome {
   /** The single sentence that carries the argument. */
   standfirst: string;
   summary: string;
+  /** Intro paragraph in the hero. */
+  lead?: string;
   intro: string[];
   helpTitle: string;
   help: string[];

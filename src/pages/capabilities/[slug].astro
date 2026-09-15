@@ -9,4 +9,4 @@ export function getStaticPaths() {
 const { page } = Astro.props;
 ---
 
-<ContentPage page={page} eyebrow="Capabilities" />
+<ContentPage page={page} section={{ label: 'Capabilities', href: '/capabilities/' }} />

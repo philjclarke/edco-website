@@ -12,10 +12,11 @@ interface Props {
 }
 const { steps, tone = 'light' } = Astro.props;
 const dark = tone === 'dark';
-const cols = steps.length % 4 === 0 ? 4 : steps.length % 3 === 0 ? 3 : 4;
+// One row where the steps fit on it; otherwise rows of four.
+const cols = (steps.length <= 6 ? Math.max(steps.length, 2) : 4) as 2 | 3 | 4 | 5 | 6;
 ---
 
-<Grid cols={cols as 3 | 4} tone={tone} as="ol">
+<Grid cols={cols} tone={tone} as="ol">
   {
     steps.map((s, i) => (
       <li class="flex items-baseline gap-3 px-5 py-4">

@@ -14,14 +14,16 @@ import type { ContentPage } from '@/data/blocks';
 
 interface Props {
   page: ContentPage;
-  eyebrow: string;
+  /** The section this page belongs to, for the breadcrumb. */
+  section: { label: string; href: string };
 }
-const { page, eyebrow } = Astro.props;
+const { page, section } = Astro.props;
 ---
 
 <Layout title={page.navLabel} description={page.summary}>
   <PageHero
-    eyebrow={eyebrow}
+    parent={section}
+    eyebrow={page.navLabel}
     title={page.title}
     standfirst={page.standfirst}
     lead={page.lead}

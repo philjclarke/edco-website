@@ -25,7 +25,9 @@ const { stream, articles } = Astro.props;
 ---
 
 <Layout title={stream.label} description={stream.lead}>
-  <PageHero eyebrow="What We Think" title={stream.title} standfirst={stream.question} lead={stream.lead}
+  <PageHero
+    parent={{ label: 'What We Think', href: '/what-we-think/' }}
+    eyebrow={stream.label} title={stream.title} standfirst={stream.question} lead={stream.lead}
     banner={{ src: 'lecture-hall', focus: 'centre' }} />
 
   <Section tone="light" size="lg">

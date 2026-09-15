@@ -27,9 +27,11 @@ const matchedRoute = routes.find((r) => r.objective === outcome.routeObjective)!
 
 <Layout title={outcome.navLabel} description={outcome.summary}>
   <PageHero
-    eyebrow="What are you trying to achieve?"
+    parent={{ label: 'What are you trying to achieve?', href: '/what-are-you-trying-to-achieve/' }}
+    eyebrow={outcome.navLabel}
     title={outcome.title}
     standfirst={outcome.standfirst}
+    lead={outcome.lead}
     banner={outcome.banner}
     size="lg"
   />

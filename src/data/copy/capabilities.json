@@ -105,35 +105,43 @@
         "items": [
           {
             "title": "Build brand awareness",
-            "body": "Become known for something educators care about, not just known."
+            "body": "Become known for something educators care about, not just known.",
+            "icon": "fa6-solid:bullhorn"
           },
           {
             "title": "Generate leads",
-            "body": "Reasons to talk, not just addresses to mail."
+            "body": "Reasons to talk, not just addresses to mail.",
+            "icon": "fa6-solid:filter"
           },
           {
             "title": "Build an opted-in audience",
-            "body": "An audience you have permission to talk to again."
+            "body": "An audience you have permission to talk to again.",
+            "icon": "fa6-solid:user-check"
           },
           {
             "title": "Recruit to events",
-            "body": "Fill the room with the right people, not just the room."
+            "body": "Fill the room with the right people, not just the room.",
+            "icon": "fa6-solid:calendar-check"
           },
           {
             "title": "Engage existing customers",
-            "body": "The audience most organisations under-market to."
+            "body": "The audience most organisations under-market to.",
+            "icon": "fa6-solid:handshake"
           },
           {
             "title": "Launch something new",
-            "body": "Ideally after we’ve checked somebody wants it."
+            "body": "Ideally after we’ve checked somebody wants it.",
+            "icon": "fa6-solid:rocket"
           },
           {
             "title": "Campaign around a specific need",
-            "body": "One message, one problem, the right organisations."
+            "body": "One message, one problem, the right organisations.",
+            "icon": "fa6-solid:bullseye"
           },
           {
             "title": "Re-engage a dormant audience",
-            "body": "Where there’s a genuine reason to get back in touch."
+            "body": "Where there’s a genuine reason to get back in touch.",
+            "icon": "fa6-solid:arrows-rotate"
           }
         ]
       },
@@ -183,7 +191,8 @@
     "banner": {
       "src": "laptop-charts",
       "focus": "centre"
-    }
+    },
+    "lead": "Campaigns, content and channels — organised around your objective rather than our departments."
   },
   {
     "page": true,
@@ -261,7 +270,8 @@
     "banner": {
       "src": "teacher-board",
       "focus": "right"
-    }
+    },
+    "lead": "Events and CPD that create an asset and a reason to continue the relationship, not a good afternoon."
   },
   {
     "page": true,
@@ -331,7 +341,8 @@
     "banner": {
       "src": "data-screen",
       "focus": "right"
-    }
+    },
+    "lead": "Education organisation and contact data, cleansed, enriched, matched and connected to the systems you work in."
   },
   {
     "page": true,
@@ -409,7 +420,8 @@
     "banner": {
       "src": "students-laptops",
       "focus": "centre"
-    }
+    },
+    "lead": "CPD, webinars, articles, guides, classroom resources, reports, videos, diagnostics and interactive tools — organised around the problem, not the format."
   },
   {
     "page": true,
@@ -567,7 +579,8 @@
     "banner": {
       "src": "data-screen",
       "focus": "left"
-    }
+    },
+    "lead": "APIs, system and CRM integration, data flows, automation and intelligent tools — connecting what you already have rather than replacing it."
   },
   {
     "page": true,
@@ -640,6 +653,7 @@
     "banner": {
       "src": "laptop-charts",
       "focus": "left"
-    }
+    },
+    "lead": "Discover, define, build, launch, operate and improve — with flexible IP arrangements, because it’s usually your product."
   }
 ]
