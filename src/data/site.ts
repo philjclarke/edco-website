@@ -72,7 +72,6 @@ export const primaryNav: NavGroup[] = [
       { label: 'CSR programmes', href: '/capabilities/csr-programmes/' },
       { label: 'Technology & integration', href: '/capabilities/technology-and-integration/' },
       { label: 'Bespoke technology', href: '/capabilities/bespoke-technology/' },
-      { label: 'All capabilities', href: '/capabilities/' },
     ],
   },
   { label: 'About', href: '/about/' },
