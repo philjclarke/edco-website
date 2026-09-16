@@ -106,7 +106,7 @@ before the structural changes, so old and new can be compared side by side. It's
 plain HTML in `public/v1/` with its own copies of the CSS and images. Nothing links
 to it, it's `noindex`, and it's left out of the sitemap and site search. The copy
 deck doesn't touch it, and it never changes. Each page has a bar at the top that
-links to the same page on the live site.
+links to the same page on the live site, and `/v1/pages/` lists every page.
 
 To take another one, build first and then give the snapshot a new name:
 

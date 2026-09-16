@@ -25,6 +25,8 @@ if (!name || !/^[a-z0-9-]+$/.test(name)) {
 }
 
 const SRC = '.vercel/output/static';
+// The list of snapshot pages. Not the snapshot's root — that's the homepage.
+const LIST = 'pages';
 const OUT = path.join('public', name);
 const PREFIX = `/${name}`;
 const SKIP = [/^\/404/, /^\/search\//, /^\/prototype\//, /^\/admin\//];
@@ -103,7 +105,7 @@ for (const [url, file] of pages) {
     `<div style="position:sticky;top:0;z-index:100;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;justify-content:center;` +
     `padding:8px 16px;background:#f7901f;color:#0f1421;font:600 13px/1.4 Inter,system-ui,sans-serif">` +
     `<span>Snapshot ${name.toUpperCase()} · taken ${taken} · not the live site</span>` +
-    `<a href="${PREFIX}/" style="color:#0f1421">All ${name.toUpperCase()} pages</a>` +
+    `<a href="${PREFIX}/${LIST}/" style="color:#0f1421">All ${name.toUpperCase()} pages</a>` +
     `<a href="${url}" style="color:#0f1421">This page now</a></div>`;
   html = html.replace(/<body([^>]*)>/, `<body$1 data-pagefind-ignore="all">${bar}`);
 
@@ -135,8 +137,10 @@ const rows = listing
       `<span>${p.url}</span><a class="now" href="${p.url}">now</a></li>`
   )
   .join('\n');
+if (pages.has(`/${LIST}/`)) throw new Error(`the site now has a /${LIST}/ page; pick another name for the list`);
+await mkdir(path.join(OUT, LIST), { recursive: true });
 await writeFile(
-  path.join(OUT, 'index.html'),
+  path.join(OUT, LIST, 'index.html'),
   `<!doctype html><html lang="en-GB"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
