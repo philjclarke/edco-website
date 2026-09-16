@@ -205,8 +205,8 @@
       {
         "type": "pull",
         "slot": "shout2",
-        "text": "",
-        "sub": ""
+        "text": "Shout out 2 Heading",
+        "sub": "Shout Out 2 test"
       },
       {
         "type": "pull",
