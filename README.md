@@ -99,6 +99,23 @@ node scripts/copy-deck.mjs pack          # repo  -> .copy-deck/
 node scripts/copy-deck.mjs apply <dir>   # deck  -> src/data/copy/
 ```
 
+## Snapshots
+
+`/v1/` is a frozen copy of the whole site as it stood on 16 September 2026, taken
+before the structural changes, so old and new can be compared side by side. It's
+plain HTML in `public/v1/` with its own copies of the CSS and images. Nothing links
+to it, it's `noindex`, and it's left out of the sitemap and site search. The copy
+deck doesn't touch it, and it never changes. Each page has a bar at the top that
+links to the same page on the live site.
+
+To take another one, build first and then give the snapshot a new name:
+
+```bash
+npm run build && node scripts/snapshot.mjs v2
+```
+
+URLs on Vercel are case-sensitive, so the address is `/v1/`, not `/V1/`.
+
 ## Placeholders
 
 Brief §77 requires live copy to be visually distinct from content still being sourced.
