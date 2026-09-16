@@ -21,7 +21,20 @@
       "Test a product idea before building it",
       "Understand schools and trusts individually"
     ],
-    "pull": "Don’t guess what educators need. Ask them.",
+    "shouts": [
+      {
+        "text": "",
+        "sub": ""
+      },
+      {
+        "text": "Don’t guess what educators need. Ask them.",
+        "sub": ""
+      },
+      {
+        "text": "",
+        "sub": ""
+      }
+    ],
     "icon": "fa6-solid:magnifying-glass-chart",
     "banner": {
       "src": "workshop-group",
@@ -61,7 +74,20 @@
       "Articles",
       "Useful newsletters and opted-in audiences"
     ],
-    "pull": "Build an audience you have permission to talk to.",
+    "shouts": [
+      {
+        "text": "",
+        "sub": ""
+      },
+      {
+        "text": "Build an audience you have permission to talk to.",
+        "sub": ""
+      },
+      {
+        "text": "",
+        "sub": ""
+      }
+    ],
     "icon": "fa6-solid:bullhorn",
     "banner": {
       "src": "teacher-board",
@@ -101,7 +127,20 @@
       "Resources",
       "Account-based engagement"
     ],
-    "pull": "Teachers use social media. That doesn’t mean they’re there to hear from your brand.",
+    "shouts": [
+      {
+        "text": "",
+        "sub": ""
+      },
+      {
+        "text": "Teachers use social media. That doesn’t mean they’re there to hear from your brand.",
+        "sub": ""
+      },
+      {
+        "text": "",
+        "sub": ""
+      }
+    ],
     "icon": "fa6-solid:people-group",
     "banner": {
       "src": "primary-classroom",
@@ -141,7 +180,20 @@
       "Develop those leads into pipeline",
       "Give salespeople better context before they make contact"
     ],
-    "pull": "Start with something worth talking about.",
+    "shouts": [
+      {
+        "text": "",
+        "sub": ""
+      },
+      {
+        "text": "Start with something worth talking about.",
+        "sub": ""
+      },
+      {
+        "text": "",
+        "sub": ""
+      }
+    ],
     "icon": "fa6-solid:arrow-trend-up",
     "banner": {
       "src": "meeting-table",
@@ -181,7 +233,20 @@
       "Improve retention communications",
       "Find organisations that resemble your best customers"
     ],
-    "pull": "What don’t you know about your customers?",
+    "shouts": [
+      {
+        "text": "",
+        "sub": ""
+      },
+      {
+        "text": "What don’t you know about your customers?",
+        "sub": ""
+      },
+      {
+        "text": "",
+        "sub": ""
+      }
+    ],
     "icon": "fa6-solid:seedling",
     "banner": {
       "src": "laptop-charts",
@@ -225,7 +290,20 @@
       "Strategy workshops",
       "Technology and product discovery"
     ],
-    "pull": "Sometimes the right answer is not to market it yet.",
+    "shouts": [
+      {
+        "text": "",
+        "sub": ""
+      },
+      {
+        "text": "Sometimes the right answer is not to market it yet.",
+        "sub": ""
+      },
+      {
+        "text": "",
+        "sub": ""
+      }
+    ],
     "icon": "fa6-solid:compass",
     "banner": {
       "src": "meeting-table",

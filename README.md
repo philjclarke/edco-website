@@ -52,6 +52,13 @@ Product and capability pages are assembled from five block types only — `prose
 and gives a CMS an obvious components model. Adding a sixth type should need two pages to
 genuinely want it.
 
+Outcome, product and capability pages share one layout below the hero,
+[SectionTemplate.astro](src/components/SectionTemplate.astro): context → problems
+we solve → how we do it (outcomes) / screenshots (products) → how to use it
+(products, capabilities) → social proof → you might also be interested in, with a
+shout-out band after each content section. Each block's `slot` says where it
+goes, and the template sets the order. A slot with no content shows a placeholder.
+
 ## The copy deck
 
 All the site's words live in `src/data/copy/*.json`, and there is a **copy deck**

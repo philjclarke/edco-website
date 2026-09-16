@@ -9,17 +9,26 @@ import Placeholder from './Placeholder.astro';
 
 interface Props {
   blocks: Block[];
+  /** One background for all of them, when they fill one template slot. */
+  tone?: 'paper' | 'mist';
 }
-const { blocks } = Astro.props;
+const { blocks, tone } = Astro.props;
 
-// Blocks alternate white / mist so a long page keeps a rhythm without needing
-// each page to specify its own background.
-const bg = (i: number) => (i % 2 === 1 ? 'bg-mist' : 'bg-paper');
+// Left to themselves, blocks alternate white / mist so a long page keeps a
+// rhythm. Sharing a slot, they share a background and read as one section.
+const bg = (i: number) =>
+  tone ? { paper: 'bg-paper', mist: 'bg-mist' }[tone] : i % 2 === 1 ? 'bg-mist' : 'bg-paper';
 ---
 
 {
   blocks.map((block, i) => (
-    <section class:list={['py-14 md:py-20', block.type === 'pull' ? 'bg-navy-900 text-ondark' : bg(i)]}>
+    <section
+      class:list={[
+        'py-14 md:py-20',
+        block.type === 'pull' ? 'bg-navy-900 text-ondark' : bg(i),
+        tone && i > 0 && 'pt-0 md:pt-0',
+      ]}
+    >
       <div class="mx-auto max-w-7xl px-6">
         {block.type === 'prose' && (
           <div class="max-w-3xl">

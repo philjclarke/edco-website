@@ -1,0 +1,109 @@
+---
+/*
+  The one template that outcome ("What are you trying to achieve?"), product
+  and capability pages share, below the hero:
+
+    context → shout-out → problems we solve → shout-out
+      → how we do it (achieve) / screenshots (products) → shout-out
+      → how to use it (products, capabilities) → shout-out
+      → social proof → you might also be interested in
+
+  A section type skips the slots it doesn't have, and the shout-out after them.
+  Content says where it goes with a block's `slot`; the template owns the
+  order, so every page in a section reads the same way. A slot with nothing in
+  it renders a placeholder, so gaps are visible.
+*/
+import Blocks from './Blocks.astro';
+import Section from './Section.astro';
+import ShoutOut from './ShoutOut.astro';
+import Placeholder from './Placeholder.astro';
+import Testimonial from './Testimonial.astro';
+import LogoWall from './LogoWall.astro';
+import NextSteps from './NextSteps.astro';
+import type { Block, Slot } from '@/data/blocks';
+import type { NavLink } from '@/data/site';
+
+type Kind = 'achieve' | 'product' | 'capability';
+type Shout = { text: string; sub?: string };
+
+interface Props {
+  kind: Kind;
+  blocks: Block[];
+  /** Shout-outs in page order. Without it, they come from `shoutN` blocks. */
+  shouts?: Shout[];
+  testimonialTheme?: string;
+  related: NavLink[];
+}
+const { kind, blocks, shouts, testimonialTheme, related } = Astro.props;
+
+const ORDER: Record<Kind, Slot[]> = {
+  achieve: ['context', 'problems', 'how'],
+  product: ['context', 'problems', 'how', 'use'],
+  capability: ['context', 'problems', 'use'],
+};
+const order = ORDER[kind];
+
+const LABELS: Record<string, string> = {
+  context: 'CONTEXT',
+  problems: kind === 'achieve' ? 'SPECIFIC PROBLEMS WE SOLVE' : 'USE CASES — SPECIFIC PROBLEMS WE SOLVE',
+  how: kind === 'product' ? 'SCREENSHOTS' : 'HOW WE DO IT',
+  use: 'HOW TO USE IT',
+};
+
+const allowed = new Set<string>([...order, 'proof', ...order.map((_, i) => `shout${i + 1}`)]);
+for (const b of blocks) {
+  if (!b.slot || !allowed.has(b.slot)) {
+    throw new Error(`A ${kind} page has a ${b.type} block in slot "${b.slot ?? '(none)'}", which its template doesn't have.`);
+  }
+}
+
+const inSlot = (s: Slot) => blocks.filter((b) => b.slot === s);
+const shoutAt = (n: number): Shout | undefined => {
+  if (shouts) return shouts[n - 1];
+  const b = blocks.find((x) => x.slot === `shout${n}`);
+  return b?.type === 'pull' ? b : undefined;
+};
+
+// A page can supply a slot as markup instead — outcomes do, for the route.
+const how = Astro.slots.has('how') ? await Astro.slots.render('how') : null;
+const proof = inSlot('proof');
+---
+
+{
+  order.map((slot, i) => (
+    <>
+      {slot === 'how' && how ? (
+        <Fragment set:html={how} />
+      ) : inSlot(slot).length ? (
+        <Blocks blocks={inSlot(slot)} tone="paper" />
+      ) : (
+        <Section tone="light" size="sm">
+          <Placeholder label={LABELS[slot]} note="copy needed" block />
+        </Section>
+      )}
+      <ShoutOut n={i + 1} text={shoutAt(i + 1)?.text} sub={shoutAt(i + 1)?.sub} />
+    </>
+  ))
+}
+
+{proof.length > 0 && <Blocks blocks={proof} tone="mist" />}
+<Section tone="mist" size="md" class={proof.length ? 'pt-0 md:pt-0' : ''}>
+  <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:items-center">
+    <div>
+      <p class="eyebrow grad-text mb-4">Social proof</p>
+      <h2 class="text-title">Don’t take our word for it.</h2>
+    </div>
+    <Testimonial prompt={testimonialTheme ?? 'working with EdCo'} />
+  </div>
+  <div class="mt-12">
+    <LogoWall />
+  </div>
+</Section>
+
+{
+  related.length > 0 && (
+    <Section tone="light" size="md">
+      <NextSteps title="You might also be interested in" links={related} icons />
+    </Section>
+  )
+}

@@ -53,6 +53,7 @@ const STRUCTURAL = new Set([
   'findingIcons',
   'stepHrefs',
   'banner',
+  'slot',
 ]);
 
 /** Human labels for the field paths, so the deck reads like a document. */
@@ -65,6 +66,7 @@ const FIELD_LABELS = {
   lead: 'Intro paragraph',
   helpTitle: 'List heading',
   pull: 'Pull quote',
+  sub: 'Supporting line',
   body: 'Body',
   close: 'Closing line',
   eyebrow: 'Eyebrow',
@@ -188,7 +190,11 @@ async function pack() {
 
     const emit = async (docId, title, payload, sourcePath) => {
       const values = flatten(payload);
-      const fields = Object.keys(values).map((k) => ({ path: k, label: labelFor(k) }));
+      const fields = Object.keys(values).map((k) => ({
+        path: k,
+        label: labelFor(k),
+        section: slotSection(k, payload),
+      }));
       const doc = {
         docId,
         title,
@@ -303,6 +309,25 @@ function parseCsv(text) {
   return rows;
 }
 
+/* Section and product/capability pages follow one template; a block's `slot`
+   says where it sits, and names the deck section so rows read in page terms. */
+const SLOT_LABELS = {
+  context: 'Context',
+  problems: 'Use cases / problems we solve',
+  how: 'How we do it / screenshots',
+  use: 'How to use it',
+  proof: 'Social proof',
+};
+function slotSection(dotted, payload) {
+  const m = /^(blocks|shouts)\.(\d+)\./.exec(dotted);
+  if (!m) return undefined;
+  if (m[1] === 'shouts') return `Shout-out ${Number(m[2]) + 1}`;
+  const slot = payload?.blocks?.[Number(m[2])]?.slot;
+  if (!slot) return undefined;
+  const shout = /^shout(\d)$/.exec(slot);
+  return shout ? `Shout-out ${shout[1]}` : SLOT_LABELS[slot];
+}
+
 /** The section a field belongs to — the first segment of its path, humanised. */
 function sectionOf(dotted) {
   const head = dotted.split('.')[0];
@@ -370,7 +395,7 @@ async function csv({ carry = true } = {}) {
       lines.push(
         [
           doc.title,
-          sectionOf(f.path),
+          f.section ?? sectionOf(f.path),
           f.label,
           ref,
           doc.values[f.path] ?? '',

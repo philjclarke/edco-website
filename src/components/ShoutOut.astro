@@ -1,0 +1,32 @@
+---
+/*
+  The full-width band between template sections. With no copy yet it still
+  renders, as a placeholder, so the gap is visible rather than silently closed.
+*/
+import Placeholder from './Placeholder.astro';
+
+interface Props {
+  text?: string;
+  sub?: string;
+  /** Its position on the page, for the placeholder. */
+  n: number;
+}
+const { text, sub, n } = Astro.props;
+const filled = !!text?.trim();
+---
+
+<section class:list={['bg-navy-900 text-ondark', filled ? 'py-14 md:py-20' : 'py-6']}>
+  <div class="mx-auto max-w-4xl px-6 text-center">
+    {
+      filled ? (
+        <>
+          <div class="mx-auto mb-8 h-1 w-16 rounded-full grad-rule" />
+          <p class="font-display text-display font-bold">{text}</p>
+          {sub?.trim() && <p class="mt-6 text-lead text-ondark-muted">{sub}</p>}
+        </>
+      ) : (
+        <Placeholder label={`SHOUT OUT ${n}`} note="copy needed — a line that carries the argument" />
+      )
+    }
+  </div>
+</section>

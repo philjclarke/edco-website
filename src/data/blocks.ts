@@ -5,7 +5,13 @@
   unless two pages genuinely need it.
 */
 
-export type Block =
+/**
+ * Where a block sits in the section template (see SectionTemplate.astro).
+ * `shoutN` is the Nth full-width shout-out band, and only takes a `pull`.
+ */
+export type Slot = 'context' | 'problems' | 'how' | 'use' | 'proof' | 'shout1' | 'shout2' | 'shout3' | 'shout4';
+
+export type Block = { slot?: Slot } & (
   | { type: 'prose'; paras: string[]; title?: string }
   | { type: 'list'; title: string; items: string[]; icons?: string[]; lead?: string; columns?: 2 | 3 }
   | { type: 'steps'; title?: string; lead?: string; steps: string[] }
@@ -24,7 +30,8 @@ export type Block =
       lead?: string;
       /** Numbered because they are a menu of options, not a sequence. */
       items: { title: string; body: string; points: string[]; icon?: string }[];
-    };
+    }
+);
 
 export interface ContentPage {
   slug: string;
@@ -34,7 +41,7 @@ export interface ContentPage {
   summary: string;
   lead?: string;
   blocks: Block[];
-  /** Brief §70 — "Where might you go next?" */
+  /** "You might also be interested in" — /contact/ is dropped, the CTA band covers it. */
   next: { label: string; href: string; blurb?: string }[];
   /** Brief §58 — proof sits beside the claim, on every product/capability page. */
   testimonialTheme?: string;

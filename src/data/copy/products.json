@@ -9,6 +9,7 @@
     "blocks": [
       {
         "type": "cards",
+        "slot": "problems",
         "title": "What people use it for",
         "lead": "Education IQ is not a feature list. It is a set of questions organisations need answered.",
         "items": [
@@ -69,6 +70,7 @@
       },
       {
         "type": "shots",
+        "slot": "how",
         "title": "What it actually looks like",
         "shots": [
           {
@@ -84,6 +86,7 @@
       },
       {
         "type": "ways",
+        "slot": "use",
         "title": "Ten ways to use it",
         "lead": "Use Education IQ directly, connect it to your systems, or build new solutions and processes with it.",
         "items": [
@@ -181,15 +184,35 @@
       },
       {
         "type": "pull",
+        "slot": "shout3",
         "text": "Works with the CRM you’ve already got.",
         "sub": "Salesforce, HubSpot, Microsoft Dynamics or something else entirely. Your technology doesn’t need our logo on it."
       },
       {
         "type": "prose",
+        "slot": "context",
         "title": "Data is the foundation. Intelligence is the product.",
         "paras": [
           "Knowing who exists is useful. Knowing who matters is better. Education IQ exists to close that gap — and where it helps, to put a person alongside the data who can tell you what it means."
         ]
+      },
+      {
+        "type": "pull",
+        "slot": "shout1",
+        "text": "",
+        "sub": ""
+      },
+      {
+        "type": "pull",
+        "slot": "shout2",
+        "text": "",
+        "sub": ""
+      },
+      {
+        "type": "pull",
+        "slot": "shout4",
+        "text": "",
+        "sub": ""
       }
     ],
     "testimonialTheme": "EdCo understanding both education and the client’s business",
@@ -243,6 +266,7 @@
     "blocks": [
       {
         "type": "prose",
+        "slot": "context",
         "title": "Your website sells. Engagement Hub engages",
         "paras": [
           "Your website has an important job to do. It explains who you are, what you offer and why an educator should choose you.\n\nEngagement Hub does a different job alongside it.\n\nIt gives your events, resources and useful content a dedicated home — somewhere designed around what educators are interested in rather than around your product catalogue.\n\nAn educator might arrive because they have been invited to an event, want to register for a webinar, are looking for guidance on a particular challenge or have discovered a useful piece of content. Engagement Hub makes that journey simple: discover → register → attend → access resources → keep engaging.\n\nAnd the relationship doesn’t end when the event does. Presentations, recordings, resources and related content can remain available afterwards, giving educators reasons to return and creating opportunities for further engagement.",
@@ -251,6 +275,7 @@
       },
       {
         "type": "shots",
+        "slot": "how",
         "title": "What an Engagement Hub site looks like",
         "shots": [
           {
@@ -263,6 +288,7 @@
       },
       {
         "type": "list",
+        "slot": "problems",
         "title": "What an Engagement Hub site lets you give",
         "columns": 3,
         "items": [
@@ -290,6 +316,7 @@
       },
       {
         "type": "steps",
+        "slot": "use",
         "title": "Anonymous traffic becomes a known relationship",
         "lead": "An Engagement Hub site is built to move visitors along a path, and to show you who is walking it.",
         "steps": [
@@ -304,14 +331,34 @@
       },
       {
         "type": "pull",
+        "slot": "shout2",
         "text": "Give value. Build trust. Understand need. Create relationships.",
         "sub": "Measure relationships, not simply traffic."
       },
       {
         "type": "prose",
+        "slot": "context",
         "paras": [
           "Your website can sell what you do. Or it can demonstrate why schools should want to work with you."
         ]
+      },
+      {
+        "type": "pull",
+        "slot": "shout1",
+        "text": "",
+        "sub": ""
+      },
+      {
+        "type": "pull",
+        "slot": "shout3",
+        "text": "",
+        "sub": ""
+      },
+      {
+        "type": "pull",
+        "slot": "shout4",
+        "text": "",
+        "sub": ""
       }
     ],
     "testimonialTheme": "EdCo challenging the original brief",
@@ -365,6 +412,7 @@
     "blocks": [
       {
         "type": "list",
+        "slot": "problems",
         "title": "What SPIRIT offers",
         "columns": 2,
         "items": [
@@ -386,6 +434,7 @@
       },
       {
         "type": "shots",
+        "slot": "how",
         "title": "What SPIRIT looks like",
         "shots": [
           {
@@ -398,6 +447,7 @@
       },
       {
         "type": "prose",
+        "slot": "use",
         "title": "And if you already have a CRM?",
         "paras": [
           "Then keep it. If your organisation already uses Salesforce, HubSpot, Microsoft Dynamics or anything else it gets on with, EdCo will help make that environment more valuable rather than argue with it.",
@@ -406,7 +456,26 @@
       },
       {
         "type": "pull",
+        "slot": "shout4",
         "text": "Your technology doesn’t need our logo on it."
+      },
+      {
+        "type": "pull",
+        "slot": "shout1",
+        "text": "",
+        "sub": ""
+      },
+      {
+        "type": "pull",
+        "slot": "shout2",
+        "text": "",
+        "sub": ""
+      },
+      {
+        "type": "pull",
+        "slot": "shout3",
+        "text": "",
+        "sub": ""
       }
     ],
     "testimonialTheme": "a long-term relationship",
@@ -460,6 +529,7 @@
     "blocks": [
       {
         "type": "list",
+        "slot": "problems",
         "title": "What it offers organisations",
         "columns": 2,
         "items": [
@@ -481,6 +551,7 @@
       },
       {
         "type": "shots",
+        "slot": "how",
         "title": "The network",
         "shots": [
           {
@@ -490,10 +561,35 @@
       },
       {
         "type": "prose",
+        "slot": "context",
         "title": "It is also part of our listening infrastructure",
         "paras": [
           "ISN is not only a distribution route. It is one of the places EdCo finds out what international educators are actually dealing with — which is what makes it useful to organisations in the first place."
         ]
+      },
+      {
+        "type": "pull",
+        "slot": "shout1",
+        "text": "",
+        "sub": ""
+      },
+      {
+        "type": "pull",
+        "slot": "shout2",
+        "text": "",
+        "sub": ""
+      },
+      {
+        "type": "pull",
+        "slot": "shout3",
+        "text": "",
+        "sub": ""
+      },
+      {
+        "type": "pull",
+        "slot": "shout4",
+        "text": "",
+        "sub": ""
       }
     ],
     "next": [
@@ -544,6 +640,7 @@
     "blocks": [
       {
         "type": "list",
+        "slot": "problems",
         "title": "What it supports",
         "columns": 3,
         "items": [
@@ -565,6 +662,7 @@
       },
       {
         "type": "shots",
+        "slot": "how",
         "title": "The network",
         "shots": [
           {
@@ -574,9 +672,34 @@
       },
       {
         "type": "prose",
+        "slot": "context",
         "paras": [
           "It works in both directions. Educators get things worth their time. Organisations get a credible reason to be in the room. And EdCo keeps hearing, first-hand, what UK educators are dealing with."
         ]
+      },
+      {
+        "type": "pull",
+        "slot": "shout1",
+        "text": "",
+        "sub": ""
+      },
+      {
+        "type": "pull",
+        "slot": "shout2",
+        "text": "",
+        "sub": ""
+      },
+      {
+        "type": "pull",
+        "slot": "shout3",
+        "text": "",
+        "sub": ""
+      },
+      {
+        "type": "pull",
+        "slot": "shout4",
+        "text": "",
+        "sub": ""
       }
     ],
     "next": [

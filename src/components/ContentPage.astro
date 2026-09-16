@@ -1,14 +1,9 @@
 ---
-/* Shared template for product and capability pages (brief §27–§43).
-   Every one of them ends with proof beside the claim (§58) and
-   "Where might you go next?" (§70). */
+/* Shared page for products and capabilities (brief §27–§43). Below the hero,
+   the layout is the section template's. */
 import Layout from '@/layouts/Layout.astro';
 import PageHero from './PageHero.astro';
-import Blocks from './Blocks.astro';
-import Section from './Section.astro';
-import NextSteps from './NextSteps.astro';
-import Testimonial from './Testimonial.astro';
-import LogoWall from './LogoWall.astro';
+import SectionTemplate from './SectionTemplate.astro';
 import CtaBand from './CtaBand.astro';
 import type { ContentPage } from '@/data/blocks';
 
@@ -16,8 +11,9 @@ interface Props {
   page: ContentPage;
   /** The section this page belongs to, for the breadcrumb. */
   section: { label: string; href: string };
+  kind: 'product' | 'capability';
 }
-const { page, section } = Astro.props;
+const { page, section, kind } = Astro.props;
 ---
 
 <Layout title={page.navLabel} description={page.summary}>
@@ -31,32 +27,12 @@ const { page, section } = Astro.props;
     banner={page.banner}
   />
 
-  <Blocks blocks={page.blocks} />
-
-  {
-    page.testimonialTheme && (
-      <Section tone="mist" size="md">
-        <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:items-center">
-          <div>
-            <p class="eyebrow grad-text mb-4">Proof beside the claim</p>
-            <h2 class="text-title">Don’t take our word for it.</h2>
-          </div>
-          <Testimonial prompt={page.testimonialTheme} />
-        </div>
-        <div class="mt-12">
-          <LogoWall />
-        </div>
-      </Section>
-    )
-  }
-
-  {
-    page.next.length > 0 && (
-      <Section tone="light" size="md">
-        <NextSteps links={page.next} />
-      </Section>
-    )
-  }
+  <SectionTemplate
+    kind={kind}
+    blocks={page.blocks}
+    testimonialTheme={page.testimonialTheme}
+    related={page.next.filter((l) => l.href !== '/contact/')}
+  />
 
   <CtaBand />
 </Layout>

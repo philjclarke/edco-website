@@ -6,15 +6,27 @@
   These are links, so they are Panels — bordered, rounded, and they lift on
   hover. The Grid treatment is reserved for things that don't go anywhere.
 */
+import { Icon } from 'astro-icon/components';
 import type { NavLink } from '@/data/site';
+import { outcomes } from '@/data/outcomes';
+import { products } from '@/data/products';
+import { capabilities } from '@/data/capabilities';
 
 interface Props {
   links: NavLink[];
   title?: string;
   tone?: 'dark' | 'light';
+  /** Show the destination's own icon, where it has one. */
+  icons?: boolean;
 }
-const { links, title = 'Where might you go next?', tone = 'light' } = Astro.props;
+const { links, title = 'Where might you go next?', tone = 'light', icons = false } = Astro.props;
 const dark = tone === 'dark';
+
+const iconByHref = new Map<string, string | undefined>([
+  ...outcomes.map((o) => [`/${o.slug}/`, o.icon] as const),
+  ...products.map((p) => [`/products/${p.slug}/`, p.icon] as const),
+  ...capabilities.map((c) => [`/capabilities/${c.slug}/`, c.icon] as const),
+]);
 ---
 
 <div>
@@ -36,6 +48,11 @@ const dark = tone === 'dark';
               aria-hidden="true"
               class="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 grad-rule transition-transform duration-300 group-hover:scale-x-100"
             />
+            {icons && iconByHref.get(l.href) && (
+              <span class="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[linear-gradient(120deg,var(--color-orange),var(--color-pink))] text-white transition-transform duration-200 group-hover:scale-105">
+                <Icon name={iconByHref.get(l.href)!} class="h-4 w-4" />
+              </span>
+            )}
             <span class="font-display text-base font-semibold">{l.label}</span>
             {l.blurb && (
               <span class:list={['mt-2 text-sm', dark ? 'text-ondark-muted' : 'text-ink-muted']}>

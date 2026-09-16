@@ -26,6 +26,7 @@ export const STRUCTURAL = new Set([
   'findingIcons',
   'stepHrefs',
   'banner',
+  'slot',
 ]);
 
 /** Which source file each deck document is cut from, and how it is split. */

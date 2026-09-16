@@ -10,6 +10,7 @@
     "blocks": [
       {
         "type": "prose",
+        "slot": "context",
         "paras": [
           "EdCo’s data, networks and relationships mean we can identify and recruit the right educators quickly. Then we can conduct the research, interpret what they tell us and help you decide what to do next.",
           "We lean towards qualitative work — interviews and focus groups — because that is where the useful surprises are. Surveys can validate or size what you find. They shouldn’t define your proposition."
@@ -17,6 +18,7 @@
       },
       {
         "type": "steps",
+        "slot": "use",
         "title": "How it runs",
         "steps": [
           "Define the question",
@@ -31,6 +33,7 @@
       },
       {
         "type": "prose",
+        "slot": "use",
         "title": "You want to run the research yourself? We’ll find the right people.",
         "paras": [
           "Educator recruitment is available on its own. If you or your agency are running the study yourselves and just need the right headteachers, SENDCOs or trust CFOs in the room, that is a service you can buy independently."
@@ -38,11 +41,13 @@
       },
       {
         "type": "pull",
+        "slot": "shout1",
         "text": "Don’t start with the campaign. Start with something worth talking about.",
         "sub": "A supplier wants relationships with MAT CFOs. We could send a campaign. Or we could research what MAT CFOs are actually worried about, recruit them into the study, publish what we find, run an executive briefing around it, build an opted-in audience on the subject — and tell you which organisations are engaging. Now your sales team has something better than a cold lead. It has a reason to start a conversation."
       },
       {
         "type": "list",
+        "slot": "use",
         "title": "Whose name goes on it is up to you",
         "columns": 2,
         "lead": "EdCo does not need to be the hero.",
@@ -58,6 +63,18 @@
           "fa6-solid:handshake",
           "fa6-solid:eye-slash"
         ]
+      },
+      {
+        "type": "pull",
+        "slot": "shout2",
+        "text": "",
+        "sub": ""
+      },
+      {
+        "type": "pull",
+        "slot": "shout3",
+        "text": "",
+        "sub": ""
       }
     ],
     "testimonialTheme": "EdCo challenging the original brief",
@@ -107,6 +124,7 @@
     "blocks": [
       {
         "type": "cards",
+        "slot": "problems",
         "title": "What are you trying to get marketing to do?",
         "items": [
           {
@@ -153,6 +171,7 @@
       },
       {
         "type": "prose",
+        "slot": "context",
         "title": "Channels are tools. They are not the strategy.",
         "paras": [
           "Email, content, digital, paid media, creative, targeting and campaign management are all things we do well. None of them is a plan.",
@@ -161,7 +180,20 @@
       },
       {
         "type": "pull",
+        "slot": "shout2",
         "text": "Sending the wrong message to more schools doesn’t make it more right."
+      },
+      {
+        "type": "pull",
+        "slot": "shout1",
+        "text": "",
+        "sub": ""
+      },
+      {
+        "type": "pull",
+        "slot": "shout3",
+        "text": "",
+        "sub": ""
       }
     ],
     "testimonialTheme": "EdCo challenging the original brief",
@@ -210,6 +242,7 @@
     "blocks": [
       {
         "type": "list",
+        "slot": "problems",
         "title": "What we can take on",
         "columns": 3,
         "lead": "All of it, or the parts you don’t want to do.",
@@ -250,6 +283,7 @@
       },
       {
         "type": "prose",
+        "slot": "context",
         "title": "The day is the smallest part of it",
         "paras": [
           "A good event produces something that outlives it: a recording, a set of clips, an article, a resource, a group of people who have now heard you say something useful — and a record of who they were.",
@@ -258,7 +292,20 @@
       },
       {
         "type": "pull",
+        "slot": "shout2",
         "text": "The format isn’t the value. What educators take away from it is."
+      },
+      {
+        "type": "pull",
+        "slot": "shout1",
+        "text": "",
+        "sub": ""
+      },
+      {
+        "type": "pull",
+        "slot": "shout3",
+        "text": "",
+        "sub": ""
       }
     ],
     "testimonialTheme": "EdCo feeling like part of the client team",
@@ -306,6 +353,7 @@
     "blocks": [
       {
         "type": "list",
+        "slot": "problems",
         "title": "What we do with data",
         "columns": 3,
         "items": [
@@ -337,11 +385,30 @@
       },
       {
         "type": "prose",
+        "slot": "context",
         "title": "We’ve been doing this for a long time",
         "paras": [
           "EdCo has held and maintained education data for decades, and that capability still matters. It is the thing everything else stands on.",
           "But a large database is not, on its own, a proposition. The value is in what the data lets you understand and what you then do differently."
         ]
+      },
+      {
+        "type": "pull",
+        "slot": "shout1",
+        "text": "",
+        "sub": ""
+      },
+      {
+        "type": "pull",
+        "slot": "shout2",
+        "text": "",
+        "sub": ""
+      },
+      {
+        "type": "pull",
+        "slot": "shout3",
+        "text": "",
+        "sub": ""
       }
     ],
     "testimonialTheme": "EdCo understanding both education and the client’s business",
@@ -390,6 +457,7 @@
     "blocks": [
       {
         "type": "prose",
+        "slot": "context",
         "title": "Start with the problem, not the format",
         "paras": [
           "Most content briefs arrive as a format. We need a webinar. We need a series of blogs. We need a whitepaper.",
@@ -398,6 +466,7 @@
       },
       {
         "type": "list",
+        "slot": "problems",
         "title": "What we make",
         "columns": 3,
         "items": [
@@ -433,7 +502,20 @@
       },
       {
         "type": "pull",
+        "slot": "shout2",
         "text": "The format isn’t the value. What educators take away from it is."
+      },
+      {
+        "type": "pull",
+        "slot": "shout1",
+        "text": "",
+        "sub": ""
+      },
+      {
+        "type": "pull",
+        "slot": "shout3",
+        "text": "",
+        "sub": ""
       }
     ],
     "testimonialTheme": "EdCo understanding both education and the client’s business",
@@ -483,6 +565,7 @@
     "blocks": [
       {
         "type": "list",
+        "slot": "problems",
         "title": "What we can take on",
         "columns": 3,
         "lead": "The whole programme, or the pieces that need education expertise.",
@@ -515,6 +598,7 @@
       },
       {
         "type": "prose",
+        "slot": "context",
         "title": "Getting into schools is the part people underestimate",
         "paras": [
           "Most CSR programmes in education fail at recruitment rather than at design. The idea is sound, the materials are good, and then nobody can get schools to take part.",
@@ -523,16 +607,30 @@
       },
       {
         "type": "pull",
+        "slot": "shout2",
         "text": "Your client stays your client.",
         "sub": "EdCo works alongside professional CSR agencies regularly. We are not trying to take ownership of your client relationship, and we will put that in writing if it helps."
       },
       {
         "type": "prose",
+        "slot": "use",
         "title": "Measuring something worth measuring",
         "paras": [
           "Reach is the easy number. How many schools, how many pupils, how many downloads. It is also the least interesting thing a programme can report.",
           "We would rather help you measure whether the thing was any use — what changed for the educators who took part, and whether they would do it again."
         ]
+      },
+      {
+        "type": "pull",
+        "slot": "shout1",
+        "text": "",
+        "sub": ""
+      },
+      {
+        "type": "pull",
+        "slot": "shout3",
+        "text": "",
+        "sub": ""
       }
     ],
     "next": [
@@ -585,6 +683,7 @@
     "blocks": [
       {
         "type": "list",
+        "slot": "problems",
         "title": "What this usually involves",
         "columns": 3,
         "items": [
@@ -612,6 +711,7 @@
       },
       {
         "type": "prose",
+        "slot": "context",
         "title": "We don’t go looking for a problem to build against",
         "paras": [
           "We build technology where technology is the answer. Where the answer is a better proposition, or a conversation with twelve headteachers, we would rather say so — even though it is a smaller invoice.",
@@ -620,7 +720,20 @@
       },
       {
         "type": "pull",
+        "slot": "shout2",
         "text": "Your technology doesn’t need our logo on it."
+      },
+      {
+        "type": "pull",
+        "slot": "shout1",
+        "text": "",
+        "sub": ""
+      },
+      {
+        "type": "pull",
+        "slot": "shout3",
+        "text": "",
+        "sub": ""
       }
     ],
     "testimonialTheme": "EdCo feeling like part of the client team",
@@ -667,6 +780,7 @@
     "blocks": [
       {
         "type": "steps",
+        "slot": "use",
         "title": "The lifecycle",
         "lead": "We can pick this up at any point, including from somebody else’s half-finished build.",
         "steps": [
@@ -680,6 +794,7 @@
       },
       {
         "type": "prose",
+        "slot": "proof",
         "title": "Navigate",
         "paras": [
           "EdCo built Navigate, a platform now used by more than 250,000 post-16 students. It is the clearest evidence that \"we build things too\" is not a line on a capabilities list."
@@ -687,15 +802,29 @@
       },
       {
         "type": "pull",
+        "slot": "shout2",
         "text": "Your idea. Your product. Your IP.",
         "sub": "Where agreed, clients own the resulting product and the intellectual property in it. EdCo can then keep providing hosting, maintenance, support, roadmap development, new features, integration and data management — or hand it over entirely."
       },
       {
         "type": "prose",
+        "slot": "context",
         "title": "The awkward question first",
         "paras": [
           "Almost every bespoke build we are asked about would benefit from a fortnight of research before a line of code exists. Sometimes that research kills the idea, which is a considerably cheaper outcome than launching it."
         ]
+      },
+      {
+        "type": "pull",
+        "slot": "shout1",
+        "text": "",
+        "sub": ""
+      },
+      {
+        "type": "pull",
+        "slot": "shout3",
+        "text": "",
+        "sub": ""
       }
     ],
     "testimonialTheme": "EdCo challenging the original brief",

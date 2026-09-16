@@ -25,12 +25,12 @@ export interface Outcome {
   help: string[];
   /** One icon per help item, by position. */
   helpIcons?: string[];
-  pull?: string;
+  /** The shout-out bands, in page order. An empty `text` shows a placeholder. */
+  shouts: { text: string; sub?: string }[];
   /** Which joined-up route in `routes` (brief §71) illustrates this outcome. */
   routeObjective: string;
   icon?: string;
   banner?: { src: string; focus?: 'left' | 'centre' | 'right' };
-
 }
 
 export const outcomes: Outcome[] = data as Outcome[];
