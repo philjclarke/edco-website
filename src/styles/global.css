@@ -56,6 +56,10 @@
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
   }
+  /* Keep in-page links clear of the pinned desktop header. */
+  @media (min-width: 64rem) {
+    html { scroll-padding-top: 5.5rem; }
+  }
   body {
     background: var(--color-paper);
     color: var(--color-ink);

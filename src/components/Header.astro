@@ -10,14 +10,29 @@ const dark = tone === 'dark';
 const path = Astro.url.pathname;
 ---
 
+<!--
+  On desktop the header stays on screen. Once the page scrolls, it pins to the
+  top in a compact form: utility bar tucked away, logo smaller. The wrapper
+  keeps the full header's height, so the page doesn't jump when it compacts.
+  Mobile is unchanged — the menu button is always at the top anyway.
+-->
+<div
+  id="site-header"
+  class:list={['relative z-40 lg:h-(--header-h)', dark ? 'bg-navy-900' : 'bg-paper']}
+>
 <header
   class:list={[
-    'relative z-40',
-    dark ? 'bg-navy-900 text-ondark' : 'bg-paper text-ink border-b border-line',
+    'group/header relative z-40 inset-x-0 top-0 transition-shadow lg:data-stuck:fixed lg:data-stuck:shadow-xl',
+    dark ? 'bg-navy-900 text-ondark lg:data-stuck:shadow-black/30' : 'bg-paper text-ink border-b border-line lg:data-stuck:shadow-navy-900/10',
   ]}
 >
   <!-- Utility bar -->
-  <div class:list={['hidden lg:block', dark ? 'border-b border-navy-700' : 'border-b border-line']}>
+  <div
+    class:list={[
+      'hidden lg:block lg:group-data-stuck/header:hidden',
+      dark ? 'border-b border-navy-700' : 'border-b border-line',
+    ]}
+  >
     <div class="mx-auto flex max-w-7xl items-center justify-end gap-6 px-6 py-2 text-xs">
       {
         utilityNav.map((l) => (
@@ -40,7 +55,7 @@ const path = Astro.url.pathname;
     </div>
   </div>
 
-  <div class="mx-auto flex max-w-7xl items-center justify-between gap-8 px-6 py-3">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-8 px-6 py-3 lg:group-data-stuck/header:py-2">
     <a href="/" class="shrink-0" aria-label="The Education Company — home">
       {/*
         A plain <img> against pre-built files rather than astro:assets. On a
@@ -57,7 +72,7 @@ const path = Astro.url.pathname;
         width="200"
         height="82"
         alt="The Education Company"
-        class="h-16 w-auto md:h-[4.5rem] lg:h-20"
+        class="h-16 w-auto transition-[height] duration-200 md:h-[4.5rem] lg:h-20 lg:group-data-stuck/header:h-12"
         fetchpriority="high"
       />
     </a>
@@ -181,8 +196,32 @@ const path = Astro.url.pathname;
     </nav>
   </div>
 </header>
+</div>
 
 <script>
+  // Desktop: pin a compact header once the utility bar has scrolled away.
+  const wrap = document.getElementById('site-header');
+  const bar = wrap?.querySelector('header');
+  const utility = bar?.firstElementChild as HTMLElement | null;
+  const desktop = matchMedia('(min-width: 64rem)');
+  if (wrap && bar) {
+    // The full header is one height at every desktop width, so measure it
+    // only while it is full — never mid-way through compacting.
+    const measure = () => {
+      if (!bar.hasAttribute('data-stuck')) wrap.style.setProperty('--header-h', `${bar.offsetHeight}px`);
+      update();
+    };
+    const update = () => {
+      // Once the utility bar has scrolled out of view.
+      const stuck = desktop.matches && scrollY > (utility?.offsetHeight ?? 0);
+      bar.toggleAttribute('data-stuck', stuck);
+    };
+    measure();
+    addEventListener('scroll', update, { passive: true });
+    addEventListener('resize', measure);
+    desktop.addEventListener('change', measure);
+  }
+
   const toggle = document.getElementById('nav-toggle');
   const panel = document.getElementById('mobile-nav');
   toggle?.addEventListener('click', () => {
