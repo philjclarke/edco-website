@@ -1,0 +1,346 @@
+---
+/*
+  Not part of the site. Every grid and listing pattern on one page, in both
+  tones, so the set can be judged together rather than a page at a time.
+
+  Deliberately not in the navigation, not in the sitemap, and noindex. The
+  content is real copy from the site, so what's being judged is the pattern
+  rather than the words.
+*/
+import { getCollection } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import Section from '@/components/Section.astro';
+import Grid from '@/components/Grid.astro';
+import Card from '@/components/Card.astro';
+import NextSteps from '@/components/NextSteps.astro';
+import RouteSteps from '@/components/RouteSteps.astro';
+import ProcessGrid from '@/components/ProcessGrid.astro';
+import TickList from '@/components/TickList.astro';
+import ModelStrip from '@/components/ModelStrip.astro';
+import StatGrid from '@/components/StatGrid.astro';
+import LogoWall from '@/components/LogoWall.astro';
+import ArticleCard from '@/components/ArticleCard.astro';
+import Testimonial from '@/components/Testimonial.astro';
+import ProductShot from '@/components/ProductShot.astro';
+import ShoutOut from '@/components/ShoutOut.astro';
+import Placeholder from '@/components/Placeholder.astro';
+import Blocks from '@/components/Blocks.astro';
+import { Icon } from 'astro-icon/components';
+import { outcomes } from '@/data/outcomes';
+import { capabilities } from '@/data/capabilities';
+import { products } from '@/data/products';
+import { routes } from '@/data/model';
+import { proofStats } from '@/data/proof';
+import type { Block } from '@/data/blocks';
+
+const articles = (await getCollection('articles')).slice(0, 3);
+const route = routes[0];
+const ways = products
+  .find((p) => p.slug === 'education-iq')!
+  .blocks.find((b) => b.type === 'ways')!;
+const cardsBlock = products
+  .find((p) => p.slug === 'education-iq')!
+  .blocks.find((b) => b.type === 'cards')!;
+const research = capabilities.find((c) => c.slug === 'research')!;
+const steps = (research.blocks.find((b) => b.type === 'steps') as Extract<Block, { type: 'steps' }>).steps;
+const help = outcomes[0];
+
+/* Each pattern is introduced the same way: what it is, whether it can be
+   clicked, and where it appears. */
+const patterns = [
+  { id: 'grid', name: 'Grid', click: 'Not clickable', where: 'Facts, lists, anything that doesn’t go anywhere' },
+  { id: 'icon-grid', name: 'Icon grid', click: 'Not clickable', where: '“This may include”, “What we make”, every tick list' },
+  { id: 'process', name: 'Process grid', click: 'Not clickable', where: '“How it runs” on Research, the Engagement Hub sequence' },
+  { id: 'model', name: 'Model strip', click: 'Not clickable', where: 'Homepage, About — the Listen → Grow model' },
+  { id: 'stats', name: 'Stat grid', click: 'Not clickable', where: 'Homepage proof band' },
+  { id: 'logos', name: 'Logo wall', click: 'Not clickable', where: 'Social proof, every section page' },
+  { id: 'shots', name: 'Screenshots', click: 'Not clickable', where: 'Product pages' },
+  { id: 'cards', name: 'Card panels', click: 'Clickable', where: 'Hubs — products, capabilities, outcomes' },
+  { id: 'next', name: 'Related panels', click: 'Clickable', where: '“You might also be interested in”' },
+  { id: 'route', name: 'Route steps', click: 'Clickable', where: '“How we do it” on outcome pages' },
+  { id: 'expand', name: 'Expanding cards', click: 'Clickable', where: 'Education IQ — “What people use it for”' },
+  { id: 'ways', name: 'Numbered options', click: 'Not clickable', where: 'Education IQ — “Ten ways to use it”' },
+  { id: 'articles', name: 'Article cards', click: 'Clickable', where: 'What We Think' },
+  { id: 'proof', name: 'Testimonial', click: 'Not clickable', where: 'Social proof on every section page' },
+  { id: 'shout', name: 'Shout-out band', click: 'Not clickable', where: 'Between sections, all three page templates' },
+  { id: 'placeholder', name: 'Placeholder', click: 'Not clickable', where: 'Anywhere copy or an asset is still missing' },
+];
+---
+
+<Layout title="Prototype — grids & listings" description="Internal pattern page.">
+  <Fragment slot="head">
+    <meta name="robots" content="noindex, nofollow" />
+  </Fragment>
+
+  <Section tone="mist" size="sm">
+    <p class="eyebrow grad-text mb-3">Internal</p>
+    <h1 class="font-display text-display font-bold">Grids &amp; listings</h1>
+    <p class="mt-4 max-w-3xl text-lead text-ink-muted">
+      Every repeating pattern on the site, in one place, with real copy in it. The rule they all
+      follow: <strong>shape says whether a thing can be clicked</strong>. Panels — rounded, bordered,
+      they lift on hover — go somewhere. Grids — flush cells, hairline rules, no hover — don’t.
+    </p>
+    <ul class="mt-8 flex flex-wrap gap-2">
+      {
+        patterns.map((p) => (
+          <li>
+            <a
+              href={`#${p.id}`}
+              class="inline-flex items-center gap-2 rounded-full border border-line bg-paper px-3.5 py-1.5 text-sm transition-colors hover:border-ink"
+            >
+              {p.name}
+              <span class="text-xs text-ink-muted">{p.click === 'Clickable' ? 'panel' : 'grid'}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  {
+    patterns.map((p, i) => (
+      <Section tone={i % 2 === 1 ? 'light' : 'mist'} size="sm" id={p.id}>
+        <div class="flex flex-wrap items-baseline justify-between gap-4 border-b border-line pb-4">
+          <h2 class="font-display text-title font-bold">{p.name}</h2>
+          <p class="flex flex-wrap items-center gap-3 text-sm text-ink-muted">
+            <span
+              class:list={[
+                'rounded-full px-2.5 py-0.5 text-xs font-semibold',
+                p.click === 'Clickable' ? 'bg-pink/10 text-pink' : 'bg-navy-900/5 text-ink-muted',
+              ]}
+            >
+              {p.click}
+            </span>
+            {p.where}
+          </p>
+        </div>
+
+        <div class="mt-8 space-y-10">
+          {p.id === 'grid' && (
+            <>
+              <p class="text-sm text-ink-muted">Two to six columns. Light, then dark.</p>
+              {([2, 3, 4, 6] as const).map((cols) => (
+                <div>
+                  <p class="mb-3 text-xs font-semibold tracking-wide text-ink-muted">{cols} columns</p>
+                  <Grid cols={cols}>
+                    {Array.from({ length: cols === 2 ? 4 : cols + 1 }, (_, n) => (
+                      <div class="p-6">
+                        <h3 class="text-base leading-snug">{capabilities[n % capabilities.length].navLabel}</h3>
+                        <p class="mt-3 text-sm text-ink-muted">
+                          {capabilities[n % capabilities.length].summary}
+                        </p>
+                      </div>
+                    ))}
+                  </Grid>
+                </div>
+              ))}
+              <div class="rounded-card bg-navy-900 p-8 text-ondark">
+                <p class="mb-3 text-xs font-semibold tracking-wide text-ondark-muted">Dark tone</p>
+                <Grid cols={3} tone="dark">
+                  {capabilities.slice(0, 5).map((c) => (
+                    <div class="p-6">
+                      <h3 class="text-base leading-snug">{c.navLabel}</h3>
+                      <p class="mt-3 text-sm text-ondark-muted">{c.summary}</p>
+                    </div>
+                  ))}
+                </Grid>
+              </div>
+            </>
+          )}
+
+          {p.id === 'icon-grid' && (
+            <>
+              <div>
+                <p class="mb-3 text-xs font-semibold tracking-wide text-ink-muted">2 columns</p>
+                <TickList items={help.help} icons={help.helpIcons} columns={2} />
+              </div>
+              <div>
+                <p class="mb-3 text-xs font-semibold tracking-wide text-ink-muted">
+                  3 columns, and items with no icon fall back to a tick
+                </p>
+                <TickList items={help.help.slice(0, 6)} icons={(help.helpIcons ?? []).slice(0, 3)} columns={3} />
+              </div>
+              <div class="rounded-card bg-navy-900 p-8 text-ondark">
+                <p class="mb-3 text-xs font-semibold tracking-wide text-ondark-muted">Dark tone</p>
+                <TickList items={help.help.slice(0, 6)} icons={help.helpIcons} columns={3} tone="dark" />
+              </div>
+            </>
+          )}
+
+          {p.id === 'process' && (
+            <>
+              <ProcessGrid steps={steps} />
+              <div>
+                <p class="mb-3 text-xs font-semibold tracking-wide text-ink-muted">
+                  Six or fewer sit on one row
+                </p>
+                <ProcessGrid steps={steps.slice(0, 5)} />
+              </div>
+              <div class="rounded-card bg-navy-900 p-8 text-ondark">
+                <p class="mb-3 text-xs font-semibold tracking-wide text-ondark-muted">Dark tone</p>
+                <ProcessGrid steps={steps.slice(0, 4)} tone="dark" />
+              </div>
+            </>
+          )}
+
+          {p.id === 'model' && (
+            <>
+              <div class="rounded-card bg-navy-900 p-8 text-ondark">
+                <ModelStrip tone="dark" />
+              </div>
+              <div>
+                <p class="mb-3 text-xs font-semibold tracking-wide text-ink-muted">Compact, light</p>
+                <ModelStrip tone="light" compact />
+              </div>
+            </>
+          )}
+
+          {p.id === 'stats' && (
+            <>
+              <div class="rounded-card bg-navy-900 p-8 text-ondark">
+                <StatGrid stats={proofStats} tone="dark" />
+              </div>
+              <StatGrid stats={proofStats.slice(0, 3)} tone="light" />
+            </>
+          )}
+
+          {p.id === 'logos' && (
+            <>
+              <LogoWall />
+              <div class="rounded-card bg-navy-900 p-8 text-ondark">
+                <LogoWall tone="dark" />
+              </div>
+            </>
+          )}
+
+          {p.id === 'shots' && (
+            <div class="grid gap-6 md:grid-cols-2">
+              <ProductShot caption="The SPIRIT pipeline view" />
+              <ProductShot caption="School overview" src="eiq/school-overview" />
+            </div>
+          )}
+
+          {p.id === 'cards' && (
+            <>
+              <ul class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                {outcomes.slice(0, 3).map((o) => (
+                  <li>
+                    <Card href={`/${o.slug}/`} icon={o.icon} title={o.navLabel} body={o.summary} meta="Explore this" />
+                  </li>
+                ))}
+              </ul>
+              <div>
+                <p class="mb-3 text-xs font-semibold tracking-wide text-ink-muted">
+                  With an eyebrow and a numeral instead of an icon, and one that isn’t a link
+                </p>
+                <ul class="grid gap-5 md:grid-cols-3">
+                  <li>
+                    <Card href="/products/education-iq/" eyebrow="Product" title="Education IQ" body={products[0].summary} meta="See the product" index={1} />
+                  </li>
+                  <li>
+                    <Card href="/capabilities/research/" eyebrow="Capability" title="Research" body={research.summary} meta="Find out more" index={2} />
+                  </li>
+                  <li>
+                    <Card title="Not a link" body="Same card, no destination — no hover, no arrow." />
+                  </li>
+                </ul>
+              </div>
+              <div class="rounded-card bg-navy-900 p-8 text-ondark">
+                <p class="mb-3 text-xs font-semibold tracking-wide text-ondark-muted">Dark tone</p>
+                <ul class="grid gap-5 md:grid-cols-3">
+                  {products.slice(0, 3).map((pr) => (
+                    <li>
+                      <Card href={`/products/${pr.slug}/`} icon={pr.icon} title={pr.navLabel} body={pr.summary} meta="See the product" tone="dark" />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </>
+          )}
+
+          {p.id === 'next' && (
+            <>
+              <NextSteps title="You might also be interested in" links={research.next.filter((l) => l.href !== '/contact/')} icons />
+              <div>
+                <p class="mb-3 text-xs font-semibold tracking-wide text-ink-muted">Without icons</p>
+                <NextSteps title="Where might you go next?" links={research.next.slice(0, 3)} />
+              </div>
+              <div class="rounded-card bg-navy-900 p-8 text-ondark">
+                <p class="mb-3 text-xs font-semibold tracking-wide text-ondark-muted">Dark tone</p>
+                <NextSteps title="Where might you go next?" links={research.next.slice(0, 3)} tone="dark" />
+              </div>
+            </>
+          )}
+
+          {p.id === 'route' && <RouteSteps steps={route.steps} hrefs={route.stepHrefs} />}
+
+          {p.id === 'expand' && (
+            <>
+              <p class="text-sm text-ink-muted">
+                Closed to start with; each one opens in place to reveal detail and a screenshot.
+              </p>
+              <Blocks blocks={[{ ...cardsBlock, title: undefined }]} tone="mist" />
+            </>
+          )}
+
+          {p.id === 'ways' && <Blocks blocks={[{ ...ways, title: undefined }]} tone="mist" />}
+
+          {p.id === 'articles' && (
+            <ul class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {articles.map((a) => (
+                <li>
+                  <ArticleCard article={a} />
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {p.id === 'proof' && (
+            <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:items-center">
+              <div>
+                <p class="eyebrow grad-text mb-4">Social proof</p>
+                <h3 class="text-title">Don’t take our word for it.</h3>
+              </div>
+              <Testimonial prompt="EdCo challenging the original brief" />
+            </div>
+          )}
+
+          {p.id === 'shout' && (
+            <div class="overflow-hidden rounded-card">
+              <ShoutOut n={1} text="Sending the wrong message to more schools doesn’t make it more right." />
+              <ShoutOut
+                n={2}
+                text="Give value. Build trust. Understand need."
+                sub="With a supporting line under it."
+              />
+              <ShoutOut n={3} />
+            </div>
+          )}
+
+          {p.id === 'placeholder' && (
+            <div class="space-y-4">
+              <p class="text-sm text-ink-muted">
+                Everything still to be supplied wears the same mark, so a page shows its own gaps.
+              </p>
+              <p>
+                Inline: <Placeholder label="CLIENT NAME" /> and with a note:{' '}
+                <Placeholder label="STATISTIC" note="to be confirmed by EdCo" />
+              </p>
+              <Placeholder label="CONTEXT" note="copy needed" block />
+            </div>
+          )}
+        </div>
+      </Section>
+    ))
+  }
+
+  <Section tone="dark" size="sm">
+    <div class="flex flex-wrap items-center gap-4">
+      <Icon name="fa6-solid:circle-info" class="h-5 w-5 text-pink" />
+      <p class="text-ondark-muted">
+        Internal page — not linked, not indexed, not in the sitemap. Delete
+        <code class="text-ondark">src/pages/prototype/patterns.astro</code> once the patterns are settled.
+      </p>
+    </div>
+  </Section>
+</Layout>
