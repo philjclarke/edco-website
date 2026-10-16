@@ -1,40 +1,86 @@
 ---
 /*
-  A list of short items, shown as an icon grid: a glyph above each item, in the
-  same Grid as the other non-clickable sets on the site.
+  A list of short items, each with an icon matched by position (so rewording
+  an item in the copy deck keeps its icon). An item without one gets a tick.
 
-  It was a ruled list with a tick against every line. Review found that flat —
-  every item wore the same mark, so the mark said nothing. An icon per item
-  gives the eye somewhere to land and says something about each one.
-
-  Icons come in a parallel array, matched by position rather than by wording,
-  so rewording an item in the copy deck keeps its icon. An item without one
-  falls back to a tick.
+  Three treatments, under review on /prototype/patterns/:
+    grid  — an icon above each item in a roomy Grid (the current default).
+    dense — icon beside the text, tighter cells, more columns.
+    list  — a ruled list in columns, icon as the bullet. No cells at all.
+  The items are rarely more than a few words, which is why the roomy grid
+  reads as thin.
 */
 import { Icon } from 'astro-icon/components';
 import Grid from './Grid.astro';
+
+export type TickListVariant = 'grid' | 'dense' | 'list';
 
 interface Props {
   items: readonly string[];
   icons?: readonly string[];
   columns?: 1 | 2 | 3;
   tone?: 'dark' | 'light';
+  variant?: TickListVariant;
 }
-const { items, icons = [], columns = 2, tone = 'light' } = Astro.props;
+const { items, icons = [], columns = 2, tone = 'light', variant = 'grid' } = Astro.props;
 const dark = tone === 'dark';
 const cols = (columns === 1 ? 2 : columns) as 2 | 3;
+const iconOf = (i: number) => icons[i] ?? 'fa6-solid:circle-check';
+const accent = dark ? 'text-orange' : 'text-pink';
+
+// Dense and list choose their own columns from the item count: three for a
+// short list, four (dense) or three (list) once it's long.
+const denseCols = (items.length <= 6 ? 3 : 4) as 3 | 4;
+const listCols = items.length <= 6 ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3';
 ---
 
-<Grid cols={cols} tone={tone} as="ul">
-  {
-    items.map((item, i) => (
-      <li class="p-5 md:p-6">
-        <Icon
-          name={icons[i] ?? 'fa6-solid:circle-check'}
-          class:list={['mb-3 h-5 w-5', dark ? 'text-orange' : 'text-pink']}
-        />
-        <span class="block text-[0.9375rem] font-medium leading-snug">{item}</span>
-      </li>
-    ))
-  }
-</Grid>
+{
+  variant === 'grid' && (
+    <Grid cols={cols} tone={tone} as="ul">
+      {items.map((item, i) => (
+        <li class="p-5 md:p-6">
+          <Icon name={iconOf(i)} class:list={['mb-3 h-5 w-5', accent]} />
+          <span class="block text-[0.9375rem] font-medium leading-snug">{item}</span>
+        </li>
+      ))}
+    </Grid>
+  )
+}
+
+{
+  variant === 'dense' && (
+    <Grid cols={denseCols} tone={tone} as="ul">
+      {items.map((item, i) => (
+        <li class="flex items-center gap-3 px-4 py-3.5">
+          <span
+            class:list={[
+              'inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md',
+              dark ? 'bg-navy-700 text-orange' : 'bg-pink/10 text-pink',
+            ]}
+          >
+            <Icon name={iconOf(i)} class="h-3.5 w-3.5" />
+          </span>
+          <span class="text-sm font-medium leading-snug">{item}</span>
+        </li>
+      ))}
+    </Grid>
+  )
+}
+
+{
+  variant === 'list' && (
+    <ul class:list={['grid gap-x-10', listCols]}>
+      {items.map((item, i) => (
+        <li
+          class:list={[
+            'flex items-start gap-3 border-b py-3',
+            dark ? 'border-navy-700' : 'border-line',
+          ]}
+        >
+          <Icon name={iconOf(i)} class:list={['mt-0.5 h-4 w-4 shrink-0', accent]} />
+          <span class="text-[0.9375rem] leading-snug">{item}</span>
+        </li>
+      ))}
+    </ul>
+  )
+}

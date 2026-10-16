@@ -1,32 +1,127 @@
 ---
 /*
-  A sequence rendered as a Grid rather than a row of lozenges. The steps are not
-  clickable, so they must not look it; the numbering carries the order that the
-  old arrows used to.
+  A sequence of short steps. None of it is clickable, so none of it may look
+  like a button — no rounded, bordered, separate shapes.
+
+  Three treatments, under review on /prototype/patterns/:
+    grid     — numbered cells in a Grid (the current default). Review found it
+               reads as a list, not a progression.
+    timeline — numbered nodes on one gradient line, labels beneath. Vertical
+               on small screens.
+    chevrons — one continuous bar cut into arrow segments, the brand gradient
+               running across it, so the eye is carried left to right.
 */
 import Grid from './Grid.astro';
+
+export type ProcessVariant = 'grid' | 'timeline' | 'chevrons';
 
 interface Props {
   steps: readonly string[];
   tone?: 'dark' | 'light';
+  variant?: ProcessVariant;
 }
-const { steps, tone = 'light' } = Astro.props;
+const { steps, tone = 'light', variant = 'grid' } = Astro.props;
 const dark = tone === 'dark';
 // One row where the steps fit on it; otherwise rows of four.
 const cols = (steps.length <= 6 ? Math.max(steps.length, 2) : 4) as 2 | 3 | 4 | 5 | 6;
+const n = (i: number) => String(i + 1).padStart(2, '0');
+// Position along the orange → pink gradient, 0 to 100.
+const along = (i: number) => (steps.length === 1 ? 0 : Math.round((i / (steps.length - 1)) * 100));
 ---
 
-<Grid cols={cols} tone={tone} as="ol">
-  {
-    steps.map((s, i) => (
-      <li class="flex items-baseline gap-3 px-5 py-4">
-        <span class="font-display text-xs font-bold grad-text">
-          {String(i + 1).padStart(2, '0')}
-        </span>
-        <span class:list={['font-display text-sm font-semibold', dark ? 'text-ondark' : 'text-ink']}>
-          {s}
-        </span>
-      </li>
-    ))
+{
+  variant === 'grid' && (
+    <Grid cols={cols} tone={tone} as="ol">
+      {steps.map((s, i) => (
+        <li class="flex items-baseline gap-3 px-5 py-4">
+          <span class="font-display text-xs font-bold grad-text">{n(i)}</span>
+          <span class:list={['font-display text-sm font-semibold', dark ? 'text-ondark' : 'text-ink']}>{s}</span>
+        </li>
+      ))}
+    </Grid>
+  )
+}
+
+{
+  variant === 'timeline' && (
+    <ol class="timeline grid gap-0 lg:auto-cols-fr lg:grid-flow-col">
+      {steps.map((s, i) => (
+        <li class="relative flex gap-4 pb-6 last:pb-0 lg:flex-col lg:items-center lg:gap-3 lg:pb-0 lg:text-center">
+          {i < steps.length - 1 && (
+            <span
+              aria-hidden="true"
+              class="track absolute left-[1.125rem] top-9 h-full w-0.5 lg:left-1/2 lg:top-[1.125rem] lg:h-0.5 lg:w-full"
+              style={`--from:${along(i)}%;--to:${along(i + 1)}%`}
+            />
+          )}
+          <span
+            class="node relative z-10 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-display text-xs font-bold text-navy-900"
+            style={`--at:${along(i)}%`}
+          >
+            {n(i)}
+          </span>
+          <span
+            class:list={[
+              'pt-2 font-display text-sm font-semibold leading-snug lg:max-w-[12rem] lg:px-2 lg:pt-0',
+              dark ? 'text-ondark' : 'text-ink',
+            ]}
+          >
+            {s}
+          </span>
+        </li>
+      ))}
+    </ol>
+  )
+}
+
+{
+  variant === 'chevrons' && (
+    <ol class="chevrons flex flex-col gap-1 lg:flex-row lg:gap-0">
+      {steps.map((s, i) => (
+        <li
+          class="chev flex min-h-16 flex-1 items-center gap-3 px-6 py-3 text-navy-900 lg:px-0 lg:pl-8 lg:pr-5 lg:first:pl-5"
+          style={`--at:${along(i)}%`}
+        >
+          <span class="font-display text-xs font-bold opacity-60">{n(i)}</span>
+          <span class="font-display text-sm font-bold leading-snug">{s}</span>
+        </li>
+      ))}
+    </ol>
+  )
+}
+
+<style>
+  /* Colours are picked from the orange → pink ribbon by each step's position,
+     so the sequence visibly travels from one end of the brand gradient to the
+     other. Navy text passes contrast on every stop. */
+  .node,
+  .chev {
+    background: color-mix(in oklab, var(--color-orange), var(--color-pink) var(--at));
   }
-</Grid>
+  .track {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--color-orange), var(--color-pink) var(--from)),
+      color-mix(in oklab, var(--color-orange), var(--color-pink) var(--to))
+    );
+  }
+  @media (min-width: 64rem) {
+    .track {
+      background: linear-gradient(
+        to right,
+        color-mix(in oklab, var(--color-orange), var(--color-pink) var(--from)),
+        color-mix(in oklab, var(--color-orange), var(--color-pink) var(--to))
+      );
+    }
+    /* One bar cut into arrows: each segment notched on the left, pointed on
+       the right, and overlapping its neighbour so they lock together. */
+    .chev {
+      clip-path: polygon(0 0, calc(100% - 1rem) 0, 100% 50%, calc(100% - 1rem) 100%, 0 100%, 1rem 50%);
+      margin-left: -0.625rem;
+    }
+    .chev:first-child {
+      clip-path: polygon(0 0, calc(100% - 1rem) 0, 100% 50%, calc(100% - 1rem) 100%, 0 100%);
+      margin-left: 0;
+    }
+  }
+</style>

@@ -14,8 +14,8 @@ import Grid from '@/components/Grid.astro';
 import Card from '@/components/Card.astro';
 import NextSteps from '@/components/NextSteps.astro';
 import RouteSteps from '@/components/RouteSteps.astro';
-import ProcessGrid from '@/components/ProcessGrid.astro';
-import TickList from '@/components/TickList.astro';
+import ProcessGrid, { type ProcessVariant } from '@/components/ProcessGrid.astro';
+import TickList, { type TickListVariant } from '@/components/TickList.astro';
 import ModelStrip from '@/components/ModelStrip.astro';
 import StatGrid from '@/components/StatGrid.astro';
 import LogoWall from '@/components/LogoWall.astro';
@@ -44,6 +44,20 @@ const cardsBlock = products
 const research = capabilities.find((c) => c.slug === 'research')!;
 const steps = (research.blocks.find((b) => b.type === 'steps') as Extract<Block, { type: 'steps' }>).steps;
 const help = outcomes[0];
+const events = capabilities.find((c) => c.slug === 'events-and-cpd')!;
+const longList = events.blocks.find((b) => b.type === 'list') as Extract<Block, { type: 'list' }>;
+const fiveSteps = ['Data', 'Intelligence', 'Human interpretation', 'Challenge', 'Action'];
+
+const tickOptions: { variant: TickListVariant; label: string; note: string; current?: boolean }[] = [
+  { variant: 'grid', label: 'A — Icon grid', current: true, note: 'An icon above each item, roomy cells, two or three columns.' },
+  { variant: 'dense', label: 'B — Dense grid', note: 'Icon beside the text in a small tile, tighter cells, three or four columns. Still a grid, about half the height.' },
+  { variant: 'list', label: 'C — Ruled list', note: 'Bullet points, with the icon as the bullet. No cells, hairline rules, two or three columns. The lightest of the three.' },
+];
+const processOptions: { variant: ProcessVariant; label: string; note: string; current?: boolean }[] = [
+  { variant: 'grid', label: 'A — Numbered grid', current: true, note: 'Numbered cells. Reads as a list.' },
+  { variant: 'timeline', label: 'B — Timeline', note: 'Numbered nodes on one line, the brand gradient running along it from orange to pink. Turns vertical on phones.' },
+  { variant: 'chevrons', label: 'C — Chevron bar', note: 'One continuous bar cut into arrow segments, coloured along the gradient. The strongest sense of direction. Stacks on phones.' },
+];
 
 /* Each pattern is introduced the same way: what it is, whether it can be
    clicked, and where it appears. */
@@ -150,36 +164,50 @@ const patterns = [
 
           {p.id === 'icon-grid' && (
             <>
-              <div>
-                <p class="mb-3 text-xs font-semibold tracking-wide text-ink-muted">2 columns</p>
-                <TickList items={help.help} icons={help.helpIcons} columns={2} />
-              </div>
-              <div>
-                <p class="mb-3 text-xs font-semibold tracking-wide text-ink-muted">
-                  3 columns, and items with no icon fall back to a tick
-                </p>
-                <TickList items={help.help.slice(0, 6)} icons={(help.helpIcons ?? []).slice(0, 3)} columns={3} />
-              </div>
-              <div class="rounded-card bg-navy-900 p-8 text-ondark">
-                <p class="mb-3 text-xs font-semibold tracking-wide text-ondark-muted">Dark tone</p>
-                <TickList items={help.help.slice(0, 6)} icons={help.helpIcons} columns={3} tone="dark" />
-              </div>
+              <p class="max-w-3xl text-sm text-ink-muted">
+                Under review: the items are rarely more than a few words, so the roomy grid reads as
+                thin. Each option is shown with a short list and a long one (Events &amp; CPD’s 15),
+                then on dark.
+              </p>
+              {tickOptions.map((o) => (
+                <div class="space-y-6 rounded-card border border-dashed border-line p-6 md:p-8">
+                  <div>
+                    <p class="font-display text-lg font-bold">
+                      {o.label}{o.current && <span class="ml-2 text-xs font-semibold text-ink-muted">current</span>}
+                    </p>
+                    <p class="mt-1 max-w-3xl text-sm text-ink-muted">{o.note}</p>
+                  </div>
+                  <TickList items={help.help} icons={help.helpIcons} columns={2} variant={o.variant} />
+                  <TickList items={longList.items} icons={longList.icons} columns={3} variant={o.variant} />
+                  <div class="rounded-card bg-navy-900 p-6 text-ondark md:p-8">
+                    <TickList items={help.help} icons={help.helpIcons} columns={2} tone="dark" variant={o.variant} />
+                  </div>
+                </div>
+              ))}
             </>
           )}
 
           {p.id === 'process' && (
             <>
-              <ProcessGrid steps={steps} />
-              <div>
-                <p class="mb-3 text-xs font-semibold tracking-wide text-ink-muted">
-                  Six or fewer sit on one row
-                </p>
-                <ProcessGrid steps={steps.slice(0, 5)} />
-              </div>
-              <div class="rounded-card bg-navy-900 p-8 text-ondark">
-                <p class="mb-3 text-xs font-semibold tracking-wide text-ondark-muted">Dark tone</p>
-                <ProcessGrid steps={steps.slice(0, 4)} tone="dark" />
-              </div>
+              <p class="max-w-3xl text-sm text-ink-muted">
+                Under review: the grid reads as a list rather than a progression. Each option is shown
+                with Research’s eight steps, the five on Free customer analysis, and on dark.
+              </p>
+              {processOptions.map((o) => (
+                <div class="space-y-8 rounded-card border border-dashed border-line p-6 md:p-8">
+                  <div>
+                    <p class="font-display text-lg font-bold">
+                      {o.label}{o.current && <span class="ml-2 text-xs font-semibold text-ink-muted">current</span>}
+                    </p>
+                    <p class="mt-1 max-w-3xl text-sm text-ink-muted">{o.note}</p>
+                  </div>
+                  <ProcessGrid steps={steps} variant={o.variant} />
+                  <ProcessGrid steps={fiveSteps} variant={o.variant} />
+                  <div class="rounded-card bg-navy-900 p-6 text-ondark md:p-8">
+                    <ProcessGrid steps={fiveSteps} tone="dark" variant={o.variant} />
+                  </div>
+                </div>
+              ))}
             </>
           )}
 
