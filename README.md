@@ -106,6 +106,17 @@ node scripts/copy-deck.mjs pack          # repo  -> .copy-deck/
 node scripts/copy-deck.mjs apply <dir>   # deck  -> src/data/copy/
 ```
 
+## Mock proof
+
+While EdCo's copy is outstanding, empty shout-out bands and every testimonial
+show **invented** quotes from [src/data/mock.ts](src/data/mock.ts), so the design
+can be judged in full. The names, roles and organisations are deliberately fake
+("Alex Example, Head of Example Partnerships, Sample Learning Ltd"). The mocks
+aren't in the copy deck, they're kept out of site search, and real copy replaces
+them where it exists. **Before launch, set `MOCK_PROOF` to `false`:** every mock
+then shows as a visible placeholder again. Running
+`grep -rl data-mock .vercel/output/static` lists the pages still showing them.
+
 ## Snapshots
 
 `/v1/` is a frozen copy of the whole site as it stood on 16 September 2026, taken

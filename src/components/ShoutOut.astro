@@ -1,9 +1,11 @@
 ---
 /*
-  The full-width band between template sections. With no copy yet it still
-  renders, as a placeholder, so the gap is visible rather than silently closed.
+  The full-width band between template sections. With no copy yet it shows a
+  mock quote while MOCK_PROOF is on (see src/data/mock.ts), and a placeholder
+  otherwise — either way the gap is visible rather than silently closed.
 */
 import Placeholder from './Placeholder.astro';
+import { MOCK_PROOF, mockShout } from '@/data/mock';
 
 interface Props {
   text?: string;
@@ -13,9 +15,14 @@ interface Props {
 }
 const { text, sub, n } = Astro.props;
 const filled = !!text?.trim();
+const mock = !filled && MOCK_PROOF ? mockShout(Astro.url.pathname, n) : null;
 ---
 
-<section class:list={['bg-navy-900 text-ondark', filled ? 'py-14 md:py-20' : 'py-6']}>
+<section
+  class:list={['bg-navy-900 text-ondark', filled || mock ? 'py-14 md:py-20' : 'py-6']}
+  data-mock={mock ? 'shout-out' : undefined}
+  data-pagefind-ignore={mock ? 'all' : undefined}
+>
   <div class="mx-auto max-w-4xl px-6 text-center">
     {
       filled ? (
@@ -24,6 +31,15 @@ const filled = !!text?.trim();
           <p class="font-display text-display font-bold">{text}</p>
           {sub?.trim() && <p class="mt-6 text-lead text-ondark-muted">{sub}</p>}
         </>
+      ) : mock ? (
+        <figure>
+          <div class="mx-auto mb-8 h-1 w-16 rounded-full grad-rule" />
+          <blockquote class="font-display text-display font-bold">“{mock.text}”</blockquote>
+          <figcaption class="mt-6 text-sm text-ondark-muted">
+            <span class="font-semibold text-ondark">{mock.cite.name}</span> · {mock.cite.role},{' '}
+            {mock.cite.org}
+          </figcaption>
+        </figure>
       ) : (
         <Placeholder label={`SHOUT OUT ${n}`} note="copy needed — a line that carries the argument" />
       )

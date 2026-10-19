@@ -1,13 +1,20 @@
 ---
+/*
+  Brief §59: testimonials are collected against a specific theme, not "they
+  were great". None exist yet, so while MOCK_PROOF is on (src/data/mock.ts)
+  this shows an invented quote with an obviously fake attribution; otherwise
+  a placeholder naming the theme.
+*/
 import Placeholder from './Placeholder.astro';
+import { MOCK_PROOF, mockTestimonial } from '@/data/mock';
 
 interface Props {
-  /** Brief §59: testimonials are collected against a specific theme, not "they were great". */
   prompt: string;
   tone?: 'dark' | 'light';
 }
 const { prompt, tone = 'light' } = Astro.props;
 const dark = tone === 'dark';
+const mock = MOCK_PROOF ? mockTestimonial(Astro.url.pathname, prompt) : null;
 ---
 
 <figure
@@ -15,12 +22,27 @@ const dark = tone === 'dark';
     'rounded-card border p-7 md:p-8',
     dark ? 'border-navy-700 bg-navy-800' : 'border-line bg-paper',
   ]}
+  data-mock={mock ? 'testimonial' : undefined}
+  data-pagefind-ignore={mock ? 'all' : undefined}
 >
   <div class="h-1 w-12 rounded-full grad-rule"></div>
   <blockquote class="mt-5 font-display text-lg leading-snug md:text-xl">
-    <Placeholder label={`TESTIMONIAL ABOUT ${prompt.toUpperCase()}`} block />
+    {mock ? <p>“{mock.text}”</p> : <Placeholder label={`TESTIMONIAL ABOUT ${prompt.toUpperCase()}`} block />}
   </blockquote>
   <figcaption class:list={['mt-5 text-sm', dark ? 'text-ondark-muted' : 'text-ink-muted']}>
-    <Placeholder label="NAME, ROLE" /> <Placeholder label="CLIENT NAME" />
+    {
+      mock ? (
+        <>
+          <span class:list={['font-semibold', dark ? 'text-ondark' : 'text-ink']}>{mock.cite.name}</span>
+          <span class="block">
+            {mock.cite.role}, {mock.cite.org}
+          </span>
+        </>
+      ) : (
+        <>
+          <Placeholder label="NAME, ROLE" /> <Placeholder label="CLIENT NAME" />
+        </>
+      )
+    }
   </figcaption>
 </figure>
