@@ -3,12 +3,12 @@
   A list of short items, each with an icon matched by position (so rewording
   an item in the copy deck keeps its icon). An item without one gets a tick.
 
-  Three treatments, under review on /prototype/patterns/:
-    grid  — an icon above each item in a roomy Grid (the current default).
-    dense — icon beside the text, tighter cells, more columns.
+  Three treatments, compared on /prototype/patterns/:
     list  — a ruled list in columns, icon as the bullet. No cells at all.
-  The items are rarely more than a few words, which is why the roomy grid
-  reads as thin.
+            The default, chosen in review.
+    grid  — an icon above each item in a roomy Grid. The old default; the
+            items are rarely more than a few words, so it read as thin.
+    dense — icon beside the text, tighter cells, more columns.
 */
 import { Icon } from 'astro-icon/components';
 import Grid from './Grid.astro';
@@ -22,7 +22,7 @@ interface Props {
   tone?: 'dark' | 'light';
   variant?: TickListVariant;
 }
-const { items, icons = [], columns = 2, tone = 'light', variant = 'grid' } = Astro.props;
+const { items, icons = [], columns = 2, tone = 'light', variant = 'list' } = Astro.props;
 const dark = tone === 'dark';
 const cols = (columns === 1 ? 2 : columns) as 2 | 3;
 const iconOf = (i: number) => icons[i] ?? 'fa6-solid:circle-check';
@@ -69,7 +69,7 @@ const listCols = items.length <= 6 ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-
 
 {
   variant === 'list' && (
-    <ul class:list={['grid gap-x-10', listCols]}>
+    <ul class:list={['grid content-start gap-x-10', listCols]}>
       {items.map((item, i) => (
         <li
           class:list={[

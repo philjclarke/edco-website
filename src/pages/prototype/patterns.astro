@@ -49,13 +49,13 @@ const longList = events.blocks.find((b) => b.type === 'list') as Extract<Block, 
 const fiveSteps = ['Data', 'Intelligence', 'Human interpretation', 'Challenge', 'Action'];
 
 const tickOptions: { variant: TickListVariant; label: string; note: string; current?: boolean }[] = [
-  { variant: 'grid', label: 'A — Icon grid', current: true, note: 'An icon above each item, roomy cells, two or three columns.' },
+  { variant: 'grid', label: 'A — Icon grid', note: 'An icon above each item, roomy cells, two or three columns.' },
   { variant: 'dense', label: 'B — Dense grid', note: 'Icon beside the text in a small tile, tighter cells, three or four columns. Still a grid, about half the height.' },
-  { variant: 'list', label: 'C — Ruled list', note: 'Bullet points, with the icon as the bullet. No cells, hairline rules, two or three columns. The lightest of the three.' },
+  { variant: 'list', label: 'C — Ruled list', current: true, note: 'Bullet points, with the icon as the bullet. No cells, hairline rules, two or three columns. The lightest of the three.' },
 ];
 const processOptions: { variant: ProcessVariant; label: string; note: string; current?: boolean }[] = [
-  { variant: 'grid', label: 'A — Numbered grid', current: true, note: 'Numbered cells. Reads as a list.' },
-  { variant: 'timeline', label: 'B — Timeline', note: 'Numbered nodes on one line, the brand gradient running along it from orange to pink. Turns vertical on phones.' },
+  { variant: 'grid', label: 'A — Numbered grid', note: 'Numbered cells. Reads as a list.' },
+  { variant: 'timeline', label: 'B — Timeline', current: true, note: 'Numbered nodes on one line, the brand gradient running along it from orange to pink. Turns vertical on phones.' },
   { variant: 'chevrons', label: 'C — Chevron bar', note: 'One continuous bar cut into arrow segments, coloured along the gradient. The strongest sense of direction. Stacks on phones.' },
 ];
 
@@ -165,7 +165,7 @@ const patterns = [
           {p.id === 'icon-grid' && (
             <>
               <p class="max-w-3xl text-sm text-ink-muted">
-                Under review: the items are rarely more than a few words, so the roomy grid reads as
+                Chosen: C. The items are rarely more than a few words, so the roomy grid reads as
                 thin. Each option is shown with a short list and a long one (Events &amp; CPD’s 15),
                 then on dark.
               </p>
@@ -190,7 +190,7 @@ const patterns = [
           {p.id === 'process' && (
             <>
               <p class="max-w-3xl text-sm text-ink-muted">
-                Under review: the grid reads as a list rather than a progression. Each option is shown
+                Chosen: B. The grid read as a list rather than a progression. Each option is shown
                 with Research’s eight steps, the five on Free customer analysis, and on dark.
               </p>
               {processOptions.map((o) => (

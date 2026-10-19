@@ -3,11 +3,11 @@
   A sequence of short steps. None of it is clickable, so none of it may look
   like a button — no rounded, bordered, separate shapes.
 
-  Three treatments, under review on /prototype/patterns/:
-    grid     — numbered cells in a Grid (the current default). Review found it
-               reads as a list, not a progression.
+  Three treatments, compared on /prototype/patterns/:
     timeline — numbered nodes on one gradient line, labels beneath. Vertical
-               on small screens.
+               on small screens. The default, chosen in review.
+    grid     — numbered cells in a Grid. The old default; review found it
+               read as a list, not a progression.
     chevrons — one continuous bar cut into arrow segments, the brand gradient
                running across it, so the eye is carried left to right.
 */
@@ -20,7 +20,7 @@ interface Props {
   tone?: 'dark' | 'light';
   variant?: ProcessVariant;
 }
-const { steps, tone = 'light', variant = 'grid' } = Astro.props;
+const { steps, tone = 'light', variant = 'timeline' } = Astro.props;
 const dark = tone === 'dark';
 // One row where the steps fit on it; otherwise rows of four.
 const cols = (steps.length <= 6 ? Math.max(steps.length, 2) : 4) as 2 | 3 | 4 | 5 | 6;
