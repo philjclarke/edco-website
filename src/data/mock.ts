@@ -93,3 +93,28 @@ export function mockTestimonial(page: string, theme: string): MockQuote {
   const base = seed(page + theme);
   return { text: pool[base % pool.length], cite: people[(base + 5) % people.length] };
 }
+
+/*
+  Logo wall. Invented organisations — the same ones the mock quotes cite —
+  never mock-ups of the real candidates, which would pass for their branding.
+  Each is a simple mark plus a wordmark, varied enough in type and shape to
+  read like a real wall of logos.
+*/
+export interface MockLogo {
+  name: string;
+  /** SVG path data in a 24×24 box. */
+  mark: string;
+  type: 'bold' | 'caps' | 'serif' | 'light';
+}
+export const mockLogos: MockLogo[] = [
+  { name: 'Sample Learning', mark: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 5a5 5 0 1 1 0 10 5 5 0 0 1 0-10Z', type: 'bold' },
+  { name: 'Fictional Academy Trust', mark: 'M12 2 22 20H2Z', type: 'serif' },
+  { name: 'Mock Education', mark: 'M3 3h8v8H3Zm10 0h8v8h-8ZM3 13h8v8H3Zm10 0h8v8h-8Z', type: 'caps' },
+  { name: 'Placeholder Publishing', mark: 'M4 3h10a6 6 0 0 1 0 12H9v6H4Z', type: 'serif' },
+  { name: 'Example EdTech', mark: 'M12 2 21 7v10l-9 5-9-5V7Z', type: 'bold' },
+  { name: 'Dummy Resources', mark: 'M2 12a10 10 0 0 1 20 0Zm0 2h20a10 10 0 0 1-20 0Z', type: 'light' },
+  { name: 'Specimen Schools', mark: 'M12 2l2.9 6.9L22 9.3l-5.5 4.8L18.2 21 12 17.3 5.8 21l1.7-6.9L2 9.3l7.1-.4Z', type: 'caps' },
+  { name: 'Not-A-Real Agency', mark: 'M2 4h20v4H2Zm0 6h14v4H2Zm0 6h20v4H2Z', type: 'bold' },
+  { name: 'Lorem Learning', mark: 'M12 2c5 0 9 4 9 9-4 0-9 1-9 11-1-6-5-11-9-11 0-5 4-9 9-9Z', type: 'light' },
+  { name: 'Testcase Trust', mark: 'M12 2 22 12 12 22 2 12Zm0 5-5 5 5 5 5-5Z', type: 'serif' },
+];

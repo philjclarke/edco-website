@@ -109,7 +109,7 @@ node scripts/copy-deck.mjs apply <dir>   # deck  -> src/data/copy/
 ## Mock proof
 
 While EdCo's copy is outstanding, empty shout-out bands and every testimonial
-show **invented** quotes from [src/data/mock.ts](src/data/mock.ts), so the design
+show **invented** quotes, and the logo wall shows invented organisations, from [src/data/mock.ts](src/data/mock.ts), so the design
 can be judged in full. The names, roles and organisations are deliberately fake
 ("Alex Example, Head of Example Partnerships, Sample Learning Ltd"). The mocks
 aren't in the copy deck, they're kept out of site search, and real copy replaces

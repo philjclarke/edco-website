@@ -1,35 +1,67 @@
 ---
+/*
+  Client logos — brief §17, §76. Not clickable, so a Grid.
+
+  None are confirmed yet. While MOCK_PROOF is on (src/data/mock.ts) the wall
+  shows invented organisations so the design reads in full; otherwise it lists
+  the brief's candidates, each with a placeholder for its logo.
+*/
 import Placeholder from './Placeholder.astro';
 import { logoCandidates } from '@/data/proof';
+import { MOCK_PROOF, mockLogos } from '@/data/mock';
 
 interface Props {
   tone?: 'dark' | 'light';
 }
 const { tone = 'light' } = Astro.props;
 const dark = tone === 'dark';
+
+const typeClass = {
+  bold: 'font-display font-bold tracking-tight',
+  caps: 'font-display text-[0.6875rem] font-semibold uppercase tracking-[0.18em]',
+  serif: 'font-serif italic',
+  light: 'font-sans font-light tracking-wide',
+};
 ---
 
-<div>
+<div data-mock={MOCK_PROOF ? 'logos' : undefined} data-pagefind-ignore={MOCK_PROOF ? 'all' : undefined}>
   <ul class="grid grid-cols-2 gap-px overflow-hidden rounded-card border sm:grid-cols-3 lg:grid-cols-5"
     class:list={[dark ? 'border-navy-700 bg-navy-700' : 'border-line bg-line']}>
     {
-      logoCandidates.map((name) => (
-        <li
-          class:list={[
-            'flex min-h-28 flex-col items-center justify-center gap-2 p-5 text-center',
-            dark ? 'bg-navy-800' : 'bg-paper',
-          ]}
-        >
-          <span class:list={['font-display text-sm font-semibold', dark ? 'text-ondark-muted' : 'text-ink-muted']}>
-            {name}
-          </span>
-          <Placeholder label="CLIENT LOGO" />
-        </li>
-      ))
+      MOCK_PROOF
+        ? mockLogos.map((l) => (
+            <li
+              class:list={[
+                'flex min-h-28 items-center justify-center gap-2.5 p-5',
+                dark ? 'bg-navy-800 text-ondark-muted' : 'bg-paper text-ink-muted',
+              ]}
+            >
+              <svg class="h-6 w-6 shrink-0" viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd" aria-hidden="true">
+                <path d={l.mark} />
+              </svg>
+              <span class:list={['max-w-[9rem] text-sm leading-tight', typeClass[l.type]]}>{l.name}</span>
+            </li>
+          ))
+        : logoCandidates.map((name) => (
+            <li
+              class:list={[
+                'flex min-h-28 flex-col items-center justify-center gap-2 p-5 text-center',
+                dark ? 'bg-navy-800' : 'bg-paper',
+              ]}
+            >
+              <span class:list={['font-display text-sm font-semibold', dark ? 'text-ondark-muted' : 'text-ink-muted']}>
+                {name}
+              </span>
+              <Placeholder label="CLIENT LOGO" />
+            </li>
+          ))
     }
   </ul>
   <p class:list={['mt-4 text-xs', dark ? 'text-ondark-muted' : 'text-ink-muted']}>
-    Brief §76: relationships and logo permissions must be confirmed before launch. Nothing here
-    implies a current relationship.
+    {
+      MOCK_PROOF
+        ? 'Sample logos — invented organisations, standing in until real logos and permissions are confirmed.'
+        : 'Brief §76: relationships and logo permissions must be confirmed before launch. Nothing here implies a current relationship.'
+    }
   </p>
 </div>
