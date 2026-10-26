@@ -10,6 +10,7 @@
 */
 import type { PrismicDocument } from '@prismicio/client';
 import { allOf, hrefOf, imageOf, textOf, type RemoteImage } from '@/lib/prismic';
+import { knownIcon } from '@/lib/icons';
 import { primaryNav } from './site';
 
 export type SectionKind = 'product' | 'capability' | 'outcome';
@@ -56,7 +57,7 @@ export function toPage(kind: SectionKind, doc: PrismicDocument): SectionPage {
     standfirst: textOf(d.standfirst),
     summary: textOf(d.summary),
     lead: textOf(d.lead) || undefined,
-    icon: textOf(d.icon) || undefined,
+    icon: knownIcon(d.icon),
     banner: banner ? { src: banner, focus: d.banner_focus || 'centre' } : undefined,
     externalSite: site,
     metaTitle: textOf(d.meta_title) || undefined,

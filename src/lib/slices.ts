@@ -8,6 +8,7 @@
 import type { Slice } from '@prismicio/client';
 import type { Block } from '@/data/blocks';
 import { prismic, imageOf, listItemsOf, textOf } from './prismic';
+import { knownIcon } from './icons';
 
 /** For links to other Prismic pages inside rich text. */
 const linkResolver = (doc: { type: string; uid?: string | null }) =>
@@ -34,7 +35,7 @@ export function blockOf(slice: Slice): Block | null {
         title: heading,
         lead,
         items: items.map((i: any) => textOf(i.text)),
-        icons: items.map((i: any) => opt(i.icon)),
+        icons: items.map((i: any) => knownIcon(i.icon)),
       };
     }
     case 'screenshots':
@@ -54,7 +55,7 @@ export function blockOf(slice: Slice): Block | null {
           body: textOf(c.body),
           detail: opt(c.detail),
           shot: imageOf(c.image),
-          icon: opt(c.icon),
+          icon: knownIcon(c.icon),
         })),
       };
     case 'steps':
@@ -73,7 +74,7 @@ export function blockOf(slice: Slice): Block | null {
           title: textOf(o.title),
           body: textOf(o.body),
           points: listItemsOf(o.points),
-          icon: opt(o.icon),
+          icon: knownIcon(o.icon),
         })),
       };
     default:
