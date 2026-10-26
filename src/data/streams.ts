@@ -2,7 +2,7 @@
    distinction has to stay clear, so it is described in one place.
    Words in ./copy/streams.json — see outcomes.ts for the rationale. */
 
-import data from './copy/streams.json';
+import { settings } from './pageCopy';
 
 export interface Stream {
   slug: string;
@@ -13,7 +13,7 @@ export interface Stream {
   note: string;
 }
 
-export const streams: Stream[] = data;
+export const streams: Stream[] = settings.streams;
 
 export type StreamSlug = string;
 export const streamBySlug = Object.fromEntries(streams.map((s) => [s.slug, s]));

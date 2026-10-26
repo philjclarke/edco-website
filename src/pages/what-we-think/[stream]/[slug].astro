@@ -12,7 +12,11 @@ export async function getStaticPaths() {
     params: { stream: article.data.stream, slug: article.id },
     props: {
       article,
-      related: all.filter((a) => a.id !== article.id).slice(0, 3),
+      // Newest first, so the order doesn't depend on how the CMS returns them.
+      related: all
+        .filter((a) => a.id !== article.id)
+        .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+        .slice(0, 3),
     },
   }));
 }

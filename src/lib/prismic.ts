@@ -53,6 +53,20 @@ export function srcsetOf(image: RemoteImage, widths: number[]) {
   return { src, srcset };
 }
 
+/** For links to Prismic pages inside rich text. */
+export const linkResolver = (doc: { type: string; uid?: string | null }) =>
+  doc.type === 'product' ? `/products/${doc.uid}/`
+  : doc.type === 'capability' ? `/capabilities/${doc.uid}/`
+  : doc.type === 'outcome' ? `/${doc.uid}/`
+  : null;
+
+/** Rich text as HTML, with links to this site's own pages made relative. */
+export const richHTML = (field: prismic.RichTextField | null | undefined) =>
+  (prismic.asHTML(field, { linkResolver }) ?? '').replace(
+    /href="https?:\/\/(www\.)?educationcompany\.co\.uk/gi,
+    'href="'
+  );
+
 export const textOf = (s: string | null | undefined) => (s ?? '').trim();
 export const paragraphsOf = (rt: prismic.RichTextField | null | undefined) =>
   (rt ?? []).filter((n) => n.type === 'paragraph').map((n) => ('text' in n ? n.text : '')).filter(Boolean);

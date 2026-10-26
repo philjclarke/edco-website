@@ -22,6 +22,7 @@ import type {
   CustomTypeModelFieldForNestedGroup,
   SharedSliceModel,
 } from '@prismicio/client';
+import { specs, type Field, type Group, type Kind } from './specs.ts';
 
 /* ---------- field helpers ---------- */
 
@@ -224,3 +225,87 @@ export const customTypes: CustomTypeModel[] = [
   pageType('capability', 'Capability'),
   pageType('outcome', 'What are you trying to achieve'),
 ];
+
+/* ---------- single-instance pages and site settings (from specs.ts) ---------- */
+
+
+const fieldFor = (kind: Kind, label: string): Nested =>
+  kind === 'text' ? text(label)
+  : kind === 'link' ? link(label)
+  : kind === 'boolean' ? { type: 'Boolean', config: { label, default_value: false, placeholder_true: 'Yes', placeholder_false: 'No' } }
+  : bullets(label);
+
+function fromSpec(id: string, label: string, fields: Record<string, Field | Group>): CustomTypeModel {
+  const json: Record<string, Record<string, CustomTypeModelField>> = {};
+  for (const [fid, f] of Object.entries(fields)) {
+    json[f.tab] ??= {};
+    json[f.tab][fid] =
+      f.kind === 'group'
+        ? group(f.label, Object.fromEntries(Object.entries(f.fields).map(([k, x]) => [k, fieldFor(x.kind, x.label)])))
+        : fieldFor(f.kind, f.label);
+  }
+  return { id, label, repeatable: false, format: id === 'site_settings' ? 'custom' : 'page', status: true, json };
+}
+
+/* ---------- Insights articles and case studies ---------- */
+
+const STREAMS = ['what-were-hearing', 'opinion', 'research-and-insight'] as const;
+
+const article: CustomTypeModel = {
+  id: 'article',
+  label: 'Insights article',
+  repeatable: true,
+  format: 'page',
+  status: true,
+  json: {
+    Main: {
+      uid: { type: 'UID', config: { label: 'Web address', placeholder: 'e.g. what-mat-finance-leaders-are-telling-us' } },
+      title: text('Title'),
+      stream: select('Stream', STREAMS, 'opinion'),
+      summary: text('Summary', 'One or two sentences for cards and search engines'),
+      date: { type: 'Date', config: { label: 'Date' } },
+      author: text('Author', 'Opinion pieces are attributed; What we’re hearing has no named author'),
+      status: select('Status', ['sample', 'live'] as const, 'live'),
+      body: {
+        type: 'StructuredText',
+        config: { label: 'Article', multi: 'paragraph,heading2,heading3,strong,em,hyperlink,list-item,o-list-item', allowTargetBlank: true },
+      },
+    },
+    Tags: {
+      themes: group('Themes', { theme: text('Theme') }),
+    },
+  },
+};
+
+const caseStudy: CustomTypeModel = {
+  id: 'case_study',
+  label: 'Case study',
+  repeatable: true,
+  format: 'page',
+  status: true,
+  json: {
+    Main: {
+      uid: { type: 'UID', config: { label: 'Web address' } },
+      title: text('Title', 'Framed as what the customer was trying to achieve'),
+      client: text('Client'),
+      summary: text('Summary', 'One sentence on the objective and what changed'),
+      outcome: {
+        type: 'Link',
+        config: { label: 'Outcome it belongs under', select: 'document', customtypes: ['outcome'] },
+      },
+      status: select('Status', ['placeholder', 'live'] as const, 'placeholder'),
+    },
+    'The story': {
+      objective: text('What were they trying to achieve?'),
+      discovered: text('What did we discover?'),
+      recommended: text('What did we recommend?'),
+      did: group('What did we do?', { text: text('Capability or product used') }),
+      changed: text('What changed?'),
+      evidence: group('The evidence', { text: text('Metric') }),
+      testimonial: text('Testimonial'),
+      body: prose('Notes shown under the story'),
+    },
+  },
+};
+
+customTypes.push(...specs.map((s) => fromSpec(s.id, s.label, s.fields)), article, caseStudy);

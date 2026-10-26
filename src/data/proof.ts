@@ -7,7 +7,7 @@
   Words in ./copy/proof.json — see outcomes.ts for the rationale.
 */
 
-import data from './copy/proof.json';
+import { settings as data } from './pageCopy';
 
 export interface ProofStat {
   value: string;

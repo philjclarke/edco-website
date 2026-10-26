@@ -1,16 +1,40 @@
 import { defineCollection, z } from 'astro:content';
-import { glob } from 'astro/loaders';
+import type { Loader } from 'astro/loaders';
+import { client, hrefOf, richHTML, textOf } from './lib/prismic';
 
 /*
-  Editorial content. These two schemas are the part of the site most likely to
-  become CMS-managed first — they map onto a "post" and a "case study" content
-  type more or less directly.
+  Editorial content, from Prismic (types "article" and "case_study"). A
+  small loader per collection reads the published pages and hands them to
+  Astro's content layer, so the templates keep using getCollection() and
+  render() as before. The schemas below still validate every entry.
 */
+
+const fromPrismic = (type: string, toData: (d: Record<string, any>) => Record<string, unknown>): Loader => ({
+  name: `prismic-${type}`,
+  async load({ store, parseData }) {
+    store.clear();
+    for (const doc of await client.getAllByType(type)) {
+      const data = await parseData({ id: doc.uid!, data: toData(doc.data) });
+      store.set({ id: doc.uid!, data, rendered: { html: richHTML(doc.data.body) } });
+    }
+  },
+});
+
+const items = (g: unknown, key: string) =>
+  (Array.isArray(g) ? g : []).map((x) => textOf(x?.[key])).filter(Boolean);
 
 const streams = ['what-were-hearing', 'opinion', 'research-and-insight'] as const;
 
 const articles = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/articles' }),
+  loader: fromPrismic('article', (d) => ({
+    title: textOf(d.title),
+    stream: d.stream,
+    summary: textOf(d.summary),
+    date: d.date,
+    author: textOf(d.author) || undefined,
+    themes: items(d.themes, 'theme'),
+    status: d.status ?? 'live',
+  })),
   schema: z.object({
     title: z.string(),
     /* Brief §46: three clearly differentiated editorial voices. */
@@ -29,7 +53,21 @@ const articles = defineCollection({
 });
 
 const caseStudies = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/case-studies' }),
+  loader: fromPrismic('case_study', (d) => ({
+    title: textOf(d.title),
+    client: textOf(d.client),
+    summary: textOf(d.summary),
+    // The outcome page it belongs under, by its address (e.g. /grow-and-retain-customers/ -> grow-and-retain-customers).
+    outcome: (hrefOf(d.outcome) ?? '').replace(/\//g, ''),
+    objective: textOf(d.objective),
+    discovered: textOf(d.discovered),
+    recommended: textOf(d.recommended),
+    did: items(d.did, 'text'),
+    changed: textOf(d.changed),
+    evidence: items(d.evidence, 'text'),
+    testimonial: textOf(d.testimonial),
+    status: d.status ?? 'placeholder',
+  })),
   /* Brief §56: organised around what the customer was trying to achieve, never
      around EdCo's internal departments. Every field is required so an
      incomplete case study cannot quietly ship. */

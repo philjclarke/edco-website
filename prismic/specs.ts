@@ -1,0 +1,1375 @@
+/*
+  Field specs for the single-instance pages and site settings in Prismic.
+
+  Each entry is one Prismic field: its kind, the label editors see, the tab it
+  sits on, and `path`: where the value lives in the shape the site's pages
+  read (see src/data/pageCopy.ts). The same spec builds the Prismic models
+  (prismic/models.ts), imported the original copy, and turns Prismic content
+  back into that shape, so the page templates didn't need to change.
+
+  Generated once from the old copy JSON (Oct 2026); edit by hand from here.
+  No imports: this file is read by both the site build and the Node scripts.
+*/
+
+export type Kind = "text" | "link" | "boolean" | "bullets";
+export interface Field {
+  kind: Kind;
+  label: string;
+  tab: string;
+  path: string;
+}
+export interface Group {
+  kind: "group";
+  label: string;
+  tab: string;
+  path: string;
+  /** Item fields. `key` is the property name in the page's shape. */
+  fields: Record<string, { kind: Kind; label: string; key?: string }>;
+  /** Read back as a plain list of strings. */
+  strings?: boolean;
+  /** Read back as two parallel lists, e.g. items and their icons. */
+  split?: Record<string, string>;
+}
+export interface DocSpec {
+  id: string;
+  label: string;
+  fields: Record<string, Field | Group>;
+}
+
+export const specs: DocSpec[] = [
+  {
+    id: "home_page",
+    label: "Homepage",
+    fields: {
+      meta_description: {
+        kind: "text",
+        label: "Search engine description",
+        tab: "SEO",
+        path: "meta.description",
+      },
+      hero_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "Banner",
+        path: "hero.eyebrow",
+      },
+      hero_heading: {
+        kind: "text",
+        label: "Heading",
+        tab: "Banner",
+        path: "hero.heading",
+      },
+      hero_standfirst: {
+        kind: "text",
+        label: "Standfirst",
+        tab: "Banner",
+        path: "hero.standfirst",
+      },
+      hero_body: {
+        kind: "text",
+        label: "Text",
+        tab: "Banner",
+        path: "hero.body",
+      },
+      partners_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "Partners",
+        path: "partners.eyebrow",
+      },
+      partners_heading: {
+        kind: "text",
+        label: "Heading",
+        tab: "Partners",
+        path: "partners.heading",
+      },
+      partners_body1: {
+        kind: "text",
+        label: "Paragraph 1",
+        tab: "Partners",
+        path: "partners.body1",
+      },
+      partners_body2: {
+        kind: "text",
+        label: "Paragraph 2",
+        tab: "Partners",
+        path: "partners.body2",
+      },
+      partners_close: {
+        kind: "text",
+        label: "Closing line",
+        tab: "Partners",
+        path: "partners.close",
+      },
+      how_it_works_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "How it works",
+        path: "howItWorks.eyebrow",
+      },
+      how_it_works_heading: {
+        kind: "text",
+        label: "Heading",
+        tab: "How it works",
+        path: "howItWorks.heading",
+      },
+      how_it_works_lead: {
+        kind: "text",
+        label: "Intro",
+        tab: "How it works",
+        path: "howItWorks.lead",
+      },
+      outcomes_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "Outcomes",
+        path: "outcomes.eyebrow",
+      },
+      outcomes_heading: {
+        kind: "text",
+        label: "Heading",
+        tab: "Outcomes",
+        path: "outcomes.heading",
+      },
+      outcomes_lead: {
+        kind: "text",
+        label: "Intro",
+        tab: "Outcomes",
+        path: "outcomes.lead",
+      },
+      outcomes_card_cta: {
+        kind: "text",
+        label: "Card link label",
+        tab: "Outcomes",
+        path: "outcomes.cardCta",
+      },
+      one_edco_heading: {
+        kind: "text",
+        label: "Heading",
+        tab: "One EdCo",
+        path: "oneEdco.heading",
+      },
+      one_edco_lead: {
+        kind: "text",
+        label: "Intro",
+        tab: "One EdCo",
+        path: "oneEdco.lead",
+      },
+      one_edco_cta: {
+        kind: "text",
+        label: "Button label",
+        tab: "One EdCo",
+        path: "oneEdco.cta",
+      },
+      one_edco_words: {
+        kind: "group",
+        label: "Words",
+        tab: "One EdCo",
+        path: "oneEdco.words",
+        fields: {
+          label: {
+            kind: "text",
+            label: "Label",
+            key: "label",
+          },
+          href: {
+            kind: "link",
+            label: "Href",
+            key: "href",
+          },
+        },
+      },
+      breadth_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "Breadth",
+        path: "breadth.eyebrow",
+      },
+      breadth_heading: {
+        kind: "text",
+        label: "Heading",
+        tab: "Breadth",
+        path: "breadth.heading",
+      },
+      breadth_comparisons: {
+        kind: "group",
+        label: "Comparisons",
+        tab: "Breadth",
+        path: "breadth.comparisons",
+        fields: {
+          who: {
+            kind: "text",
+            label: "Who",
+            key: "who",
+          },
+          what: {
+            kind: "text",
+            label: "What",
+            key: "what",
+          },
+        },
+      },
+      breadth_turn: {
+        kind: "text",
+        label: "Turning line",
+        tab: "Breadth",
+        path: "breadth.turn",
+      },
+      breadth_body: {
+        kind: "text",
+        label: "Text",
+        tab: "Breadth",
+        path: "breadth.body",
+      },
+      breadth_close: {
+        kind: "text",
+        label: "Closing line",
+        tab: "Breadth",
+        path: "breadth.close",
+      },
+      proof_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "Proof",
+        path: "proof.eyebrow",
+      },
+      proof_heading: {
+        kind: "text",
+        label: "Heading",
+        tab: "Proof",
+        path: "proof.heading",
+      },
+      proof_body_before: {
+        kind: "text",
+        label: "Text before the figure",
+        tab: "Proof",
+        path: "proof.bodyBefore",
+      },
+      proof_body_after: {
+        kind: "text",
+        label: "Text after the figure",
+        tab: "Proof",
+        path: "proof.bodyAfter",
+      },
+      proof_body2: {
+        kind: "text",
+        label: "Paragraph 2",
+        tab: "Proof",
+        path: "proof.body2",
+      },
+      logos_heading: {
+        kind: "text",
+        label: "Heading",
+        tab: "Logos",
+        path: "logos.heading",
+      },
+      logos_lead: {
+        kind: "text",
+        label: "Intro",
+        tab: "Logos",
+        path: "logos.lead",
+      },
+      hearing_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "What we’re hearing",
+        path: "hearing.eyebrow",
+      },
+      hearing_heading: {
+        kind: "text",
+        label: "Heading",
+        tab: "What we’re hearing",
+        path: "hearing.heading",
+      },
+      hearing_lead: {
+        kind: "text",
+        label: "Intro",
+        tab: "What we’re hearing",
+        path: "hearing.lead",
+      },
+      hearing_cta: {
+        kind: "text",
+        label: "Button label",
+        tab: "What we’re hearing",
+        path: "hearing.cta",
+      },
+      hearing_card_note: {
+        kind: "text",
+        label: "Note under the cards",
+        tab: "What we’re hearing",
+        path: "hearing.cardNote",
+      },
+      free_value_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "Free value",
+        path: "freeValue.eyebrow",
+      },
+      free_value_heading: {
+        kind: "text",
+        label: "Heading",
+        tab: "Free value",
+        path: "freeValue.heading",
+      },
+      free_value_lead: {
+        kind: "text",
+        label: "Intro",
+        tab: "Free value",
+        path: "freeValue.lead",
+      },
+      free_value_featured_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "Free value",
+        path: "freeValue.featured.eyebrow",
+      },
+      free_value_featured_title: {
+        kind: "text",
+        label: "Title",
+        tab: "Free value",
+        path: "freeValue.featured.title",
+      },
+      free_value_featured_body: {
+        kind: "text",
+        label: "Text",
+        tab: "Free value",
+        path: "freeValue.featured.body",
+      },
+      free_value_featured_cta: {
+        kind: "text",
+        label: "Button label",
+        tab: "Free value",
+        path: "freeValue.featured.cta",
+      },
+    },
+  },
+  {
+    id: "outcomes_hub",
+    label: "What are you trying to achieve (hub)",
+    fields: {
+      meta_title: {
+        kind: "text",
+        label: "Browser tab title",
+        tab: "SEO",
+        path: "metaTitle",
+      },
+      meta_description: {
+        kind: "text",
+        label: "Search engine description",
+        tab: "SEO",
+        path: "metaDescription",
+      },
+      hero_title: {
+        kind: "text",
+        label: "Heading",
+        tab: "Banner",
+        path: "heroTitle",
+      },
+      hero_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "Banner",
+        path: "heroEyebrow",
+      },
+      hero_standfirst: {
+        kind: "text",
+        label: "Standfirst",
+        tab: "Banner",
+        path: "heroStandfirst",
+      },
+      hero_lead: {
+        kind: "text",
+        label: "Intro paragraph",
+        tab: "Banner",
+        path: "heroLead",
+      },
+      heading: {
+        kind: "text",
+        label: "Heading",
+        tab: "Body",
+        path: "heading",
+      },
+      body: {
+        kind: "text",
+        label: "Text",
+        tab: "Body",
+        path: "body",
+      },
+      body2: {
+        kind: "text",
+        label: "Paragraph 2",
+        tab: "Body",
+        path: "body2",
+      },
+      body3: {
+        kind: "text",
+        label: "Paragraph 3",
+        tab: "Body",
+        path: "body3",
+      },
+      heading2: {
+        kind: "text",
+        label: "Second heading",
+        tab: "Body",
+        path: "heading2",
+      },
+      body4: {
+        kind: "text",
+        label: "Paragraph 4",
+        tab: "Body",
+        path: "body4",
+      },
+    },
+  },
+  {
+    id: "products_hub",
+    label: "Products (hub)",
+    fields: {
+      meta_title: {
+        kind: "text",
+        label: "Browser tab title",
+        tab: "SEO",
+        path: "metaTitle",
+      },
+      meta_description: {
+        kind: "text",
+        label: "Search engine description",
+        tab: "SEO",
+        path: "metaDescription",
+      },
+      hero_title: {
+        kind: "text",
+        label: "Heading",
+        tab: "Banner",
+        path: "heroTitle",
+      },
+      hero_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "Banner",
+        path: "heroEyebrow",
+      },
+      hero_standfirst: {
+        kind: "text",
+        label: "Standfirst",
+        tab: "Banner",
+        path: "heroStandfirst",
+      },
+      hero_lead: {
+        kind: "text",
+        label: "Intro paragraph",
+        tab: "Banner",
+        path: "heroLead",
+      },
+      body: {
+        kind: "text",
+        label: "Text",
+        tab: "Body",
+        path: "body",
+      },
+      body2: {
+        kind: "text",
+        label: "Paragraph 2",
+        tab: "Body",
+        path: "body2",
+      },
+    },
+  },
+  {
+    id: "capabilities_hub",
+    label: "Capabilities (hub)",
+    fields: {
+      meta_title: {
+        kind: "text",
+        label: "Browser tab title",
+        tab: "SEO",
+        path: "metaTitle",
+      },
+      meta_description: {
+        kind: "text",
+        label: "Search engine description",
+        tab: "SEO",
+        path: "metaDescription",
+      },
+      hero_title: {
+        kind: "text",
+        label: "Heading",
+        tab: "Banner",
+        path: "heroTitle",
+      },
+      hero_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "Banner",
+        path: "heroEyebrow",
+      },
+      hero_standfirst: {
+        kind: "text",
+        label: "Standfirst",
+        tab: "Banner",
+        path: "heroStandfirst",
+      },
+      hero_lead: {
+        kind: "text",
+        label: "Intro paragraph",
+        tab: "Banner",
+        path: "heroLead",
+      },
+      body: {
+        kind: "text",
+        label: "Text",
+        tab: "Body",
+        path: "body",
+      },
+      body2: {
+        kind: "text",
+        label: "Paragraph 2",
+        tab: "Body",
+        path: "body2",
+      },
+    },
+  },
+  {
+    id: "free_analysis_page",
+    label: "Free customer analysis",
+    fields: {
+      meta_title: {
+        kind: "text",
+        label: "Browser tab title",
+        tab: "SEO",
+        path: "metaTitle",
+      },
+      meta_description: {
+        kind: "text",
+        label: "Search engine description",
+        tab: "SEO",
+        path: "metaDescription",
+      },
+      hero_title: {
+        kind: "text",
+        label: "Heading",
+        tab: "Banner",
+        path: "heroTitle",
+      },
+      hero_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "Banner",
+        path: "heroEyebrow",
+      },
+      hero_standfirst: {
+        kind: "text",
+        label: "Standfirst",
+        tab: "Banner",
+        path: "heroStandfirst",
+      },
+      hero_lead: {
+        kind: "text",
+        label: "Intro paragraph",
+        tab: "Banner",
+        path: "heroLead",
+      },
+      body: {
+        kind: "text",
+        label: "Text",
+        tab: "Body",
+        path: "body",
+      },
+      body2: {
+        kind: "text",
+        label: "Paragraph 2",
+        tab: "Body",
+        path: "body2",
+      },
+      body3: {
+        kind: "text",
+        label: "Paragraph 3",
+        tab: "Body",
+        path: "body3",
+      },
+      body4: {
+        kind: "text",
+        label: "Paragraph 4",
+        tab: "Body",
+        path: "body4",
+      },
+      body5: {
+        kind: "text",
+        label: "Paragraph 5",
+        tab: "Body",
+        path: "body5",
+      },
+      heading: {
+        kind: "text",
+        label: "Heading",
+        tab: "Body",
+        path: "heading",
+      },
+      findings: {
+        kind: "group",
+        label: "Findings",
+        tab: "Body",
+        path: "findings",
+        fields: {
+          text: {
+            kind: "text",
+            label: "Item",
+          },
+          icon: {
+            kind: "text",
+            label: "Icon",
+          },
+        },
+        split: {
+          text: "findings",
+          icon: "findingIcons",
+        },
+      },
+    },
+  },
+  {
+    id: "agencies_page",
+    label: "Agencies & Partners",
+    fields: {
+      meta_title: {
+        kind: "text",
+        label: "Browser tab title",
+        tab: "SEO",
+        path: "metaTitle",
+      },
+      meta_description: {
+        kind: "text",
+        label: "Search engine description",
+        tab: "SEO",
+        path: "metaDescription",
+      },
+      hero_title: {
+        kind: "text",
+        label: "Heading",
+        tab: "Banner",
+        path: "heroTitle",
+      },
+      hero_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "Banner",
+        path: "heroEyebrow",
+      },
+      hero_standfirst: {
+        kind: "text",
+        label: "Standfirst",
+        tab: "Banner",
+        path: "heroStandfirst",
+      },
+      hero_lead: {
+        kind: "text",
+        label: "Intro paragraph",
+        tab: "Banner",
+        path: "heroLead",
+      },
+      section_title: {
+        kind: "text",
+        label: "Heading",
+        tab: "Sections",
+        path: "sectionTitle",
+      },
+      section_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "Sections",
+        path: "sectionEyebrow",
+      },
+      section_lead: {
+        kind: "text",
+        label: "Intro",
+        tab: "Sections",
+        path: "sectionLead",
+      },
+      cta_title: {
+        kind: "text",
+        label: "Heading",
+        tab: "Closing call to action",
+        path: "ctaTitle",
+      },
+      cta_body: {
+        kind: "text",
+        label: "Text",
+        tab: "Closing call to action",
+        path: "ctaBody",
+      },
+      body: {
+        kind: "text",
+        label: "Text",
+        tab: "Body",
+        path: "body",
+      },
+      heading: {
+        kind: "text",
+        label: "Heading",
+        tab: "Body",
+        path: "heading",
+      },
+      body2: {
+        kind: "text",
+        label: "Paragraph 2",
+        tab: "Body",
+        path: "body2",
+      },
+      body3: {
+        kind: "text",
+        label: "Paragraph 3",
+        tab: "Body",
+        path: "body3",
+      },
+      body4: {
+        kind: "text",
+        label: "Paragraph 4",
+        tab: "Body",
+        path: "body4",
+      },
+      body5: {
+        kind: "text",
+        label: "Paragraph 5",
+        tab: "Body",
+        path: "body5",
+      },
+      body6: {
+        kind: "text",
+        label: "Paragraph 6",
+        tab: "Body",
+        path: "body6",
+      },
+      heading2: {
+        kind: "text",
+        label: "Second heading",
+        tab: "Body",
+        path: "heading2",
+      },
+      capabilities: {
+        kind: "group",
+        label: "Capabilities",
+        tab: "Body",
+        path: "capabilities",
+        fields: {
+          text: { kind: "text", label: "Item" },
+          icon: { kind: "text", label: "Icon" },
+        },
+        split: { text: "capabilities", icon: "capabilityIcons" },
+      },
+    },
+  },
+  {
+    id: "about_page",
+    label: "About EdCo",
+    fields: {
+      meta_title: {
+        kind: "text",
+        label: "Browser tab title",
+        tab: "SEO",
+        path: "metaTitle",
+      },
+      meta_description: {
+        kind: "text",
+        label: "Search engine description",
+        tab: "SEO",
+        path: "metaDescription",
+      },
+      hero_title: {
+        kind: "text",
+        label: "Heading",
+        tab: "Banner",
+        path: "heroTitle",
+      },
+      hero_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "Banner",
+        path: "heroEyebrow",
+      },
+      hero_standfirst: {
+        kind: "text",
+        label: "Standfirst",
+        tab: "Banner",
+        path: "heroStandfirst",
+      },
+      hero_lead: {
+        kind: "text",
+        label: "Intro paragraph",
+        tab: "Banner",
+        path: "heroLead",
+      },
+      section_title: {
+        kind: "text",
+        label: "Heading",
+        tab: "Sections",
+        path: "sectionTitle",
+      },
+      section_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "Sections",
+        path: "sectionEyebrow",
+      },
+      section_lead: {
+        kind: "text",
+        label: "Intro",
+        tab: "Sections",
+        path: "sectionLead",
+      },
+      heading: {
+        kind: "text",
+        label: "Heading",
+        tab: "Body",
+        path: "heading",
+      },
+      body: {
+        kind: "text",
+        label: "Text",
+        tab: "Body",
+        path: "body",
+      },
+      body2: {
+        kind: "text",
+        label: "Paragraph 2",
+        tab: "Body",
+        path: "body2",
+      },
+      body3: {
+        kind: "text",
+        label: "Paragraph 3",
+        tab: "Body",
+        path: "body3",
+      },
+      body4: {
+        kind: "text",
+        label: "Paragraph 4",
+        tab: "Body",
+        path: "body4",
+      },
+      heading2: {
+        kind: "text",
+        label: "Second heading",
+        tab: "Body",
+        path: "heading2",
+      },
+      body5: {
+        kind: "text",
+        label: "Paragraph 5",
+        tab: "Body",
+        path: "body5",
+      },
+      body6: {
+        kind: "text",
+        label: "Paragraph 6",
+        tab: "Body",
+        path: "body6",
+      },
+    },
+  },
+  {
+    id: "contact_page",
+    label: "Contact",
+    fields: {
+      meta_title: {
+        kind: "text",
+        label: "Browser tab title",
+        tab: "SEO",
+        path: "metaTitle",
+      },
+      meta_description: {
+        kind: "text",
+        label: "Search engine description",
+        tab: "SEO",
+        path: "metaDescription",
+      },
+      hero_title: {
+        kind: "text",
+        label: "Heading",
+        tab: "Banner",
+        path: "heroTitle",
+      },
+      hero_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "Banner",
+        path: "heroEyebrow",
+      },
+      hero_standfirst: {
+        kind: "text",
+        label: "Standfirst",
+        tab: "Banner",
+        path: "heroStandfirst",
+      },
+      hero_lead: {
+        kind: "text",
+        label: "Intro paragraph",
+        tab: "Banner",
+        path: "heroLead",
+      },
+      body: {
+        kind: "text",
+        label: "Text",
+        tab: "Body",
+        path: "body",
+      },
+      body2: {
+        kind: "text",
+        label: "Paragraph 2",
+        tab: "Body",
+        path: "body2",
+      },
+      body3: {
+        kind: "text",
+        label: "Paragraph 3",
+        tab: "Body",
+        path: "body3",
+      },
+      body4: {
+        kind: "text",
+        label: "Paragraph 4",
+        tab: "Body",
+        path: "body4",
+      },
+      heading: {
+        kind: "text",
+        label: "Heading",
+        tab: "Body",
+        path: "heading",
+      },
+    },
+  },
+  {
+    id: "customer_page",
+    label: "Customer login",
+    fields: {
+      meta_title: {
+        kind: "text",
+        label: "Browser tab title",
+        tab: "SEO",
+        path: "metaTitle",
+      },
+      meta_description: {
+        kind: "text",
+        label: "Search engine description",
+        tab: "SEO",
+        path: "metaDescription",
+      },
+      body: {
+        kind: "text",
+        label: "Text",
+        tab: "Body",
+        path: "body",
+      },
+      heading: {
+        kind: "text",
+        label: "Heading",
+        tab: "Body",
+        path: "heading",
+      },
+      body2: {
+        kind: "text",
+        label: "Paragraph 2",
+        tab: "Body",
+        path: "body2",
+      },
+    },
+  },
+  {
+    id: "for_educators_page",
+    label: "For Educators",
+    fields: {
+      meta_title: {
+        kind: "text",
+        label: "Browser tab title",
+        tab: "SEO",
+        path: "metaTitle",
+      },
+      meta_description: {
+        kind: "text",
+        label: "Search engine description",
+        tab: "SEO",
+        path: "metaDescription",
+      },
+      hero_title: {
+        kind: "text",
+        label: "Heading",
+        tab: "Banner",
+        path: "heroTitle",
+      },
+      hero_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "Banner",
+        path: "heroEyebrow",
+      },
+      hero_standfirst: {
+        kind: "text",
+        label: "Standfirst",
+        tab: "Banner",
+        path: "heroStandfirst",
+      },
+      hero_lead: {
+        kind: "text",
+        label: "Intro paragraph",
+        tab: "Banner",
+        path: "heroLead",
+      },
+      section_title: {
+        kind: "text",
+        label: "Heading",
+        tab: "Sections",
+        path: "sectionTitle",
+      },
+      section_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "Sections",
+        path: "sectionEyebrow",
+      },
+      section_lead: {
+        kind: "text",
+        label: "Intro",
+        tab: "Sections",
+        path: "sectionLead",
+      },
+      section_title2: {
+        kind: "text",
+        label: "Second section heading",
+        tab: "Sections",
+        path: "sectionTitle2",
+      },
+      section_eyebrow2: {
+        kind: "text",
+        label: "Second section small label",
+        tab: "Sections",
+        path: "sectionEyebrow2",
+      },
+      heading: {
+        kind: "text",
+        label: "Heading",
+        tab: "Body",
+        path: "heading",
+      },
+      body: {
+        kind: "text",
+        label: "Text",
+        tab: "Body",
+        path: "body",
+      },
+    },
+  },
+  {
+    id: "what_we_think_page",
+    label: "What We Think (hub)",
+    fields: {
+      meta_title: {
+        kind: "text",
+        label: "Browser tab title",
+        tab: "SEO",
+        path: "metaTitle",
+      },
+      meta_description: {
+        kind: "text",
+        label: "Search engine description",
+        tab: "SEO",
+        path: "metaDescription",
+      },
+      hero_title: {
+        kind: "text",
+        label: "Heading",
+        tab: "Banner",
+        path: "heroTitle",
+      },
+      hero_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "Banner",
+        path: "heroEyebrow",
+      },
+      hero_standfirst: {
+        kind: "text",
+        label: "Standfirst",
+        tab: "Banner",
+        path: "heroStandfirst",
+      },
+      hero_lead: {
+        kind: "text",
+        label: "Intro paragraph",
+        tab: "Banner",
+        path: "heroLead",
+      },
+      cta_title: {
+        kind: "text",
+        label: "Heading",
+        tab: "Closing call to action",
+        path: "ctaTitle",
+      },
+      cta_body: {
+        kind: "text",
+        label: "Text",
+        tab: "Closing call to action",
+        path: "ctaBody",
+      },
+      cta_cta_label: {
+        kind: "text",
+        label: "Button label",
+        tab: "Closing call to action",
+        path: "ctaCtaLabel",
+      },
+    },
+  },
+  {
+    id: "case_studies_hub",
+    label: "Case studies (hub)",
+    fields: {
+      meta_title: {
+        kind: "text",
+        label: "Browser tab title",
+        tab: "SEO",
+        path: "metaTitle",
+      },
+      meta_description: {
+        kind: "text",
+        label: "Search engine description",
+        tab: "SEO",
+        path: "metaDescription",
+      },
+      hero_title: {
+        kind: "text",
+        label: "Heading",
+        tab: "Banner",
+        path: "heroTitle",
+      },
+      hero_eyebrow: {
+        kind: "text",
+        label: "Small label",
+        tab: "Banner",
+        path: "heroEyebrow",
+      },
+      hero_standfirst: {
+        kind: "text",
+        label: "Standfirst",
+        tab: "Banner",
+        path: "heroStandfirst",
+      },
+      hero_lead: {
+        kind: "text",
+        label: "Intro paragraph",
+        tab: "Banner",
+        path: "heroLead",
+      },
+      heading: {
+        kind: "text",
+        label: "Heading",
+        tab: "Body",
+        path: "heading",
+      },
+      body: {
+        kind: "text",
+        label: "Text",
+        tab: "Body",
+        path: "body",
+      },
+    },
+  },
+  {
+    id: "search_page",
+    label: "Search",
+    fields: {
+      meta_title: {
+        kind: "text",
+        label: "Browser tab title",
+        tab: "SEO",
+        path: "metaTitle",
+      },
+      heading: {
+        kind: "text",
+        label: "Heading",
+        tab: "Body",
+        path: "heading",
+      },
+      body: {
+        kind: "text",
+        label: "Text",
+        tab: "Body",
+        path: "body",
+      },
+    },
+  },
+  {
+    id: "not_found_page",
+    label: "Page not found",
+    fields: {
+      meta_title: {
+        kind: "text",
+        label: "Browser tab title",
+        tab: "SEO",
+        path: "metaTitle",
+      },
+      heading: {
+        kind: "text",
+        label: "Heading",
+        tab: "Body",
+        path: "heading",
+      },
+      body: {
+        kind: "text",
+        label: "Text",
+        tab: "Body",
+        path: "body",
+      },
+    },
+  },
+  {
+    id: "site_settings",
+    label: "Site settings",
+    fields: {
+      edco_model: {
+        kind: "group",
+        label: "Listen → Grow model",
+        tab: "The EdCo model",
+        path: "edcoModel",
+        fields: {
+          name: {
+            kind: "text",
+            label: "Name",
+            key: "name",
+          },
+          summary: {
+            kind: "text",
+            label: "Summary",
+            key: "summary",
+          },
+          methods: {
+            kind: "bullets",
+            label: "Methods",
+            key: "methods",
+          },
+          icon: {
+            kind: "text",
+            label: "Icon",
+            key: "icon",
+          },
+        },
+      },
+      beliefs: {
+        kind: "group",
+        label: "What we believe",
+        tab: "Beliefs",
+        path: "beliefs",
+        fields: {
+          title: {
+            kind: "text",
+            label: "Title",
+            key: "title",
+          },
+          body: {
+            kind: "text",
+            label: "Text",
+            key: "body",
+          },
+        },
+      },
+      proof_stats: {
+        kind: "group",
+        label: "Figures",
+        tab: "Proof",
+        path: "proofStats",
+        fields: {
+          value: {
+            kind: "text",
+            label: "Value",
+            key: "value",
+          },
+          label: {
+            kind: "text",
+            label: "Label",
+            key: "label",
+          },
+          verified: {
+            kind: "boolean",
+            label: "Verified",
+            key: "verified",
+          },
+        },
+      },
+      logo_candidates: {
+        kind: "group",
+        label: "Client logo list",
+        tab: "Proof",
+        path: "logoCandidates",
+        strings: true,
+        fields: {
+          text: {
+            kind: "text",
+            label: "Item",
+          },
+        },
+      },
+      testimonial_themes: {
+        kind: "group",
+        label: "Testimonial themes",
+        tab: "Proof",
+        path: "testimonialThemes",
+        strings: true,
+        fields: {
+          text: {
+            kind: "text",
+            label: "Item",
+          },
+        },
+      },
+      case_study_themes: {
+        kind: "group",
+        label: "Case study themes",
+        tab: "Proof",
+        path: "caseStudyThemes",
+        strings: true,
+        fields: {
+          text: {
+            kind: "text",
+            label: "Item",
+          },
+        },
+      },
+      streams: {
+        kind: "group",
+        label: "Streams",
+        tab: "What We Think streams",
+        path: "streams",
+        fields: {
+          slug: {
+            kind: "text",
+            label: "Stream key (don’t change: used in web addresses)",
+            key: "slug",
+          },
+          label: {
+            kind: "text",
+            label: "Label",
+            key: "label",
+          },
+          question: {
+            kind: "text",
+            label: "Question",
+            key: "question",
+          },
+          title: {
+            kind: "text",
+            label: "Title",
+            key: "title",
+          },
+          lead: {
+            kind: "text",
+            label: "Intro",
+            key: "lead",
+          },
+          note: {
+            kind: "text",
+            label: "Note",
+            key: "note",
+          },
+        },
+      },
+    },
+  },
+];

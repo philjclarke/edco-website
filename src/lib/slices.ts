@@ -7,12 +7,8 @@
 */
 import type { Slice } from '@prismicio/client';
 import type { Block } from '@/data/blocks';
-import { prismic, imageOf, listItemsOf, textOf } from './prismic';
+import { imageOf, listItemsOf, richHTML, textOf } from './prismic';
 import { knownIcon } from './icons';
-
-/** For links to other Prismic pages inside rich text. */
-const linkResolver = (doc: { type: string; uid?: string | null }) =>
-  doc.type === 'product' ? `/products/${doc.uid}/` : doc.type === 'capability' ? `/capabilities/${doc.uid}/` : `/${doc.uid}/`;
 
 const opt = (s: string | null | undefined) => textOf(s) || undefined;
 
@@ -26,7 +22,7 @@ export function blockOf(slice: Slice): Block | null {
         type: 'prose',
         title: heading || undefined,
         paras: [],
-        html: prismic.asHTML(p.body, { linkResolver }) ?? '',
+        html: richHTML(p.body),
       };
     case 'item_list': {
       const items = (p.items ?? []).filter((i: any) => textOf(i.text));
