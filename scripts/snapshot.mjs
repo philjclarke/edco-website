@@ -29,7 +29,8 @@ const SRC = '.vercel/output/static';
 const LIST = 'pages';
 const OUT = path.join('public', name);
 const PREFIX = `/${name}`;
-const SKIP = [/^\/404/, /^\/search\//, /^\/prototype\//, /^\/admin\//];
+// Earlier snapshots (/v1/, /v2/…) are part of the build too; never nest them.
+const SKIP = [/^\/404/, /^\/search\//, /^\/prototype\//, /^\/admin\//, /^\/v\d+\//];
 
 const taken = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 

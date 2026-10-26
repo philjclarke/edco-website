@@ -119,8 +119,8 @@ then shows as a visible placeholder again. Running
 
 ## Snapshots
 
-`/v1/` is a frozen copy of the whole site as it stood on 16 September 2026, taken
-before the structural changes, so old and new can be compared side by side. It's
+`/v1/` (16 September 2026) and `/v2/` (26 October 2026, before the move to Prismic)
+are frozen copies of the whole site, so old and new can be compared side by side. It's
 plain HTML in `public/v1/` with its own copies of the CSS and images. Nothing links
 to it, it's `noindex`, and it's left out of the sitemap and site search. The copy
 deck doesn't touch it, and it never changes. Each page has a bar at the top that
