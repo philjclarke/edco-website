@@ -77,9 +77,31 @@ The Big Plastic Count.
 | --- | --- | --- |
 | 1.26 | **Where the contact form posts** | Currently no endpoint. Options: a form service (Netlify/Formspree), an email relay, or straight into SPIRIT/HubSpot. This is the only thing forcing any server-side consideration. |
 | 1.27 | **Where the subscriber list lives** | Brief §52 wants name + email now, interest personalisation later. Needs a marketing platform. |
-| 1.28 | **Hosting** | Netlify or Cloudflare Pages both work as-is, free. Needs a decision plus DNS access. |
+| 1.28 | **Hosting** | The proof of concept runs on Vercel, in Phil's own account, on the Hobby plan. Before launch it moves to an account EdCo own, on Pro. See *Hosting handover* below. The domain also needs DNS access. |
 | 1.29 | **Analytics** | None installed. Brief implies measuring relationships over traffic — worth a conversation about what's actually being measured. |
-| 1.30 | **CMS** | Deliberately deferred. See the content-model table in the README when it's decided. |
+| 1.30 | **CMS** | Shortlist: Prismic, Sveltia, Payload, Umbraco. The comparison shared with Jason is at https://claude.ai/artifact/5U6LFsZvpyzRCkrasVMW43. It's waiting on three answers: are editors happy with GitHub accounts, must the data sit in EdCo's hosting, and who maintains it. Also waiting on Jason's answers to the content framework questions. |
+
+### Hosting handover
+
+The proof of concept stays in Phil's Vercel account for now. Before launch, move it to an account EdCo own. Nothing in the code depends on the account or the `.vercel.app` address, so this is a short job.
+
+1. **Create the account** with a shared EdCo mailbox (e.g. `web@educationcompany.co.uk`) rather than a personal address, so it survives staff changes. Turn on two-factor authentication and keep the recovery codes where EdCo can reach them.
+2. **Choose the plan.**
+   - **Pro is required at launch:** Hobby is for non-commercial use only. A new account gets a free Pro trial.
+   - **Pro is also needed** to add team members, or to deploy a private repo owned by a GitHub organisation (if the repo moves into one).
+3. **Import the repo** (`philjclarke/edco-website`) in the new account, and give Vercel's GitHub app access to it.
+4. **Copy the environment variables** from the current project (Settings → Environment Variables):
+   - `ADMIN_PASSWORD`
+   - `AUTH_SECRET`
+   - `GITHUB_TOKEN`
+   - `GITHUB_REPO`
+   - `GITHUB_BRANCH`
+   - `DECK_CSV_URL`
+
+   The `/admin` publish console needs all six.
+5. **Check the new deployment:** the site, `/v1/` and `/admin` (log in and run a publish).
+6. **Delete the old project.** Until then, both rebuild on every change. The `edco-website.vercel.app` name only frees up once the old project is deleted, so anyone with the old link (Jason, `/admin` users) needs the new one.
+7. **Add the custom domain** and update DNS.
 
 ---
 
