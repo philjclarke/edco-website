@@ -79,6 +79,14 @@ after the next build.
   to the existing section components). The template is
   [PrismicPage.astro](src/components/PrismicPage.astro).
 - **Images** are served from Prismic's image CDN at the sizes the page asks for.
+- **Previews.** Prismic's Preview button goes to `/api/preview`. That stores
+  the preview session in Prismic's cookie and redirects to `/preview/<page>/`,
+  a server-rendered copy of the page with the draft content. The preview page is
+  `noindex`, carries Prismic's toolbar (which reloads on save) and an "Exit
+  preview" link. The preview URLs registered in Prismic are the live site and
+  `localhost:4321`.
+- **Publishing** fires a Prismic webhook to a Vercel deploy hook, which rebuilds
+  `main`. The hook URL is stored only in Prismic.
 - **Hub and menu order** follows the menu in `src/data/site.ts`. A new page
   goes at the end until it's added there.
 - [prismic/migrate.ts](prismic/migrate.ts) imported the original content

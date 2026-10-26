@@ -1,0 +1,42 @@
+---
+/*
+  The draft version of a product, capability or outcome page, rendered on
+  request with the content from the editor's Prismic preview session.
+
+  Reached through /api/preview, never linked, and kept out of search
+  engines. With no preview session it sends you to the published page.
+*/
+import PrismicPage from '@/components/PrismicPage.astro';
+import { client, prismic, repositoryName } from '@/lib/prismic';
+import { toPage, type SectionKind } from '@/data/sectionPages';
+
+export const prerender = false;
+
+const path = `/${Astro.params.path ?? ''}`.replace(/\/?$/, '/');
+const ref = Astro.cookies.get(prismic.cookie.preview)?.value;
+if (!ref) return Astro.redirect(path);
+
+let kind: SectionKind;
+let uid: string;
+let m: RegExpExecArray | null;
+if ((m = /^\/products\/([^/]+)\/$/.exec(path))) [kind, uid] = ['product', m[1]];
+else if ((m = /^\/capabilities\/([^/]+)\/$/.exec(path))) [kind, uid] = ['capability', m[1]];
+else if ((m = /^\/([^/]+)\/$/.exec(path))) [kind, uid] = ['outcome', m[1]];
+else return Astro.redirect(path);
+
+const doc = await client.getByUID(kind, uid, { ref }).catch(() => null);
+if (!doc) {
+  return new Response('This page isn’t in the current preview. Open the preview from Prismic again.', { status: 404 });
+}
+const page = toPage(kind, doc);
+const section =
+  kind === 'product'
+    ? { label: 'Products', href: '/products/' }
+    : kind === 'capability'
+      ? { label: 'Capabilities', href: '/capabilities/' }
+      : { label: 'What are you trying to achieve?', href: '/what-are-you-trying-to-achieve/' };
+
+Astro.response.headers.set('Cache-Control', 'private, no-store');
+---
+
+<PrismicPage page={page} section={section} preview={{ repositoryName, exitHref: `/api/exit-preview?to=${encodeURIComponent(path)}` }} />

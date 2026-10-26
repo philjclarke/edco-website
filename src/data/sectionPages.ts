@@ -41,7 +41,7 @@ const PATH = { product: (u: string) => `/products/${u}/`, capability: (u: string
 const menuOrder = new Map<string, number>();
 primaryNav.forEach((g) => g.children?.forEach((c, i) => menuOrder.set(c.href, i)));
 
-function toPage(kind: SectionKind, doc: PrismicDocument): SectionPage {
+export function toPage(kind: SectionKind, doc: PrismicDocument): SectionPage {
   const d = doc.data as Record<string, any>;
   const banner = imageOf(d.banner);
   const site = kind === 'product' && (textOf(d.site_label) || hrefOf(d.site_link))
