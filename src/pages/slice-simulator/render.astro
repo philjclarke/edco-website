@@ -1,0 +1,40 @@
+---
+/*
+  Renders slices sent by the slice simulator page (./index.astro) with the
+  site's own section components, and returns just that HTML.
+
+  Only answers same-site requests made by that page's script, which sends a
+  JSON body and a custom header. A plain form posted from another site can
+  do neither, so it can't use this to put its own content on this domain.
+*/
+import Slices from '@/components/Slices.astro';
+import { sameOrigin } from '@/lib/auth';
+
+export const prerender = false;
+export const partial = true;
+
+const req = Astro.request;
+if (
+  req.method !== 'POST' ||
+  req.headers.get('x-slice-simulator') !== '1' ||
+  !req.headers.get('content-type')?.startsWith('application/json') ||
+  !sameOrigin(req)
+) {
+  return new Response('Not found', { status: 404 });
+}
+
+const body = await req.text();
+if (body.length > 500_000) return new Response('Too large', { status: 413 });
+let slices: any[];
+try {
+  slices = JSON.parse(body);
+  if (!Array.isArray(slices) || slices.length > 100) throw new Error('not a slice zone');
+} catch {
+  return new Response('Bad request', { status: 400 });
+}
+
+Astro.response.headers.set('Cache-Control', 'no-store');
+Astro.response.headers.set('X-Robots-Tag', 'noindex');
+---
+
+<div data-slice-zone><Slices slices={slices} separate /></div>

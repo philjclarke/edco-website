@@ -16,6 +16,7 @@
     "@iconify-json/fa6-regular": "^1.2.4",
     "@iconify-json/fa6-solid": "^1.2.4",
     "@prismicio/client": "^7.22.3",
+    "@prismicio/simulator": "^0.2.4",
     "@tailwindcss/vite": "^4.1.0",
     "astro": "^5.13.0",
     "astro-icon": "^1.2.0",

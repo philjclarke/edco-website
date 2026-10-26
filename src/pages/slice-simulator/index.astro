@@ -1,0 +1,82 @@
+---
+/*
+  Prismic's slice simulator: the Page Builder loads this page in a frame and
+  sends it the sections being edited, so its live thumbnails show them in the
+  site's real design.
+
+  The simulator delivers sections to the browser, but the site's sections are
+  rendered on the server, so each update is posted to ./render and the
+  returned HTML is swapped in. Importing Slices here puts every section's
+  styles on this page.
+
+  Not linked anywhere and kept out of search engines. Opened directly (not in
+  Prismic) it just says so.
+*/
+import '@/styles/global.css';
+import Slices from '@/components/Slices.astro';
+import { simulatorClass, simulatorRootClass } from '@prismicio/simulator/kit';
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Slice simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap"
+    />
+  </head>
+  <body>
+    <div class={simulatorClass} style="position: fixed; inset: 0; overflow: auto; background: #fff">
+      <article id="simulator-message" hidden class="mx-auto max-w-xl p-10 font-sans text-ink"></article>
+      <div id="simulator-root" class={simulatorRootClass}></div>
+    </div>
+    <div hidden><Slices slices={[]} /></div>
+
+    <script>
+      import {
+        SimulatorManager,
+        StateEventType,
+        onClickHandler,
+        disableEventHandler,
+      } from '@prismicio/simulator/kit';
+
+      const root = document.getElementById('simulator-root')!;
+      const message = document.getElementById('simulator-message')!;
+
+      // Links and forms inside the preview do nothing.
+      root.addEventListener('click', onClickHandler);
+      root.addEventListener('submit', disableEventHandler);
+      root.addEventListener('keypress', disableEventHandler);
+
+      // Edits arrive quickly while typing; only the newest render is shown.
+      let latest = 0;
+      async function render(slices: unknown[]) {
+        const id = ++latest;
+        const res = await fetch(new URL('render', location.href.replace(/\/?$/, '/')), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Slice-Simulator': '1' },
+          body: JSON.stringify(slices),
+        });
+        const html = res.ok ? await res.text() : `<p style="padding:2rem">Couldn’t render this section (${res.status}).</p>`;
+        if (id === latest) root.innerHTML = html;
+      }
+
+      const manager = new SimulatorManager();
+      manager.state.on(StateEventType.Slices, (slices) => {
+        if (slices.length) render(slices);
+        else root.innerHTML = '';
+      });
+      manager.state.on(StateEventType.Message, (text) => {
+        message.innerHTML = text;
+        message.hidden = !text;
+      });
+      manager.init();
+    </script>
+  </body>
+</html>

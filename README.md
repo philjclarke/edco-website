@@ -85,6 +85,12 @@ after the next build.
   `noindex`, carries Prismic's toolbar (which reloads on save) and an "Exit
   preview" link. The preview URLs registered in Prismic are the live site and
   `localhost:4321`.
+- **Live previews in the Page Builder** use the slice simulator at
+  `/slice-simulator/`. Prismic sends the sections being edited to that page in
+  the browser. It posts them to `/slice-simulator/render`, which renders them
+  with the site's own components, and swaps the HTML in. The render route only
+  answers that page's own requests. The simulator only accepts messages from
+  `*.prismic.io`.
 - **Publishing** fires a Prismic webhook to a Vercel deploy hook, which rebuilds
   `main`. The hook URL is stored only in Prismic.
 - **Hub and menu order** follows the menu in `src/data/site.ts`. A new page

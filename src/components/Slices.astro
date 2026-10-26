@@ -18,8 +18,13 @@ import type { Block } from '@/data/blocks';
 
 interface Props {
   slices: Slice[];
+  /**
+   * One wrapper per slice, never merged — for Prismic's slice simulator,
+   * which maps each child of the slice zone to one slice.
+   */
+  separate?: boolean;
 }
-const { slices } = Astro.props;
+const { slices, separate = false } = Astro.props;
 
 type Part =
   | { kind: 'blocks'; blocks: Block[] }
@@ -45,27 +50,29 @@ for (const s of slices) {
     const b = blockOf(s);
     if (!b) continue;
     const last = parts[parts.length - 1];
-    if (last?.kind === 'blocks') last.blocks.push(b);
+    if (!separate && last?.kind === 'blocks') last.blocks.push(b);
     else parts.push({ kind: 'blocks', blocks: [b] });
   }
 }
 ---
 
 {
-  parts.map((part) =>
-    part.kind === 'quote' ? (
-      <ShoutOut n={part.n} text={part.text} sub={part.sub} />
-    ) : part.kind === 'route' ? (
-      <Section tone="light" size="md">
-        <p class="eyebrow grad-text mb-4">How we do it</p>
-        {part.heading && <h2 class="text-title">“{part.heading}”</h2>}
-        {part.intro && <p class="mt-4 max-w-2xl text-ink-muted">{part.intro}</p>}
-        <div class="mt-8">
-          <RouteSteps steps={part.steps} hrefs={part.hrefs} />
-        </div>
-      </Section>
-    ) : (
-      <Blocks blocks={part.blocks} tone="paper" />
-    )
-  )
+  parts.map((part) => {
+    const content =
+      part.kind === 'quote' ? (
+        <ShoutOut n={part.n} text={part.text} sub={part.sub} />
+      ) : part.kind === 'route' ? (
+        <Section tone="light" size="md">
+          <p class="eyebrow grad-text mb-4">How we do it</p>
+          {part.heading && <h2 class="text-title">“{part.heading}”</h2>}
+          {part.intro && <p class="mt-4 max-w-2xl text-ink-muted">{part.intro}</p>}
+          <div class="mt-8">
+            <RouteSteps steps={part.steps} hrefs={part.hrefs} />
+          </div>
+        </Section>
+      ) : (
+        <Blocks blocks={part.blocks} tone="paper" />
+      );
+    return separate ? <div>{content}</div> : content;
+  })
 }
