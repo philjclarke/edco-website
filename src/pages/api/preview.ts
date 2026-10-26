@@ -4,8 +4,8 @@
   cookie and sends the editor to the draft version of that page under
   /preview/.
 
-  Draft previews exist for product, capability and outcome pages. For other
-  page types this explains that and links to the published page instead.
+  Every page type can be previewed. Site settings, which appear across the
+  site, open on the homepage.
 */
 import type { APIRoute } from 'astro';
 import { client, prismic, repositoryName } from '@/lib/prismic';
@@ -17,7 +17,7 @@ const SINGLETON_PATHS: Record<string, string> = {
   capabilities_hub: '/capabilities/', free_analysis_page: '/free-customer-analysis/',
   agencies_page: '/agencies-and-partners/', about_page: '/about/', contact_page: '/contact/',
   customer_page: '/customer/', for_educators_page: '/for-educators/', what_we_think_page: '/what-we-think/',
-  case_studies_hub: '/case-studies/', search_page: '/search/', not_found_page: '/404/', site_settings: '/',
+  case_studies_hub: '/case-studies/', search_page: '/search/', not_found_page: '/404/', site_settings: '/', // shown across the site; the homepage carries most of it
 };
 
 function livePath(doc: prismic.PrismicDocument): string {
@@ -25,13 +25,6 @@ function livePath(doc: prismic.PrismicDocument): string {
   if (doc.type === 'case_study') return `/case-studies/${doc.uid}/`;
   return SINGLETON_PATHS[doc.type] ?? '/';
 }
-
-const page = (title: string, body: string) =>
-  new Response(
-    `<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>${title}</title></head>` +
-      `<body style="font:16px/1.6 system-ui,sans-serif;max-width:36rem;margin:4rem auto;padding:0 1rem;color:#0f1421">${body}</body></html>`,
-    { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' } }
-  );
 
 export const GET: APIRoute = async ({ url, cookies, redirect }) => {
   const token = url.searchParams.get('token');
@@ -48,17 +41,7 @@ export const GET: APIRoute = async ({ url, cookies, redirect }) => {
     return new Response('This preview has expired or the page no longer exists. Open the preview from Prismic again.', { status: 410 });
   }
 
-  if (!['product', 'capability', 'outcome'].includes(doc.type)) {
-    const live = livePath(doc);
-    return page(
-      'Preview not available yet',
-      `<h1 style="font-size:1.5rem">Draft previews aren’t set up for this kind of page yet</h1>` +
-        `<p>You can preview drafts of product, capability and outcome pages. For this page, publish your change to see it on the site, or ask the web team to add previews for it.</p>` +
-        `<p><a href="${live}">See the published page</a></p>`
-    );
-  }
-
-  const path = prismic.asLink(doc) ?? '/';
+  const path = ['product', 'capability', 'outcome'].includes(doc.type) ? (prismic.asLink(doc) ?? '/') : livePath(doc);
   cookies.set(prismic.cookie.preview, token, { path: '/', sameSite: 'lax', secure: url.protocol === 'https:' });
   return redirect(`/preview${path}`, 302);
 };

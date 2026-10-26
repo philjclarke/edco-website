@@ -1,5 +1,4 @@
 ---
-import { pages as copy } from '@/data/pageCopy';
 /* Brief §68. The whole contact journey is one question: what are you trying to
    achieve? Nothing compulsory beyond name, work email and organisation — no
    phone number, budget, job title, company size, timeframe, or "how did you
@@ -10,6 +9,9 @@ import Section from '@/components/Section.astro';
 import Placeholder from '@/components/Placeholder.astro';
 import { outcomes } from '@/data/outcomes';
 import { contact } from '@/data/site';
+import { siteCopy } from '@/lib/content';
+
+const { pages: copy } = await siteCopy(Astro.locals);
 
 const field =
   'w-full rounded-xl border border-line bg-paper px-4 py-3 text-[0.9375rem] transition placeholder:text-ink-muted/60 focus:border-orange';

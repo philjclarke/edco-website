@@ -1,5 +1,4 @@
 ---
-import { pages as copy } from '@/data/pageCopy';
 /* Brief §61–§63. Lead with beliefs, not a corporate timeline.
    No careers section — recruitment is handled elsewhere. */
 import Layout from '@/layouts/Layout.astro';
@@ -11,8 +10,11 @@ import NextSteps from '@/components/NextSteps.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import Placeholder from '@/components/Placeholder.astro';
 import Grid from '@/components/Grid.astro';
-import { beliefs } from '@/data/model';
-import { proofStats } from '@/data/proof';
+import { siteCopy, siteSettings } from '@/lib/content';
+
+const { pages: copy } = await siteCopy(Astro.locals);
+const { beliefs, proofStats } = await siteSettings(Astro.locals);
+
 ---
 
 <Layout

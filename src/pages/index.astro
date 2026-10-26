@@ -13,11 +13,14 @@ import LogoWall from '@/components/LogoWall.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import Placeholder from '@/components/Placeholder.astro';
 import { outcomes } from '@/data/outcomes';
-import { proofStats } from '@/data/proof';
 import { site } from '@/data/site';
-import { home } from '@/data/pageCopy';
 import BannerImage from '@/components/BannerImage.astro';
 import ribbonWave from '@/assets/brand/ribbon-4.png';
+import { siteCopy, siteSettings } from '@/lib/content';
+
+const { home } = await siteCopy(Astro.locals);
+const { proofStats } = await siteSettings(Astro.locals);
+
 ---
 
 <Layout

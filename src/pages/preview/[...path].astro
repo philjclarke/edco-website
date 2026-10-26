@@ -1,14 +1,37 @@
 ---
 /*
-  The draft version of a product, capability or outcome page, rendered on
-  request with the content from the editor's Prismic preview session.
+  The draft version of any page, rendered on request with content from the
+  editor's Prismic preview session.
 
-  Reached through /api/preview, never linked, and kept out of search
-  engines. With no preview session it sends you to the published page.
+  It sets Astro.locals.prismicPreview, which tells the rest of the site to
+  read content at the preview's ref (src/lib/content.ts) and makes the layout
+  add Prismic's toolbar, a "Preview" bar and noindex. Then it renders the same
+  template the published page uses.
+
+  Reached through /api/preview, never linked. With no preview session it
+  sends you to the published page.
 */
+import { getCollection } from 'astro:content';
 import PrismicPage from '@/components/PrismicPage.astro';
-import { client, prismic, repositoryName } from '@/lib/prismic';
+import ArticleView from '@/components/ArticleView.astro';
+import CaseStudyView from '@/components/CaseStudyView.astro';
+import { client, prismic } from '@/lib/prismic';
 import { toPage, type SectionKind } from '@/data/sectionPages';
+import { articleEntry, caseStudyEntry } from '@/lib/editorial';
+import HomePage from '../index.astro';
+import OutcomesHub from '../what-are-you-trying-to-achieve.astro';
+import ProductsHub from '../products/index.astro';
+import CapabilitiesHub from '../capabilities/index.astro';
+import WhatWeThink from '../what-we-think/index.astro';
+import CaseStudiesHub from '../case-studies/index.astro';
+import About from '../about.astro';
+import Agencies from '../agencies-and-partners.astro';
+import Contact from '../contact.astro';
+import Customer from '../customer.astro';
+import ForEducators from '../for-educators.astro';
+import FreeAnalysis from '../free-customer-analysis.astro';
+import Search from '../search.astro';
+import NotFound from '../404.astro';
 
 export const prerender = false;
 
@@ -16,27 +39,72 @@ const path = `/${Astro.params.path ?? ''}`.replace(/\/?$/, '/');
 const ref = Astro.cookies.get(prismic.cookie.preview)?.value;
 if (!ref) return Astro.redirect(path);
 
-let kind: SectionKind;
-let uid: string;
-let m: RegExpExecArray | null;
-if ((m = /^\/products\/([^/]+)\/$/.exec(path))) [kind, uid] = ['product', m[1]];
-else if ((m = /^\/capabilities\/([^/]+)\/$/.exec(path))) [kind, uid] = ['capability', m[1]];
-else if ((m = /^\/([^/]+)\/$/.exec(path))) [kind, uid] = ['outcome', m[1]];
-else return Astro.redirect(path);
-
-const doc = await client.getByUID(kind, uid, { ref }).catch(() => null);
-if (!doc) {
-  return new Response('This page isn’t in the current preview. Open the preview from Prismic again.', { status: 404 });
-}
-const page = toPage(kind, doc);
-const section =
-  kind === 'product'
-    ? { label: 'Products', href: '/products/' }
-    : kind === 'capability'
-      ? { label: 'Capabilities', href: '/capabilities/' }
-      : { label: 'What are you trying to achieve?', href: '/what-are-you-trying-to-achieve/' };
-
+Astro.locals.prismicPreview = { ref, path };
 Astro.response.headers.set('Cache-Control', 'private, no-store');
+
+const SINGLE: Record<string, any> = {
+  '/': HomePage,
+  '/what-are-you-trying-to-achieve/': OutcomesHub,
+  '/products/': ProductsHub,
+  '/capabilities/': CapabilitiesHub,
+  '/what-we-think/': WhatWeThink,
+  '/case-studies/': CaseStudiesHub,
+  '/about/': About,
+  '/agencies-and-partners/': Agencies,
+  '/contact/': Contact,
+  '/customer/': Customer,
+  '/for-educators/': ForEducators,
+  '/free-customer-analysis/': FreeAnalysis,
+  '/search/': Search,
+  '/404/': NotFound,
+};
+
+const notInPreview = () =>
+  new Response('This page isn’t in the current preview. Open the preview from Prismic again.', { status: 404 });
+
+let view:
+  | { kind: 'single'; Component: any }
+  | { kind: 'section'; page: ReturnType<typeof toPage>; section: { label: string; href: string } }
+  | { kind: 'article'; entry: ReturnType<typeof articleEntry>; related: any[] }
+  | { kind: 'case'; entry: ReturnType<typeof caseStudyEntry> };
+
+let m: RegExpExecArray | null;
+if (SINGLE[path]) {
+  view = { kind: 'single', Component: SINGLE[path] };
+} else if ((m = /^\/what-we-think\/[^/]+\/([^/]+)\/$/.exec(path))) {
+  const doc = await client.getByUID('article', m[1], { ref }).catch(() => null);
+  if (!doc) return notInPreview();
+  const entry = articleEntry(doc);
+  const related = (await getCollection('articles'))
+    .filter((a) => a.id !== entry.id)
+    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+    .slice(0, 3);
+  view = { kind: 'article', entry, related };
+} else if ((m = /^\/case-studies\/([^/]+)\/$/.exec(path))) {
+  const doc = await client.getByUID('case_study', m[1], { ref }).catch(() => null);
+  if (!doc) return notInPreview();
+  view = { kind: 'case', entry: caseStudyEntry(doc) };
+} else {
+  let kind: SectionKind;
+  let uid: string;
+  if ((m = /^\/products\/([^/]+)\/$/.exec(path))) [kind, uid] = ['product', m[1]];
+  else if ((m = /^\/capabilities\/([^/]+)\/$/.exec(path))) [kind, uid] = ['capability', m[1]];
+  else if ((m = /^\/([^/]+)\/$/.exec(path))) [kind, uid] = ['outcome', m[1]];
+  else return Astro.redirect(path);
+  const doc = await client.getByUID(kind, uid, { ref }).catch(() => null);
+  if (!doc) return notInPreview();
+  const section =
+    kind === 'product'
+      ? { label: 'Products', href: '/products/' }
+      : kind === 'capability'
+        ? { label: 'Capabilities', href: '/capabilities/' }
+        : { label: 'What are you trying to achieve?', href: '/what-are-you-trying-to-achieve/' };
+  view = { kind: 'section', page: toPage(kind, doc), section };
+}
+const Single = view.kind === 'single' ? view.Component : null;
 ---
 
-<PrismicPage page={page} section={section} preview={{ repositoryName, exitHref: `/api/exit-preview?to=${encodeURIComponent(path)}` }} />
+{Single && <Single />}
+{view.kind === 'section' && <PrismicPage page={view.page} section={view.section} />}
+{view.kind === 'article' && <ArticleView article={view.entry} html={view.entry.html} related={view.related} />}
+{view.kind === 'case' && <CaseStudyView study={view.entry} html={view.entry.html} />}

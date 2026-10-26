@@ -5,6 +5,7 @@
   this shows an invented quote with an obviously fake attribution; otherwise
   a placeholder naming the theme.
 */
+import { pagePath } from '@/lib/content';
 import Placeholder from './Placeholder.astro';
 import { MOCK_PROOF, mockTestimonial } from '@/data/mock';
 
@@ -14,7 +15,7 @@ interface Props {
 }
 const { prompt, tone = 'light' } = Astro.props;
 const dark = tone === 'dark';
-const mock = MOCK_PROOF ? mockTestimonial(Astro.url.pathname, prompt) : null;
+const mock = MOCK_PROOF ? mockTestimonial(pagePath(Astro.locals, Astro.url), prompt) : null;
 ---
 
 <figure

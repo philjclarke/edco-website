@@ -1,10 +1,13 @@
 ---
-import { pages as copy } from '@/data/pageCopy';
 import Layout from '@/layouts/Layout.astro';
 import Section from '@/components/Section.astro';
 import Button from '@/components/Button.astro';
 import { outcomes } from '@/data/outcomes';
 import Card from '@/components/Card.astro';
+import { siteCopy } from '@/lib/content';
+
+const { pages: copy } = await siteCopy(Astro.locals);
+
 ---
 
 <Layout title={copy.notFound.metaTitle} headerTone="light">

@@ -2,6 +2,8 @@
 import '@/styles/global.css';
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
+import { repositoryName } from '@/lib/prismic';
+import { pagePath } from '@/lib/content';
 
 interface Props {
   title: string;
@@ -12,7 +14,10 @@ interface Props {
 
 const { title, description = '', headerTone = 'dark' } = Astro.props;
 const fullTitle = title === 'home' ? 'The Education Company' : `${title} | EdCo`;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+const canonical = new URL(pagePath(Astro.locals, Astro.url), Astro.site);
+// A Prismic draft preview: kept out of search engines, with Prismic's toolbar
+// (which reloads when a draft is saved) and a bar saying it isn't the live site.
+const preview = Astro.locals.prismicPreview;
 ---
 
 <!doctype html>
@@ -28,6 +33,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     {description && <meta property="og:description" content={description} />}
     <meta property="og:type" content="website" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    {preview && <meta name="robots" content="noindex, nofollow" />}
+    {preview && <script is:inline async defer src={`https://static.cdn.prismic.io/prismic.js?new=true&repo=${repositoryName}`} />}
 
     <!-- PROVISIONAL webfonts. Swap for the licensed EdCo face and self-host. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -46,6 +53,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-navy-900 focus:px-4 focus:py-2 focus:text-ondark"
       >Skip to content</a
     >
+    {
+      preview && (
+        <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 bg-orange px-4 py-2 text-center text-[13px] font-semibold text-navy-900">
+          <span>Preview: draft content from Prismic, not the live site</span>
+          <a href={`/api/exit-preview?to=${encodeURIComponent(preview.path)}`} class="underline">Exit preview</a>
+        </div>
+      )
+    }
     <Header tone={headerTone} />
     <main id="main">
       <slot />

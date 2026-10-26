@@ -1,6 +1,8 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { streamBySlug } from '@/data/streams';
+import { siteSettings } from '@/lib/content';
+
+const { streamBySlug } = await siteSettings(Astro.locals);
 
 interface Props {
   article: CollectionEntry<'articles'>;

@@ -1,11 +1,13 @@
 ---
-import { pages as copy } from '@/data/pageCopy';
 /* Brief §69. A discreet utility area, deliberately not part of the sales
    narrative. All destinations need supplying and verifying before launch. */
 import Layout from '@/layouts/Layout.astro';
 import Section from '@/components/Section.astro';
 import Placeholder from '@/components/Placeholder.astro';
 import { contact } from '@/data/site';
+import { siteCopy } from '@/lib/content';
+
+const { pages: copy } = await siteCopy(Astro.locals);
 
 const destinations = [
   { name: 'Education IQ', note: 'Intelligence platform login' },

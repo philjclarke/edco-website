@@ -1,6 +1,7 @@
 import { defineCollection, z } from 'astro:content';
 import type { Loader } from 'astro/loaders';
-import { client, hrefOf, richHTML, textOf } from './lib/prismic';
+import { client, richHTML } from './lib/prismic';
+import { articleFields, caseStudyFields } from './lib/editorial';
 
 /*
   Editorial content, from Prismic (types "article" and "case_study"). A
@@ -20,21 +21,10 @@ const fromPrismic = (type: string, toData: (d: Record<string, any>) => Record<st
   },
 });
 
-const items = (g: unknown, key: string) =>
-  (Array.isArray(g) ? g : []).map((x) => textOf(x?.[key])).filter(Boolean);
-
 const streams = ['what-were-hearing', 'opinion', 'research-and-insight'] as const;
 
 const articles = defineCollection({
-  loader: fromPrismic('article', (d) => ({
-    title: textOf(d.title),
-    stream: d.stream,
-    summary: textOf(d.summary),
-    date: d.date,
-    author: textOf(d.author) || undefined,
-    themes: items(d.themes, 'theme'),
-    status: d.status ?? 'live',
-  })),
+  loader: fromPrismic('article', articleFields),
   schema: z.object({
     title: z.string(),
     /* Brief §46: three clearly differentiated editorial voices. */
@@ -53,21 +43,7 @@ const articles = defineCollection({
 });
 
 const caseStudies = defineCollection({
-  loader: fromPrismic('case_study', (d) => ({
-    title: textOf(d.title),
-    client: textOf(d.client),
-    summary: textOf(d.summary),
-    // The outcome page it belongs under, by its address (e.g. /grow-and-retain-customers/ -> grow-and-retain-customers).
-    outcome: (hrefOf(d.outcome) ?? '').replace(/\//g, ''),
-    objective: textOf(d.objective),
-    discovered: textOf(d.discovered),
-    recommended: textOf(d.recommended),
-    did: items(d.did, 'text'),
-    changed: textOf(d.changed),
-    evidence: items(d.evidence, 'text'),
-    testimonial: textOf(d.testimonial),
-    status: d.status ?? 'placeholder',
-  })),
+  loader: fromPrismic('case_study', caseStudyFields),
   /* Brief §56: organised around what the customer was trying to achieve, never
      around EdCo's internal departments. Every field is required so an
      incomplete case study cannot quietly ship. */

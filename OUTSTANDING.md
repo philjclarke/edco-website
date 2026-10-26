@@ -79,7 +79,7 @@ The Big Plastic Count.
 | 1.27 | **Where the subscriber list lives** | Brief §52 wants name + email now, interest personalisation later. Needs a marketing platform. |
 | 1.28 | **Hosting** | The proof of concept runs on Vercel, in Phil's own account, on the Hobby plan. Before launch it moves to an account EdCo own, on Pro. See *Hosting handover* below. The domain also needs DNS access. |
 | 1.29 | **Analytics** | None installed. Brief implies measuring relationships over traffic — worth a conversation about what's actually being measured. |
-| 1.30 | **CMS** | Decided: **Prismic** (repository `66bbee42`). All content is in it; see README *Prismic* and the editor guide. Open: draft previews for page types other than products, capabilities and outcomes. |
+| 1.30 | **CMS** | Decided: **Prismic** (repository `66bbee42`). All content is in it; see README *Prismic* and the editor guide. Draft previews work for every page type. |
 
 ### Hosting handover
 

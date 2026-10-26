@@ -7,8 +7,10 @@
   the brief's candidates, each with a placeholder for its logo.
 */
 import Placeholder from './Placeholder.astro';
-import { logoCandidates } from '@/data/proof';
 import { MOCK_PROOF, mockLogos } from '@/data/mock';
+import { siteSettings } from '@/lib/content';
+
+const { logoCandidates } = await siteSettings(Astro.locals);
 
 interface Props {
   tone?: 'dark' | 'light';

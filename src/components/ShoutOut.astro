@@ -4,6 +4,7 @@
   mock quote while MOCK_PROOF is on (see src/data/mock.ts), and a placeholder
   otherwise — either way the gap is visible rather than silently closed.
 */
+import { pagePath } from '@/lib/content';
 import Placeholder from './Placeholder.astro';
 import { MOCK_PROOF, mockShout } from '@/data/mock';
 
@@ -15,7 +16,7 @@ interface Props {
 }
 const { text, sub, n } = Astro.props;
 const filled = !!text?.trim();
-const mock = !filled && MOCK_PROOF ? mockShout(Astro.url.pathname, n) : null;
+const mock = !filled && MOCK_PROOF ? mockShout(pagePath(Astro.locals, Astro.url), n) : null;
 ---
 
 <section

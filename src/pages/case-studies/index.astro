@@ -1,5 +1,4 @@
 ---
-import { pages as copy } from '@/data/pageCopy';
 /* Brief §56–§57. Organised around what the customer was trying to achieve,
    never around EdCo's internal departments. */
 import { getCollection } from 'astro:content';
@@ -9,8 +8,11 @@ import Section from '@/components/Section.astro';
 import Card from '@/components/Card.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import Placeholder from '@/components/Placeholder.astro';
-import { caseStudyThemes } from '@/data/proof';
 import { outcomes } from '@/data/outcomes';
+import { siteCopy, siteSettings } from '@/lib/content';
+
+const { pages: copy } = await siteCopy(Astro.locals);
+const { caseStudyThemes } = await siteSettings(Astro.locals);
 
 const studies = await getCollection('caseStudies');
 const outcomeLabel = (slug: string) =>

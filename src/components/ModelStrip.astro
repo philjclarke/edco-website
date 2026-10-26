@@ -6,7 +6,9 @@
 */
 import { Icon } from 'astro-icon/components';
 import Grid from './Grid.astro';
-import { edcoModel } from '@/data/model';
+import { siteSettings } from '@/lib/content';
+
+const { edcoModel } = await siteSettings(Astro.locals);
 
 interface Props {
   tone?: 'dark' | 'light';

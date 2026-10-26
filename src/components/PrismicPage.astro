@@ -21,10 +21,8 @@ interface Props {
   page: SectionPage;
   /** The section this page belongs to, for the breadcrumb. */
   section: { label: string; href: string };
-  /** Set when rendering draft content for a Prismic preview. */
-  preview?: { repositoryName: string; exitHref: string };
 }
-const { page, section, preview } = Astro.props;
+const { page, section } = Astro.props;
 const d = page.doc.data as Record<string, any>;
 
 // Related links take their label and description from the page they point
@@ -46,23 +44,6 @@ const related: Link[] = (d.related ?? [])
 ---
 
 <Layout title={page.metaTitle ?? page.navLabel} description={page.metaDescription ?? page.summary}>
-  {
-    preview && (
-      <Fragment slot="head">
-        <meta name="robots" content="noindex, nofollow" />
-        {/* Prismic's toolbar: shows the preview, and reloads when a draft is saved. */}
-        <script is:inline async defer src={`https://static.cdn.prismic.io/prismic.js?new=true&repo=${preview.repositoryName}`} />
-      </Fragment>
-    )
-  }
-  {
-    preview && (
-      <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 bg-orange px-4 py-2 text-center text-[13px] font-semibold text-navy-900">
-        <span>Preview: draft content from Prismic, not the live site</span>
-        <a href={preview.exitHref} class="underline">Exit preview</a>
-      </div>
-    )
-  }
   <PageHero
     parent={section}
     eyebrow={page.navLabel}

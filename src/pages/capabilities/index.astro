@@ -1,5 +1,4 @@
 ---
-import { pages as copy } from '@/data/pageCopy';
 /* Brief §11: capabilities are a secondary route. This page exists so the
    detail is findable, not so it competes with the outcome routes. */
 import Layout from '@/layouts/Layout.astro';
@@ -9,6 +8,10 @@ import Card from '@/components/Card.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import Placeholder from '@/components/Placeholder.astro';
 import { capabilities } from '@/data/capabilities';
+import { siteCopy } from '@/lib/content';
+
+const { pages: copy } = await siteCopy(Astro.locals);
+
 ---
 
 <Layout

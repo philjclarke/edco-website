@@ -69,14 +69,21 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
 - **Icons** typed into Prismic are checked against the installed sets
   ([src/lib/icons.ts](src/lib/icons.ts)). An unknown name is dropped with a build
   warning rather than failing the build.
-- **Previews.** Prismic's Preview button goes to `/api/preview`. That stores
-  the preview session in Prismic's cookie and redirects to `/preview/<page>/`,
-  a server-rendered copy of the page with the draft content. The preview page is
-  `noindex`, carries Prismic's toolbar (which reloads on save) and an "Exit
-  preview" link. Drafts can be previewed for product, capability and outcome
-  pages. Other types show a page explaining that, with a link to the published
-  page. The preview URLs registered in Prismic are the live site and
-  `localhost:4321`.
+- **Previews** work for every page type. Prismic's Preview button goes to
+  `/api/preview`, which stores the preview session in Prismic's cookie and
+  redirects to `/preview/<published address>`. That route sets
+  `Astro.locals.prismicPreview` and renders the same template the published page
+  uses:
+  - the homepage, hub and single pages are rendered from their page files;
+  - articles and case studies through `ArticleView` / `CaseStudyView`;
+  - section pages through `PrismicPage`.
+
+  Pages and components read content through [src/lib/content.ts](src/lib/content.ts)
+  (`siteCopy`, `siteSettings`). These return published content in the static
+  build, and content at the preview's ref while previewing, fetched once per
+  request. The layout adds `noindex`, Prismic's toolbar (which reloads on save)
+  and an "Exit preview" bar. Site settings open on the homepage. The preview
+  URLs registered in Prismic are the live site and `localhost:4321`.
 - **Live previews in the Page Builder** use the slice simulator at
   `/slice-simulator/`. Prismic sends the sections being edited to that page in
   the browser. It posts them to `/slice-simulator/render`, which renders them

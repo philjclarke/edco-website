@@ -1,5 +1,4 @@
 ---
-import { pages as copy } from '@/data/pageCopy';
 /* Brief §54. A clearly defined route for educators who arrive — without
    turning the corporate site into an educator site. */
 import Layout from '@/layouts/Layout.astro';
@@ -8,6 +7,10 @@ import Section from '@/components/Section.astro';
 import SectionHead from '@/components/SectionHead.astro';
 import Card from '@/components/Card.astro';
 import Placeholder from '@/components/Placeholder.astro';
+import { siteCopy } from '@/lib/content';
+
+const { pages: copy } = await siteCopy(Astro.locals);
+
 ---
 
 <Layout

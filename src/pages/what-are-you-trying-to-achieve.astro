@@ -1,5 +1,4 @@
 ---
-import { pages as copy } from '@/data/pageCopy';
 /* Brief §11, §13. The overview of the six outcome routes. */
 import Layout from '@/layouts/Layout.astro';
 import PageHero from '@/components/PageHero.astro';
@@ -9,6 +8,10 @@ import CtaBand from '@/components/CtaBand.astro';
 import RouteSteps from '@/components/RouteSteps.astro';
 import { outcomes } from '@/data/outcomes';
 import { routes } from '@/data/model';
+import { siteCopy } from '@/lib/content';
+
+const { pages: copy } = await siteCopy(Astro.locals);
+
 ---
 
 <Layout
