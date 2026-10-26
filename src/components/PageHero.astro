@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import ribbon from '@/assets/brand/ribbon-1.png';
 import Button from './Button.astro';
 import BannerImage from './BannerImage.astro';
+import type { RemoteImage } from '@/lib/prismic';
 import Placeholder from './Placeholder.astro';
 
 interface Props {
@@ -27,7 +28,8 @@ interface Props {
       has no photography of its own. */
   ribbon?: boolean;
   /** Hero photography. Supersedes the ribbon where it is set. */
-  banner?: { src: string; focus?: 'left' | 'centre' | 'right' };
+  /** A key from src/data/banners.ts, or an image from Prismic. */
+  banner?: { src: string | RemoteImage; focus?: 'left' | 'centre' | 'right' };
 }
 const {
   eyebrow,

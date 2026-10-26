@@ -33,11 +33,15 @@ const bg = (i: number) =>
         {block.type === 'prose' && (
           <div class="max-w-3xl">
             {block.title && <h2 class="text-title mb-6">{block.title}</h2>}
-            <div class="prose-edco text-lead text-ink-muted">
-              {block.paras.map((p) => (
-                <p>{p}</p>
-              ))}
-            </div>
+            {block.html ? (
+              <div class="prose-edco text-lead text-ink-muted" set:html={block.html} />
+            ) : (
+              <div class="prose-edco text-lead text-ink-muted">
+                {block.paras.map((p) => (
+                  <p>{p}</p>
+                ))}
+              </div>
+            )}
           </div>
         )}
 

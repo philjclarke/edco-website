@@ -17,7 +17,7 @@ export type TickListVariant = 'grid' | 'dense' | 'list';
 
 interface Props {
   items: readonly string[];
-  icons?: readonly string[];
+  icons?: readonly (string | undefined)[];
   columns?: 1 | 2 | 3;
   tone?: 'dark' | 'light';
   variant?: TickListVariant;
@@ -25,7 +25,7 @@ interface Props {
 const { items, icons = [], columns = 2, tone = 'light', variant = 'list' } = Astro.props;
 const dark = tone === 'dark';
 const cols = (columns === 1 ? 2 : columns) as 2 | 3;
-const iconOf = (i: number) => icons[i] ?? 'fa6-solid:circle-check';
+const iconOf = (i: number) => icons[i] || 'fa6-solid:circle-check';
 const accent = dark ? 'text-orange' : 'text-pink';
 
 // Dense and list choose their own columns from the item count: three for a

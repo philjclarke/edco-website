@@ -32,20 +32,29 @@ import { products } from '@/data/products';
 import { routes } from '@/data/model';
 import { proofStats } from '@/data/proof';
 import type { Block } from '@/data/blocks';
+import type { Slice } from '@prismicio/client';
+import { blockOf } from '@/lib/slices';
+import { hrefOf, textOf } from '@/lib/prismic';
 
 const articles = (await getCollection('articles')).slice(0, 3);
 const route = routes[0];
-const ways = products
-  .find((p) => p.slug === 'education-iq')!
-  .blocks.find((b) => b.type === 'ways')!;
-const cardsBlock = products
-  .find((p) => p.slug === 'education-iq')!
-  .blocks.find((b) => b.type === 'cards')!;
+// Samples come from the live content in Prismic, translated into blocks.
+const blocksOf = (page: { doc: { data: Record<string, any> } }) =>
+  ((page.doc.data.slices ?? []) as Slice[]).map(blockOf).filter((b): b is Block => b !== null);
+const find = <T extends Block['type']>(blocks: Block[], type: T) =>
+  blocks.find((b) => b.type === type) as Extract<Block, { type: T }>;
+const eiq = blocksOf(products.find((p) => p.slug === 'education-iq')!);
+const ways = find(eiq, 'ways');
+const cardsBlock = find(eiq, 'cards');
 const research = capabilities.find((c) => c.slug === 'research')!;
-const steps = (research.blocks.find((b) => b.type === 'steps') as Extract<Block, { type: 'steps' }>).steps;
-const help = outcomes[0];
-const events = capabilities.find((c) => c.slug === 'events-and-cpd')!;
-const longList = events.blocks.find((b) => b.type === 'list') as Extract<Block, { type: 'list' }>;
+const steps = find(blocksOf(research), 'steps').steps;
+const helpList = find(blocksOf(outcomes[0]), 'list');
+const help = { help: helpList.items, helpIcons: helpList.icons };
+const longList = find(blocksOf(capabilities.find((c) => c.slug === 'events-and-cpd')!), 'list');
+const researchRelated = ((research.doc.data.related ?? []) as any[])
+  .map((r) => ({ href: hrefOf(r.link), label: textOf(r.label), blurb: textOf(r.blurb) || undefined }))
+  .filter((l): l is { href: string; label: string; blurb: string | undefined } => Boolean(l.href))
+  .map((l) => ({ ...l, label: l.label || l.href }));
 const fiveSteps = ['Data', 'Intelligence', 'Human interpretation', 'Challenge', 'Action'];
 
 const tickOptions: { variant: TickListVariant; label: string; note: string; current?: boolean }[] = [
@@ -288,14 +297,14 @@ const patterns = [
 
           {p.id === 'next' && (
             <>
-              <NextSteps title="You might also be interested in" links={research.next.filter((l) => l.href !== '/contact/')} icons />
+              <NextSteps title="You might also be interested in" links={researchRelated} icons />
               <div>
                 <p class="mb-3 text-xs font-semibold tracking-wide text-ink-muted">Without icons</p>
-                <NextSteps title="Where might you go next?" links={research.next.slice(0, 3)} />
+                <NextSteps title="Where might you go next?" links={researchRelated.slice(0, 3)} />
               </div>
               <div class="rounded-card bg-navy-900 p-8 text-ondark">
                 <p class="mb-3 text-xs font-semibold tracking-wide text-ondark-muted">Dark tone</p>
-                <NextSteps title="Where might you go next?" links={research.next.slice(0, 3)} tone="dark" />
+                <NextSteps title="Where might you go next?" links={researchRelated.slice(0, 3)} tone="dark" />
               </div>
             </>
           )}

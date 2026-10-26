@@ -15,10 +15,11 @@
 */
 import { Image } from 'astro:assets';
 import { banners, isBannerKey } from '@/data/banners';
+import { srcsetOf, type RemoteImage } from '@/lib/prismic';
 
 interface Props {
-  /** A key from src/data/banners.ts. */
-  src: string;
+  /** A key from src/data/banners.ts, or an image from Prismic. */
+  src: string | RemoteImage;
   alt?: string;
   treatment?: 'fade' | 'shape';
   duotone?: boolean;
@@ -37,13 +38,14 @@ const {
 
 // Fail the build rather than render an empty banner — an unregistered image
 // is silent otherwise, and a hero quietly missing its photograph is easy to ship.
-if (!isBannerKey(src)) {
+const remote = typeof src === 'object' ? srcsetOf(src, [700, 1100, 1600]) : null;
+if (typeof src === 'string' && !isBannerKey(src)) {
   throw new Error(
     `BannerImage: unknown image "${src}". Register it in src/data/banners.ts. ` +
       `Known: ${Object.keys(banners).join(', ')}`
   );
 }
-const image = banners[src];
+const image = typeof src === 'string' ? banners[src as keyof typeof banners] : null;
 const objectPos = { left: 'object-left', centre: 'object-center', right: 'object-right' }[focus];
 // Unique per instance: two shape banners on one page would otherwise both
 // resolve to whichever clipPath the browser saw first.
@@ -74,18 +76,36 @@ const clipId = `banner-curve-${Math.random().toString(36).slice(2, 9)}`;
     ]}
     style={treatment === 'shape' ? `clip-path: url(#${clipId})` : undefined}
   >
-    <Image
-      src={image}
-      alt={alt}
-      widths={[700, 1100, 1600]}
-      sizes="56vw"
-      class:list={[
-        'h-full w-full object-cover',
-        objectPos,
-        duotone && 'opacity-90 mix-blend-luminosity grayscale contrast-[1.1]',
-      ]}
-      loading="eager"
-    />
+    {
+      remote ? (
+        <img
+          src={remote.src}
+          srcset={remote.srcset}
+          alt={alt}
+          sizes="56vw"
+          class:list={[
+            'h-full w-full object-cover',
+            objectPos,
+            duotone && 'opacity-90 mix-blend-luminosity grayscale contrast-[1.1]',
+          ]}
+          loading="eager"
+          fetchpriority="high"
+        />
+      ) : (
+      <Image
+        src={image!}
+        alt={alt}
+        widths={[700, 1100, 1600]}
+        sizes="56vw"
+        class:list={[
+          'h-full w-full object-cover',
+          objectPos,
+          duotone && 'opacity-90 mix-blend-luminosity grayscale contrast-[1.1]',
+        ]}
+        loading="eager"
+      />
+      )
+    }
 
     {/* The copy always has to win. Fade dissolves the whole left edge; shape
         only needs a short veil where the curve meets the text. */}

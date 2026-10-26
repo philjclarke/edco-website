@@ -1,23 +1,28 @@
 ---
 /*
-  A framed product screenshot. EdCo have none yet, so this renders a labelled
-  frame at the right aspect ratio — the layout is settled and a real capture
-  drops straight in.
+  A framed product screenshot. With no image this renders a labelled frame at
+  the right aspect ratio — the layout is settled and a real capture drops
+  straight in.
+
+  The image is either a key from src/data/screens.ts (optimised at build) or
+  an image from Prismic (resized on request by Prismic's image CDN).
 */
 import { Image } from 'astro:assets';
 import Placeholder from './Placeholder.astro';
 import { screens, isScreenKey } from '@/data/screens';
+import { srcsetOf } from '@/lib/prismic';
+import type { ImageRef } from '@/data/blocks';
 
 interface Props {
   caption: string;
-  /** A key from src/data/screens.ts, once a capture exists for this slot. */
-  src?: string;
+  src?: ImageRef;
   tone?: 'dark' | 'light';
   ratio?: 'wide' | 'tall';
 }
 const { caption, src, tone = 'light', ratio = 'wide' } = Astro.props;
 const dark = tone === 'dark';
-const shot = isScreenKey(src) ? screens[src] : null;
+const shot = typeof src === 'string' ? (isScreenKey(src) ? screens[src] : null) : null;
+const remote = src && typeof src === 'object' ? { ...srcsetOf(src, [600, 900, 1400]), alt: src.alt || caption } : null;
 ---
 
 <figure class="w-full">
@@ -25,11 +30,21 @@ const shot = isScreenKey(src) ? screens[src] : null;
     class:list={[
       'relative overflow-hidden rounded-card border',
       ratio === 'wide' ? 'aspect-[16/10]' : 'aspect-[4/3]',
-      shot ? 'border-navy-700 bg-navy-900' : dark ? 'border-navy-700 bg-navy-800' : 'border-line bg-mist',
+      shot || remote ? 'border-navy-700 bg-navy-900' : dark ? 'border-navy-700 bg-navy-800' : 'border-line bg-mist',
     ]}
   >
     {
-      shot ? (
+      remote ? (
+        <img
+          src={remote.src}
+          srcset={remote.srcset}
+          alt={remote.alt}
+          sizes="(min-width: 768px) 45vw, 90vw"
+          class="h-full w-full object-cover object-top"
+          loading="lazy"
+          decoding="async"
+        />
+      ) : shot ? (
         <Image
           src={shot}
           alt={caption}

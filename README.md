@@ -59,6 +59,34 @@ we solve → how we do it (outcomes) / screenshots (products) → how to use it
 shout-out band after each content section. Each block's `slot` says where it
 goes, and the template sets the order. A slot with no content shows a placeholder.
 
+## Prismic
+
+Product, capability and outcome pages come from **Prismic** (repository
+`66bbee42`, https://66bbee42.prismic.io). Each page is a hero, then the sections
+an editor adds and orders (text, quotes, lists, screenshots, cards, steps,
+options, how we do it), then social proof (switchable) and "You might also be
+interested in". Pages are built from **published** content, so a change appears
+after the next build.
+
+- **Content models are code.** They live in [prismic/models.ts](prismic/models.ts),
+  typed against `@prismicio/client`. Change them there and push with
+  `node --env-file=.env scripts/prismic.ts push`. `status` shows what a push
+  would change. We use Prismic's Types API directly, because the Prismic CLI only
+  works in Next.js, Nuxt and SvelteKit projects.
+- **Reading content:** [src/lib/prismic.ts](src/lib/prismic.ts) (client, links,
+  images), [src/data/sectionPages.ts](src/data/sectionPages.ts) (pages to the
+  fields hubs and cards use), and [src/lib/slices.ts](src/lib/slices.ts) (slices
+  to the existing section components). The template is
+  [PrismicPage.astro](src/components/PrismicPage.astro).
+- **Images** are served from Prismic's image CDN at the sizes the page asks for.
+- **Hub and menu order** follows the menu in `src/data/site.ts`. A new page
+  goes at the end until it's added there.
+- [prismic/migrate.ts](prismic/migrate.ts) imported the original content
+  (26 October 2026). It refuses to run again once pages exist.
+
+The JSON files for products, capabilities and outcomes in `src/data/copy/` are
+no longer read by the site. They are kept until the copy deck is retired.
+
 ## The copy deck
 
 All the site's words live in `src/data/copy/*.json`, and there is a **copy deck**

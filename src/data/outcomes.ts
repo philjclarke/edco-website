@@ -3,36 +3,30 @@
   These are the spine of the site: the visitor self-selects by objective, not
   by EdCo's org chart.
 
-  The words live in ./copy/outcomes.json so the copy deck can round-trip them.
-  This file owns the shape; the JSON owns the content.
+  Content lives in Prismic (page type "outcome"); see sectionPages.ts.
 */
+import { loadSection, type SectionPage } from './sectionPages';
+import { hrefOf, textOf } from '@/lib/prismic';
 
-import data from './copy/outcomes.json';
+export type Outcome = SectionPage;
 
-export interface Outcome {
-  slug: string;
-  /** Short form used in nav and card grids. */
-  navLabel: string;
-  /** Page H1. */
-  title: string;
-  /** The single sentence that carries the argument. */
-  standfirst: string;
-  summary: string;
-  /** Intro paragraph in the hero. */
-  lead?: string;
-  intro: string[];
-  helpTitle: string;
-  help: string[];
-  /** One icon per help item, by position. */
-  helpIcons?: string[];
-  /** The shout-out bands, in page order. An empty `text` shows a placeholder. */
-  shouts: { text: string; sub?: string }[];
-  /** Which joined-up route in `routes` (brief §71) illustrates this outcome. */
-  routeObjective: string;
-  icon?: string;
-  banner?: { src: string; focus?: 'left' | 'centre' | 'right' };
+export const outcomes: Outcome[] = await loadSection('outcome');
+export const outcomeBySlug = Object.fromEntries(outcomes.map((o) => [o.slug, o]));
+
+/** Every product, capability and outcome page, by its address. */
+export async function sectionPageByHref() {
+  const [{ products }, { capabilities }] = await Promise.all([import('./products'), import('./capabilities')]);
+  return new Map([...products, ...capabilities, ...outcomes].map((p) => [p.href, p]));
 }
 
-export const outcomes: Outcome[] = data as Outcome[];
-
-export const outcomeBySlug = Object.fromEntries(outcomes.map((o) => [o.slug, o]));
+/** An outcome's example route, from its How we do it section in Prismic. */
+export function routeOf(outcome: Outcome | undefined) {
+  const s = (outcome?.doc.data.slices as any[] | undefined)?.find((x) => x.slice_type === 'how_we_do_it');
+  if (!s) return undefined;
+  const steps = (s.primary.steps ?? []).filter((x: any) => textOf(x.label));
+  return {
+    objective: textOf(s.primary.heading),
+    steps: steps.map((x: any) => textOf(x.label)) as string[],
+    stepHrefs: steps.map((x: any) => hrefOf(x.link)) as (string | null)[],
+  };
+}

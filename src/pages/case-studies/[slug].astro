@@ -4,9 +4,8 @@ import Layout from '@/layouts/Layout.astro';
 import Section from '@/components/Section.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import RouteSteps from '@/components/RouteSteps.astro';
-import { routes } from '@/data/model';
 import Placeholder from '@/components/Placeholder.astro';
-import { outcomes } from '@/data/outcomes';
+import { outcomes, routeOf } from '@/data/outcomes';
 
 export async function getStaticPaths() {
   const studies = await getCollection('caseStudies');
@@ -17,7 +16,7 @@ const { study } = Astro.props;
 const { Content } = await render(study);
 const d = study.data;
 const outcome = outcomes.find((o) => o.slug === d.outcome);
-const route = outcome ? routes.find((r) => r.objective === outcome.routeObjective) : undefined;
+const route = routeOf(outcome);
 const draft = d.status === 'placeholder';
 
 /* Brief §56: this seven-part structure is required and shouldn't be varied. */

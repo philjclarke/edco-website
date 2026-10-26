@@ -1,9 +1,6 @@
 /* Brief §27–§33. Products are introduced only after the broader proposition is
-   clear. Words in ./copy/products.json — see outcomes.ts for the rationale. */
+   clear. Content lives in Prismic (page type "product"); see sectionPages.ts. */
+import { loadSection } from './sectionPages';
 
-import type { ContentPage } from './blocks';
-import data from './copy/products.json';
-
-export const products: ContentPage[] = data as ContentPage[];
-
+export const products = await loadSection('product');
 export const productBySlug = Object.fromEntries(products.map((p) => [p.slug, p]));

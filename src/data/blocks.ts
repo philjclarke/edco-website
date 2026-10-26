@@ -1,59 +1,33 @@
 /*
-  A deliberately small block vocabulary. Product and capability pages are built
-  from these seven shapes, which keeps the pages consistent and gives the eventual
-  CMS an obvious component/blocks model to mirror. Resist adding a sixth type
-  unless two pages genuinely need it.
+  A deliberately small block vocabulary. Page sections are rendered from these
+  shapes, which keeps the pages consistent. Prismic slices are translated into
+  them (src/lib/slices.ts), so the same components render content from Prismic
+  and content still kept in code.
 */
 
-/**
- * Where a block sits in the section template (see SectionTemplate.astro).
- * `shoutN` is the Nth full-width shout-out band, and only takes a `pull`.
- */
-export type Slot = 'context' | 'problems' | 'how' | 'use' | 'proof' | 'shout1' | 'shout2' | 'shout3' | 'shout4';
+import type { RemoteImage } from '@/lib/prismic';
 
-export type Block = { slot?: Slot } & (
-  | { type: 'prose'; paras: string[]; title?: string }
-  | { type: 'list'; title: string; items: string[]; icons?: string[]; lead?: string; columns?: 2 | 3 }
+/** A screenshot or card image: a key from src/data/screens.ts, or an image from Prismic. */
+export type ImageRef = string | RemoteImage;
+
+export type Block =
+  /** `html` (rich text from Prismic) wins over `paras` when both are present. */
+  | { type: 'prose'; paras: string[]; html?: string; title?: string }
+  | { type: 'list'; title: string; items: string[]; icons?: (string | undefined)[]; lead?: string; columns?: 2 | 3 }
   | { type: 'steps'; title?: string; lead?: string; steps: string[] }
   | { type: 'pull'; text: string; sub?: string }
   | {
       type: 'cards';
       title?: string;
       lead?: string;
-      /** With `detail`, each card expands to reveal it plus a screenshot. */
-      items: { title: string; body: string; detail?: string; shot?: string; icon?: string }[];
+      /** With `detail` or `shot`, each card expands to reveal them. */
+      items: { title: string; body: string; detail?: string; shot?: ImageRef; icon?: string }[];
     }
-  | { type: 'shots'; title?: string; lead?: string; shots: { caption: string; src?: string }[] }
+  | { type: 'shots'; title?: string; lead?: string; shots: { caption: string; src?: ImageRef }[] }
   | {
       type: 'ways';
       title?: string;
       lead?: string;
       /** Numbered because they are a menu of options, not a sequence. */
       items: { title: string; body: string; points: string[]; icon?: string }[];
-    }
-);
-
-export interface ContentPage {
-  slug: string;
-  navLabel: string;
-  title: string;
-  standfirst?: string;
-  summary: string;
-  lead?: string;
-  blocks: Block[];
-  /** "You might also be interested in" — /contact/ is dropped, the CTA band covers it. */
-  next: { label: string; href: string; blurb?: string }[];
-  /** Brief §58 — proof sits beside the claim, on every product/capability page. */
-  testimonialTheme?: string;
-  /**
-   * The product's own website. An empty `href` means the site isn't live yet,
-   * and the page shows a tracked placeholder rather than a dead link.
-   * `href` sits in the copy deck's STRUCTURAL set, so URLs are never editable
-   * there — only the label is.
-   */
-  externalSite?: { label: string; href: string };
-  /** Icon name — an Iconify set prefix, or a bare file in src/icons/. */
-  icon?: string;
-  /** Hero photography: a key from src/data/banners.ts plus its crop focus. */
-  banner?: { src: string; focus?: 'left' | 'centre' | 'right' };
-}
+    };

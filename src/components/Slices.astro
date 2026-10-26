@@ -1,0 +1,71 @@
+---
+/*
+  A Prismic page's sections, in the order the editor arranged them.
+
+  Quotes are full-width shout-out bands. Runs of other sections between them
+  share one background so they read as one part of the page; an empty quote
+  shows a mock while MOCK_PROOF is on. How we do it is a route where each
+  step links to where it's done.
+*/
+import type { Slice } from '@prismicio/client';
+import Blocks from './Blocks.astro';
+import ShoutOut from './ShoutOut.astro';
+import Section from './Section.astro';
+import RouteSteps from './RouteSteps.astro';
+import { blockOf } from '@/lib/slices';
+import { hrefOf, textOf } from '@/lib/prismic';
+import type { Block } from '@/data/blocks';
+
+interface Props {
+  slices: Slice[];
+}
+const { slices } = Astro.props;
+
+type Part =
+  | { kind: 'blocks'; blocks: Block[] }
+  | { kind: 'quote'; n: number; text: string; sub: string }
+  | { kind: 'route'; heading: string; intro: string; steps: string[]; hrefs: (string | null)[] };
+
+const parts: Part[] = [];
+let quotes = 0;
+for (const s of slices) {
+  const p = s.primary as Record<string, any>;
+  if (s.slice_type === 'quote') {
+    parts.push({ kind: 'quote', n: ++quotes, text: textOf(p.text), sub: textOf(p.supporting_line) });
+  } else if (s.slice_type === 'how_we_do_it') {
+    const steps = (p.steps ?? []).filter((x: any) => textOf(x.label));
+    parts.push({
+      kind: 'route',
+      heading: textOf(p.heading),
+      intro: textOf(p.intro),
+      steps: steps.map((x: any) => textOf(x.label)),
+      hrefs: steps.map((x: any) => hrefOf(x.link)),
+    });
+  } else {
+    const b = blockOf(s);
+    if (!b) continue;
+    const last = parts[parts.length - 1];
+    if (last?.kind === 'blocks') last.blocks.push(b);
+    else parts.push({ kind: 'blocks', blocks: [b] });
+  }
+}
+---
+
+{
+  parts.map((part) =>
+    part.kind === 'quote' ? (
+      <ShoutOut n={part.n} text={part.text} sub={part.sub} />
+    ) : part.kind === 'route' ? (
+      <Section tone="light" size="md">
+        <p class="eyebrow grad-text mb-4">How we do it</p>
+        {part.heading && <h2 class="text-title">“{part.heading}”</h2>}
+        {part.intro && <p class="mt-4 max-w-2xl text-ink-muted">{part.intro}</p>}
+        <div class="mt-8">
+          <RouteSteps steps={part.steps} hrefs={part.hrefs} />
+        </div>
+      </Section>
+    ) : (
+      <Blocks blocks={part.blocks} tone="paper" />
+    )
+  )
+}

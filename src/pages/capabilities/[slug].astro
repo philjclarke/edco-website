@@ -1,12 +1,12 @@
 ---
-import ContentPage from '@/components/ContentPage.astro';
+import PrismicPage from '@/components/PrismicPage.astro';
 import { capabilityPages } from '@/data/capabilities';
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
   return capabilityPages.map((c) => ({ params: { slug: c.slug }, props: { page: c } }));
 }
 
 const { page } = Astro.props;
 ---
 
-<ContentPage page={page} section={{ label: 'Capabilities', href: '/capabilities/' }} kind="capability" />
+<PrismicPage page={page} section={{ label: 'Capabilities', href: '/capabilities/' }} />
