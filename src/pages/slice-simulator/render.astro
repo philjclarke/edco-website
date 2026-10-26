@@ -8,7 +8,7 @@
   do neither, so it can't use this to put its own content on this domain.
 */
 import Slices from '@/components/Slices.astro';
-import { sameOrigin } from '@/lib/auth';
+import { sameOrigin } from '@/lib/http';
 
 export const prerender = false;
 export const partial = true;

@@ -1,7 +1,7 @@
 # EdCo website — phase 1
 
 A new corporate site for The Education Company, built to the *EdCo Website — Master Brief*
-(Sept 2026). Static, fast to change, and deliberately not committed to a CMS.
+(Sept 2026). Static and fast, with content managed in **Prismic**.
 
 ```bash
 npm install
@@ -11,142 +11,86 @@ npm run preview  # serve the built static output
 npm run check    # type-check
 ```
 
-Every page is prerendered to HTML. The only exception is `/admin`, the publish
-console, which is server-rendered — see [PUBLISHING.md](PUBLISHING.md).
+Every page is prerendered to HTML from published Prismic content. The only
+routes that run on request are Prismic's draft previews and the slice
+simulator's render route (see *Prismic* below).
 
 Node 22 (pinned via Volta in `package.json`).
 
 ## Why this stack
 
-The brief withholds the CMS and framework decision, so the build has to survive whichever
-way that goes. Astro produces plain static HTML with no client-side framework, and its
-content collections force the content model to be declared up front — that declaration is
-what a CMS gets mapped onto later. Nothing here assumes a backend.
-
-- **Astro 5** — static output, zero JS shipped except the nav toggle and the contact-form
+- **Astro 5:** static output, zero JS shipped except the nav toggle and the contact-form
   deep link.
-- **Tailwind 4** — design tokens live in `src/styles/global.css` under `@theme`.
-- **Pagefind** — search index built from the output at build time. No search service,
+- **Tailwind 4:** design tokens live in `src/styles/global.css` under `@theme`.
+- **Pagefind:** search index built from the output at build time. No search service,
   no API key, works on any static host.
+- **Prismic:** hosted headless CMS. Editors get their own logins, a media library,
+  previews and scheduling. Content models are kept in code (below).
 
 ## Where the content lives
 
-Content is separated from templates so that moving it into a CMS is a mapping exercise
-rather than a rewrite.
-
-| File | What it holds | Likely CMS shape |
+| Content | In Prismic as | Read by |
 | --- | --- | --- |
-| `src/data/site.ts` | Navigation, footer, contact, global CTAs | Settings singleton |
-| `src/data/outcomes.ts` | The six outcome routes (brief §21–26) | Repeatable "outcome" type |
-| `src/data/products.ts` | The five products (§28–33) | Repeatable "product" type |
-| `src/data/capabilities.ts` | Eight capabilities, all with full pages (§34–43) | Repeatable "capability" type |
-| `src/data/model.ts` | The Listen→Grow model, beliefs, joined-up routes | Settings / repeatable |
-| `src/data/proof.ts` | Stats, logo candidates, testimonial and case themes | Settings / repeatable |
-| `src/data/blocks.ts` | The five-block page vocabulary | Component / blocks model |
-| `src/content/articles/` | What We're Hearing, Opinion, Research & Insight | "Post" type |
-| `src/data/copy/pages.json` | Copy for pages that aren't part of a family — hubs, about, contact, for educators | Singleton per page |
-| `src/content/case-studies/` | Case studies | "Case study" type |
-
-Product and capability pages are assembled from five block types only — `prose`, `list`,
-`steps`, `pull`, `cards`. Keeping that vocabulary small is what makes the pages consistent
-and gives a CMS an obvious components model. Adding a sixth type should need two pages to
-genuinely want it.
-
-Outcome, product and capability pages share one layout below the hero,
-[SectionTemplate.astro](src/components/SectionTemplate.astro): context → problems
-we solve → how we do it (outcomes) / screenshots (products) → how to use it
-(products, capabilities) → social proof → you might also be interested in, with a
-shout-out band after each content section. Each block's `slot` says where it
-goes, and the template sets the order. A slot with no content shows a placeholder.
+| Product, capability and outcome pages | Page types `product`, `capability`, `outcome`, built from slices | [sectionPages.ts](src/data/sectionPages.ts), [PrismicPage.astro](src/components/PrismicPage.astro) |
+| Homepage, hubs, About, Agencies & Partners, Contact, For Educators, Free customer analysis, Customer login, Search, 404 | One single-instance type each (`home_page`, `about_page` …) | [pageCopy.ts](src/data/pageCopy.ts) |
+| The Listen → Grow model, beliefs, proof figures, logo list, themes, What We Think streams | `site_settings` | [pageCopy.ts](src/data/pageCopy.ts), then `model.ts`, `proof.ts`, `streams.ts` |
+| Insights articles | `article` | content collection `articles` ([content.config.ts](src/content.config.ts)) |
+| Case studies | `case_study` | content collection `caseStudies` |
+| Navigation, footer, contact details | Code: [site.ts](src/data/site.ts) | |
+| Mock testimonials, logos and quotes | Code: [mock.ts](src/data/mock.ts) | |
 
 ## Prismic
 
-Product, capability and outcome pages come from **Prismic** (repository
-`66bbee42`, https://66bbee42.prismic.io). Each page is a hero, then the sections
-an editor adds and orders (text, quotes, lists, screenshots, cards, steps,
-options, how we do it), then social proof (switchable) and "You might also be
-interested in". Pages are built from **published** content, so a change appears
-after the next build.
+Repository `66bbee42` (“EdCo Website”), https://66bbee42.prismic.io. Pages are
+built from **published** content, so a change appears after the next build,
+which publishing triggers automatically. The editor guide for EdCo is at
+https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
 
-- **Content models are code.** They live in [prismic/models.ts](prismic/models.ts),
-  typed against `@prismicio/client`. Change them there and push with
-  `node --env-file=.env scripts/prismic.ts push`. `status` shows what a push
-  would change. We use Prismic's Types API directly, because the Prismic CLI only
-  works in Next.js, Nuxt and SvelteKit projects.
-- **Reading content:** [src/lib/prismic.ts](src/lib/prismic.ts) (client, links,
-  images), [src/data/sectionPages.ts](src/data/sectionPages.ts) (pages to the
-  fields hubs and cards use), and [src/lib/slices.ts](src/lib/slices.ts) (slices
-  to the existing section components). The template is
-  [PrismicPage.astro](src/components/PrismicPage.astro).
+- **Content models are code**, typed against `@prismicio/client`:
+  - [prismic/models.ts](prismic/models.ts): page types and slices.
+  - [prismic/specs.ts](prismic/specs.ts): fields for the single-instance
+    pages and settings. The same spec turns their content back into the shape
+    the templates read ([prismic/shape.ts](prismic/shape.ts)), so their layouts
+    stay in code.
+
+  Change either, then push with `node --env-file=.env scripts/prismic.ts push`
+  (`status` shows what would change). This uses Prismic's Types API directly,
+  because the Prismic CLI only works in Next.js, Nuxt and SvelteKit projects.
+  Don't edit types in Prismic's own Types screens: a push overwrites them.
+- **Slices** (page sections) on product, capability and outcome pages: Text,
+  Quote, List, Screenshots, Cards, Steps, Options, HowWeDoIt.
+  [src/lib/slices.ts](src/lib/slices.ts) translates them into the block shapes
+  in [blocks.ts](src/data/blocks.ts), so the existing section components render
+  them. Runs of non-quote sections share a background.
+- **Reading content:** [src/lib/prismic.ts](src/lib/prismic.ts) has the client,
+  links, images and rich text. Links to this site’s own addresses are made
+  relative, so they work on preview builds too.
 - **Images** are served from Prismic's image CDN at the sizes the page asks for.
+- **Icons** typed into Prismic are checked against the installed sets
+  ([src/lib/icons.ts](src/lib/icons.ts)). An unknown name is dropped with a build
+  warning rather than failing the build.
 - **Previews.** Prismic's Preview button goes to `/api/preview`. That stores
   the preview session in Prismic's cookie and redirects to `/preview/<page>/`,
   a server-rendered copy of the page with the draft content. The preview page is
   `noindex`, carries Prismic's toolbar (which reloads on save) and an "Exit
-  preview" link. The preview URLs registered in Prismic are the live site and
+  preview" link. Drafts can be previewed for product, capability and outcome
+  pages. Other types show a page explaining that, with a link to the published
+  page. The preview URLs registered in Prismic are the live site and
   `localhost:4321`.
 - **Live previews in the Page Builder** use the slice simulator at
   `/slice-simulator/`. Prismic sends the sections being edited to that page in
   the browser. It posts them to `/slice-simulator/render`, which renders them
   with the site's own components, and swaps the HTML in. The render route only
-  answers that page's own requests. The simulator only accepts messages from
-  `*.prismic.io`.
+  answers that page's own requests ([src/lib/http.ts](src/lib/http.ts)). The
+  simulator only accepts messages from `*.prismic.io`.
 - **Publishing** fires a Prismic webhook to a Vercel deploy hook, which rebuilds
   `main`. The hook URL is stored only in Prismic.
 - **Hub and menu order** follows the menu in `src/data/site.ts`. A new page
   goes at the end until it's added there.
-- [prismic/migrate.ts](prismic/migrate.ts) imported the original content
-  (26 October 2026). It refuses to run again once pages exist.
-
-The JSON files for products, capabilities and outcomes in `src/data/copy/` are
-no longer read by the site. They are kept until the copy deck is retired.
-
-## The copy deck
-
-All the site's words live in `src/data/copy/*.json`, and there is a **copy deck**
-— a Google Sheet — where EdCo can edit them without touching the repo.
-
-    https://docs.google.com/spreadsheets/d/1tIJqD10Xente09Q4pjejPsd7qyaYfcGevYmNA3Sbj4o/edit
-
-760 fields across 25 pages, one row per field. Editing the deck does **not**
-change the live site; the sync is deliberate:
-
-```bash
-node scripts/copy-deck.mjs apply-csv     # live sheet -> src/data/copy/
-node scripts/copy-deck.mjs csv           # repo -> copy-deck.csv (re-seed the sheet)
-```
-
-`apply-csv` reads the sheet directly over Google's CSV export endpoint, so there
-is no download step — but that endpoint only works while the sheet is shared as
-*anyone with the link can view*. Pass a file path instead if it ever has to be
-private.
-
-The sheet has a **Current copy** column and an empty **New copy** column. Only
-rows with something in *New copy* are applied, so a reviewer can work through it
-a page at a time and unfinished rows are ignored. The `Ref` column maps a row
-back to a field and must not be edited — it is protected in the sheet.
-
-Structural fields — `slug`, `href`, `page`, `type`, `columns`, `verified` — are
-never exposed to the deck and never written back, so no edit made there can break
-a route or a layout. Everything under `src/content/` (articles, case studies) is
-edited as markdown in the repo, not in the deck.
-
-**EdCo publish their own copy changes** through `/admin` — the deck is compared
-against what's committed, shown as a diff, and published as a commit. See
-[PUBLISHING.md](PUBLISHING.md).
-
-Every export is stamped with the commit it came from, and publishing a deck
-that's behind the site is refused. **So re-export and re-import the sheet after
-any copy change made from the repo**, or the console will block EdCo until you
-do.
-
-There is also a JSON form of the same data, used to seed a database-backed
-editor:
-
-```bash
-node scripts/copy-deck.mjs pack          # repo  -> .copy-deck/
-node scripts/copy-deck.mjs apply <dir>   # deck  -> src/data/copy/
-```
+- **History.** The content was imported on 26 October 2026 from the JSON and
+  Markdown files that used to hold it. Those files, the import scripts, the
+  Google Sheet copy deck and the `/admin` publish console it fed are in git
+  history before commit "Retire the copy deck and /admin".
 
 ## Mock proof
 
@@ -154,7 +98,7 @@ While EdCo's copy is outstanding, empty shout-out bands and every testimonial
 show **invented** quotes, and the logo wall shows invented organisations, from [src/data/mock.ts](src/data/mock.ts), so the design
 can be judged in full. The names, roles and organisations are deliberately fake
 ("Alex Example, Head of Example Partnerships, Sample Learning Ltd"). The mocks
-aren't in the copy deck, they're kept out of site search, and real copy replaces
+aren't in Prismic, they're kept out of site search, and real copy replaces
 them where it exists. **Before launch, set `MOCK_PROOF` to `false`:** every mock
 then shows as a visible placeholder again. Running
 `grep -rl data-mock .vercel/output/static` lists the pages still showing them.
@@ -164,8 +108,8 @@ then shows as a visible placeholder again. Running
 `/v1/` (16 September 2026) and `/v2/` (26 October 2026, before the move to Prismic)
 are frozen copies of the whole site, so old and new can be compared side by side. It's
 plain HTML in `public/v1/` with its own copies of the CSS and images. Nothing links
-to it, it's `noindex`, and it's left out of the sitemap and site search. The copy
-deck doesn't touch it, and it never changes. Each page has a bar at the top that
+to it, it's `noindex`, and it's left out of the sitemap and site search. Prismic
+doesn't touch it, and it never changes. Each page has a bar at the top that
 links to the same page on the live site, and `/v1/pages/` lists every page.
 
 To take another one, build first and then give the snapshot a new name:
@@ -183,7 +127,7 @@ Every placeholder renders through one component:
 
 ```bash
 grep -rn "<Placeholder" src/          # every outstanding content item
-grep -rn "verified: false" src/data/  # every unconfirmed statistic
+# unconfirmed figures: in Prismic, Site settings > Proof > Figures, "Verified" unticked
 ```
 
 They render as dashed orange chips. Removing the styling in `src/components/Placeholder.astro`

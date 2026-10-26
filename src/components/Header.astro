@@ -60,8 +60,8 @@ const path = Astro.url.pathname;
       {/*
         A plain <img> against pre-built files rather than astro:assets. On a
         server-rendered page astro:assets emits /_image?… , which needs a
-        runtime image endpoint this deployment doesn't have — so the logo broke
-        on /admin while every static page was fine. The logo is one fixed asset
+        runtime image endpoint this deployment doesn't have, so the logo would
+        break on draft previews while static pages were fine. The logo is one fixed asset
         at one size on every page, so pre-generating it is simpler than adding
         an image service, and keeps the header identical everywhere.
       */}

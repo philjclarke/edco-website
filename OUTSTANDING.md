@@ -79,7 +79,7 @@ The Big Plastic Count.
 | 1.27 | **Where the subscriber list lives** | Brief §52 wants name + email now, interest personalisation later. Needs a marketing platform. |
 | 1.28 | **Hosting** | The proof of concept runs on Vercel, in Phil's own account, on the Hobby plan. Before launch it moves to an account EdCo own, on Pro. See *Hosting handover* below. The domain also needs DNS access. |
 | 1.29 | **Analytics** | None installed. Brief implies measuring relationships over traffic — worth a conversation about what's actually being measured. |
-| 1.30 | **CMS** | Shortlist: Prismic, Sveltia, Payload, Umbraco. The comparison shared with Jason is at https://claude.ai/artifact/5U6LFsZvpyzRCkrasVMW43. It's waiting on three answers: are editors happy with GitHub accounts, must the data sit in EdCo's hosting, and who maintains it. Also waiting on Jason's answers to the content framework questions. |
+| 1.30 | **CMS** | Decided: **Prismic** (repository `66bbee42`). All content is in it; see README *Prismic* and the editor guide. Open: draft previews for page types other than products, capabilities and outcomes. |
 
 ### Hosting handover
 
@@ -90,18 +90,13 @@ The proof of concept stays in Phil's Vercel account for now. Before launch, move
    - **Pro is required at launch:** Hobby is for non-commercial use only. A new account gets a free Pro trial.
    - **Pro is also needed** to add team members, or to deploy a private repo owned by a GitHub organisation (if the repo moves into one).
 3. **Import the repo** (`philjclarke/edco-website`) in the new account, and give Vercel's GitHub app access to it.
-4. **Copy the environment variables** from the current project (Settings → Environment Variables):
-   - `ADMIN_PASSWORD`
-   - `AUTH_SECRET`
-   - `GITHUB_TOKEN`
-   - `GITHUB_REPO`
-   - `GITHUB_BRANCH`
-   - `DECK_CSV_URL`
-
-   The `/admin` publish console needs all six.
-5. **Check the new deployment:** the site, `/v1/` and `/admin` (log in and run a publish).
-6. **Delete the old project.** Until then, both rebuild on every change. The `edco-website.vercel.app` name only frees up once the old project is deleted, so anyone with the old link (Jason, `/admin` users) needs the new one.
-7. **Add the custom domain** and update DNS.
+4. **Environment variables:** none are needed. The site reads published Prismic content without a token.
+5. **Point Prismic at the new deployment:**
+   - **Deploy hook:** create one in the new Vercel project (Settings → Git → Deploy Hooks, branch `main`). Then, in Prismic, replace the webhook's URL with it (`npx prismic webhook` or Settings → Webhooks).
+   - **Previews and simulator:** once the domain changes, update the preview URL and the slice simulator URL in Prismic.
+6. **Check the new deployment:** the site, `/v1/`, `/v2/`, a Prismic preview, and a test publish.
+7. **Delete the old project.** Until then, both rebuild on every change. The `edco-website.vercel.app` name only frees up once the old project is deleted, so anyone with the old link needs the new one.
+8. **Add the custom domain** and update DNS.
 
 ---
 

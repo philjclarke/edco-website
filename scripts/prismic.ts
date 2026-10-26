@@ -3,7 +3,6 @@
 
     node --env-file=.env scripts/prismic.ts push      # models in prismic/models.ts -> Prismic
     node --env-file=.env scripts/prismic.ts status    # what push would change
-    node --env-file=.env scripts/prismic.ts migrate   # current JSON content -> Prismic (see prismic/migrate.ts)
 
   Uses the Types API directly rather than the Prismic CLI, which only works
   inside Next.js, Nuxt and SvelteKit projects. Needs PRISMIC_REPOSITORY and
@@ -69,9 +68,7 @@ if (cmd === 'status' || cmd === 'push') {
     for (const s of steps) await call('POST', `/${s.kind}/${s.action}`, s.model);
     if (steps.length) console.log(`Pushed ${steps.length} change(s).`);
   }
-} else if (cmd === 'migrate') {
-  await import('../prismic/migrate.ts');
 } else {
-  console.error('usage: node --env-file=.env scripts/prismic.ts <push|status|migrate>');
+  console.error('usage: node --env-file=.env scripts/prismic.ts <push|status>');
   process.exit(1);
 }

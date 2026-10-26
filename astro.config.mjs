@@ -7,18 +7,16 @@ import icon from 'astro-icon';
 import vercel from '@astrojs/vercel';
 
 /*
-  Static by default. The adapter exists only so the /admin publish console and
-  its API routes can run server-side — every marketing page is still prerendered
-  to HTML at build time, with no server involved.
-
-  Content lives in src/content (editorial) and src/data (structured), both of
-  which map onto a headless CMS later without touching templates.
+  Static by default: every page is prerendered at build time from Prismic
+  content. The adapter exists for the few routes that must run on request:
+  Prismic draft previews (/api/preview, /preview/…) and the slice simulator's
+  render route.
 */
 export default defineConfig({
   site: 'https://www.educationcompany.co.uk',
   integrations: [
     mdx(),
-    sitemap({ filter: (page) => !page.includes('/prototype/') && !page.includes('/admin') }),
+    sitemap({ filter: (page) => !/\/(prototype|slice-simulator|preview|v\d+)\//.test(page) }),
     /*
       Icons are inlined as SVG at build — no runtime JS, no CDN, and they
       inherit currentColor so they pick up the theme tokens.
@@ -31,9 +29,8 @@ export default defineConfig({
   adapter: vercel(),
   /*
     Astro's origin check compares Origin against its own request URL, which is
-    wrong behind Vercel's proxy and 403s every legitimate form post. The API
-    routes do the equivalent check on hosts instead — see sameOrigin() in
-    src/lib/auth.ts.
+    wrong behind Vercel's proxy and 403s legitimate posts. Routes that accept
+    posts do the equivalent check on hosts instead — see src/lib/http.ts.
   */
   security: { checkOrigin: false },
   vite: { plugins: [tailwindcss()] },
