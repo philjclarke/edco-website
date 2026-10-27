@@ -32,7 +32,8 @@ Node 22 (pinned via Volta in `package.json`).
 | Content | In Prismic as | Read by |
 | --- | --- | --- |
 | Product, capability and outcome pages | Page types `product`, `capability`, `outcome`, built from slices | [sectionPages.ts](src/data/sectionPages.ts), [PrismicPage.astro](src/components/PrismicPage.astro) |
-| Homepage, hubs, About, Agencies & Partners, Contact, For Educators, Free customer analysis, Customer login, Search, 404 | One single-instance type each (`home_page`, `about_page` …) | [pageCopy.ts](src/data/pageCopy.ts) |
+| Homepage | `home_page`: banner fields plus sections (slices) | [pageCopy.ts](src/data/pageCopy.ts), [index.astro](src/pages/index.astro) |
+| Hubs, About, Agencies & Partners, Contact, For Educators, Free customer analysis, Customer login, Search, 404 | One single-instance type each (`about_page` …) | [pageCopy.ts](src/data/pageCopy.ts) |
 | The Listen → Grow model, beliefs, proof figures, logo list, themes, What We Think streams | `site_settings` | [pageCopy.ts](src/data/pageCopy.ts), then `model.ts`, `proof.ts`, `streams.ts` |
 | Insights articles | `article` | content collection `articles` ([content.config.ts](src/content.config.ts)) |
 | Case studies | `case_study` | content collection `caseStudies` |
@@ -57,11 +58,21 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
   (`status` shows what would change). This uses Prismic's Types API directly,
   because the Prismic CLI only works in Next.js, Nuxt and SvelteKit projects.
   Don't edit types in Prismic's own Types screens: a push overwrites them.
-- **Slices** (page sections) on product, capability and outcome pages: Text,
-  Quote, List, Screenshots, Cards, Steps, Options, HowWeDoIt.
-  [src/lib/slices.ts](src/lib/slices.ts) translates them into the block shapes
-  in [blocks.ts](src/data/blocks.ts), so the existing section components render
-  them. Runs of non-quote sections share a background.
+- **Slices** (page sections) on the homepage and product, capability and outcome pages:
+  - **Content sections:** Text, Quote, List, Screenshots, Cards, Steps,
+    Options and HowWeDoIt.
+    [src/lib/slices.ts](src/lib/slices.ts) translates them into the block shapes
+    in [blocks.ts](src/data/blocks.ts) for the existing section components, and
+    runs of them share a background.
+  - **Self-contained sections:** Statement, Comparison, Figures, HowItWorks,
+    PageCards, LinkWords, LogoWall, LatestArticles and LinkCards
+    ([src/components/sections/](src/components/sections/)). Each renders its
+    own full-width section with a Background choice (white, grey, navy). Figures,
+    HowItWorks and LogoWall draw their content from Site settings, PageCards from
+    the page lists, and LatestArticles from Insights.
+  - **Placeholders:** text in square brackets, like `[VERIFIED METRIC: 28 years]`,
+    or a card titled `[CURRENT EVENT]`, renders as a placeholder chip
+    ([src/lib/placeholders.ts](src/lib/placeholders.ts)).
 - **Reading content:** [src/lib/prismic.ts](src/lib/prismic.ts) has the client,
   links, images and rich text. Links to this site’s own addresses are made
   relative, so they work on preview builds too.

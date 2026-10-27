@@ -1,35 +1,24 @@
 ---
-/* Brief §12–§20. Section order here is the brief's order and shouldn't be shuffled:
-   the outcome-led proposition has to land before "One EdCo" or the products. */
-import { Image } from 'astro:assets';
+/* Brief §12–§20. The homepage: its banner, then the sections arranged in
+   Prismic (Homepage → Sections). The brief's order (partners, how EdCo
+   works, outcomes, one EdCo, breadth, proof, logos, hearing, free value) is
+   what was imported; the outcome-led proposition should land before "One
+   EdCo" or the products if it's rearranged. */
 import Layout from '@/layouts/Layout.astro';
-import Section from '@/components/Section.astro';
-import SectionHead from '@/components/SectionHead.astro';
 import Button from '@/components/Button.astro';
-import Card from '@/components/Card.astro';
-import ModelStrip from '@/components/ModelStrip.astro';
-import StatGrid from '@/components/StatGrid.astro';
-import LogoWall from '@/components/LogoWall.astro';
+import Slices from '@/components/Slices.astro';
 import CtaBand from '@/components/CtaBand.astro';
-import Placeholder from '@/components/Placeholder.astro';
-import { outcomes } from '@/data/outcomes';
-import { site } from '@/data/site';
 import BannerImage from '@/components/BannerImage.astro';
-import ribbonWave from '@/assets/brand/ribbon-4.png';
-import { siteCopy, siteSettings } from '@/lib/content';
+import { site } from '@/data/site';
+import { siteCopy } from '@/lib/content';
 
 const { home } = await siteCopy(Astro.locals);
-const { proofStats } = await siteSettings(Astro.locals);
-
 ---
 
-<Layout
-  title="home"
-  description={home.meta.description}
->
+<Layout title="home" description={home.meta.description}>
   <!-- ============================ Hero ============================ -->
   <section class="relative overflow-hidden bg-navy-900 text-ondark">
-    <BannerImage src="classroom" focus="centre" treatment="fade" duotone />
+    <BannerImage src={home.banner ?? 'classroom'} focus={home.bannerFocus} treatment="fade" duotone />
 
     <div class="relative mx-auto max-w-7xl px-6 pb-20 pt-12 md:pb-28 md:pt-16 lg:pb-32 lg:pt-20">
       <div class="max-w-2xl">
@@ -47,220 +36,7 @@ const { proofStats } = await siteSettings(Astro.locals);
     </div>
   </section>
 
-  <!-- ================= Schools need partners, not vendors ================= -->
-  <Section tone="light" size="lg">
-    <div class="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-20">
-      <div>
-        <p class="eyebrow grad-text mb-4">{home.partners.eyebrow}</p>
-        <h2 class="text-display">{home.partners.heading}</h2>
-      </div>
-      <div class="text-lead text-ink-muted">
-        <p>{home.partners.body1}</p>
-        <p class="mt-5">{home.partners.body2}</p>
-        <p class="mt-5 font-display font-semibold text-ink">{home.partners.close}</p>
-      </div>
-    </div>
-  </Section>
-
-  <!-- ========================= How EdCo works ========================= -->
-  <Section tone="dark" size="lg" id="how-edco-works" class="overflow-hidden">
-    <Image
-      src={ribbonWave}
-      alt=""
-      aria-hidden="true"
-      widths={[900]}
-      sizes="900px"
-      class="pointer-events-none absolute -right-40 -top-20 w-[900px] max-w-none opacity-[0.14]"
-    />
-    <SectionHead
-      eyebrow={home.howItWorks.eyebrow}
-      title={home.howItWorks.heading}
-      lead={home.howItWorks.lead}
-      tone="dark"
-    />
-    <div class="mt-14">
-      <ModelStrip tone="dark" />
-    </div>
-  </Section>
-
-  <!-- ================ What are you trying to achieve? ================ -->
-  <Section tone="light" size="lg">
-    <SectionHead
-      eyebrow={home.outcomes.eyebrow}
-      title={home.outcomes.heading}
-      lead={home.outcomes.lead}
-    />
-    <ul class="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-      {
-        outcomes.map((o, i) => (
-          <li>
-            <Card
-              href={`/${o.slug}/`}
-              icon={o.icon}
-              index={i + 1}
-              title={o.navLabel}
-              body={o.summary}
-              meta={home.outcomes.cardCta}
-            />
-          </li>
-        ))
-      }
-    </ul>
-  </Section>
-
-  <!-- ============================ One EdCo ============================ -->
-  <Section tone="mist" size="lg">
-    <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-      <div>
-        <h2 class="text-display">{home.oneEdco.heading}</h2>
-        <p class="mt-6 text-lead text-ink-muted">{home.oneEdco.lead}</p>
-        <div class="mt-8">
-          <Button href="/what-are-you-trying-to-achieve/" variant="ghost">
-            {home.oneEdco.cta}
-          </Button>
-        </div>
-      </div>
-      <ul class="flex flex-wrap gap-2.5">
-        {
-          home.oneEdco.words.map((w: { label: string; href: string }) => (
-            <li>
-              <a
-                href={w.href}
-                class="group inline-flex items-center gap-1.5 rounded-full border border-line bg-paper px-5 py-2.5 font-display text-base font-semibold transition hover:border-pink hover:bg-pink/5"
-              >
-                {w.label}
-                <svg
-                  class="h-3 w-3 text-pink opacity-0 transition group-hover:opacity-100"
-                  viewBox="0 0 14 14"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  aria-hidden="true"
-                >
-                  <path d="M2 7h10M8 3l4 4-4 4" />
-                </svg>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-  </Section>
-
-  <!-- ======================= Why breadth matters ======================= -->
-  <Section tone="light" size="lg">
-    <div class="grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-20">
-      <div>
-        <p class="eyebrow grad-text mb-4">{home.breadth.eyebrow}</p>
-        <h2 class="text-display">{home.breadth.heading}</h2>
-      </div>
-      <div>
-        <ul class="divide-y divide-line border-y border-line">
-          {
-            home.breadth.comparisons.map((c: { who: string; what: string }) => (
-              <li class="flex flex-wrap gap-x-2 py-4">
-                <span class="font-display font-semibold">{c.who}</span>
-                <span class="text-ink-muted">{c.what}</span>
-              </li>
-            ))
-          }
-        </ul>
-        <p class="mt-8 font-display text-title">{home.breadth.turn}</p>
-        <p class="mt-4 text-lead text-ink-muted">{home.breadth.body}</p>
-        <p class="mt-4 text-lead font-medium text-ink">{home.breadth.close}</p>
-      </div>
-    </div>
-  </Section>
-
-  <!-- ============================= Proof ============================= -->
-  <Section tone="dark" size="lg">
-    <div class="grid gap-12 lg:grid-cols-2 lg:gap-20">
-      <div>
-        <p class="eyebrow grad-text mb-4">{home.proof.eyebrow}</p>
-        <h2 class="text-display">{home.proof.heading}</h2>
-      </div>
-      <div class="text-lead text-ondark-muted">
-        <p>
-          {home.proof.bodyBefore} <Placeholder label="VERIFIED METRIC" note="28 years" />
-          {home.proof.bodyAfter}
-        </p>
-        <p class="mt-5">{home.proof.body2}</p>
-      </div>
-    </div>
-    <div class="mt-14">
-      <StatGrid stats={proofStats} tone="dark" />
-    </div>
-  </Section>
-
-  <!-- ========================= Customer logos ========================= -->
-  <Section tone="light" size="md">
-    <SectionHead
-      title={home.logos.heading}
-      lead={home.logos.lead}
-      align="center"
-    />
-    <div class="mt-12">
-      <LogoWall />
-    </div>
-  </Section>
-
-  <!-- ======================= What we're hearing ======================= -->
-  <Section tone="mist" size="lg">
-    <div class="flex flex-wrap items-end justify-between gap-6">
-      <SectionHead
-        eyebrow={home.hearing.eyebrow}
-        title={home.hearing.heading}
-        lead={home.hearing.lead}
-        class="flex-1"
-      />
-      <Button href="/what-we-think/what-were-hearing/" variant="ghost">{home.hearing.cta}</Button>
-    </div>
-    <ul class="mt-12 grid gap-5 md:grid-cols-3">
-      {
-        [1, 2, 3].map((n) => (
-          <li>
-            <Card eyebrow="What we’re hearing" title="">
-              <div class="space-y-3">
-                <Placeholder label="CURRENT WHAT WE’RE HEARING ITEM" note={`slot ${n}`} block />
-                <p class="text-sm text-ink-muted">{home.hearing.cardNote}</p>
-              </div>
-            </Card>
-          </li>
-        ))
-      }
-    </ul>
-  </Section>
-
-  <!-- =========================== Free value =========================== -->
-  <Section tone="light" size="lg">
-    <SectionHead
-      eyebrow={home.freeValue.eyebrow}
-      title={home.freeValue.heading}
-      lead={home.freeValue.lead}
-    />
-    <ul class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-      <li>
-        <Card
-          href="/free-customer-analysis/"
-          eyebrow={home.freeValue.featured.eyebrow}
-          title={home.freeValue.featured.title}
-          body={home.freeValue.featured.body}
-          meta={home.freeValue.featured.cta}
-        />
-      </li>
-      {
-        ['CURRENT RESEARCH', 'CURRENT GUIDE OR BRIEFING', 'CURRENT EVENT', 'CURRENT DIAGNOSTIC OR TOOL'].map(
-          (label) => (
-            <li>
-              <Card title="" tone="light">
-                <Placeholder label={label} block />
-              </Card>
-            </li>
-          )
-        )
-      }
-    </ul>
-  </Section>
+  <Slices slices={home.slices} />
 
   <CtaBand />
 </Layout>

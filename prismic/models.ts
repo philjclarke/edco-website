@@ -106,6 +106,9 @@ const intro = {
   intro: text('Intro line', 'One sentence under the heading (optional)'),
 };
 
+const BACKGROUND = (default_value: 'white' | 'grey' | 'navy') =>
+  select('Background', ['white', 'grey', 'navy'] as const, default_value);
+
 export const slices: SharedSliceModel[] = [
   slice('text_block', 'Text', 'Introduction text, or any section of running text.', {
     heading: text('Heading', 'Optional'),
@@ -166,6 +169,93 @@ export const slices: SharedSliceModel[] = [
       label: text('Step'),
       link: link('Links to', 'The page where this step is done'),
     }),
+  }),
+
+  /* ---- Sections built for the homepage, available on every page ---- */
+
+  slice('statement', 'Statement', 'A big heading on the left, a few paragraphs on the right. Text in [SQUARE BRACKETS] shows as a placeholder.', {
+    eyebrow: text('Small label'),
+    heading: text('Heading'),
+    body: prose('Text'),
+    closing_line: text('Closing line', 'Shown in bold under the text (optional)'),
+    background: BACKGROUND('white'),
+  }),
+
+  slice('comparison', 'Comparison', 'A heading beside a ruled list of who/what pairs, then a turning line and text.', {
+    eyebrow: text('Small label'),
+    heading: text('Heading'),
+    rows: group('Rows', { who: text('Who'), what: text('What') }),
+    turn: text('Turning line'),
+    body: text('Text'),
+    closing_line: text('Closing line'),
+    background: BACKGROUND('white'),
+  }),
+
+  slice('figures', 'Figures', 'A heading and text, with the proof figures from Site settings underneath.', {
+    eyebrow: text('Small label'),
+    heading: text('Heading'),
+    body: prose('Text', 'Use [LABEL: note] for a figure still to be confirmed'),
+    background: BACKGROUND('navy'),
+  }),
+
+  slice('model', 'HowItWorks', 'The Listen → Grow model from Site settings, with a heading and intro.', {
+    eyebrow: text('Small label'),
+    heading: text('Heading'),
+    intro: text('Intro'),
+    anchor: text('Link name', 'e.g. how-edco-works, so links can jump to this section (optional)'),
+    background: BACKGROUND('navy'),
+  }),
+
+  slice('page_cards', 'PageCards', 'Cards linking to pages: all outcomes, all products, all capabilities, or ones you choose.', {
+    eyebrow: text('Small label'),
+    heading: text('Heading'),
+    intro: text('Intro'),
+    show: select('Show', ['All outcomes', 'All products', 'All capabilities', 'Chosen pages'] as const, 'All outcomes'),
+    pages: group('Chosen pages', { page: link('Page') }),
+    card_link_label: text('Card link label', 'e.g. Explore this'),
+    numbered: { type: 'Boolean', config: { label: 'Number the cards', default_value: false, placeholder_true: 'Numbered', placeholder_false: 'Not numbered' } },
+    background: BACKGROUND('white'),
+  }),
+
+  slice('link_words', 'LinkWords', 'A heading and button beside a cloud of linked words.', {
+    heading: text('Heading'),
+    intro: text('Intro'),
+    button_label: text('Button label'),
+    button_link: link('Button link'),
+    words: group('Words', { label: text('Word'), link: link('Links to') }),
+    background: BACKGROUND('grey'),
+  }),
+
+  slice('logo_wall', 'LogoWall', 'The client logo wall, with a centred heading.', {
+    heading: text('Heading'),
+    intro: text('Intro'),
+    background: BACKGROUND('white'),
+  }),
+
+  slice('latest_articles', 'LatestArticles', 'The newest Insights articles. Empty slots show a placeholder until there are enough.', {
+    eyebrow: text('Small label'),
+    heading: text('Heading'),
+    intro: text('Intro'),
+    stream: select('Stream', ['All', 'what-were-hearing', 'opinion', 'research-and-insight'] as const, 'All'),
+    count: { type: 'Number', config: { label: 'How many', placeholder: '3' } },
+    button_label: text('Button label'),
+    button_link: link('Button link'),
+    empty_note: text('Note on empty slots'),
+    background: BACKGROUND('grey'),
+  }),
+
+  slice('link_cards', 'LinkCards', 'Cards you write yourself, each linking somewhere. A card titled [IN BRACKETS] shows as a placeholder.', {
+    eyebrow: text('Small label'),
+    heading: text('Heading'),
+    intro: text('Intro'),
+    cards: group('Cards', {
+      eyebrow: text('Small label'),
+      title: text('Title'),
+      body: text('Text'),
+      link: link('Links to'),
+      link_label: text('Link label'),
+    }),
+    background: BACKGROUND('white'),
   }),
 ];
 
@@ -243,6 +333,14 @@ function fromSpec(id: string, label: string, fields: Record<string, Field | Grou
       f.kind === 'group'
         ? group(f.label, Object.fromEntries(Object.entries(f.fields).map(([k, x]) => [k, fieldFor(x.kind, x.label)])))
         : fieldFor(f.kind, f.label);
+  }
+  if (id === 'home_page') {
+    // The homepage is built from sections like the section pages, below its banner.
+    json.Banner.banner = image('Banner photo');
+    json.Banner.banner_focus = select('Banner crop', ['centre', 'left', 'right'] as const, 'centre');
+    json.Sections = {
+      slices: { type: 'Slices', fieldset: 'Page sections', config: { choices: Object.fromEntries(slices.map((s) => [s.id, { type: 'SharedSlice' as const }])) } },
+    };
   }
   return { id, label, repeatable: false, format: id === 'site_settings' ? 'custom' : 'page', status: true, json };
 }

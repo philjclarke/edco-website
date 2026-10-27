@@ -1,0 +1,35 @@
+---
+/* Comparison: a heading beside a ruled list of who/what pairs (homepage "why breadth matters"). */
+import Section from '../Section.astro';
+import { textOf } from '@/lib/prismic';
+import { toneOf } from './tone';
+
+const { p } = Astro.props as { p: Record<string, any> };
+const tone = toneOf(p.background);
+const dark = tone === 'dark';
+const rows = (p.rows ?? []).filter((r: any) => textOf(r.who) || textOf(r.what));
+---
+
+<Section tone={tone} size="lg">
+  <div class="grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-20">
+    <div>
+      {textOf(p.eyebrow) && <p class="eyebrow grad-text mb-4">{textOf(p.eyebrow)}</p>}
+      <h2 class="text-display">{textOf(p.heading)}</h2>
+    </div>
+    <div>
+      <ul class:list={['divide-y border-y', dark ? 'divide-navy-700 border-navy-700' : 'divide-line border-line']}>
+        {
+          rows.map((r: any) => (
+            <li class="flex flex-wrap gap-x-2 py-4">
+              <span class="font-display font-semibold">{textOf(r.who)}</span>
+              <span class={dark ? 'text-ondark-muted' : 'text-ink-muted'}>{textOf(r.what)}</span>
+            </li>
+          ))
+        }
+      </ul>
+      {textOf(p.turn) && <p class="mt-8 font-display text-title">{textOf(p.turn)}</p>}
+      {textOf(p.body) && <p class:list={['mt-4 text-lead', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{textOf(p.body)}</p>}
+      {textOf(p.closing_line) && <p class:list={['mt-4 text-lead font-medium', dark ? 'text-ondark' : 'text-ink']}>{textOf(p.closing_line)}</p>}
+    </div>
+  </div>
+</Section>

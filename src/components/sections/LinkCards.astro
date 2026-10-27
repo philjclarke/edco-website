@@ -1,0 +1,44 @@
+---
+/* Link cards: cards written by hand, each linking somewhere. A [BRACKETED] title is a placeholder (homepage "free value"). */
+import Section from '../Section.astro';
+import SectionHead from '../SectionHead.astro';
+import Card from '../Card.astro';
+import Placeholder from '../Placeholder.astro';
+import { hrefOf, textOf } from '@/lib/prismic';
+import { placeholderLabel } from '@/lib/placeholders';
+import { toneOf } from './tone';
+
+const { p } = Astro.props as { p: Record<string, any> };
+const tone = toneOf(p.background);
+const dark = tone === 'dark';
+const cards = (p.cards ?? []).filter((c: any) => textOf(c.title));
+---
+
+<Section tone={tone} size="lg">
+  <SectionHead eyebrow={textOf(p.eyebrow) || undefined} title={textOf(p.heading)} lead={textOf(p.intro) || undefined} tone={dark ? 'dark' : 'light'} />
+  <ul class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+    {
+      cards.map((c: any) => {
+        const label = placeholderLabel(c.title);
+        return label ? (
+          <li>
+            <Card title="" tone="light">
+              <Placeholder label={label} block />
+            </Card>
+          </li>
+        ) : (
+          <li>
+            <Card
+              href={hrefOf(c.link) ?? undefined}
+              eyebrow={textOf(c.eyebrow) || undefined}
+              title={textOf(c.title)}
+              body={textOf(c.body) || undefined}
+              meta={textOf(c.link_label) || undefined}
+              tone={dark ? 'dark' : 'light'}
+            />
+          </li>
+        );
+      })
+    }
+  </ul>
+</Section>

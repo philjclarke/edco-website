@@ -1,0 +1,33 @@
+---
+/* How it works: the Listen → Grow model from Site settings. On navy it carries the ribbon. */
+import Section from '../Section.astro';
+import SectionHead from '../SectionHead.astro';
+import ModelStrip from '../ModelStrip.astro';
+import { textOf } from '@/lib/prismic';
+import { toneOf } from './tone';
+
+const { p } = Astro.props as { p: Record<string, any> };
+const tone = toneOf(p.background);
+const dark = tone === 'dark';
+const anchor = textOf(p.anchor).replace(/^#/, '') || undefined;
+---
+
+<Section tone={tone} size="lg" id={anchor} class="overflow-hidden">
+  {
+    dark && (
+      /* Pre-built rather than astro:assets, so it also works on server-rendered previews. */
+      <img
+        src="/brand/ribbon-4-900.webp"
+        alt=""
+        aria-hidden="true"
+        width="900"
+        height="329"
+        class="pointer-events-none absolute -right-40 -top-20 w-[900px] max-w-none opacity-[0.14]"
+      />
+    )
+  }
+  <SectionHead eyebrow={textOf(p.eyebrow) || undefined} title={textOf(p.heading)} lead={textOf(p.intro) || undefined} tone={dark ? 'dark' : 'light'} />
+  <div class="mt-14">
+    <ModelStrip tone={dark ? 'dark' : 'light'} />
+  </div>
+</Section>

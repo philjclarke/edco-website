@@ -1,0 +1,19 @@
+---
+/* Logo wall: the client logos, under a centred heading. */
+import Section from '../Section.astro';
+import SectionHead from '../SectionHead.astro';
+import LogoWall from '../LogoWall.astro';
+import { textOf } from '@/lib/prismic';
+import { toneOf } from './tone';
+
+const { p } = Astro.props as { p: Record<string, any> };
+const tone = toneOf(p.background);
+const dark = tone === 'dark';
+---
+
+<Section tone={tone} size="md">
+  <SectionHead title={textOf(p.heading)} lead={textOf(p.intro) || undefined} align="center" tone={dark ? 'dark' : 'light'} />
+  <div class="mt-12">
+    <LogoWall tone={dark ? 'dark' : 'light'} />
+  </div>
+</Section>

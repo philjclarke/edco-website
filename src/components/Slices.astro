@@ -2,7 +2,8 @@
 /*
   A Prismic page's sections, in the order the editor arranged them.
 
-  Quotes are full-width shout-out bands. Runs of other sections between them
+  Section slices (statement, figures, page cards …) render their own
+  full-width section. Quotes are full-width shout-out bands. Runs of other sections between them
   share one background so they read as one part of the page; an empty quote
   shows a mock while MOCK_PROOF is on. How we do it is a route where each
   step links to where it's done.
@@ -12,6 +13,8 @@ import Blocks from './Blocks.astro';
 import ShoutOut from './ShoutOut.astro';
 import Section from './Section.astro';
 import RouteSteps from './RouteSteps.astro';
+import SectionSlice from './sections/SectionSlice.astro';
+import { SECTION_SLICE_TYPES } from './sections/tone';
 import { blockOf } from '@/lib/slices';
 import { hrefOf, textOf } from '@/lib/prismic';
 import type { Block } from '@/data/blocks';
@@ -29,13 +32,16 @@ const { slices, separate = false } = Astro.props;
 type Part =
   | { kind: 'blocks'; blocks: Block[] }
   | { kind: 'quote'; n: number; text: string; sub: string }
-  | { kind: 'route'; heading: string; intro: string; steps: string[]; hrefs: (string | null)[] };
+  | { kind: 'route'; heading: string; intro: string; steps: string[]; hrefs: (string | null)[] }
+  | { kind: 'section'; slice: Slice };
 
 const parts: Part[] = [];
 let quotes = 0;
 for (const s of slices) {
   const p = s.primary as Record<string, any>;
-  if (s.slice_type === 'quote') {
+  if (SECTION_SLICE_TYPES.has(s.slice_type)) {
+    parts.push({ kind: 'section', slice: s });
+  } else if (s.slice_type === 'quote') {
     parts.push({ kind: 'quote', n: ++quotes, text: textOf(p.text), sub: textOf(p.supporting_line) });
   } else if (s.slice_type === 'how_we_do_it') {
     const steps = (p.steps ?? []).filter((x: any) => textOf(x.label));
@@ -59,7 +65,9 @@ for (const s of slices) {
 {
   parts.map((part) => {
     const content =
-      part.kind === 'quote' ? (
+      part.kind === 'section' ? (
+        <SectionSlice slice={part.slice} />
+      ) : part.kind === 'quote' ? (
         <ShoutOut n={part.n} text={part.text} sub={part.sub} />
       ) : part.kind === 'route' ? (
         <Section tone="light" size="md">

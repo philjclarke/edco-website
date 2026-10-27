@@ -1,0 +1,62 @@
+---
+/* Link words: a heading and button beside a cloud of linked words (homepage "one EdCo"). */
+import Section from '../Section.astro';
+import Button from '../Button.astro';
+import { hrefOf, textOf } from '@/lib/prismic';
+import { toneOf } from './tone';
+
+const { p } = Astro.props as { p: Record<string, any> };
+const tone = toneOf(p.background);
+const dark = tone === 'dark';
+const button = hrefOf(p.button_link);
+const words = (p.words ?? []).map((w: any) => ({ label: textOf(w.label), href: hrefOf(w.link) })).filter((w: any) => w.label);
+---
+
+<Section tone={tone} size="lg">
+  <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+    <div>
+      <h2 class="text-display">{textOf(p.heading)}</h2>
+      {textOf(p.intro) && <p class:list={['mt-6 text-lead', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{textOf(p.intro)}</p>}
+      {
+        button && textOf(p.button_label) && (
+          <div class="mt-8">
+            <Button href={button} variant={dark ? 'ghost-dark' : 'ghost'}>
+              {textOf(p.button_label)}
+            </Button>
+          </div>
+        )
+      }
+    </div>
+    <ul class="flex flex-wrap gap-2.5">
+      {
+        words.map((w: { label: string; href: string | null }) =>
+          w.href ? (
+            <li>
+              <a
+                href={w.href}
+                class:list={[
+                  'group inline-flex items-center gap-1.5 rounded-full border px-5 py-2.5 font-display text-base font-semibold transition hover:border-pink hover:bg-pink/5',
+                  dark ? 'border-navy-700 bg-navy-800' : 'border-line bg-paper',
+                ]}
+              >
+                {w.label}
+                <svg
+                  class="h-3 w-3 text-pink opacity-0 transition group-hover:opacity-100"
+                  viewBox="0 0 14 14"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path d="M2 7h10M8 3l4 4-4 4" />
+                </svg>
+              </a>
+            </li>
+          ) : (
+            <li class="inline-flex px-5 py-2.5 font-display text-base font-semibold">{w.label}</li>
+          )
+        )
+      }
+    </ul>
+  </div>
+</Section>

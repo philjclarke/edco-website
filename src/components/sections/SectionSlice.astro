@@ -1,0 +1,30 @@
+---
+/* The self-contained section slices: each renders its own full-width section. */
+import type { Slice } from '@prismicio/client';
+import Statement from './Statement.astro';
+import Comparison from './Comparison.astro';
+import Figures from './Figures.astro';
+import HowItWorks from './HowItWorks.astro';
+import PageCards from './PageCards.astro';
+import LinkWords from './LinkWords.astro';
+import LogoWallSection from './LogoWallSection.astro';
+import LatestArticles from './LatestArticles.astro';
+import LinkCards from './LinkCards.astro';
+
+const SECTION_SLICES = {
+  statement: Statement,
+  comparison: Comparison,
+  figures: Figures,
+  model: HowItWorks,
+  page_cards: PageCards,
+  link_words: LinkWords,
+  logo_wall: LogoWallSection,
+  latest_articles: LatestArticles,
+  link_cards: LinkCards,
+} as const;
+
+const { slice } = Astro.props as { slice: Slice };
+const Component = SECTION_SLICES[slice.slice_type as keyof typeof SECTION_SLICES];
+---
+
+{Component && <Component p={slice.primary} />}

@@ -7,7 +7,7 @@
   siteCopy() in src/lib/content.ts, which swaps in draft copy during a
   Prismic preview.
 */
-import { client } from '@/lib/prismic';
+import { client, imageOf } from '@/lib/prismic';
 import { specs } from '../../prismic/specs';
 import { shapeOf } from '../../prismic/shape';
 
@@ -30,7 +30,11 @@ export interface SiteCopy {
 export async function loadSiteCopy(ref?: string): Promise<SiteCopy> {
   const load = async (id: string) => {
     const spec = specs.find((s) => s.id === id)!;
-    return shapeOf(spec, (await client.getSingle(id, ref ? { ref } : {})).data);
+    const data = (await client.getSingle(id, ref ? { ref } : {})).data;
+    const shaped = shapeOf(spec, data);
+    // The homepage is built from sections, and has a banner photo.
+    if (id === 'home_page') Object.assign(shaped, { slices: data.slices ?? [], banner: imageOf(data.banner), bannerFocus: data.banner_focus || 'centre' });
+    return shaped;
   };
   const ids = ['home_page', 'site_settings', ...Object.keys(KEYS)];
   const [home, settings, ...rest] = await Promise.all(ids.map(load));

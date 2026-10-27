@@ -1,0 +1,45 @@
+---
+/* Page cards: all outcomes, products or capabilities, or chosen pages (homepage "what are you trying to achieve?"). */
+import Section from '../Section.astro';
+import SectionHead from '../SectionHead.astro';
+import Card from '../Card.astro';
+import { hrefOf, textOf } from '@/lib/prismic';
+import { outcomes, sectionPageByHref } from '@/data/outcomes';
+import { products } from '@/data/products';
+import { capabilities } from '@/data/capabilities';
+import { toneOf } from './tone';
+
+const { p } = Astro.props as { p: Record<string, any> };
+const tone = toneOf(p.background);
+const dark = tone === 'dark';
+
+let list;
+if (p.show === 'All products') list = products;
+else if (p.show === 'All capabilities') list = capabilities;
+else if (p.show === 'Chosen pages') {
+  const byHref = await sectionPageByHref();
+  list = (p.pages ?? []).map((x: any) => byHref.get(hrefOf(x.page) ?? '')).filter(Boolean);
+} else list = outcomes;
+const meta = textOf(p.card_link_label) || undefined;
+---
+
+<Section tone={tone} size="lg">
+  <SectionHead eyebrow={textOf(p.eyebrow) || undefined} title={textOf(p.heading)} lead={textOf(p.intro) || undefined} tone={dark ? 'dark' : 'light'} />
+  <ul class="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+    {
+      list.map((o: any, i: number) => (
+        <li>
+          <Card
+            href={o.href}
+            icon={o.icon}
+            index={p.numbered ? i + 1 : undefined}
+            title={o.navLabel}
+            body={o.summary}
+            meta={meta}
+            tone={dark ? 'dark' : 'light'}
+          />
+        </li>
+      ))
+    }
+  </ul>
+</Section>

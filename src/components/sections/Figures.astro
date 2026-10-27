@@ -1,0 +1,29 @@
+---
+/* Figures: a heading and text, with the proof figures from Site settings (homepage "proof"). */
+import Section from '../Section.astro';
+import StatGrid from '../StatGrid.astro';
+import { richHTML, textOf } from '@/lib/prismic';
+import { withPlaceholders } from '@/lib/placeholders';
+import { siteSettings } from '@/lib/content';
+import { toneOf } from './tone';
+
+const { p } = Astro.props as { p: Record<string, any> };
+const tone = toneOf(p.background);
+const dark = tone === 'dark';
+const { proofStats } = await siteSettings(Astro.locals);
+---
+
+<Section tone={tone} size="lg">
+  <div class="grid gap-12 lg:grid-cols-2 lg:gap-20">
+    <div>
+      {textOf(p.eyebrow) && <p class="eyebrow grad-text mb-4">{textOf(p.eyebrow)}</p>}
+      <h2 class="text-display">{textOf(p.heading)}</h2>
+    </div>
+    <div class:list={['text-lead space-y-5', dark ? 'text-ondark-muted' : 'text-ink-muted']}>
+      <Fragment set:html={withPlaceholders(richHTML(p.body))} />
+    </div>
+  </div>
+  <div class="mt-14">
+    <StatGrid stats={proofStats} tone={dark ? 'dark' : 'light'} />
+  </div>
+</Section>
