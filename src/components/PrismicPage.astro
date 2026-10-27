@@ -36,8 +36,8 @@ const related: Link[] = (d.related ?? [])
     const target = byHref.get(href);
     return {
       href,
-      label: textOf(r.label) || target?.navLabel || 'Find out more',
-      blurb: textOf(r.blurb) || target?.summary || undefined,
+      label: textOf(r.label) || target?.panel.title || 'Find out more',
+      blurb: textOf(r.blurb) || target?.panel.text || undefined,
     };
   })
   .filter((l: Link | null): l is Link => l !== null);

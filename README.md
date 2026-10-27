@@ -70,6 +70,14 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
     own full-width section with a Background choice (white, grey, navy). Figures,
     HowItWorks and LogoWall draw their content from Site settings, PageCards from
     the page lists, and LatestArticles from Insights.
+  - **How we do it** is a set of panels: the editor picks products and
+    capabilities, and each panel is filled from that page's **Panel** tab.
+  - **Panel tab** (product, capability and outcome pages): panel title, panel
+    text (also the summary and search description), icon and link label. This
+    is how the page appears wherever another page features it: How we do it,
+    PageCards, and "You might also be interested in". It's one place to edit.
+    The outcomes hub and case studies list the same picks as each outcome's
+    route.
   - **Placeholders:** text in square brackets, like `[VERIFIED METRIC: 28 years]`,
     or a card titled `[CURRENT EVENT]`, renders as a placeholder chip
     ([src/lib/placeholders.ts](src/lib/placeholders.ts)).

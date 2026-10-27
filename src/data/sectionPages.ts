@@ -34,6 +34,8 @@ export interface SectionPage {
   externalSite?: { label: string; href: string };
   metaTitle?: string;
   metaDescription?: string;
+  /** How the page appears wherever another page features it (its Panel tab). */
+  panel: { title: string; text: string; icon?: string; linkLabel?: string };
   doc: PrismicDocument;
 }
 
@@ -60,6 +62,12 @@ export function toPage(kind: SectionKind, doc: PrismicDocument): SectionPage {
     icon: knownIcon(d.icon),
     banner: banner ? { src: banner, focus: d.banner_focus || 'centre' } : undefined,
     externalSite: site,
+    panel: {
+      title: textOf(d.panel_title) || textOf(d.nav_label) || doc.uid!,
+      text: textOf(d.summary),
+      icon: knownIcon(d.icon),
+      linkLabel: textOf(d.panel_link_label) || undefined,
+    },
     metaTitle: textOf(d.meta_title) || undefined,
     metaDescription: textOf(d.meta_description) || undefined,
     doc,

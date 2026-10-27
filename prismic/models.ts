@@ -162,12 +162,11 @@ export const slices: SharedSliceModel[] = [
     }),
   }),
 
-  slice('how_we_do_it', 'HowWeDoIt', 'How we do it: an example route, where each step links to where it is done.', {
-    heading: text('Objective', 'e.g. We need more MAT customers'),
+  slice('how_we_do_it', 'HowWeDoIt', 'How we do it: panels for the products and capabilities you pick, each filled from that page’s Panel tab.', {
+    heading: text('Heading', 'e.g. We want relationships before people are ready to buy'),
     intro: text('Intro line'),
-    steps: group('Steps', {
-      label: text('Step'),
-      link: link('Links to', 'The page where this step is done'),
+    pages: group('Products and capabilities', {
+      page: { type: 'Link', config: { label: 'Page', select: 'document', customtypes: ['product', 'capability'] } },
     }),
   }),
 
@@ -283,12 +282,19 @@ function pageType(id: string, label: string, extraMain: Record<string, CustomTyp
         title: text('Page heading (H1)'),
         standfirst: text('Standfirst', 'The one line that carries the argument'),
         lead: text('Intro paragraph', 'Under the heading in the banner'),
-        summary: text('Summary', 'One or two sentences for cards and search engines'),
         banner: image('Banner photo'),
         banner_focus: select('Banner crop', ['centre', 'left', 'right'] as const, 'centre'),
-        icon: text('Icon', ICON_HINT),
         ...extraMain,
         slices: { type: 'Slices', fieldset: 'Page sections', config: { choices: Object.fromEntries(slices.map((s) => [s.id, { type: 'SharedSlice' as const }])) } },
+      },
+      /* How this page appears wherever another page features it: How we do it
+         panels, page cards, related links. One place to edit it. Fields are
+         flat in Prismic, so summary and icon kept their data moving here. */
+      Panel: {
+        panel_title: text('Panel title', 'Leave blank to use the short name'),
+        summary: text('Panel text', 'One or two sentences. Also the search engine description unless SEO says otherwise'),
+        icon: text('Icon', ICON_HINT),
+        panel_link_label: text('Link label', 'e.g. See SPIRIT. Leave blank for “Find out more”'),
       },
       'Proof & related': {
         show_social_proof: boolean('Social proof (testimonial and logos)', true),

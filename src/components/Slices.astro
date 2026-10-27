@@ -5,14 +5,16 @@
   Section slices (statement, figures, page cards …) render their own
   full-width section. Quotes are full-width shout-out bands. Runs of other sections between them
   share one background so they read as one part of the page; an empty quote
-  shows a mock while MOCK_PROOF is on. How we do it is a route where each
-  step links to where it's done.
+  shows a mock while MOCK_PROOF is on. How we do it shows a panel for each picked
+  product or capability, filled from that page's Panel tab.
 */
 import type { Slice } from '@prismicio/client';
 import Blocks from './Blocks.astro';
 import ShoutOut from './ShoutOut.astro';
 import Section from './Section.astro';
-import RouteSteps from './RouteSteps.astro';
+import Card from './Card.astro';
+import { sectionPageByHref } from '@/data/outcomes';
+import type { SectionPage } from '@/data/sectionPages';
 import SectionSlice from './sections/SectionSlice.astro';
 import { SECTION_SLICE_TYPES } from './sections/tone';
 import { blockOf } from '@/lib/slices';
@@ -32,10 +34,11 @@ const { slices, separate = false } = Astro.props;
 type Part =
   | { kind: 'blocks'; blocks: Block[] }
   | { kind: 'quote'; n: number; text: string; sub: string }
-  | { kind: 'route'; heading: string; intro: string; steps: string[]; hrefs: (string | null)[] }
+  | { kind: 'panels'; heading: string; intro: string; pages: SectionPage[] }
   | { kind: 'section'; slice: Slice };
 
 const parts: Part[] = [];
+let byHref: Map<string, SectionPage> | undefined;
 let quotes = 0;
 for (const s of slices) {
   const p = s.primary as Record<string, any>;
@@ -44,13 +47,13 @@ for (const s of slices) {
   } else if (s.slice_type === 'quote') {
     parts.push({ kind: 'quote', n: ++quotes, text: textOf(p.text), sub: textOf(p.supporting_line) });
   } else if (s.slice_type === 'how_we_do_it') {
-    const steps = (p.steps ?? []).filter((x: any) => textOf(x.label));
+    // Each panel is the picked page's own Panel content.
+    byHref ??= await sectionPageByHref();
     parts.push({
-      kind: 'route',
+      kind: 'panels',
       heading: textOf(p.heading),
       intro: textOf(p.intro),
-      steps: steps.map((x: any) => textOf(x.label)),
-      hrefs: steps.map((x: any) => hrefOf(x.link)),
+      pages: (p.pages ?? []).map((x: any) => byHref!.get(hrefOf(x.page) ?? '')).filter(Boolean),
     });
   } else {
     const b = blockOf(s);
@@ -69,14 +72,18 @@ for (const s of slices) {
         <SectionSlice slice={part.slice} />
       ) : part.kind === 'quote' ? (
         <ShoutOut n={part.n} text={part.text} sub={part.sub} />
-      ) : part.kind === 'route' ? (
+      ) : part.kind === 'panels' ? (
         <Section tone="light" size="md">
           <p class="eyebrow grad-text mb-4">How we do it</p>
           {part.heading && <h2 class="text-title">“{part.heading}”</h2>}
           {part.intro && <p class="mt-4 max-w-2xl text-ink-muted">{part.intro}</p>}
-          <div class="mt-8">
-            <RouteSteps steps={part.steps} hrefs={part.hrefs} />
-          </div>
+          <ul class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {part.pages.map((pg) => (
+              <li>
+                <Card href={pg.href} icon={pg.panel.icon} title={pg.panel.title} body={pg.panel.text} meta={pg.panel.linkLabel ?? 'Find out more'} />
+              </li>
+            ))}
+          </ul>
         </Section>
       ) : (
         <Blocks blocks={part.blocks} tone="paper" />

@@ -14,8 +14,10 @@ interface Props {
   steps: readonly string[];
   /** Where each step is done. A step with no link yet renders without one. */
   hrefs: readonly (string | null | undefined)[];
+  /** Show 01, 02 … Off by default: routes are a set of panels, not a sequence. */
+  numbered?: boolean;
 }
-const { steps, hrefs } = Astro.props;
+const { steps, hrefs, numbered = false } = Astro.props;
 
 // Name the destination from the navigation, so a step reads "Data enrichment →
 // Data Services" without that label having to be maintained twice.
@@ -48,13 +50,13 @@ labels.set('/what-we-think/', 'What We Think');
                 class="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 grad-rule transition-transform duration-300 group-hover:scale-x-100"
               />
             )}
-            <span class="font-display text-xs font-bold grad-text">
-              {String(i + 1).padStart(2, '0')}
-            </span>
-            <span class="mt-2 font-display text-base font-semibold leading-snug">{step}</span>
+            {numbered && (
+              <span class="mb-2 font-display text-xs font-bold grad-text">{String(i + 1).padStart(2, '0')}</span>
+            )}
+            <span class="font-display text-base font-semibold leading-snug">{step}</span>
             {href && (
               <span class="mt-auto flex items-center gap-2 pt-4 text-sm text-ink-muted">
-                {labels.get(href) ?? 'Find out more'}
+                {labels.get(href) && labels.get(href) !== step ? labels.get(href) : 'Find out more'}
                 <svg
                   class="h-3.5 w-3.5 text-pink transition-transform duration-200 group-hover:translate-x-1"
                   viewBox="0 0 14 14"

@@ -20,7 +20,8 @@ else if (p.show === 'Chosen pages') {
   const byHref = await sectionPageByHref();
   list = (p.pages ?? []).map((x: any) => byHref.get(hrefOf(x.page) ?? '')).filter(Boolean);
 } else list = outcomes;
-const meta = textOf(p.card_link_label) || undefined;
+// The section's own link label wins; otherwise each page's panel link label.
+const sectionMeta = textOf(p.card_link_label) || undefined;
 ---
 
 <Section tone={tone} size="lg">
@@ -31,11 +32,11 @@ const meta = textOf(p.card_link_label) || undefined;
         <li>
           <Card
             href={o.href}
-            icon={o.icon}
+            icon={o.panel.icon}
             index={p.numbered ? i + 1 : undefined}
-            title={o.navLabel}
-            body={o.summary}
-            meta={meta}
+            title={o.panel.title}
+            body={o.panel.text}
+            meta={sectionMeta ?? o.panel.linkLabel}
             tone={dark ? 'dark' : 'light'}
           />
         </li>
