@@ -27,17 +27,7 @@ export default defineConfig({
     icon({ iconDir: 'src/icons' }),
   ],
   adapter: vercel(),
-  /* What We Think became Insights & Opinion (Oct 2026). Research & insight
-     merged into What we're hearing; articles moved up to /insights/<name>/. */
-  redirects: {
-    '/what-we-think': { status: 301, destination: '/insights/' },
-    '/what-we-think/what-were-hearing': { status: 301, destination: '/insights/what-were-hearing/' },
-    '/what-we-think/opinion': { status: 301, destination: '/insights/opinion/' },
-    '/what-we-think/research-and-insight': { status: 301, destination: '/insights/what-were-hearing/' },
-    '/what-we-think/what-were-hearing/what-mat-finance-leaders-are-telling-us': { status: 301, destination: '/insights/what-mat-finance-leaders-are-telling-us/' },
-    '/what-we-think/opinion/your-database-isnt-your-market': { status: 301, destination: '/insights/your-database-isnt-your-market/' },
-    '/what-we-think/research-and-insight/research-to-engagement': { status: 301, destination: '/insights/research-to-engagement/' },
-  },
+
   /*
     Astro's origin check compares Origin against its own request URL, which is
     wrong behind Vercel's proxy and 403s legitimate posts. Routes that accept
