@@ -65,6 +65,7 @@ const bg = (i: number) =>
                 icons={block.icons}
                 explainers={block.explainers}
                 columns={block.columns ?? 2}
+                variant="dense"
                 tone={block.tone === 'dark' ? 'dark' : 'light'}
               />
             </div>
@@ -129,7 +130,7 @@ const bg = (i: number) =>
             {block.title && (
               <div class="max-w-3xl">
                 {block.eyebrow && <p class="eyebrow grad-text mb-4">{block.eyebrow}</p>}
-                <h2 class="text-title">{block.title}</h2>
+                <h2 class="text-display">{block.title}</h2>
                 {block.lead && <p class="mt-4 text-lead text-ink-muted">{block.lead}</p>}
               </div>
             )}

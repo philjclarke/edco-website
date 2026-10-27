@@ -12,11 +12,14 @@ interface Props {
   /** A small label above the quote. */
   header?: string;
   text?: string;
+  /** Who said it, in bold. With a name the text is a quote, and the footer is their role. */
+  name?: string;
   sub?: string;
   /** Its position on the page, for the placeholder. */
   n: number;
 }
-const { header, text, sub, n } = Astro.props;
+const { header, text, name, sub, n } = Astro.props;
+const quoted = (t: string) => (/^[“"]/.test(t) ? t : `“${t.replace(/[”"]$/, '')}”`);
 const filled = !!text?.trim();
 const mock = !filled && MOCK_PROOF ? mockShout(pagePath(Astro.locals, Astro.url), n) : null;
 ---
@@ -29,7 +32,16 @@ const mock = !filled && MOCK_PROOF ? mockShout(pagePath(Astro.locals, Astro.url)
   <div class="mx-auto max-w-4xl px-6 text-center">
     {header?.trim() && (filled || mock) && <p class="eyebrow mb-6 text-ondark-muted">{header}</p>}
     {
-      filled ? (
+      filled && name?.trim() ? (
+        <figure>
+          <div class="mx-auto mb-8 h-1 w-16 rounded-full grad-rule" />
+          <blockquote class="font-display text-display font-bold">{quoted(text!.trim())}</blockquote>
+          <figcaption class="mt-6 text-sm text-ondark-muted">
+            <span class="font-semibold text-ondark">{name.trim()}</span>
+            {sub?.trim() && <> · {sub.trim()}</>}
+          </figcaption>
+        </figure>
+      ) : filled ? (
         <>
           <div class="mx-auto mb-8 h-1 w-16 rounded-full grad-rule" />
           <p class="font-display text-display font-bold">{text}</p>

@@ -44,7 +44,7 @@ const OWN_SECTION: Record<string, any> = {
 
 type Part =
   | { kind: 'blocks'; blocks: Block[] }
-  | { kind: 'quote'; n: number; header: string; text: string; sub: string }
+  | { kind: 'quote'; n: number; header: string; text: string; name: string; sub: string }
   | { kind: 'own'; slice: Slice; Component: any };
 
 const parts: Part[] = [];
@@ -58,7 +58,7 @@ for (const s of slices) {
   } else if (s.slice_type === 'quote' && s.variation === 'two_column') {
     parts.push({ kind: 'own', slice: s, Component: QuoteTwoColumn });
   } else if (s.slice_type === 'quote') {
-    parts.push({ kind: 'quote', n: ++quotes, header: textOf(p.header), text: textOf(p.text), sub: textOf(p.footer) });
+    parts.push({ kind: 'quote', n: ++quotes, header: textOf(p.header), text: textOf(p.text), name: textOf(p.name), sub: textOf(p.footer) });
   } else if (s.slice_type === 'text_block' && context?.preview.article) {
     parts.push({ kind: 'own', slice: s, Component: ArticleBody });
   } else {
@@ -79,7 +79,7 @@ for (const s of slices) {
       part.kind === 'own' ? (
         part.Component === SectionSlice ? <SectionSlice slice={part.slice} /> : <part.Component slice={part.slice} context={context} />
       ) : part.kind === 'quote' ? (
-        <ShoutOut n={part.n} header={part.header} text={part.text} sub={part.sub} />
+        <ShoutOut n={part.n} header={part.header} text={part.text} name={part.name} sub={part.sub} />
       ) : (
         <Blocks blocks={part.blocks} tone="paper" />
       );

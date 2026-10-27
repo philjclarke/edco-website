@@ -36,14 +36,8 @@ const panels = (p.pages ?? []).map((x: any) => all.linked(x.page)).filter(Boolea
               {pg.icon ? <Icon name={pg.icon} class="h-6 w-6" /> : <Icon name="fa6-solid:arrow-right" class="h-5 w-5" />}
             </span>
             <span class="flex flex-1 flex-col">
-              <span class="font-display text-lg font-bold leading-snug">{pg.title}</span>
-              {pg.text && <span class:list={['mt-2 text-sm', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{pg.text}</span>}
-              <span class="mt-4 inline-flex items-center gap-2 text-sm font-semibold">
-                <span class="grad-text">{pg.linkLabel ?? 'Find out more'}</span>
-                <svg class="h-4 w-4 text-pink transition-transform duration-200 group-hover:translate-x-1.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
-                  <path d="M2 7h10M8 3l4 4-4 4" />
-                </svg>
-              </span>
+              <span class="font-display text-xl font-bold leading-snug">{pg.title}</span>
+              {pg.text && <span class:list={['mt-2 text-[0.9375rem]', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{pg.text}</span>}
             </span>
           </a>
         </li>

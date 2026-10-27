@@ -2,7 +2,6 @@
 /* Outcomes we can help with: a card for each picked outcome, filled from that page's Preview tab. */
 import type { Slice } from '@prismicio/client';
 import Section from '../Section.astro';
-import SectionHead from '../SectionHead.astro';
 import Card from '../Card.astro';
 import { textOf } from '@/lib/prismic';
 import { pages } from '@/lib/pages';
@@ -16,9 +15,17 @@ const all = await pages(Astro.locals);
 const cards = (p.pages ?? []).map((x: any) => all.linked(x.page)).filter(Boolean).map((d: any) => all.preview(d));
 ---
 
-<Section tone={tone} size="lg">
-  {textOf(p.heading) && <SectionHead eyebrow={textOf(p.eyebrow) || undefined} title={textOf(p.heading)} lead={textOf(p.intro) || undefined} tone={dark ? 'dark' : 'light'} />}
-  <ul class:list={['grid gap-5 md:grid-cols-2 lg:grid-cols-3', textOf(p.heading) && 'mt-14']}>
+<Section tone={tone} size="md">
+  {
+    (textOf(p.eyebrow) || textOf(p.heading)) && (
+      <div class="max-w-3xl">
+        {textOf(p.eyebrow) && <p class="eyebrow grad-text mb-4">{textOf(p.eyebrow)}</p>}
+        {textOf(p.heading) && <h2 class="text-title">{textOf(p.heading)}</h2>}
+        {textOf(p.intro) && <p class:list={['mt-4', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{textOf(p.intro)}</p>}
+      </div>
+    )
+  }
+  <ul class:list={['grid gap-5 sm:grid-cols-2 lg:grid-cols-3', textOf(p.heading) && 'mt-8']}>
     {
       cards.map((c: any) => (
         <li>

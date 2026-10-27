@@ -13,7 +13,8 @@ import { textOf } from '@/lib/prismic';
 const { slice } = Astro.props as { slice: Slice };
 const p = slice.primary as Record<string, any>;
 const quote = textOf(p.text);
-const [name, ...rest] = textOf(p.footer).split(/,\s*/);
+const name = textOf(p.name);
+const role = textOf(p.footer);
 ---
 
 <Section tone="mist" size="md">
@@ -29,10 +30,10 @@ const [name, ...rest] = textOf(p.footer).split(/,\s*/);
           <blockquote class="mt-5 font-display text-lg leading-snug md:text-xl">
             <p>“{quote.replace(/^[“"]|[”"]$/g, '')}”</p>
           </blockquote>
-          {name && (
+          {(name || role) && (
             <figcaption class="mt-5 text-sm text-ink-muted">
-              <span class="font-semibold text-ink">{name}</span>
-              {rest.length > 0 && <span class="block">{rest.join(', ')}</span>}
+              {name && <span class="font-semibold text-ink">{name}</span>}
+              {role && <span class="block">{role}</span>}
             </figcaption>
           )}
         </figure>

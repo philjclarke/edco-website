@@ -191,7 +191,8 @@ export const components: SharedSliceModel[] = [
       primary: {
         header: text('Header', 'Optional small label above the quote'),
         text: text('Text', 'The line that carries the argument'),
-        footer: text('Footer', 'Optional: a supporting line, or who said it'),
+        name: text('Footer: name', 'Who said it, shown in bold, e.g. Sam Example. With a name, the text gets quote marks'),
+        footer: text('Footer: role and organisation', 'e.g. Head of Marketing, Example Trust. Without a name, a supporting line'),
       },
     },
     {
@@ -202,7 +203,8 @@ export const components: SharedSliceModel[] = [
         eyebrow: sectionHeader('e.g. Social proof'),
         header: text('Header', 'e.g. Don’t take our word for it.'),
         text: text('Text', 'The quote'),
-        footer: text('Footer', 'Who said it: name, role, organisation'),
+        name: text('Footer: name', 'Who said it, shown in bold, e.g. Sam Example'),
+        footer: text('Footer: role and organisation', 'e.g. Head of Marketing, Example Trust'),
         theme: select('Testimonial theme', TESTIMONIAL_THEMES, 'working with EdCo'),
         show_logos: boolean('Client logos underneath', false),
       },

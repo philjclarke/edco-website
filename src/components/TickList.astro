@@ -4,11 +4,13 @@
   an item in the copy deck keeps its icon). An item without one gets a tick.
 
   Three treatments, compared on /prototype/patterns/:
+    dense — icon in a tinted square beside the text, in ruled cells. The
+            Features listing component, as the component deck shows it
+            (Oct 2026).
     list  — a ruled list in columns, icon as the bullet. No cells at all.
-            The default, chosen in review.
+            The default, chosen in the September review.
     grid  — an icon above each item in a roomy Grid. The old default; the
             items are rarely more than a few words, so it read as thin.
-    dense — icon beside the text, tighter cells, more columns.
 */
 import { Icon } from 'astro-icon/components';
 import Grid from './Grid.astro';
@@ -53,16 +55,21 @@ const listCols = items.length <= 6 ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-
   variant === 'dense' && (
     <Grid cols={denseCols} tone={tone} as="ul">
       {items.map((item, i) => (
-        <li class="flex items-center gap-3 px-4 py-3.5">
+        <li class:list={['flex gap-4 px-5 py-4', explainers[i] ? 'items-start' : 'items-center']}>
           <span
             class:list={[
-              'inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md',
+              'inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg',
               dark ? 'bg-navy-700 text-orange' : 'bg-pink/10 text-pink',
             ]}
           >
-            <Icon name={iconOf(i)} class="h-3.5 w-3.5" />
+            <Icon name={iconOf(i)} class="h-4 w-4" />
           </span>
-          <span class="text-sm font-medium leading-snug">{item}</span>
+          <span>
+            <span class="block text-[0.9375rem] font-medium leading-snug">{item}</span>
+            {explainers[i] && (
+              <span class:list={['mt-1 block text-sm', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{explainers[i]}</span>
+            )}
+          </span>
         </li>
       ))}
     </Grid>
