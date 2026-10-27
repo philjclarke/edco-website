@@ -1,5 +1,7 @@
 /*
-  Field specs for the single-instance pages and site settings in Prismic.
+  Field specs for the single-instance pages still built from fixed fields
+  (Contact, Free customer analysis and so on) and site settings in Prismic.
+  Pages built from components are modelled in models.ts instead.
 
   Each entry is one Prismic field: its kind, the label editors see, the tab it
   sits on, and `path`: where the value lives in the shape the site's pages

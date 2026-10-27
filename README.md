@@ -31,11 +31,9 @@ Node 22 (pinned via Volta in `package.json`).
 
 | Content | In Prismic as | Read by |
 | --- | --- | --- |
-| Product, capability and outcome pages | Page types `product`, `capability`, `outcome`, built from slices | [sectionPages.ts](src/data/sectionPages.ts), [PrismicPage.astro](src/components/PrismicPage.astro) |
-| Homepage | `home_page`: banner fields plus sections (slices) | [pageCopy.ts](src/data/pageCopy.ts), [index.astro](src/pages/index.astro) |
-| Hubs, About, Agencies & Partners, Contact, For Educators, Free customer analysis, Customer login, Search, 404 | One single-instance type each (`about_page` …) | [pageCopy.ts](src/data/pageCopy.ts) |
-| The Listen → Grow model, beliefs, proof figures, logo list, themes, What We Think streams | `site_settings` | [pageCopy.ts](src/data/pageCopy.ts), then `model.ts`, `proof.ts`, `streams.ts` |
-| Insights articles | `article` | content collection `articles` ([content.config.ts](src/content.config.ts)) |
+| Every page built from components: the homepage, the top-level page of each section and the pages below it, insights, opinion, provision blueprints | One page type each (see below) | [pages.ts](src/lib/pages.ts), [PageView.astro](src/components/PageView.astro) |
+| Contact, For Educators, Free customer analysis, Customer login, Case studies hub, Search, 404 | One single-instance type each, with fixed fields | [pageCopy.ts](src/data/pageCopy.ts) |
+| The Listen → Grow model, proof figures, logo list, themes | `site_settings` | [pageCopy.ts](src/data/pageCopy.ts), then `model.ts`, `proof.ts` |
 | Case studies | `case_study` | content collection `caseStudies` |
 | Navigation, footer, contact details | Code: [site.ts](src/data/site.ts) | |
 | Mock testimonials, logos and quotes | Code: [mock.ts](src/data/mock.ts) | |
@@ -48,39 +46,62 @@ which publishing triggers automatically. The editor guide for EdCo is at
 https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
 
 - **Content models are code**, typed against `@prismicio/client`:
-  - [prismic/models.ts](prismic/models.ts): page types and slices.
-  - [prismic/specs.ts](prismic/specs.ts): fields for the single-instance
-    pages and settings. The same spec turns their content back into the shape
-    the templates read ([prismic/shape.ts](prismic/shape.ts)), so their layouts
-    stay in code.
+  - [prismic/pageTypes.ts](prismic/pageTypes.ts): the page types, each with its
+    address and the section it sits in.
+  - [prismic/models.ts](prismic/models.ts): their fields and the components.
+  - [prismic/specs.ts](prismic/specs.ts): fields for the pages still built
+    from fixed fields, and the settings. The same spec turns their content
+    back into the shape the templates read ([prismic/shape.ts](prismic/shape.ts)).
 
-  Change either, then push with `node --env-file=.env scripts/prismic.ts push`
+  Change any of them, then push with `node --env-file=.env scripts/prismic.ts push`
   (`status` shows what would change). This uses Prismic's Types API directly,
   because the Prismic CLI only works in Next.js, Nuxt and SvelteKit projects.
   Don't edit types in Prismic's own Types screens: a push overwrites them.
-- **Slices** (page sections) on the homepage and product, capability and outcome pages:
-  - **Content sections:** Text, Quote, List, Screenshots, Cards, Steps,
-    Options and HowWeDoIt.
-    [src/lib/slices.ts](src/lib/slices.ts) translates them into the block shapes
-    in [blocks.ts](src/data/blocks.ts) for the existing section components, and
-    runs of them share a background.
-  - **Self-contained sections:** Statement, Comparison, Figures, HowItWorks,
-    PageCards, LinkWords, LogoWall, LatestArticles and LinkCards
-    ([src/components/sections/](src/components/sections/)). Each renders its
-    own full-width section with a Background choice (white, grey, navy). Figures,
-    HowItWorks and LogoWall draw their content from Site settings, PageCards from
-    the page lists, and LatestArticles from Insights.
-  - **How we do it** is a set of panels: the editor picks products and
-    capabilities, and each panel is filled from that page's **Panel** tab.
-  - **Panel tab** (product, capability and outcome pages): panel title, panel
-    text (also the summary and search description), icon and link label. This
-    is how the page appears wherever another page features it: How we do it,
-    PageCards, and "You might also be interested in". It's one place to edit.
-    The outcomes hub and case studies list the same picks as each outcome's
-    route.
-  - **Placeholders:** text in square brackets, like `[VERIFIED METRIC: 28 years]`,
-    or a card titled `[CURRENT EVENT]`, renders as a placeholder chip
-    ([src/lib/placeholders.ts](src/lib/placeholders.ts)).
+- **Page types** follow EdCo's component deck (“EdCo Website Components”, Oct 2026).
+  Each section has its own types, even where they're identical for now, so each
+  can grow its own fields later:
+
+  | Section | Top-level page | Pages below it |
+  | --- | --- | --- |
+  | Home | `home_page` | |
+  | What are you trying to achieve | `outcomes_hub` | `outcome` (`/<name>/`) |
+  | Products | `products_hub` | `product` |
+  | Insights & Opinion | `what_we_think_page` (`/insights/`) | `insights_section`, and the articles `insight` and `opinion`, all at `/insights/<name>/` |
+  | Capabilities | `capabilities_hub` | `capability` |
+  | About | `about_page` | `about_subpage` |
+  | Agencies & Partners | `agencies_page` | `agencies_subpage` |
+  | Not in the menu | | `provision_blueprint` (`/provision-blueprints/<name>/`) |
+
+  Every one has the same anatomy: a **Page** tab holding only its components, a
+  **Preview** tab and an **SEO** tab. The **Preview** tab (title, positioning
+  statement, introduction text, interest tags, icon, preview image, link label;
+  plus date, author and status on articles) is how the page appears wherever
+  another page links to it: How we do it, Outcomes we can help with, Content
+  listings, related links and the breadcrumb. One place to edit it.
+  A Prismic page that still has its pre-component fields stops the build
+  (`assertComponents` in [pages.ts](src/lib/pages.ts)) rather than publish it broken.
+- **Components** (Prismic calls them slices), in the deck's order:
+  - **Banner** (variations Page and Homepage): title, positioning statement,
+    introduction text, banner image. On a page below a section it shows the
+    breadcrumb; on an insight or opinion it becomes the article header.
+  - **Explainer text**, **Quote** (variations One column and Two column, the
+    latter with optional client logos), **Outcomes we can help with**,
+    **Content listing** (variations Chosen, Latest and Links), **How we do it**,
+    **Screenshots**, **Features listing**.
+
+  Their renderers are in [src/components/slices/](src/components/slices/);
+  [Slices.astro](src/components/Slices.astro) dispatches them. Explainer
+  text, Features listing and Screenshots go through the block shapes in
+  [blocks.ts](src/data/blocks.ts) ([src/lib/slices.ts](src/lib/slices.ts)),
+  and runs of them share a background.
+- **Deprecated components:** Statement, Comparison, Figures, How EdCo works,
+  Page cards, Link words, Logo wall, Latest articles, Link cards, Cards, Steps,
+  Options, Routes and Call to action. They predate the deck and are kept so no
+  page lost content; replace them as pages are rebuilt
+  ([src/components/sections/](src/components/sections/)).
+- **Placeholders:** text in square brackets, like `[VERIFIED METRIC: 28 years]`,
+  or a card titled `[CURRENT EVENT]`, renders as a placeholder chip
+  ([src/lib/placeholders.ts](src/lib/placeholders.ts)).
 - **Reading content:** [src/lib/prismic.ts](src/lib/prismic.ts) has the client,
   links, images and rich text. Links to this site’s own addresses are made
   relative, so they work on preview builds too.
@@ -92,13 +113,11 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
   `/api/preview`, which stores the preview session in Prismic's cookie and
   redirects to `/preview/<published address>`. That route sets
   `Astro.locals.prismicPreview` and renders the same template the published page
-  uses:
-  - the homepage, hub and single pages are rendered from their page files;
-  - articles and case studies through `ArticleView` / `CaseStudyView`;
-  - section pages through `PrismicPage`.
+  uses: `PageView` for every page built from components (found by its address),
+  `CaseStudyView` for case studies, and the page files for the rest.
 
-  Pages and components read content through [src/lib/content.ts](src/lib/content.ts)
-  (`siteCopy`, `siteSettings`). These return published content in the static
+  Pages and components read content through [src/lib/pages.ts](src/lib/pages.ts)
+  (`pages`) and [src/lib/content.ts](src/lib/content.ts) (`siteCopy`, `siteSettings`). These return published content in the static
   build, and content at the preview's ref while previewing, fetched once per
   request. The layout adds `noindex`, Prismic's toolbar (which reloads on save)
   and an "Exit preview" bar. Site settings open on the homepage. The preview
@@ -113,7 +132,13 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
   `main`. The hook URL is stored only in Prismic.
 - **Hub and menu order** follows the menu in `src/data/site.ts`. A new page
   goes at the end until it's added there.
-- **History.** The content was imported on 26 October 2026 from the JSON and
+- **Checking content before it's published:** `PRISMIC_REF` (and
+  `PRISMIC_ACCESS_TOKEN`, for a release) build from that ref instead of the
+  published content. Local use only.
+- **Old addresses:** What We Think became Insights & Opinion on 27 October 2026;
+  `/what-we-think/…` redirects ([src/pages/what-we-think/](src/pages/what-we-think/)).
+- **History.** The content was restructured into components on 27 October 2026
+  by [prismic/restructure.ts](prismic/restructure.ts). It was imported on 26 October 2026 from the JSON and
   Markdown files that used to hold it. Those files, the import scripts, the
   Google Sheet copy deck and the `/admin` publish console it fed are in git
   history before commit "Retire the copy deck and /admin".

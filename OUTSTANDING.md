@@ -197,7 +197,20 @@ Two structural questions remain, neither of them blocking.
 Also: the ten-ways slide reads "connect it your systems". I have restored the
 missing word on the site; worth fixing in the source deck too.
 
-## 6. Questions I'd want answered
+## 6. From the component deck (Oct 2026)
+
+Every page is now built from the deck's page types and components. Left to decide:
+
+| Item | What I need |
+| --- | --- |
+| **Deprecated components still in use** | The homepage, outcomes hub, About and Agencies & Partners still use components that aren't in the deck (Statement, Figures, Link cards and others). Each needs a decision: add it to the deck, or rebuild that part from the deck's components. |
+| **Insights & Opinion copy** | The section's banner still says “Three different things, kept deliberately separate”. Research & insight merged into What we're hearing, so it's now two. |
+| **Pages below About and Agencies & Partners** | The types exist; no pages yet. |
+| **Provision blueprints** | The type exists at `/provision-blueprints/<name>/`; no pages yet, and nothing links to them. |
+| **Contact and case studies** | Not yet converted to components. Contact needs a form component first. |
+| **How we do it colours** | The deck shows each panel's icon in a different colour (indigo, teal, blue…). Those aren't brand colours, so every icon uses the orange-to-pink gradient. |
+
+## 7. Questions I'd want answered
 
 1. **Is the six-outcome navigation right?** It's the brief's spine and it's the biggest
    single bet in the design. Everything else follows from it.
