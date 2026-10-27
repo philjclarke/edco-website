@@ -1,0 +1,14 @@
+---
+/* Call to action (deprecated): the band at the foot of the page, with this page's own wording. Blank fields keep the site-wide wording. */
+import CtaBand from '../CtaBand.astro';
+import { hrefOf, textOf } from '@/lib/prismic';
+
+const { p } = Astro.props as { p: Record<string, any> };
+---
+
+<CtaBand
+  title={textOf(p.title) || undefined}
+  body={textOf(p.body) || undefined}
+  ctaLabel={textOf(p.button_label) || undefined}
+  ctaHref={hrefOf(p.button_link) ?? undefined}
+/>

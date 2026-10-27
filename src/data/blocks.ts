@@ -13,7 +13,19 @@ export type ImageRef = string | RemoteImage;
 export type Block =
   /** `html` (rich text from Prismic) wins over `paras` when both are present. */
   | { type: 'prose'; paras: string[]; html?: string; title?: string }
-  | { type: 'list'; title: string; items: string[]; icons?: (string | undefined)[]; lead?: string; columns?: 2 | 3 }
+  | {
+      type: 'list';
+      eyebrow?: string;
+      title: string;
+      items: string[];
+      icons?: (string | undefined)[];
+      /** A line under each item, by position. */
+      explainers?: (string | undefined)[];
+      lead?: string;
+      columns?: 2 | 3;
+      /** A background of its own; otherwise it shares the run's. */
+      tone?: 'mist' | 'dark';
+    }
   | { type: 'steps'; title?: string; lead?: string; steps: string[] }
   | { type: 'pull'; text: string; sub?: string }
   | {
@@ -23,7 +35,7 @@ export type Block =
       /** With `detail` or `shot`, each card expands to reveal them. */
       items: { title: string; body: string; detail?: string; shot?: ImageRef; icon?: string }[];
     }
-  | { type: 'shots'; title?: string; lead?: string; shots: { caption: string; src?: ImageRef }[] }
+  | { type: 'shots'; eyebrow?: string; title?: string; lead?: string; photo?: RemoteImage; shots: { caption: string; src?: ImageRef }[] }
   | {
       type: 'ways';
       title?: string;

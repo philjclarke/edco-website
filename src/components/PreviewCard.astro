@@ -1,0 +1,45 @@
+---
+/*
+  A card for any page, filled from its Preview tab: content listings use it.
+  Insights and opinion show their date and author; other pages show their
+  positioning statement and a link label. A preview image fades in on the
+  right (component deck, slide 8).
+*/
+import type { PagePreview } from '@/lib/pages';
+import FadedPhoto from './FadedPhoto.astro';
+
+interface Props {
+  page: PagePreview;
+  tone?: 'dark' | 'light';
+}
+const { page, tone = 'light' } = Astro.props;
+const dark = tone === 'dark';
+const a = page.article;
+---
+
+<a
+  href={page.href}
+  class:list={[
+    'group relative isolate flex h-full flex-col overflow-hidden rounded-card border p-6 transition md:p-7',
+    dark
+      ? 'border-navy-700 bg-navy-800 hover:border-orange/60'
+      : 'border-line bg-paper hover:border-ink/25 hover:shadow-lg hover:shadow-navy-900/5',
+  ]}
+>
+  {page.image && <FadedPhoto image={page.image} placement="card" />}
+  {a && <p class:list={['eyebrow mb-3', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{a.label}</p>}
+  <h3 class="text-lg leading-snug md:text-xl">{page.title}</h3>
+  {!a && page.positioning && <p class="mt-2 font-display text-base font-semibold leading-snug grad-text">{page.positioning}</p>}
+  {page.text && <p class:list={['mt-3 text-sm', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{page.text}</p>}
+  {
+    a ? (
+      <p class:list={['mt-auto flex flex-wrap items-center gap-x-3 pt-5 text-xs', dark ? 'text-ondark-muted' : 'text-ink-muted']}>
+        {a.date && <time datetime={a.date.toISOString()}>{a.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</time>}
+        {a.author && <span>{a.author}</span>}
+        {a.status === 'sample' && <span class="text-orange">Sample</span>}
+      </p>
+    ) : (
+      <span class="mt-auto pt-5 text-sm font-medium grad-text">{page.linkLabel ?? 'Find out more'} →</span>
+    )
+  }
+</a>

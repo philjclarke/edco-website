@@ -1,12 +1,13 @@
 ---
-import PrismicPage from '@/components/PrismicPage.astro';
-import { capabilityPages } from '@/data/capabilities';
+/* Capability pages. Built from their components in Prismic (type 'capability'). */
+import PageView from '@/components/PageView.astro';
+import { pagesOf } from '@/lib/pages';
 
 export async function getStaticPaths() {
-  return capabilityPages.map((c) => ({ params: { slug: c.slug }, props: { page: c } }));
+  return (await pagesOf('capability')).map((doc) => ({ params: { slug: doc.uid! }, props: { doc } }));
 }
 
-const { page } = Astro.props;
+const { doc } = Astro.props;
 ---
 
-<PrismicPage page={page} section={{ label: 'Capabilities', href: '/capabilities/' }} />
+<PageView doc={doc} />

@@ -1,13 +1,14 @@
 import { defineCollection, z } from 'astro:content';
 import type { Loader } from 'astro/loaders';
 import { client, richHTML } from './lib/prismic';
-import { articleFields, caseStudyFields } from './lib/editorial';
+import { caseStudyFields } from './lib/editorial';
 
 /*
-  Editorial content, from Prismic (types "article" and "case_study"). A
-  small loader per collection reads the published pages and hands them to
-  Astro's content layer, so the templates keep using getCollection() and
-  render() as before. The schemas below still validate every entry.
+  Case studies, from Prismic (type "case_study"). A small loader reads the
+  published pages and hands them to Astro's content layer, so the templates
+  keep using getCollection() and render() as before. The schema below still
+  validates every entry. (Insights and opinion are pages built from
+  components, read through src/lib/pages.ts.)
 */
 
 const fromPrismic = (type: string, toData: (d: Record<string, any>) => Record<string, unknown>): Loader => ({
@@ -19,27 +20,6 @@ const fromPrismic = (type: string, toData: (d: Record<string, any>) => Record<st
       store.set({ id: doc.uid!, data, rendered: { html: richHTML(doc.data.body) } });
     }
   },
-});
-
-const streams = ['what-were-hearing', 'opinion', 'research-and-insight'] as const;
-
-const articles = defineCollection({
-  loader: fromPrismic('article', articleFields),
-  schema: z.object({
-    title: z.string(),
-    /* Brief §46: three clearly differentiated editorial voices. */
-    stream: z.enum(streams),
-    summary: z.string(),
-    date: z.coerce.date(),
-    /* Brief §47: What We're Hearing is the institutional voice, no named author.
-       Brief §48: Opinion is attributed. */
-    author: z.string().optional(),
-    /* Tagged for search and for the personalisation the brief defers (§65). */
-    themes: z.array(z.string()).default([]),
-    /* 'sample' renders a visible banner: written to demonstrate the template,
-       not approved as EdCo's published position. */
-    status: z.enum(['sample', 'live']).default('sample'),
-  }),
 });
 
 const caseStudies = defineCollection({
@@ -64,4 +44,4 @@ const caseStudies = defineCollection({
   }),
 });
 
-export const collections = { articles, caseStudies };
+export const collections = { caseStudies };

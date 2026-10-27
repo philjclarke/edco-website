@@ -1,0 +1,13 @@
+---
+/* Pages below Agencies & Partners. Built from their components in Prismic (type 'agencies_subpage'). */
+import PageView from '@/components/PageView.astro';
+import { pagesOf } from '@/lib/pages';
+
+export async function getStaticPaths() {
+  return (await pagesOf('agencies_subpage')).map((doc) => ({ params: { uid: doc.uid! }, props: { doc } }));
+}
+
+const { doc } = Astro.props;
+---
+
+<PageView doc={doc} />

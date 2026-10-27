@@ -1,42 +1,10 @@
 ---
-/* Brief §12–§20. The homepage: its banner, then the sections arranged in
-   Prismic (Homepage → Sections). The brief's order (partners, how EdCo
-   works, outcomes, one EdCo, breadth, proof, logos, hearing, free value) is
-   what was imported; the outcome-led proposition should land before "One
-   EdCo" or the products if it's rearranged. */
-import Layout from '@/layouts/Layout.astro';
-import Button from '@/components/Button.astro';
-import Slices from '@/components/Slices.astro';
-import CtaBand from '@/components/CtaBand.astro';
-import BannerImage from '@/components/BannerImage.astro';
-import { site } from '@/data/site';
-import { siteCopy } from '@/lib/content';
+/* The homepage (brief §12–§20). Built from its components in Prismic (type "home_page"). */
+import PageView from '@/components/PageView.astro';
+import { pages } from '@/lib/pages';
 
-const { home } = await siteCopy(Astro.locals);
+const doc = (await pages(Astro.locals)).single('home_page');
+if (!doc) throw new Error('No home_page page in Prismic.');
 ---
 
-<Layout title="home" description={home.meta.description}>
-  <!-- ============================ Hero ============================ -->
-  <section class="relative overflow-hidden bg-navy-900 text-ondark">
-    <BannerImage src={home.banner ?? 'classroom'} focus={home.bannerFocus} treatment="fade" duotone />
-
-    <div class="relative mx-auto max-w-7xl px-6 pb-20 pt-12 md:pb-28 md:pt-16 lg:pb-32 lg:pt-20">
-      <div class="max-w-2xl">
-        <p class="eyebrow mb-6 text-ondark-muted">{home.hero.eyebrow}</p>
-        <h1 class="text-hero">{home.hero.heading}</h1>
-        <p class="mt-7 font-display text-lead font-semibold grad-text">{home.hero.standfirst}</p>
-        <p class="mt-6 max-w-xl text-lead text-ondark-muted">{home.hero.body}</p>
-        <div class="mt-10 flex flex-wrap gap-3">
-          <Button href={site.primaryCta.href} size="lg">{site.primaryCta.label}</Button>
-          <Button href={site.secondaryCta.href} size="lg" variant="ghost-dark">
-            {site.secondaryCta.label}
-          </Button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <Slices slices={home.slices} />
-
-  <CtaBand />
-</Layout>
+<PageView doc={doc} />

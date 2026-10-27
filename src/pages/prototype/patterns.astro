@@ -7,7 +7,6 @@
   content is real copy from the site, so what's being judged is the pattern
   rather than the words.
 */
-import { getCollection } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
 import Section from '@/components/Section.astro';
 import Grid from '@/components/Grid.astro';
@@ -19,7 +18,7 @@ import TickList, { type TickListVariant } from '@/components/TickList.astro';
 import ModelStrip from '@/components/ModelStrip.astro';
 import StatGrid from '@/components/StatGrid.astro';
 import LogoWall from '@/components/LogoWall.astro';
-import ArticleCard from '@/components/ArticleCard.astro';
+import PreviewCard from '@/components/PreviewCard.astro';
 import Testimonial from '@/components/Testimonial.astro';
 import ProductShot from '@/components/ProductShot.astro';
 import ShoutOut from '@/components/ShoutOut.astro';
@@ -35,8 +34,10 @@ import type { Block } from '@/data/blocks';
 import type { Slice } from '@prismicio/client';
 import { blockOf } from '@/lib/slices';
 import { hrefOf, textOf } from '@/lib/prismic';
+import { pages } from '@/lib/pages';
 
-const articles = (await getCollection('articles')).slice(0, 3);
+const all = await pages();
+const articles = all.docs.filter((d) => d.type === 'insight' || d.type === 'opinion').slice(0, 3).map(all.preview);
 const route = routes[0];
 // Samples come from the live content in Prismic, translated into blocks.
 const blocksOf = (page: { doc: { data: Record<string, any> } }) =>
@@ -83,7 +84,7 @@ const patterns = [
   { id: 'route', name: 'Route steps', click: 'Clickable', where: '“How we do it” on outcome pages' },
   { id: 'expand', name: 'Expanding cards', click: 'Clickable', where: 'Education IQ — “What people use it for”' },
   { id: 'ways', name: 'Numbered options', click: 'Not clickable', where: 'Education IQ — “Ten ways to use it”' },
-  { id: 'articles', name: 'Article cards', click: 'Clickable', where: 'What We Think' },
+  { id: 'articles', name: 'Article cards', click: 'Clickable', where: 'Insights & Opinion' },
   { id: 'proof', name: 'Testimonial', click: 'Not clickable', where: 'Social proof on every section page' },
   { id: 'shout', name: 'Shout-out band', click: 'Not clickable', where: 'Between sections, all three page templates' },
   { id: 'placeholder', name: 'Placeholder', click: 'Not clickable', where: 'Anywhere copy or an asset is still missing' },
@@ -326,7 +327,7 @@ const patterns = [
             <ul class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {articles.map((a) => (
                 <li>
-                  <ArticleCard article={a} />
+                  <PreviewCard page={a} />
                 </li>
               ))}
             </ul>

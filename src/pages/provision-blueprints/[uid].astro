@@ -1,0 +1,13 @@
+---
+/* Provision blueprints, linked from other pages rather than the menu. Built from their components in Prismic (type 'provision_blueprint'). */
+import PageView from '@/components/PageView.astro';
+import { pagesOf } from '@/lib/pages';
+
+export async function getStaticPaths() {
+  return (await pagesOf('provision_blueprint')).map((doc) => ({ params: { uid: doc.uid! }, props: { doc } }));
+}
+
+const { doc } = Astro.props;
+---
+
+<PageView doc={doc} />

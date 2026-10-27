@@ -1,6 +1,7 @@
 /*
   Brief §5 — the conceptual model underpinning the entire website — plus the
-  beliefs that lead About EdCo (§61) and the joined-up routes (§71).
+  joined-up routes (§71). The beliefs that lead About EdCo (§61) are a
+  Features listing on the About page.
   Words in Prismic (Site settings); see pageCopy.ts.
 */
 
@@ -13,10 +14,6 @@ export interface ModelStep {
   methods: string[];
   icon?: string;
 }
-export interface Belief {
-  title: string;
-  body: string;
-}
 export interface Route {
   objective: string;
   steps: string[];
@@ -26,9 +23,6 @@ export interface Route {
 
 /* LISTEN → UNDERSTAND → GIVE → ENGAGE → BUILD → GROW */
 export const edcoModel: ModelStep[] = settings.edcoModel;
-
-/* Brief §61 — About EdCo leads with beliefs, not a corporate timeline. */
-export const beliefs: Belief[] = settings.beliefs;
 
 /* Brief §71 — joined-up routes through EdCo for real customer objectives.
    Deliberately not labelled "plays" in public.

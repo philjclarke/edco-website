@@ -1,0 +1,10 @@
+---
+/* Insights & Opinion (brief §46), formerly What We Think. Built from its components in Prismic (type "what_we_think_page"). */
+import PageView from '@/components/PageView.astro';
+import { pages } from '@/lib/pages';
+
+const doc = (await pages(Astro.locals)).single('what_we_think_page');
+if (!doc) throw new Error('No what_we_think_page page in Prismic.');
+---
+
+<PageView doc={doc} />

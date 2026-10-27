@@ -6,6 +6,7 @@ import ProductShot from './ProductShot.astro';
 import Grid from './Grid.astro';
 import ProcessGrid from './ProcessGrid.astro';
 import Placeholder from './Placeholder.astro';
+import FadedPhoto from './FadedPhoto.astro';
 
 interface Props {
   blocks: Block[];
@@ -25,10 +26,16 @@ const bg = (i: number) =>
     <section
       class:list={[
         'py-14 md:py-20',
-        block.type === 'pull' ? 'bg-navy-900 text-ondark' : bg(i),
+        block.type === 'pull' || (block.type === 'list' && block.tone === 'dark')
+          ? 'bg-navy-900 text-ondark'
+          : block.type === 'list' && block.tone === 'mist'
+            ? 'bg-mist'
+            : bg(i),
         tone && i > 0 && 'pt-0 md:pt-0',
+        block.type === 'shots' && block.photo && 'relative isolate overflow-hidden',
       ]}
     >
+      {block.type === 'shots' && block.photo && <FadedPhoto image={block.photo} />}
       <div class="mx-auto max-w-7xl px-6">
         {block.type === 'prose' && (
           <div class="max-w-3xl">
@@ -48,11 +55,18 @@ const bg = (i: number) =>
         {block.type === 'list' && (
           <div>
             <div class="max-w-3xl">
-              <h2 class="text-title">{block.title}</h2>
-              {block.lead && <p class="mt-4 text-lead text-ink-muted">{block.lead}</p>}
+              {block.eyebrow && <p class="eyebrow grad-text mb-4">{block.eyebrow}</p>}
+              {block.title && <h2 class="text-title">{block.title}</h2>}
+              {block.lead && <p class:list={['mt-4 text-lead', block.tone === 'dark' ? 'text-ondark-muted' : 'text-ink-muted']}>{block.lead}</p>}
             </div>
-            <div class="mt-8">
-              <TickList items={block.items} icons={block.icons} columns={block.columns ?? 2} />
+            <div class:list={[(block.title || block.lead) && 'mt-8']}>
+              <TickList
+                items={block.items}
+                icons={block.icons}
+                explainers={block.explainers}
+                columns={block.columns ?? 2}
+                tone={block.tone === 'dark' ? 'dark' : 'light'}
+              />
             </div>
           </div>
         )}
@@ -114,6 +128,7 @@ const bg = (i: number) =>
           <div>
             {block.title && (
               <div class="max-w-3xl">
+                {block.eyebrow && <p class="eyebrow grad-text mb-4">{block.eyebrow}</p>}
                 <h2 class="text-title">{block.title}</h2>
                 {block.lead && <p class="mt-4 text-lead text-ink-muted">{block.lead}</p>}
               </div>

@@ -13,7 +13,8 @@ import { products } from '@/data/products';
 import { capabilities } from '@/data/capabilities';
 
 interface Props {
-  links: NavLink[];
+  /** A link's own icon wins over the one looked up from its address. */
+  links: (NavLink & { icon?: string })[];
   title?: string;
   tone?: 'dark' | 'light';
   /** Show the destination's own icon, where it has one. */
@@ -48,9 +49,9 @@ const iconByHref = new Map<string, string | undefined>([
               aria-hidden="true"
               class="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 grad-rule transition-transform duration-300 group-hover:scale-x-100"
             />
-            {icons && iconByHref.get(l.href) && (
+            {icons && (l.icon ?? iconByHref.get(l.href)) && (
               <span class="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[linear-gradient(120deg,var(--color-orange),var(--color-pink))] text-white transition-transform duration-200 group-hover:scale-105">
-                <Icon name={iconByHref.get(l.href)!} class="h-4 w-4" />
+                <Icon name={(l.icon ?? iconByHref.get(l.href))!} class="h-4 w-4" />
               </span>
             )}
             <span class="font-display text-base font-semibold">{l.label}</span>

@@ -9,12 +9,14 @@ import Placeholder from './Placeholder.astro';
 import { MOCK_PROOF, mockShout } from '@/data/mock';
 
 interface Props {
+  /** A small label above the quote. */
+  header?: string;
   text?: string;
   sub?: string;
   /** Its position on the page, for the placeholder. */
   n: number;
 }
-const { text, sub, n } = Astro.props;
+const { header, text, sub, n } = Astro.props;
 const filled = !!text?.trim();
 const mock = !filled && MOCK_PROOF ? mockShout(pagePath(Astro.locals, Astro.url), n) : null;
 ---
@@ -25,6 +27,7 @@ const mock = !filled && MOCK_PROOF ? mockShout(pagePath(Astro.locals, Astro.url)
   data-pagefind-ignore={mock ? 'all' : undefined}
 >
   <div class="mx-auto max-w-4xl px-6 text-center">
+    {header?.trim() && (filled || mock) && <p class="eyebrow mb-6 text-ondark-muted">{header}</p>}
     {
       filled ? (
         <>

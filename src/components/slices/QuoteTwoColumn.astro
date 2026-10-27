@@ -1,0 +1,51 @@
+---
+/*
+  Quote, two-column variation: a header on the left, the quote in a card on
+  the right, client logos underneath if switched on. With no quote yet it
+  shows the mock testimonial for its theme (see Testimonial.astro).
+*/
+import type { Slice } from '@prismicio/client';
+import Section from '../Section.astro';
+import Testimonial from '../Testimonial.astro';
+import LogoWall from '../LogoWall.astro';
+import { textOf } from '@/lib/prismic';
+
+const { slice } = Astro.props as { slice: Slice };
+const p = slice.primary as Record<string, any>;
+const quote = textOf(p.text);
+const [name, ...rest] = textOf(p.footer).split(/,\s*/);
+---
+
+<Section tone="mist" size="md">
+  <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:items-center">
+    <div>
+      {textOf(p.eyebrow) && <p class="eyebrow grad-text mb-4">{textOf(p.eyebrow)}</p>}
+      {textOf(p.header) && <h2 class="text-title">{textOf(p.header)}</h2>}
+    </div>
+    {
+      quote ? (
+        <figure class="rounded-card border border-line bg-paper p-7 md:p-8">
+          <div class="h-1 w-12 rounded-full grad-rule" />
+          <blockquote class="mt-5 font-display text-lg leading-snug md:text-xl">
+            <p>“{quote.replace(/^[“"]|[”"]$/g, '')}”</p>
+          </blockquote>
+          {name && (
+            <figcaption class="mt-5 text-sm text-ink-muted">
+              <span class="font-semibold text-ink">{name}</span>
+              {rest.length > 0 && <span class="block">{rest.join(', ')}</span>}
+            </figcaption>
+          )}
+        </figure>
+      ) : (
+        <Testimonial prompt={textOf(p.theme) || 'working with EdCo'} />
+      )
+    }
+  </div>
+  {
+    p.show_logos && (
+      <div class="mt-12">
+        <LogoWall />
+      </div>
+    )
+  }
+</Section>

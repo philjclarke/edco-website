@@ -18,11 +18,13 @@ export type TickListVariant = 'grid' | 'dense' | 'list';
 interface Props {
   items: readonly string[];
   icons?: readonly (string | undefined)[];
+  /** A line under each item, by position (the list treatment only). */
+  explainers?: readonly (string | undefined)[];
   columns?: 1 | 2 | 3;
   tone?: 'dark' | 'light';
   variant?: TickListVariant;
 }
-const { items, icons = [], columns = 2, tone = 'light', variant = 'list' } = Astro.props;
+const { items, icons = [], explainers = [], columns = 2, tone = 'light', variant = 'list' } = Astro.props;
 const dark = tone === 'dark';
 const cols = (columns === 1 ? 2 : columns) as 2 | 3;
 const iconOf = (i: number) => icons[i] || 'fa6-solid:circle-check';
@@ -78,7 +80,14 @@ const listCols = items.length <= 6 ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-
           ]}
         >
           <Icon name={iconOf(i)} class:list={['mt-0.5 h-4 w-4 shrink-0', accent]} />
-          <span class="text-[0.9375rem] leading-snug">{item}</span>
+          {explainers[i] ? (
+            <span>
+              <span class="block text-[0.9375rem] font-medium leading-snug">{item}</span>
+              <span class:list={['mt-1 block text-sm', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{explainers[i]}</span>
+            </span>
+          ) : (
+            <span class="text-[0.9375rem] leading-snug">{item}</span>
+          )}
         </li>
       ))}
     </ul>

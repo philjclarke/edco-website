@@ -8,23 +8,18 @@
   site, open on the homepage.
 */
 import type { APIRoute } from 'astro';
-import { client, prismic, repositoryName } from '@/lib/prismic';
+import { client, linkResolver, prismic, repositoryName } from '@/lib/prismic';
 
 export const prerender = false;
 
+// Pages built from fixed fields, which have no route in src/lib/prismic.ts.
 const SINGLETON_PATHS: Record<string, string> = {
-  home_page: '/', outcomes_hub: '/what-are-you-trying-to-achieve/', products_hub: '/products/',
-  capabilities_hub: '/capabilities/', free_analysis_page: '/free-customer-analysis/',
-  agencies_page: '/agencies-and-partners/', about_page: '/about/', contact_page: '/contact/',
-  customer_page: '/customer/', for_educators_page: '/for-educators/', what_we_think_page: '/what-we-think/',
-  case_studies_hub: '/case-studies/', search_page: '/search/', not_found_page: '/404/', site_settings: '/', // shown across the site; the homepage carries most of it
+  free_analysis_page: '/free-customer-analysis/', contact_page: '/contact/', customer_page: '/customer/',
+  for_educators_page: '/for-educators/', case_studies_hub: '/case-studies/', search_page: '/search/',
+  not_found_page: '/404/', site_settings: '/', // shown across the site; the homepage carries most of it
 };
 
-function livePath(doc: prismic.PrismicDocument): string {
-  if (doc.type === 'article') return `/what-we-think/${doc.data.stream}/${doc.uid}/`;
-  if (doc.type === 'case_study') return `/case-studies/${doc.uid}/`;
-  return SINGLETON_PATHS[doc.type] ?? '/';
-}
+const livePath = (doc: prismic.PrismicDocument) => linkResolver(doc) ?? SINGLETON_PATHS[doc.type] ?? '/';
 
 export const GET: APIRoute = async ({ url, cookies, redirect }) => {
   const token = url.searchParams.get('token');
@@ -41,7 +36,7 @@ export const GET: APIRoute = async ({ url, cookies, redirect }) => {
     return new Response('This preview has expired or the page no longer exists. Open the preview from Prismic again.', { status: 410 });
   }
 
-  const path = ['product', 'capability', 'outcome'].includes(doc.type) ? (prismic.asLink(doc) ?? '/') : livePath(doc);
+  const path = livePath(doc);
   cookies.set(prismic.cookie.preview, token, { path: '/', sameSite: 'lax', secure: url.protocol === 'https:' });
   return redirect(`/preview${path}`, 302);
 };

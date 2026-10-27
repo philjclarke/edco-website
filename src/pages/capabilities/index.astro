@@ -1,63 +1,10 @@
 ---
-/* Brief §11: capabilities are a secondary route. This page exists so the
-   detail is findable, not so it competes with the outcome routes. */
-import Layout from '@/layouts/Layout.astro';
-import PageHero from '@/components/PageHero.astro';
-import Section from '@/components/Section.astro';
-import Card from '@/components/Card.astro';
-import CtaBand from '@/components/CtaBand.astro';
-import Placeholder from '@/components/Placeholder.astro';
-import { capabilities } from '@/data/capabilities';
-import { siteCopy } from '@/lib/content';
+/* Brief §11. The capabilities behind the outcomes. Built from its components in Prismic (type "capabilities_hub"). */
+import PageView from '@/components/PageView.astro';
+import { pages } from '@/lib/pages';
 
-const { pages: copy } = await siteCopy(Astro.locals);
-
+const doc = (await pages(Astro.locals)).single('capabilities_hub');
+if (!doc) throw new Error('No capabilities_hub page in Prismic.');
 ---
 
-<Layout
-  title={copy.capabilitiesHub.metaTitle}
-  description={copy.capabilitiesHub.metaDescription}
->
-  <PageHero
-    eyebrow={copy.capabilitiesHub.heroEyebrow}
-    title={copy.capabilitiesHub.heroTitle}
-    standfirst={copy.capabilitiesHub.heroStandfirst}
-    lead={copy.capabilitiesHub.heroLead}
-    banner={{ src: 'workshop-group', focus: 'right' }}
-  />
-
-  <Section tone="light" size="lg">
-    <ul class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-      {
-        capabilities.map((c) => (
-          <li>
-            <Card
-              href={c.page ? `/capabilities/${c.slug}/` : undefined}
-              icon={c.icon}
-              eyebrow={c.navLabel}
-              title={c.title}
-              body={c.summary}
-              meta={c.page ? 'Read about it' : undefined}
-            >
-              {!c.page && (
-                <p class="mt-auto pt-5">
-                  <Placeholder label="PAGE TO FOLLOW" note="phase 2" />
-                </p>
-              )}
-            </Card>
-          </li>
-        ))
-      }
-    </ul>
-  </Section>
-
-  <Section tone="dark" size="md">
-    <div class="mx-auto max-w-3xl text-center">
-      <div class="mx-auto mb-8 h-1 w-16 rounded-full grad-rule"></div>
-      <p class="font-display text-display font-bold">{copy.capabilitiesHub.body}</p>
-      <p class="mt-6 text-lead text-ondark-muted">{copy.capabilitiesHub.body2}</p>
-    </div>
-  </Section>
-
-  <CtaBand />
-</Layout>
+<PageView doc={doc} />

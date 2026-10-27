@@ -1,0 +1,13 @@
+---
+/* Insights & Opinion: its sections, and every insight and opinion piece. They share one set of addresses. Built from their components in Prismic (type 'insights_section', 'insight', 'opinion'). */
+import PageView from '@/components/PageView.astro';
+import { pagesOf } from '@/lib/pages';
+
+export async function getStaticPaths() {
+  return (await pagesOf('insights_section', 'insight', 'opinion')).map((doc) => ({ params: { uid: doc.uid! }, props: { doc } }));
+}
+
+const { doc } = Astro.props;
+---
+
+<PageView doc={doc} />

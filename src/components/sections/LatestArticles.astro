@@ -1,60 +1,9 @@
 ---
-/*
-  Latest articles: the newest Insights articles, all or from one stream.
-  Slots without an article show a placeholder until there are enough
-  (homepage "what we're hearing").
-*/
-import { getCollection } from 'astro:content';
-import Section from '../Section.astro';
-import SectionHead from '../SectionHead.astro';
-import Button from '../Button.astro';
-import Card from '../Card.astro';
-import ArticleCard from '../ArticleCard.astro';
-import Placeholder from '../Placeholder.astro';
-import { hrefOf, textOf } from '@/lib/prismic';
-import { siteSettings } from '@/lib/content';
-import { toneOf } from './tone';
+/* Latest articles (deprecated): replaced by Content listing → Latest, which renders it. */
+import ContentListing from '../slices/ContentListing.astro';
 
 const { p } = Astro.props as { p: Record<string, any> };
-const tone = toneOf(p.background);
-const dark = tone === 'dark';
-const count = Math.max(1, Math.min(12, Number(p.count) || 3));
-const stream = p.stream && p.stream !== 'All' ? p.stream : null;
-const { streamBySlug } = await siteSettings(Astro.locals);
-const streamLabel = stream ? (streamBySlug[stream]?.label ?? 'Insights') : 'Insights';
-
-const articles = (await getCollection('articles'))
-  .filter((a) => !stream || a.data.stream === stream)
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, count);
-const empty = Array.from({ length: count - articles.length }, (_, i) => articles.length + i + 1);
-const button = hrefOf(p.button_link);
+const show = p.stream === 'Insights' || p.stream === 'Opinion' ? p.stream : 'Insights and opinion';
 ---
 
-<Section tone={tone} size="lg">
-  <div class="flex flex-wrap items-end justify-between gap-6">
-    <SectionHead
-      eyebrow={textOf(p.eyebrow) || undefined}
-      title={textOf(p.heading)}
-      lead={textOf(p.intro) || undefined}
-      tone={dark ? 'dark' : 'light'}
-      class="flex-1"
-    />
-    {button && textOf(p.button_label) && <Button href={button} variant={dark ? 'ghost-dark' : 'ghost'}>{textOf(p.button_label)}</Button>}
-  </div>
-  <ul class="mt-12 grid gap-5 md:grid-cols-3">
-    {articles.map((a) => <li><ArticleCard article={a} tone={dark ? 'dark' : 'light'} /></li>)}
-    {
-      empty.map((n) => (
-        <li>
-          <Card eyebrow={streamLabel} title="">
-            <div class="space-y-3">
-              <Placeholder label={`CURRENT ${streamLabel.toUpperCase()} ITEM`} note={`slot ${n}`} block />
-              {textOf(p.empty_note) && <p class="text-sm text-ink-muted">{textOf(p.empty_note)}</p>}
-            </div>
-          </Card>
-        </li>
-      ))
-    }
-  </ul>
-</Section>
+<ContentListing slice={{ slice_type: 'content_listing', variation: 'latest', primary: { ...p, show }, items: [] } as any} />

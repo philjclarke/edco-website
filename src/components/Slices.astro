@@ -1,65 +1,73 @@
 ---
 /*
-  A Prismic page's sections, in the order the editor arranged them.
+  A page's components, in the order the editor arranged them in Prismic.
 
-  Section slices (statement, figures, page cards …) render their own
-  full-width section. Quotes are full-width shout-out bands. Runs of other sections between them
-  share one background so they read as one part of the page; an empty quote
-  shows a mock while MOCK_PROOF is on. How we do it shows a panel for each picked
-  product or capability, filled from that page's Panel tab.
+  Most components render their own full-width section. Runs of the plain
+  content components (Explainer text, Features listing, Screenshots and the
+  deprecated Cards, Steps and Options) share one background so they read as
+  one part of the page. An empty quote shows a mock while MOCK_PROOF is on.
 */
 import type { Slice } from '@prismicio/client';
 import Blocks from './Blocks.astro';
 import ShoutOut from './ShoutOut.astro';
-import Section from './Section.astro';
-import Card from './Card.astro';
-import { sectionPageByHref } from '@/data/outcomes';
-import type { SectionPage } from '@/data/sectionPages';
+import Banner from './slices/Banner.astro';
+import QuoteTwoColumn from './slices/QuoteTwoColumn.astro';
+import OutcomeCards from './slices/OutcomeCards.astro';
+import ContentListing from './slices/ContentListing.astro';
+import HowWeDoIt from './slices/HowWeDoIt.astro';
+import ArticleBody from './slices/ArticleBody.astro';
 import SectionSlice from './sections/SectionSlice.astro';
 import { SECTION_SLICE_TYPES } from './sections/tone';
 import { blockOf } from '@/lib/slices';
-import { hrefOf, textOf } from '@/lib/prismic';
+import { textOf } from '@/lib/prismic';
+import type { PageContext } from '@/lib/pages';
 import type { Block } from '@/data/blocks';
 
 interface Props {
   slices: Slice[];
+  /** The page the components are on. Absent in the slice simulator. */
+  context?: PageContext;
   /**
    * One wrapper per slice, never merged — for Prismic's slice simulator,
    * which maps each child of the slice zone to one slice.
    */
   separate?: boolean;
 }
-const { slices, separate = false } = Astro.props;
+const { slices, context, separate = false } = Astro.props;
+
+const OWN_SECTION: Record<string, any> = {
+  banner: Banner,
+  outcomes: OutcomeCards,
+  content_listing: ContentListing,
+  how_we_do_it: HowWeDoIt,
+};
 
 type Part =
   | { kind: 'blocks'; blocks: Block[] }
-  | { kind: 'quote'; n: number; text: string; sub: string }
-  | { kind: 'panels'; heading: string; intro: string; pages: SectionPage[] }
-  | { kind: 'section'; slice: Slice };
+  | { kind: 'quote'; n: number; header: string; text: string; sub: string }
+  | { kind: 'own'; slice: Slice; Component: any };
 
 const parts: Part[] = [];
-let byHref: Map<string, SectionPage> | undefined;
 let quotes = 0;
 for (const s of slices) {
   const p = s.primary as Record<string, any>;
   if (SECTION_SLICE_TYPES.has(s.slice_type)) {
-    parts.push({ kind: 'section', slice: s });
+    parts.push({ kind: 'own', slice: s, Component: SectionSlice });
+  } else if (OWN_SECTION[s.slice_type]) {
+    parts.push({ kind: 'own', slice: s, Component: OWN_SECTION[s.slice_type] });
+  } else if (s.slice_type === 'quote' && s.variation === 'two_column') {
+    parts.push({ kind: 'own', slice: s, Component: QuoteTwoColumn });
   } else if (s.slice_type === 'quote') {
-    parts.push({ kind: 'quote', n: ++quotes, text: textOf(p.text), sub: textOf(p.supporting_line) });
-  } else if (s.slice_type === 'how_we_do_it') {
-    // Each panel is the picked page's own Panel content.
-    byHref ??= await sectionPageByHref();
-    parts.push({
-      kind: 'panels',
-      heading: textOf(p.heading),
-      intro: textOf(p.intro),
-      pages: (p.pages ?? []).map((x: any) => byHref!.get(hrefOf(x.page) ?? '')).filter(Boolean),
-    });
+    parts.push({ kind: 'quote', n: ++quotes, header: textOf(p.header), text: textOf(p.text), sub: textOf(p.footer) });
+  } else if (s.slice_type === 'text_block' && context?.preview.article) {
+    parts.push({ kind: 'own', slice: s, Component: ArticleBody });
   } else {
     const b = blockOf(s);
     if (!b) continue;
+    // A features listing on a grey or navy background stands on its own.
+    const alone = 'tone' in b && b.tone !== undefined;
     const last = parts[parts.length - 1];
-    if (!separate && last?.kind === 'blocks') last.blocks.push(b);
+    if (!separate && !alone && last?.kind === 'blocks' && !last.blocks.some((x) => 'tone' in x && x.tone)) last.blocks.push(b);
     else parts.push({ kind: 'blocks', blocks: [b] });
   }
 }
@@ -68,23 +76,10 @@ for (const s of slices) {
 {
   parts.map((part) => {
     const content =
-      part.kind === 'section' ? (
-        <SectionSlice slice={part.slice} />
+      part.kind === 'own' ? (
+        part.Component === SectionSlice ? <SectionSlice slice={part.slice} /> : <part.Component slice={part.slice} context={context} />
       ) : part.kind === 'quote' ? (
-        <ShoutOut n={part.n} text={part.text} sub={part.sub} />
-      ) : part.kind === 'panels' ? (
-        <Section tone="light" size="md">
-          <p class="eyebrow grad-text mb-4">How we do it</p>
-          {part.heading && <h2 class="text-title">“{part.heading}”</h2>}
-          {part.intro && <p class="mt-4 max-w-2xl text-ink-muted">{part.intro}</p>}
-          <ul class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {part.pages.map((pg) => (
-              <li>
-                <Card href={pg.href} icon={pg.panel.icon} title={pg.panel.title} body={pg.panel.text} meta={pg.panel.linkLabel ?? 'Find out more'} />
-              </li>
-            ))}
-          </ul>
-        </Section>
+        <ShoutOut n={part.n} header={part.header} text={part.text} sub={part.sub} />
       ) : (
         <Blocks blocks={part.blocks} tone="paper" />
       );

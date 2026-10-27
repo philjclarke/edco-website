@@ -1,0 +1,16 @@
+---
+/* Explainer text on an insight or opinion page: the article itself, in a reading column. Open by default; no gate (brief §51). */
+import type { Slice } from '@prismicio/client';
+import Section from '../Section.astro';
+import { richHTML, textOf } from '@/lib/prismic';
+
+const { slice } = Astro.props as { slice: Slice };
+const p = slice.primary as Record<string, any>;
+---
+
+<Section tone="light" size="md" width="narrow">
+  {textOf(p.heading) && <h2 class="text-title mb-6">{textOf(p.heading)}</h2>}
+  <div class="prose-edco">
+    <Fragment set:html={richHTML(p.body)} />
+  </div>
+</Section>

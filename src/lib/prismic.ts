@@ -8,17 +8,27 @@
   repository (e.g. a copy for testing); otherwise it uses EdCo's.
 */
 import * as prismic from '@prismicio/client';
+import { PAGE_TYPES } from '../../prismic/pageTypes';
 
 export const repositoryName = import.meta.env.PRISMIC_REPOSITORY || process.env.PRISMIC_REPOSITORY || '66bbee42';
 
-/** Where each Prismic page type lives on the site. */
+/** Where each Prismic page type lives on the site (prismic/pageTypes.ts). */
 export const routes: prismic.Route[] = [
-  { type: 'product', path: '/products/:uid/' },
-  { type: 'capability', path: '/capabilities/:uid/' },
-  { type: 'outcome', path: '/:uid/' },
+  ...PAGE_TYPES.map((t) => ({ type: t.id, path: t.path })),
+  { type: 'case_study', path: '/case-studies/:uid/' },
 ];
 
-export const client = prismic.createClient(repositoryName, { routes });
+/*
+  PRISMIC_REF and PRISMIC_ACCESS_TOKEN build the site from a Prismic release
+  instead of the published content, to check a content change before it's
+  published. Local use only: never set them on Vercel.
+*/
+const pinnedRef = process.env.PRISMIC_REF;
+export const client = prismic.createClient(repositoryName, {
+  routes,
+  ...(process.env.PRISMIC_ACCESS_TOKEN ? { accessToken: process.env.PRISMIC_ACCESS_TOKEN } : {}),
+});
+if (pinnedRef) client.queryContentFromRef(pinnedRef);
 
 /** Every page of a type, in the order editors set in Prismic (by date, oldest first, as a stable default). */
 const cache = new Map<string, Promise<prismic.PrismicDocument[]>>();
@@ -53,12 +63,11 @@ export function srcsetOf(image: RemoteImage, widths: number[]) {
   return { src, srcset };
 }
 
-/** For links to Prismic pages inside rich text. */
-export const linkResolver = (doc: { type: string; uid?: string | null }) =>
-  doc.type === 'product' ? `/products/${doc.uid}/`
-  : doc.type === 'capability' ? `/capabilities/${doc.uid}/`
-  : doc.type === 'outcome' ? `/${doc.uid}/`
-  : null;
+/** A page's address on the site, from its type and web address. */
+export const linkResolver = (doc: { type: string; uid?: string | null }) => {
+  const route = routes.find((r) => r.type === doc.type);
+  return route ? route.path.replace(':uid', doc.uid ?? '') : null;
+};
 
 /** Rich text as HTML, with links to this site's own pages made relative. */
 export const richHTML = (field: prismic.RichTextField | null | undefined) =>

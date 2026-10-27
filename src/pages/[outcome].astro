@@ -1,17 +1,13 @@
 ---
-/* Brief §21–§26. The six outcome pages sit at the root, as specified in the
-   sitemap (§11) — /understand-education-and-educators/, not /outcomes/…. */
-import PrismicPage from '@/components/PrismicPage.astro';
-import { outcomes } from '@/data/outcomes';
+/* Brief §21–§26. The outcome pages sit at the root, as the sitemap (§11) specifies. Built from their components in Prismic (type 'outcome'). */
+import PageView from '@/components/PageView.astro';
+import { pagesOf } from '@/lib/pages';
 
 export async function getStaticPaths() {
-  return outcomes.map((o) => ({ params: { outcome: o.slug }, props: { page: o } }));
+  return (await pagesOf('outcome')).map((doc) => ({ params: { outcome: doc.uid! }, props: { doc } }));
 }
 
-const { page } = Astro.props;
+const { doc } = Astro.props;
 ---
 
-<PrismicPage
-  page={page}
-  section={{ label: 'What are you trying to achieve?', href: '/what-are-you-trying-to-achieve/' }}
-/>
+<PageView doc={doc} />

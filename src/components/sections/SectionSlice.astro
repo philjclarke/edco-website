@@ -1,5 +1,5 @@
 ---
-/* The self-contained section slices: each renders its own full-width section. */
+/* The deprecated components that render their own full-width section. */
 import type { Slice } from '@prismicio/client';
 import Statement from './Statement.astro';
 import Comparison from './Comparison.astro';
@@ -10,6 +10,8 @@ import LinkWords from './LinkWords.astro';
 import LogoWallSection from './LogoWallSection.astro';
 import LatestArticles from './LatestArticles.astro';
 import LinkCards from './LinkCards.astro';
+import Routes from './Routes.astro';
+import CtaBandSlice from './CtaBandSlice.astro';
 
 const SECTION_SLICES = {
   statement: Statement,
@@ -21,6 +23,8 @@ const SECTION_SLICES = {
   logo_wall: LogoWallSection,
   latest_articles: LatestArticles,
   link_cards: LinkCards,
+  routes: Routes,
+  cta_band: CtaBandSlice,
 } as const;
 
 const { slice } = Astro.props as { slice: Slice };

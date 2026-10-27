@@ -1,0 +1,26 @@
+---
+/* Routes (deprecated): each outcome's objective and the products and capabilities its How we do it picks (brief §71). */
+import Section from '../Section.astro';
+import RouteSteps from '../RouteSteps.astro';
+import { textOf } from '@/lib/prismic';
+import { routes } from '@/data/model';
+
+const { p } = Astro.props as { p: Record<string, any> };
+---
+
+<Section tone="light" size="lg">
+  {textOf(p.heading) && <h2 class="text-display">{textOf(p.heading)}</h2>}
+  <ul class="mt-12 space-y-px overflow-hidden rounded-card border border-line bg-line">
+    {
+      routes.map((r) => (
+        <li class="bg-paper p-6 md:p-8">
+          <p class="font-display text-lg font-semibold md:text-xl">“{r.objective}”</p>
+          <div class="mt-5">
+            <RouteSteps steps={r.steps} hrefs={r.stepHrefs} />
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+  {textOf(p.closing) && <p class="mt-8 max-w-2xl text-ink-muted">{textOf(p.closing)}</p>}
+</Section>

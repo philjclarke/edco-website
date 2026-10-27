@@ -1,0 +1,110 @@
+---
+/*
+  Banner: the top of every page. Three looks from one component:
+    Homepage variation — the large homepage banner with two buttons.
+    On an insight or opinion page — the article header, with its date and author.
+    Otherwise — the page banner, with the breadcrumb for the section it's in.
+*/
+import type { Slice } from '@prismicio/client';
+import PageHero from '../PageHero.astro';
+import Button from '../Button.astro';
+import BannerImage from '../BannerImage.astro';
+import { hrefOf, imageOf, textOf } from '@/lib/prismic';
+import type { PageContext } from '@/lib/pages';
+
+interface Props {
+  slice: Slice;
+  context?: PageContext;
+}
+const { slice, context } = Astro.props;
+const p = slice.primary as Record<string, any>;
+const image = imageOf(p.image);
+const banner = image ? { src: image, focus: (p.image_focus || 'centre') as 'left' | 'centre' | 'right' } : undefined;
+const title = textOf(p.title) || context?.title || '';
+const eyebrow = textOf(p.eyebrow) || context?.title;
+const article = context?.preview?.article;
+
+// One button. A link away from the site opens in a new tab; a label with no
+// link yet shows a placeholder, so the missing address stays visible.
+const buttonLabel = textOf(p.button_label);
+const buttonHref = hrefOf(p.button_link);
+const external = buttonLabel && (!buttonHref || /^https?:/.test(buttonHref)) ? { label: buttonLabel, href: buttonHref ?? '' } : undefined;
+const primary = buttonLabel && buttonHref && !external ? { label: buttonLabel, href: buttonHref } : undefined;
+
+const button2Label = textOf(p.button2_label);
+const button2Href = hrefOf(p.button2_link);
+const date = article?.date?.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+{
+  slice.variation === 'home' ? (
+    <section class="relative overflow-hidden bg-navy-900 text-ondark">
+      <BannerImage src={image ?? 'classroom'} focus={banner?.focus} treatment="fade" duotone />
+      <div class="relative mx-auto max-w-7xl px-6 pb-20 pt-12 md:pb-28 md:pt-16 lg:pb-32 lg:pt-20">
+        <div class="max-w-2xl">
+          {eyebrow && <p class="eyebrow mb-6 text-ondark-muted">{eyebrow}</p>}
+          <h1 class="text-hero">{title}</h1>
+          {textOf(p.positioning) && <p class="mt-7 font-display text-lead font-semibold grad-text">{textOf(p.positioning)}</p>}
+          {textOf(p.intro) && <p class="mt-6 max-w-xl text-lead text-ondark-muted">{textOf(p.intro)}</p>}
+          {(buttonHref || button2Href) && (
+            <div class="mt-10 flex flex-wrap gap-3">
+              {buttonHref && buttonLabel && <Button href={buttonHref} size="lg">{buttonLabel}</Button>}
+              {button2Href && button2Label && (
+                <Button href={button2Href} size="lg" variant="ghost-dark">
+                  {button2Label}
+                </Button>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  ) : article ? (
+    <>
+      <header class="bg-navy-900 py-16 text-ondark md:py-20">
+        <div class="mx-auto max-w-3xl px-6">
+          {context?.parent ? (
+            <a href={context.parent.href} class="eyebrow grad-text">{article.label}</a>
+          ) : (
+            <p class="eyebrow grad-text">{article.label}</p>
+          )}
+          <h1 class="mt-5 text-display">{title}</h1>
+          {(textOf(p.intro) || context?.preview?.text) && (
+            <p class="mt-6 text-lead text-ondark-muted">{textOf(p.intro) || context?.preview?.text}</p>
+          )}
+          <p class="mt-8 flex flex-wrap items-center gap-x-4 text-sm text-ondark-muted">
+            {date && <time datetime={article.date!.toISOString()}>{date}</time>}
+            {article.author && <span>{article.author}</span>}
+          </p>
+          {context?.preview?.tags.length ? (
+            <ul class="mt-6 flex flex-wrap gap-2">
+              {context.preview.tags.map((t) => (
+                <li class="rounded-md bg-navy-800 px-3 py-1.5 text-[0.8125rem] font-medium text-ondark-muted">{t}</li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
+      </header>
+      {article.status === 'sample' && (
+        <div class="border-b border-orange/30 bg-orange/10">
+          <p class="mx-auto max-w-3xl px-6 py-4 text-sm text-ink">
+            <strong class="font-display font-semibold">Sample article.</strong> Written to the brief’s voice to
+            demonstrate the template. Not approved as EdCo’s published position.
+          </p>
+        </div>
+      )}
+    </>
+  ) : (
+    <PageHero
+      parent={context?.parent}
+      eyebrow={eyebrow}
+      title={title}
+      standfirst={textOf(p.positioning) || undefined}
+      lead={textOf(p.intro) || undefined}
+      primaryCta={primary}
+      externalSite={external}
+      banner={banner}
+      size={p.size === 'Large' ? 'lg' : 'sm'}
+    />
+  )
+}

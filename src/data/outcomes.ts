@@ -31,7 +31,8 @@ export function routeOf(outcome: Outcome | undefined) {
   const byHref = new Map([...products, ...capabilities].map((p) => [p.href, p]));
   const pages = (s.primary.pages ?? []).map((x: any) => byHref.get(hrefOf(x.page) ?? '')).filter(Boolean) as SectionPage[];
   return {
-    objective: textOf(s.primary.heading),
+    // The heading is written as the customer's words, in quotes; the routes add their own.
+    objective: textOf(s.primary.heading).replace(/^[“"]|[”"]$/g, ''),
     steps: pages.map((p) => p.panel.title),
     stepHrefs: pages.map((p) => p.href) as (string | null)[],
   };

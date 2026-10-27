@@ -1,0 +1,53 @@
+---
+/*
+  How we do it: a panel for each picked product or capability, filled from
+  that page's Preview tab, on a ruled grid: dark by default (component deck,
+  slide 9), or light where it follows another dark section. Each panel
+  links to its page.
+*/
+import type { Slice } from '@prismicio/client';
+import { Icon } from 'astro-icon/components';
+import Section from '../Section.astro';
+import Grid from '../Grid.astro';
+import { textOf } from '@/lib/prismic';
+import { pages } from '@/lib/pages';
+import { toneOf } from '../sections/tone';
+
+const { slice } = Astro.props as { slice: Slice };
+const p = slice.primary as Record<string, any>;
+const tone = toneOf(p.background ?? 'navy');
+const dark = tone === 'dark';
+const all = await pages(Astro.locals);
+const panels = (p.pages ?? []).map((x: any) => all.linked(x.page)).filter(Boolean).map((d: any) => all.preview(d));
+---
+
+<Section tone={tone} size="md">
+  <div class="max-w-3xl">
+    {textOf(p.eyebrow) && <p class="eyebrow grad-text mb-4">{textOf(p.eyebrow)}</p>}
+    {textOf(p.heading) && <h2 class="text-title">{textOf(p.heading)}</h2>}
+    {textOf(p.intro) && <p class:list={['mt-4', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{textOf(p.intro)}</p>}
+  </div>
+  <Grid cols={3} tone={dark ? 'dark' : 'light'} as="ul" class={textOf(p.heading) || textOf(p.eyebrow) ? 'mt-10' : ''}>
+    {
+      panels.map((pg: any) => (
+        <li>
+          <a href={pg.href} class:list={['group flex h-full items-start gap-5 p-6 transition-colors duration-200 md:p-8', dark ? 'hover:bg-navy-800' : 'hover:bg-mist']}>
+            <span class="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,var(--color-orange),var(--color-pink))] text-white shadow-lg shadow-pink/20 transition-transform duration-200 group-hover:scale-105">
+              {pg.icon ? <Icon name={pg.icon} class="h-6 w-6" /> : <Icon name="fa6-solid:arrow-right" class="h-5 w-5" />}
+            </span>
+            <span class="flex flex-1 flex-col">
+              <span class="font-display text-lg font-bold leading-snug">{pg.title}</span>
+              {pg.text && <span class:list={['mt-2 text-sm', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{pg.text}</span>}
+              <span class="mt-4 inline-flex items-center gap-2 text-sm font-semibold">
+                <span class="grad-text">{pg.linkLabel ?? 'Find out more'}</span>
+                <svg class="h-4 w-4 text-pink transition-transform duration-200 group-hover:translate-x-1.5" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
+                  <path d="M2 7h10M8 3l4 4-4 4" />
+                </svg>
+              </span>
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </Grid>
+</Section>

@@ -27,7 +27,6 @@ for (const g of primaryNav) {
   for (const c of g.children ?? []) labels.set(c.href, c.label);
 }
 for (const g of footerNav) for (const l of g.links) if (!labels.has(l.href)) labels.set(l.href, l.label);
-labels.set('/what-we-think/', 'What We Think');
 ---
 
 <ol class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

@@ -1,0 +1,10 @@
+---
+/* Agencies & Partners (brief §44–§45). Built from its components in Prismic (type "agencies_page"). */
+import PageView from '@/components/PageView.astro';
+import { pages } from '@/lib/pages';
+
+const doc = (await pages(Astro.locals)).single('agencies_page');
+if (!doc) throw new Error('No agencies_page page in Prismic.');
+---
+
+<PageView doc={doc} />

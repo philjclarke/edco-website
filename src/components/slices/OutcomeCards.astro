@@ -1,0 +1,30 @@
+---
+/* Outcomes we can help with: a card for each picked outcome, filled from that page's Preview tab. */
+import type { Slice } from '@prismicio/client';
+import Section from '../Section.astro';
+import SectionHead from '../SectionHead.astro';
+import Card from '../Card.astro';
+import { textOf } from '@/lib/prismic';
+import { pages } from '@/lib/pages';
+import { toneOf } from '../sections/tone';
+
+const { slice } = Astro.props as { slice: Slice };
+const p = slice.primary as Record<string, any>;
+const tone = toneOf(p.background);
+const dark = tone === 'dark';
+const all = await pages(Astro.locals);
+const cards = (p.pages ?? []).map((x: any) => all.linked(x.page)).filter(Boolean).map((d: any) => all.preview(d));
+---
+
+<Section tone={tone} size="lg">
+  {textOf(p.heading) && <SectionHead eyebrow={textOf(p.eyebrow) || undefined} title={textOf(p.heading)} lead={textOf(p.intro) || undefined} tone={dark ? 'dark' : 'light'} />}
+  <ul class:list={['grid gap-5 md:grid-cols-2 lg:grid-cols-3', textOf(p.heading) && 'mt-14']}>
+    {
+      cards.map((c: any) => (
+        <li>
+          <Card href={c.href} icon={c.icon} title={c.title} body={c.text} meta={c.linkLabel ?? 'Find out more'} tone={dark ? 'dark' : 'light'} />
+        </li>
+      ))
+    }
+  </ul>
+</Section>

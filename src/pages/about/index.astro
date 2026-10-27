@@ -1,0 +1,10 @@
+---
+/* About EdCo (brief §61–§63). Built from its components in Prismic (type "about_page"). */
+import PageView from '@/components/PageView.astro';
+import { pages } from '@/lib/pages';
+
+const doc = (await pages(Astro.locals)).single('about_page');
+if (!doc) throw new Error('No about_page page in Prismic.');
+---
+
+<PageView doc={doc} />

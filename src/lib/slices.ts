@@ -1,9 +1,7 @@
 /*
-  Prismic slices -> the site's block shapes (src/data/blocks.ts), so the
-  existing section components render Prismic content unchanged.
-
-  Quote and How we do it slices aren't blocks: the page template renders
-  those as a shout-out band and a route.
+  Prismic components -> the site's block shapes (src/data/blocks.ts): the
+  plain content components that share a background when they sit together
+  (see Slices.astro). The rest render their own sections.
 */
 import type { Slice } from '@prismicio/client';
 import type { Block } from '@/data/blocks';
@@ -28,17 +26,22 @@ export function blockOf(slice: Slice): Block | null {
       const items = (p.items ?? []).filter((i: any) => textOf(i.text));
       return {
         type: 'list',
+        eyebrow: opt(p.eyebrow),
         title: heading,
         lead,
         items: items.map((i: any) => textOf(i.text)),
         icons: items.map((i: any) => knownIcon(i.icon)),
+        explainers: items.map((i: any) => opt(i.explainer)),
+        tone: p.background === 'navy' ? 'dark' : p.background === 'grey' ? 'mist' : undefined,
       };
     }
     case 'screenshots':
       return {
         type: 'shots',
+        eyebrow: opt(p.eyebrow),
         title: heading || undefined,
         lead,
+        photo: imageOf(p.photo),
         shots: (p.shots ?? []).map((s: any) => ({ caption: textOf(s.caption), src: imageOf(s.image) })),
       };
     case 'feature_cards':

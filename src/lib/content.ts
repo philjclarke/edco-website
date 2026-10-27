@@ -19,18 +19,15 @@ export function siteCopy(locals?: App.Locals): Promise<SiteCopy> {
   return perRequest.get(locals)!;
 }
 
-/** The site settings, in the shapes model.ts, proof.ts and streams.ts export. */
+/** The site settings, in the shapes model.ts and proof.ts export. */
 export async function siteSettings(locals?: App.Locals) {
   const s = (await siteCopy(locals)).settings;
   return {
     edcoModel: s.edcoModel as { name: string; summary: string; methods: string[]; icon?: string }[],
-    beliefs: s.beliefs as { title: string; body: string }[],
     proofStats: s.proofStats as { value: string; label: string; verified?: boolean }[],
     logoCandidates: s.logoCandidates as string[],
     testimonialThemes: s.testimonialThemes as string[],
     caseStudyThemes: s.caseStudyThemes as string[],
-    streams: s.streams as { slug: string; label: string; question: string; title: string; lead: string; note: string }[],
-    streamBySlug: Object.fromEntries((s.streams as { slug: string }[]).map((x) => [x.slug, x])) as Record<string, any>,
   };
 }
 

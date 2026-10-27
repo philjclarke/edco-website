@@ -1,66 +1,10 @@
 ---
-/* Brief §27. Products come after the broader proposition, never before it. */
-import Layout from '@/layouts/Layout.astro';
-import PageHero from '@/components/PageHero.astro';
-import Section from '@/components/Section.astro';
-import Card from '@/components/Card.astro';
-import CtaBand from '@/components/CtaBand.astro';
-import NextSteps from '@/components/NextSteps.astro';
-import { products } from '@/data/products';
-import { siteCopy } from '@/lib/content';
+/* Brief §27. Products come after the broader proposition, never before it. Built from its components in Prismic (type "products_hub"). */
+import PageView from '@/components/PageView.astro';
+import { pages } from '@/lib/pages';
 
-const { pages: copy } = await siteCopy(Astro.locals);
-
+const doc = (await pages(Astro.locals)).single('products_hub');
+if (!doc) throw new Error('No products_hub page in Prismic.');
 ---
 
-<Layout
-  title={copy.productsHub.metaTitle}
-  description={copy.productsHub.metaDescription}
->
-  <PageHero
-    eyebrow={copy.productsHub.heroEyebrow}
-    title={copy.productsHub.heroTitle}
-    standfirst={copy.productsHub.heroStandfirst}
-    lead={copy.productsHub.heroLead}
-    banner={{ src: 'laptop-charts', focus: 'centre' }}
-  />
-
-  <Section tone="light" size="lg">
-    <ul class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-      {
-        products.map((p) => (
-          <li>
-            <Card
-              href={`/products/${p.slug}/`}
-              icon={p.icon}
-              eyebrow={p.navLabel}
-              title={p.standfirst ?? p.title}
-              body={p.summary}
-              meta="Read about it"
-            />
-          </li>
-        ))
-      }
-    </ul>
-  </Section>
-
-  <Section tone="dark" size="md">
-    <div class="mx-auto max-w-3xl text-center">
-      <div class="mx-auto mb-8 h-1 w-16 rounded-full grad-rule"></div>
-      <p class="font-display text-display font-bold">{copy.productsHub.body}</p>
-      <p class="mt-6 text-lead text-ondark-muted">{copy.productsHub.body2}</p>
-    </div>
-  </Section>
-
-  <Section tone="light" size="md">
-    <NextSteps
-      links={[
-        { label: 'What are you trying to achieve?', href: '/what-are-you-trying-to-achieve/', blurb: 'A better starting point than a product list.' },
-        { label: 'Capabilities', href: '/capabilities/', blurb: 'The people and services around the products.' },
-        { label: 'Free customer analysis', href: '/free-customer-analysis/', blurb: 'See Education IQ applied to your own data.' },
-      ]}
-    />
-  </Section>
-
-  <CtaBand />
-</Layout>
+<PageView doc={doc} />

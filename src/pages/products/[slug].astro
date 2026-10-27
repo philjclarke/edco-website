@@ -1,12 +1,13 @@
 ---
-import PrismicPage from '@/components/PrismicPage.astro';
-import { products } from '@/data/products';
+/* Product pages. Built from their components in Prismic (type 'product'). */
+import PageView from '@/components/PageView.astro';
+import { pagesOf } from '@/lib/pages';
 
 export async function getStaticPaths() {
-  return products.map((p) => ({ params: { slug: p.slug }, props: { page: p } }));
+  return (await pagesOf('product')).map((doc) => ({ params: { slug: doc.uid! }, props: { doc } }));
 }
 
-const { page } = Astro.props;
+const { doc } = Astro.props;
 ---
 
-<PrismicPage page={page} section={{ label: 'Products', href: '/products/' }} />
+<PageView doc={doc} />

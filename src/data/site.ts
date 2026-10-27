@@ -53,11 +53,11 @@ export const primaryNav: NavGroup[] = [
     ],
   },
   {
-    label: 'What We Think',
-    href: '/what-we-think/',
+    label: 'Insights & Opinion',
+    href: '/insights/',
     children: [
-      { label: 'What we’re hearing', href: '/what-we-think/what-were-hearing/' },
-      { label: 'Opinion', href: '/what-we-think/opinion/' },
+      { label: 'What we’re hearing', href: '/insights/what-were-hearing/' },
+      { label: 'Opinion', href: '/insights/opinion/' },
     ],
   },
   {
@@ -111,7 +111,7 @@ export const footerNav: { heading: string; links: NavLink[] }[] = [
     heading: 'EdCo',
     links: [
       { label: 'About EdCo', href: '/about/' },
-      { label: 'What We Think', href: '/what-we-think/' },
+      { label: 'Insights & Opinion', href: '/insights/' },
       { label: 'Case studies', href: '/case-studies/' },
       { label: 'Agencies & Partners', href: '/agencies-and-partners/' },
       { label: 'For Educators', href: '/for-educators/' },

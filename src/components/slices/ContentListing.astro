@@ -1,0 +1,118 @@
+---
+/*
+  Content listing, in three variations:
+    Chosen — a card for each picked page.
+    Latest — the newest insights, opinion or case studies, filled in
+             automatically. With "How many" set, empty slots show a
+             placeholder; without it, every item shows, then one card
+             saying more is to come (if there's a note for it).
+    Links  — a compact list of links ("You might also be interested in").
+  Every card is filled from its page's Preview tab.
+*/
+import type { Slice } from '@prismicio/client';
+import Section from '../Section.astro';
+import SectionHead from '../SectionHead.astro';
+import Button from '../Button.astro';
+import Card from '../Card.astro';
+import NextSteps from '../NextSteps.astro';
+import Placeholder from '../Placeholder.astro';
+import PreviewCard from '../PreviewCard.astro';
+import FadedPhoto from '../FadedPhoto.astro';
+import { hrefOf, imageOf, textOf } from '@/lib/prismic';
+import { pages, type PageContext, type PagePreview } from '@/lib/pages';
+import { toneOf } from '../sections/tone';
+
+interface Props {
+  slice: Slice;
+  context?: PageContext;
+}
+const { slice, context } = Astro.props;
+const p = slice.primary as Record<string, any>;
+const tone = toneOf(p.background);
+const dark = tone === 'dark';
+const all = await pages(Astro.locals);
+const photo = imageOf(p.photo);
+
+const SHOW: Record<string, { types: string[]; label: string }> = {
+  'Insights and opinion': { types: ['insight', 'opinion'], label: 'insights and opinion' },
+  Insights: { types: ['insight'], label: 'insight' },
+  Opinion: { types: ['opinion'], label: 'opinion' },
+  'Case studies': { types: ['case_study'], label: 'case study' },
+};
+
+let cards: PagePreview[] = [];
+let slots: number[] = [];
+let more = false;
+let links: { label: string; href: string; blurb?: string; icon?: string }[] = [];
+const show = SHOW[p.show] ?? SHOW['Insights and opinion'];
+
+if (slice.variation === 'links') {
+  links = (p.items ?? [])
+    .map((x: any) => {
+      const href = hrefOf(x.page);
+      if (!href) return null;
+      const doc = all.linked(x.page);
+      const target = doc ? all.preview(doc) : undefined;
+      return {
+        href,
+        label: textOf(x.label) || target?.title || 'Find out more',
+        blurb: textOf(x.blurb) || target?.text || undefined,
+        icon: target?.icon,
+      };
+    })
+    .filter(Boolean);
+} else if (slice.variation === 'latest') {
+  const when = (pg: PagePreview, d: any) => pg.article?.date?.getTime() ?? new Date(d.first_publication_date).getTime();
+  const found = all.docs
+    .filter((d) => show.types.includes(d.type) && d.id !== context?.id)
+    .map((d) => ({ pg: all.preview(d), t: when(all.preview(d), d) }))
+    .sort((a, b) => b.t - a.t)
+    .map((x) => x.pg);
+  const count = Number(p.count) || 0;
+  cards = count ? found.slice(0, count) : found;
+  slots = count ? Array.from({ length: Math.max(0, count - cards.length) }, (_, i) => cards.length + i + 1) : [];
+  more = !count && Boolean(textOf(p.empty_note));
+} else {
+  cards = (p.items ?? []).map((x: any) => all.linked(x.page)).filter(Boolean).map((d: any) => all.preview(d));
+}
+const button = hrefOf(p.button_link);
+---
+
+{
+  slice.variation === 'links' ? (
+    <Section tone={tone} size="md">
+      <NextSteps title={textOf(p.heading) || 'Where might you go next?'} links={links} icons={p.icons !== false} tone={dark ? 'dark' : 'light'} />
+    </Section>
+  ) : (
+    <Section tone={tone} size="lg" class="isolate overflow-hidden">
+      {photo && <FadedPhoto image={photo} />}
+      {(textOf(p.heading) || button) && (
+        <div class="flex flex-wrap items-end justify-between gap-6">
+          {textOf(p.heading) && (
+            <SectionHead eyebrow={textOf(p.eyebrow) || undefined} title={textOf(p.heading)} lead={textOf(p.intro) || undefined} tone={dark ? 'dark' : 'light'} class="flex-1" />
+          )}
+          {button && textOf(p.button_label) && <Button href={button} variant={dark ? 'ghost-dark' : 'ghost'}>{textOf(p.button_label)}</Button>}
+        </div>
+      )}
+      <ul class:list={['grid gap-5 md:grid-cols-2 lg:grid-cols-3', (textOf(p.heading) || button) && 'mt-12']}>
+        {cards.map((c) => <li><PreviewCard page={c} tone={dark ? 'dark' : 'light'} /></li>)}
+        {slots.map((n) => (
+          <li>
+            <Card title="">
+              <div class="space-y-3">
+                <Placeholder label={`CURRENT ${show.label.toUpperCase()} ITEM`} note={`slot ${n}`} block />
+                {textOf(p.empty_note) && <p class="text-sm text-ink-muted">{textOf(p.empty_note)}</p>}
+              </div>
+            </Card>
+          </li>
+        ))}
+        {more && (
+          <li class="rounded-card border border-dashed border-line p-7">
+            <Placeholder label="FURTHER ARTICLES" note="content programme to agree" block />
+            <p class="mt-4 text-sm text-ink-muted">{textOf(p.empty_note)}</p>
+          </li>
+        )}
+      </ul>
+    </Section>
+  )
+}
