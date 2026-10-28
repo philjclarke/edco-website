@@ -1,6 +1,13 @@
 ---
 import { footerNav, contact, site } from '@/data/site';
 import Placeholder from './Placeholder.astro';
+
+// About subpages in Prismic; their UIDs give these addresses.
+const legal = [
+  { label: 'Privacy policy', href: '/about/privacy-policy/' },
+  { label: 'Cookie policy', href: '/about/cookie-policy/' },
+  { label: 'Terms', href: '/about/terms/' },
+];
 ---
 
 <footer class="bg-navy-950 text-ondark">
@@ -94,13 +101,24 @@ import Placeholder from './Placeholder.astro';
     <div
       class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-6 text-xs text-ondark-muted"
     >
-      <p>© {new Date().getFullYear()} The Education Company. Registered in England.</p>
-      <div class="flex flex-wrap gap-5">
-        <Placeholder label="PRIVACY POLICY" />
-        <Placeholder label="COOKIE POLICY" />
-        <Placeholder label="TERMS" />
-        <Placeholder label="COMPANY NO. / VAT NO." />
+      <div class="space-y-1">
+        <p>© {new Date().getFullYear()} The Education Company. Registered in England.</p>
+        <p>
+          <span class="whitespace-nowrap">Company registration number: 02651241</span> ·
+          <span class="whitespace-nowrap">VAT registration number: GB 573 7684 93</span>
+        </p>
       </div>
+      <ul class="flex flex-wrap gap-5">
+        {
+          legal.map((l) => (
+            <li>
+              <a href={l.href} class="transition-colors hover:text-orange">
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </div>
 </footer>
