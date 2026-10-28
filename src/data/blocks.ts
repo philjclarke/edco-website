@@ -12,7 +12,15 @@ export type ImageRef = string | RemoteImage;
 
 export type Block =
   /** `html` (rich text from Prismic) wins over `paras` when both are present. */
-  | { type: 'prose'; paras: string[]; html?: string; title?: string }
+  | {
+      type: 'prose';
+      paras: string[];
+      html?: string;
+      title?: string;
+      /** Standard keeps lines readable at about two thirds of the width. */
+      layout?: 'standard' | 'beside' | 'wide';
+      size?: 'large' | 'standard';
+    }
   | {
       type: 'list';
       eyebrow?: string;

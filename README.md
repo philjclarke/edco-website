@@ -84,7 +84,8 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
   - **Banner** (variations Page and Homepage): title, positioning statement,
     introduction text, banner image. On a page below a section it shows the
     breadcrumb; on an insight or opinion it becomes the article header.
-  - **Explainer text**, **Quote** (variations One column and Two column, the
+  - **Explainer text** (Layout: Standard, Heading beside text or Wide; Text
+    size: Large or Standard; both ignored in an article's body), **Quote** (variations One column and Two column, the
     latter with optional client logos), **Outcomes we can help with**,
     **Content listing** (variations Chosen, Latest and Links), **How we do it**,
     **Screenshots**, **Features listing**, **Figures** (a heading and text over

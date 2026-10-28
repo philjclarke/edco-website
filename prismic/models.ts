@@ -181,6 +181,8 @@ export const components: SharedSliceModel[] = [
   slice('text_block', 'Explainer text', 'A header and running text, e.g. the page introduction.', {
     heading: text('Header', 'Optional'),
     body: prose('Text', undefined, true),
+    layout: select('Layout', ['Standard', 'Heading beside text', 'Wide'] as const, 'Standard'),
+    text_size: select('Text size', ['Large', 'Standard'] as const, 'Large'),
   }),
 
   slice('quote', 'Quote', 'A quote or engaging thought. Leave the text blank to show a mock quote until there’s a real one.', [

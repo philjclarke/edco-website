@@ -21,6 +21,8 @@ export function blockOf(slice: Slice): Block | null {
         title: heading || undefined,
         paras: [],
         html: richHTML(p.body),
+        layout: p.layout === 'Heading beside text' ? 'beside' : p.layout === 'Wide' ? 'wide' : 'standard',
+        size: p.text_size === 'Standard' ? 'standard' : 'large',
       };
     case 'item_list': {
       const items = (p.items ?? []).filter((i: any) => textOf(i.text));

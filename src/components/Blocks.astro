@@ -38,10 +38,26 @@ const bg = (i: number) =>
       {block.type === 'shots' && block.photo && <FadedPhoto image={block.photo} />}
       <div class="mx-auto max-w-7xl px-6">
         {block.type === 'prose' && (
-          <div class="max-w-3xl">
-            {block.title && <h2 class="text-title mb-6">{block.title}</h2>}
+          <div
+            class:list={[
+              block.layout === 'beside'
+                ? 'grid gap-6 lg:grid-cols-3 lg:gap-16'
+                : block.layout === 'wide'
+                  ? 'max-w-5xl'
+                  : 'max-w-3xl',
+            ]}
+          >
+            {block.title && <h2 class:list={['text-title', block.layout !== 'beside' && 'mb-6']}>{block.title}</h2>}
             {block.html ? (
-              <div class="prose-edco text-lead text-ink-muted" set:html={block.html} />
+              <div
+                class:list={[
+                  'prose-edco text-ink-muted',
+                  block.size !== 'standard' && 'text-lead',
+                  block.layout === 'wide' && 'max-w-none',
+                  block.layout === 'beside' && 'lg:col-span-2 lg:col-start-2',
+                ]}
+                set:html={block.html}
+              />
             ) : (
               <div class="prose-edco text-lead text-ink-muted">
                 {block.paras.map((p) => (
