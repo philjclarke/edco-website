@@ -451,10 +451,14 @@ function pageType(t: (typeof PAGE_TYPES)[number]): CustomTypeModel {
     format: 'page',
     status: true,
     json: {
-      Page: { slices: sliceZone() },
+      // The web address sits first on the tab editors work in: Prismic won't save a
+      // page without one, and a duplicated page starts with it blank.
+      Page: {
+        ...(repeatable ? { uid: { type: 'UID', config: { label: 'Web address', placeholder: 'uidHint' in t ? t.uidHint : undefined } } } : {}),
+        slices: sliceZone(),
+      },
       // How this page appears wherever another page features it. One place to edit it.
       Preview: {
-        ...(repeatable ? { uid: { type: 'UID', config: { label: 'Web address', placeholder: 'uidHint' in t ? t.uidHint : undefined } } } : {}),
         nav_label: text('Title', 'Used in menus, cards, links and the breadcrumb'),
         preview_positioning: text('Positioning statement'),
         summary: text('Introduction text', 'One or two sentences. Also the search engine description unless SEO says otherwise'),
