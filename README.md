@@ -87,14 +87,16 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
   - **Explainer text**, **Quote** (variations One column and Two column, the
     latter with optional client logos), **Outcomes we can help with**,
     **Content listing** (variations Chosen, Latest and Links), **How we do it**,
-    **Screenshots**, **Features listing**.
+    **Screenshots**, **Features listing**, **Figures** (a heading and text over
+    a row of figures; its own figures, or Site settings' proof figures if it
+    has none; kept from before the deck at EdCo's request).
 
   Their renderers are in [src/components/slices/](src/components/slices/);
   [Slices.astro](src/components/Slices.astro) dispatches them. Explainer
   text, Features listing and Screenshots go through the block shapes in
   [blocks.ts](src/data/blocks.ts) ([src/lib/slices.ts](src/lib/slices.ts)),
   and runs of them share a background.
-- **Deprecated components:** Statement, Comparison, Figures, How EdCo works,
+- **Deprecated components:** Statement, Comparison, How EdCo works,
   Page cards, Link words, Logo wall, Latest articles, Link cards, Cards, Steps,
   Options, Routes and Call to action. They predate the deck and are kept so no
   page lost content; replace them as pages are rebuilt

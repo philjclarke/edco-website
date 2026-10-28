@@ -297,6 +297,19 @@ export const components: SharedSliceModel[] = [
     }),
     background: BACKGROUND('white'),
   }),
+
+  // Kept from before the deck at EdCo's request, with its own figures.
+  slice('figures', 'Figures', 'A heading and text, with a row of figures underneath.', {
+    eyebrow: text('Small label'),
+    heading: text('Heading'),
+    body: prose('Text'),
+    figures: group('Figures', {
+      value: text('Figure', 'e.g. 35 years'),
+      label: text('Label', 'e.g. working in education'),
+      verified: boolean('Confirmed', true, 'Yes', 'No: show a VERIFY tag'),
+    }),
+    background: BACKGROUND('navy'),
+  }),
 ];
 
 /** Components the site had before the deck. Each still renders; none should be added to new pages. */
@@ -317,13 +330,6 @@ export const deprecatedComponents: SharedSliceModel[] = [
     body: text('Text'),
     closing_line: text('Closing line'),
     background: BACKGROUND('white'),
-  }),
-
-  deprecated('figures', 'Figures', 'A heading and text, with the proof figures from Site settings underneath.', {
-    eyebrow: text('Small label'),
-    heading: text('Heading'),
-    body: prose('Text', 'Use [LABEL: note] for a figure still to be confirmed'),
-    background: BACKGROUND('navy'),
   }),
 
   deprecated('model', 'How EdCo works', 'The Listen → Grow model from Site settings, with a heading and intro.', {

@@ -13,10 +13,11 @@ interface Props {
 }
 const { stats, tone = 'dark' } = Astro.props;
 const dark = tone === 'dark';
+// As many columns as figures, up to four, so a row never ends in an empty cell.
+const cols = { 1: '', 2: 'sm:grid-cols-2', 3: 'sm:grid-cols-3' }[stats.length] ?? (stats.length % 3 === 0 ? 'sm:grid-cols-3' : 'sm:grid-cols-2 lg:grid-cols-4');
 ---
 
-<dl class="grid gap-px overflow-hidden rounded-card border sm:grid-cols-2 lg:grid-cols-4"
-  class:list={[dark ? 'border-navy-700 bg-navy-700' : 'border-line bg-line']}>
+<dl class:list={['grid gap-px overflow-hidden rounded-card border', cols, dark ? 'border-navy-700 bg-navy-700' : 'border-line bg-line']}>
   {
     stats.map((s) => (
       <div class:list={['flex flex-col p-6 md:p-8', dark ? 'bg-navy-800' : 'bg-paper']}>

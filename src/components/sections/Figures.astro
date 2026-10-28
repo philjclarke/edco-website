@@ -1,5 +1,5 @@
 ---
-/* Figures: a heading and text, with the proof figures from Site settings (homepage "proof"). */
+/* Figures: a heading and text, with a row of figures: the component's own, or else the proof figures from Site settings. */
 import Section from '../Section.astro';
 import StatGrid from '../StatGrid.astro';
 import { richHTML, textOf } from '@/lib/prismic';
@@ -10,7 +10,10 @@ import { toneOf } from './tone';
 const { p } = Astro.props as { p: Record<string, any> };
 const tone = toneOf(p.background);
 const dark = tone === 'dark';
-const { proofStats } = await siteSettings(Astro.locals);
+const own = ((p.figures ?? []) as any[])
+  .filter((f) => textOf(f.value))
+  .map((f) => ({ value: textOf(f.value), label: textOf(f.label), verified: f.verified !== false }));
+const stats = own.length ? own : (await siteSettings(Astro.locals)).proofStats;
 ---
 
 <Section tone={tone} size="lg">
@@ -24,6 +27,6 @@ const { proofStats } = await siteSettings(Astro.locals);
     </div>
   </div>
   <div class="mt-14">
-    <StatGrid stats={proofStats} tone={dark ? 'dark' : 'light'} />
+    <StatGrid stats={stats} tone={dark ? 'dark' : 'light'} />
   </div>
 </Section>
