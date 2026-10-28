@@ -66,7 +66,9 @@ export function srcsetOf(image: RemoteImage, widths: number[]) {
 /** A page's address on the site, from its type and web address. */
 export const linkResolver = (doc: { type: string; uid?: string | null }) => {
   const route = routes.find((r) => r.type === doc.type);
-  return route ? route.path.replace(':uid', doc.uid ?? '') : null;
+  // A page saved before its UID is filled in has no address yet.
+  if (!route || (route.path.includes(':uid') && !doc.uid)) return null;
+  return route.path.replace(':uid', doc.uid ?? '');
 };
 
 /** Rich text as HTML, with links to this site's own pages made relative. */

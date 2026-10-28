@@ -72,20 +72,27 @@ export interface Pages {
 }
 
 async function load(ref?: string): Promise<Pages> {
-  const docs = await client.dangerouslyGetAll({
+  const all = await client.dangerouslyGetAll({
     filters: [prismic.filter.any('document.type', TYPES)],
     orderings: [{ field: 'document.first_publication_date' }],
     ...(ref ? { ref } : {}),
   });
-  const byId = new Map(docs.map((d) => [d.id, d]));
+  // One editor's half-finished page mustn't stop everyone else's changes going
+  // live, so a page without a web address, or with one an older page already
+  // has, is left out of the site and named in the build log.
+  const docs: PrismicDocument[] = [];
   const byHref = new Map<string, PrismicDocument>();
-  for (const d of docs) {
+  for (const d of all) {
     const href = linkResolver(d);
-    if (!href) continue;
-    const clash = byHref.get(href);
-    if (clash) throw new Error(`Two Prismic pages have the address ${href}: a ${clash.type} and a ${d.type}. Change one page's web address.`);
-    byHref.set(href, d);
+    const clash = href && byHref.get(href);
+    if (!href) console.warn(`Left out the ${d.type} page ${d.id}: it has no web address (UID) yet.`);
+    else if (clash) console.warn(`Left out the ${d.type} page ${d.id}: the ${clash.type} page ${clash.id} already has the address ${href}.`);
+    else {
+      docs.push(d);
+      byHref.set(href, d);
+    }
   }
+  const byId = new Map(docs.map((d) => [d.id, d]));
   const previews = new WeakMap<PrismicDocument, PagePreview>();
   return {
     docs,
