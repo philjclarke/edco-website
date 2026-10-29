@@ -44,19 +44,28 @@ const blocksOf = (page: { doc: { data: Record<string, any> } }) =>
   ((page.doc.data.slices ?? []) as Slice[]).map(blockOf).filter((b): b is Block => b !== null);
 const find = <T extends Block['type']>(blocks: Block[], type: T) =>
   blocks.find((b) => b.type === type) as Extract<Block, { type: T }>;
-const eiq = blocksOf(products.find((p) => p.slug === 'education-iq')!);
-const ways = find(eiq, 'ways');
-const cardsBlock = find(eiq, 'cards');
-const research = capabilities.find((c) => c.slug === 'research')!;
-const steps = find(blocksOf(research), 'steps').steps;
-const helpList = find(blocksOf(outcomes[0]), 'list');
-const help = { help: helpList.items, helpIcons: helpList.icons };
-const longList = find(blocksOf(capabilities.find((c) => c.slug === 'events-and-cpd')!), 'list');
+// Prefer the page each sample was chosen from, but take the first page with
+// that kind of section if it has been renamed or reworked, so a change in
+// Prismic never stops the site building.
+const pick = <P extends { slug: string; doc: { data: Record<string, any> } }, T extends Block['type']>(list: P[], slug: string, type: T) => {
+  for (const page of [...list.filter((p) => p.slug === slug), ...list]) {
+    const block = find(blocksOf(page), type);
+    if (block) return { page, block };
+  }
+};
+const ways = pick(products, 'education-iq', 'ways')?.block;
+const cardsBlock = pick(products, 'education-iq', 'cards')?.block;
+const fiveSteps = ['Data', 'Intelligence', 'Human interpretation', 'Challenge', 'Action'];
+const stepsSample = pick(capabilities, 'market-research', 'steps');
+const research = stepsSample?.page ?? capabilities[0];
+const steps = stepsSample?.block.steps ?? fiveSteps;
+const helpList = pick(outcomes, outcomes[0]?.slug ?? '', 'list')?.block;
+const help = { help: helpList?.items ?? [], helpIcons: helpList?.icons };
+const longList = pick(capabilities, 'events-and-cpd', 'list')?.block ?? { items: [], icons: undefined };
 const researchRelated = ((research.doc.data.related ?? []) as any[])
   .map((r) => ({ href: hrefOf(r.link), label: textOf(r.label), blurb: textOf(r.blurb) || undefined }))
   .filter((l): l is { href: string; label: string; blurb: string | undefined } => Boolean(l.href))
   .map((l) => ({ ...l, label: l.label || l.href }));
-const fiveSteps = ['Data', 'Intelligence', 'Human interpretation', 'Challenge', 'Action'];
 
 const tickOptions: { variant: TickListVariant; label: string; note: string; current?: boolean }[] = [
   { variant: 'grid', label: 'A — Icon grid', note: 'An icon above each item, roomy cells, two or three columns.' },
@@ -276,7 +285,7 @@ const patterns = [
                     <Card href="/products/education-iq/" eyebrow="Product" title="Education IQ" body={products[0].summary} meta="See the product" index={1} />
                   </li>
                   <li>
-                    <Card href="/capabilities/research/" eyebrow="Capability" title="Research" body={research.summary} meta="Find out more" index={2} />
+                    <Card href={research.href} eyebrow="Capability" title={research.navLabel} body={research.summary} meta="Find out more" index={2} />
                   </li>
                   <li>
                     <Card title="Not a link" body="Same card, no destination — no hover, no arrow." />
@@ -317,11 +326,11 @@ const patterns = [
               <p class="text-sm text-ink-muted">
                 Closed to start with; each one opens in place to reveal detail and a screenshot.
               </p>
-              <Blocks blocks={[{ ...cardsBlock, title: undefined }]} tone="mist" />
+              {cardsBlock && <Blocks blocks={[{ ...cardsBlock, title: undefined }]} tone="mist" />}
             </>
           )}
 
-          {p.id === 'ways' && <Blocks blocks={[{ ...ways, title: undefined }]} tone="mist" />}
+          {p.id === 'ways' && ways && <Blocks blocks={[{ ...ways, title: undefined }]} tone="mist" />}
 
           {p.id === 'articles' && (
             <ul class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
