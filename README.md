@@ -103,6 +103,12 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
   text, Features listing and Screenshots go through the block shapes in
   [blocks.ts](src/data/blocks.ts) ([src/lib/slices.ts](src/lib/slices.ts)),
   and runs of them share a background.
+- **Text and image** ([TextImage.astro](src/components/slices/TextImage.astro)):
+  text beside a picture, the picture left or right, half and half or 75/25
+  either way, with a background option.
+- **Banner image colour:** Brand tint (the default) runs the photo through the
+  brand duotone; Natural leaves it as taken, keeping the fade that protects the
+  text. Natural is on Research and The Curriculum Network as a trial (29 October 2026).
 - **Earlier components:** Statement, Comparison, How EdCo works (its own stages, or Site settings' model if it
   has none), Page cards,
   Link words, Logo wall, Latest articles, Link cards, Cards, Steps (with

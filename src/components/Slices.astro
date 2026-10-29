@@ -18,6 +18,7 @@ import HowWeDoIt from './slices/HowWeDoIt.astro';
 import ArticleBody from './slices/ArticleBody.astro';
 import ContactForm from './slices/ContactForm.astro';
 import CustomerLogins from './slices/CustomerLogins.astro';
+import TextImage from './slices/TextImage.astro';
 import SectionSlice from './sections/SectionSlice.astro';
 import { SECTION_SLICE_TYPES } from './sections/tone';
 import { blockOf } from '@/lib/slices';
@@ -44,6 +45,7 @@ const OWN_SECTION: Record<string, any> = {
   how_we_do_it: HowWeDoIt,
   contact_form: ContactForm,
   customer_logins: CustomerLogins,
+  text_image: TextImage,
 };
 
 type Part =

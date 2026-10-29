@@ -20,6 +20,8 @@ const { slice, context } = Astro.props;
 const p = slice.primary as Record<string, any>;
 const image = imageOf(p.image);
 const banner = image ? { src: image, focus: (p.image_focus || 'centre') as 'left' | 'centre' | 'right' } : undefined;
+// Brand tint pulls the photo onto the palette; Natural shows it as taken.
+const tint = p.image_colour !== 'Natural';
 const title = textOf(p.title) || context?.title || '';
 const eyebrow = textOf(p.eyebrow) || context?.title;
 const article = context?.preview?.article;
@@ -39,7 +41,7 @@ const date = article?.date?.toLocaleDateString('en-GB', { day: 'numeric', month:
 {
   slice.variation === 'home' ? (
     <section class="relative overflow-hidden bg-navy-900 text-ondark">
-      <BannerImage src={image ?? 'classroom'} focus={banner?.focus} treatment="fade" duotone />
+      <BannerImage src={image ?? 'classroom'} focus={banner?.focus} treatment="fade" duotone={tint} />
       <div class="relative mx-auto max-w-7xl px-6 pb-20 pt-12 md:pb-28 md:pt-16 lg:pb-32 lg:pt-20">
         <div class="max-w-2xl">
           {eyebrow && <p class="eyebrow mb-6 text-ondark-muted">{eyebrow}</p>}
@@ -104,6 +106,7 @@ const date = article?.date?.toLocaleDateString('en-GB', { day: 'numeric', month:
       primaryCta={primary}
       externalSite={external}
       banner={banner}
+      tint={tint}
       size={p.size === 'Large' ? 'lg' : 'sm'}
       logo={context?.preview?.logo?.dark}
     />

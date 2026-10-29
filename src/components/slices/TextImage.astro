@@ -1,0 +1,84 @@
+---
+/*
+  Text and image: the classic two-column section. The editor picks which side
+  the image sits on and how the width is shared: half and half, or three
+  quarters to one side. On a phone the text always comes first, with the
+  image under it.
+
+  The image keeps its own proportions rather than being cropped to fit,
+  since it could be a photo, a diagram or a screenshot.
+*/
+import type { Slice } from '@prismicio/client';
+import Section from '../Section.astro';
+import Button from '../Button.astro';
+import Placeholder from '../Placeholder.astro';
+import { hrefOf, imageOf, richHTML, srcsetOf, textOf } from '@/lib/prismic';
+import { withPlaceholders } from '@/lib/placeholders';
+import { toneOf } from '../sections/tone';
+
+const { slice } = Astro.props as { slice: Slice };
+const p = slice.primary as Record<string, any>;
+const tone = toneOf(p.background);
+const dark = tone === 'dark';
+const left = p.image_side === 'Left';
+const split = p.widths === 'Text wider (75/25)' ? 'text' : p.widths === 'Image wider (25/75)' ? 'image' : 'half';
+
+// Written out in full so Tailwind sees every class. Columns run left to right,
+// so with the image on the left the wider share swaps sides too.
+const cols = {
+  half: 'lg:grid-cols-2',
+  text: left ? 'lg:grid-cols-[minmax(0,1fr)_minmax(0,3fr)]' : 'lg:grid-cols-[minmax(0,3fr)_minmax(0,1fr)]',
+  image: left ? 'lg:grid-cols-[minmax(0,3fr)_minmax(0,1fr)]' : 'lg:grid-cols-[minmax(0,1fr)_minmax(0,3fr)]',
+}[split];
+const imageShare = { half: '50vw', text: '25vw', image: '75vw' }[split];
+
+const image = imageOf(p.image);
+const img = image && srcsetOf(image, [600, 1000, 1600, 2200]);
+const buttonHref = hrefOf(p.button_link);
+const buttonLabel = textOf(p.button_label);
+---
+
+<Section tone={tone} size="lg">
+  <div class:list={['grid items-center gap-10 lg:gap-14', cols]}>
+    <div>
+      {textOf(p.eyebrow) && <p class="eyebrow grad-text mb-4">{textOf(p.eyebrow)}</p>}
+      {textOf(p.heading) && <h2 class="text-title">{textOf(p.heading)}</h2>}
+      {
+        richHTML(p.body) && (
+          <div
+            class:list={['prose-edco', textOf(p.heading) && 'mt-6', dark ? 'text-ondark-muted' : 'text-ink-muted']}
+            set:html={withPlaceholders(richHTML(p.body))}
+          />
+        )
+      }
+      {
+        buttonHref && buttonLabel && (
+          <div class="mt-8">
+            <Button href={buttonHref} external={/^https?:/.test(buttonHref)}>{buttonLabel}</Button>
+          </div>
+        )
+      }
+    </div>
+    <div class:list={[left && 'lg:order-first']}>
+      {
+        img ? (
+          <img
+            src={img.src}
+            srcset={img.srcset}
+            sizes={`(min-width: 1024px) ${imageShare}, 100vw`}
+            alt={image!.alt ?? ''}
+            width={image!.dimensions.width}
+            height={image!.dimensions.height}
+            loading="lazy"
+            decoding="async"
+            class="h-auto w-full rounded-card"
+          />
+        ) : (
+          <div class:list={['flex aspect-[4/3] items-center justify-center rounded-card border border-dashed', dark ? 'border-navy-700' : 'border-line']}>
+            <Placeholder label="IMAGE" />
+          </div>
+        )
+      }
+    </div>
+  </div>
+</Section>

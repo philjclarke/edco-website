@@ -144,6 +144,7 @@ const bannerFields = {
   intro: text('Introduction text'),
   image: image('Banner image'),
   image_focus: select('Banner crop', ['centre', 'left', 'right'] as const, 'centre'),
+  image_colour: select('Banner image colour', ['Brand tint', 'Natural'] as const, 'Brand tint'),
 };
 
 /** The deck's components, in its order. */
@@ -308,6 +309,18 @@ export const components: SharedSliceModel[] = [
       verified: boolean('Confirmed', true, 'Yes', 'No: show a VERIFY tag'),
     }),
     background: BACKGROUND('navy'),
+  }),
+
+  slice('text_image', 'Text and image', 'Text on one side, a picture on the other. Choose the side, and whether they share the width equally or one takes three quarters.', {
+    eyebrow: text('Small label'),
+    heading: text('Heading'),
+    body: prose('Text'),
+    button_label: text('Button label', 'Optional'),
+    button_link: link('Button link'),
+    image: image('Image'),
+    image_side: select('Image side', ['Right', 'Left'] as const, 'Right'),
+    widths: select('Widths', ['Half and half', 'Text wider (75/25)', 'Image wider (25/75)'] as const, 'Half and half'),
+    background: BACKGROUND('white'),
   }),
 ];
 

@@ -31,6 +31,8 @@ interface Props {
   /** Hero photography. Supersedes the ribbon where it is set. */
   /** A key from src/data/banners.ts, or an image from Prismic. */
   banner?: { src: string | RemoteImage; focus?: 'left' | 'centre' | 'right' };
+  /** Pull the banner photo onto the brand palette (the default), or show it as taken. */
+  tint?: boolean;
   /** A product's logo for dark backgrounds, above the heading. */
   logo?: RemoteImage;
 }
@@ -46,12 +48,13 @@ const {
   size = 'sm',
   ribbon: showRibbon = true,
   banner,
+  tint = true,
   logo,
 } = Astro.props;
 ---
 
 <section class="relative overflow-hidden bg-navy-900 text-ondark">
-  {banner && <BannerImage src={banner.src} focus={banner.focus} treatment="fade" duotone />}
+  {banner && <BannerImage src={banner.src} focus={banner.focus} treatment="fade" duotone={tint} />}
   {
     !banner && showRibbon && (
       <Image
