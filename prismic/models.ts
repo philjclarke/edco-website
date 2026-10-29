@@ -448,6 +448,7 @@ const sliceZone = (): CustomTypeModelField => ({
 function pageType(t: (typeof PAGE_TYPES)[number]): CustomTypeModel {
   const repeatable = t.path.includes(':uid');
   const article = 'article' in t && t.article;
+  const inMenu = 'inMenu' in t ? t.inMenu : undefined;
   return {
     id: t.id,
     label: t.label,
@@ -464,6 +465,12 @@ function pageType(t: (typeof PAGE_TYPES)[number]): CustomTypeModel {
       // How this page appears wherever another page features it. One place to edit it.
       Preview: {
         nav_label: text('Title', 'Used in menus, cards, links and the breadcrumb'),
+        ...(inMenu !== undefined
+          ? {
+              show_in_menu: boolean('Show in main menu', inMenu, 'Yes', 'No'),
+              menu_order: number('Menu order', 'Lower numbers come first, e.g. 10, 20, 30. Blank goes last'),
+            }
+          : {}),
         preview_positioning: text('Positioning statement'),
         summary: text('Introduction text', 'One or two sentences. Also the search engine description unless SEO says otherwise'),
         interest_tags: group('Interest tags', { tag: text('Tag') }),

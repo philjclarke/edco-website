@@ -8,7 +8,7 @@
   explains and navigates at once. Because each step goes somewhere, these are
   panels under the site's affordance rule, not a grid.
 */
-import { primaryNav, footerNav } from '@/data/site';
+import { menu } from '@/lib/menu';
 
 interface Props {
   steps: readonly string[];
@@ -21,12 +21,13 @@ const { steps, hrefs, numbered = false } = Astro.props;
 
 // Name the destination from the navigation, so a step reads "Data enrichment →
 // Data Services" without that label having to be maintained twice.
+const { main, footer } = await menu(Astro.locals);
 const labels = new Map<string, string>();
-for (const g of primaryNav) {
+for (const g of main) {
   labels.set(g.href, g.label);
   for (const c of g.children ?? []) labels.set(c.href, c.label);
 }
-for (const g of footerNav) for (const l of g.links) if (!labels.has(l.href)) labels.set(l.href, l.label);
+for (const g of footer) for (const l of g.links) if (!labels.has(l.href)) labels.set(l.href, l.label);
 ---
 
 <ol class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

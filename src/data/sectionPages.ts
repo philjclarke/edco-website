@@ -4,13 +4,13 @@
   page's own content is rendered from its components (see PageView.astro).
   Read once per build.
 
-  Order follows the site menu (src/data/site.ts), which is the deliberate
-  order; a page that isn't in the menu yet goes at the end.
+  Order follows each page's Menu order in Prismic (src/lib/menu.ts), blank
+  last, oldest first. Pages without a web address yet are left out, as they
+  are everywhere else (src/lib/pages.ts).
 */
 import type { PrismicDocument } from '@prismicio/client';
-import { previewOf } from '@/lib/pages';
-import { allOf } from '@/lib/prismic';
-import { primaryNav } from './site';
+import { pages, previewOf } from '@/lib/pages';
+import { byMenuOrder } from '@/lib/menu';
 
 export type SectionKind = 'product' | 'capability' | 'outcome';
 
@@ -28,9 +28,6 @@ export interface SectionPage {
   doc: PrismicDocument;
 }
 
-const menuOrder = new Map<string, number>();
-primaryNav.forEach((g) => g.children?.forEach((c, i) => menuOrder.set(c.href, i)));
-
 export function toPage(kind: SectionKind, doc: PrismicDocument): SectionPage {
   const p = previewOf(doc);
   return {
@@ -46,7 +43,6 @@ export function toPage(kind: SectionKind, doc: PrismicDocument): SectionPage {
 }
 
 export async function loadSection(kind: SectionKind): Promise<SectionPage[]> {
-  const pages = (await allOf(kind)).map((doc) => toPage(kind, doc));
-  const rank = (p: SectionPage) => menuOrder.get(p.href) ?? Number.MAX_SAFE_INTEGER;
-  return pages.sort((a, b) => rank(a) - rank(b) || a.navLabel.localeCompare(b.navLabel));
+  const docs = (await pages()).docs.filter((d) => d.type === kind);
+  return [...docs].sort(byMenuOrder).map((doc) => toPage(kind, doc));
 }

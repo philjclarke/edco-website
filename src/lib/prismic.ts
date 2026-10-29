@@ -30,15 +30,6 @@ export const client = prismic.createClient(repositoryName, {
 });
 if (pinnedRef) client.queryContentFromRef(pinnedRef);
 
-/** Every page of a type, in the order editors set in Prismic (by date, oldest first, as a stable default). */
-const cache = new Map<string, Promise<prismic.PrismicDocument[]>>();
-export function allOf(type: string): Promise<prismic.PrismicDocument[]> {
-  if (!cache.has(type)) {
-    cache.set(type, client.getAllByType(type, { orderings: [{ field: 'document.first_publication_date' }] }));
-  }
-  return cache.get(type)!;
-}
-
 const SITE = /^https?:\/\/(www\.)?educationcompany\.co\.uk/i;
 
 /**

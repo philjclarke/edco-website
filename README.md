@@ -35,7 +35,8 @@ Node 22 (pinned via Volta in `package.json`).
 | Contact, For Educators, Free customer analysis, Customer login, Case studies hub, Search, 404 | One single-instance type each, with fixed fields | [pageCopy.ts](src/data/pageCopy.ts) |
 | The Listen → Grow model, proof figures, logo list, themes | `site_settings` | [pageCopy.ts](src/data/pageCopy.ts), then `model.ts`, `proof.ts` |
 | Case studies | `case_study` | content collection `caseStudies` |
-| Navigation, footer, contact details | Code: [site.ts](src/data/site.ts) | |
+| Main menu, and the footer's section lists | Each section page's "Show in main menu" and "Menu order" (Preview tab) | [menu.ts](src/lib/menu.ts) |
+| The menu's top level, the footer's extra links, contact details | Code: [site.ts](src/data/site.ts), [pageTypes.ts](prismic/pageTypes.ts) | |
 | Mock testimonials, logos and quotes | Code: [mock.ts](src/data/mock.ts) | |
 
 ## Prismic
@@ -133,8 +134,15 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
   simulator only accepts messages from `*.prismic.io`.
 - **Publishing** fires a Prismic webhook to a Vercel deploy hook, which rebuilds
   `main`. The hook URL is stored only in Prismic.
-- **Hub and menu order** follows the menu in `src/data/site.ts`. A new page
-  goes at the end until it's added there.
+- **The main menu** is built at each build ([src/lib/menu.ts](src/lib/menu.ts)).
+  The top level is one link per section's top-level page, in the order of
+  `prismic/pageTypes.ts`, labelled with its Preview title. Under each go the
+  section's pages with **Show in main menu** ticked, by **Menu order** (lower
+  first, blank last, then oldest first). Outcomes, products, capabilities and
+  Insights & Opinion sections start ticked; About and Agencies & Partners
+  pages start unticked (`inMenu` in pageTypes.ts). The footer repeats the
+  outcomes, products and capabilities lists. The same order is used wherever
+  the site lists those pages.
 - **Checking content before it's published:** `PRISMIC_REF` (and
   `PRISMIC_ACCESS_TOKEN`, for a release) build from that ref instead of the
   published content. Local use only.

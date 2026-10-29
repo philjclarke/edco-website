@@ -1,6 +1,9 @@
 ---
-import { footerNav, contact, site } from '@/data/site';
+import { contact, site } from '@/data/site';
+import { menu } from '@/lib/menu';
 import Placeholder from './Placeholder.astro';
+
+const footerNav = (await menu(Astro.locals)).footer;
 
 // About subpages in Prismic; their UIDs give these addresses.
 const legal = [

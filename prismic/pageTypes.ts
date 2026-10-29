@@ -18,13 +18,14 @@ export const PAGE_TYPES = [
   { id: 'capabilities_hub', label: 'Capabilities', path: '/capabilities/' },
   { id: 'about_page', label: 'About', path: '/about/' },
   { id: 'agencies_page', label: 'Agencies & Partners', path: '/agencies-and-partners/' },
-  // The tier below: as many pages as each section needs.
-  { id: 'outcome', label: 'Outcome', path: '/:uid/', parent: 'outcomes_hub', uidHint: 'e.g. reach-and-engage-educators' },
-  { id: 'product', label: 'Product', path: '/products/:uid/', parent: 'products_hub', uidHint: 'e.g. education-iq' },
-  { id: 'insights_section', label: 'Insights & Opinion section', path: '/insights/:uid/', parent: 'what_we_think_page', uidHint: 'e.g. what-were-hearing' },
-  { id: 'capability', label: 'Capability', path: '/capabilities/:uid/', parent: 'capabilities_hub', uidHint: 'e.g. research' },
-  { id: 'about_subpage', label: 'About page', path: '/about/:uid/', parent: 'about_page', uidHint: 'e.g. our-people' },
-  { id: 'agencies_subpage', label: 'Agencies & Partners page', path: '/agencies-and-partners/:uid/', parent: 'agencies_page', uidHint: 'e.g. white-label' },
+  // The tier below: as many pages as each section needs. Each page has a
+  // "Show in main menu" tick box; `inMenu` is whether it starts ticked.
+  { id: 'outcome', label: 'Outcome', path: '/:uid/', parent: 'outcomes_hub', uidHint: 'e.g. reach-and-engage-educators', inMenu: true },
+  { id: 'product', label: 'Product', path: '/products/:uid/', parent: 'products_hub', uidHint: 'e.g. education-iq', inMenu: true },
+  { id: 'insights_section', label: 'Insights & Opinion section', path: '/insights/:uid/', parent: 'what_we_think_page', uidHint: 'e.g. what-were-hearing', inMenu: true },
+  { id: 'capability', label: 'Capability', path: '/capabilities/:uid/', parent: 'capabilities_hub', uidHint: 'e.g. research', inMenu: true },
+  { id: 'about_subpage', label: 'About page', path: '/about/:uid/', parent: 'about_page', uidHint: 'e.g. our-people', inMenu: false },
+  { id: 'agencies_subpage', label: 'Agencies & Partners page', path: '/agencies-and-partners/:uid/', parent: 'agencies_page', uidHint: 'e.g. white-label', inMenu: false },
   // Pages not in the menu.
   { id: 'insight', label: 'Insight', path: '/insights/:uid/', parent: 'what_we_think_page', uidHint: 'e.g. what-mat-finance-leaders-are-telling-us', article: true },
   { id: 'opinion', label: 'Opinion', path: '/insights/:uid/', parent: 'what_we_think_page', uidHint: 'e.g. your-database-isnt-your-market', article: true },
@@ -36,6 +37,7 @@ export const PAGE_TYPES = [
   parent?: string;
   uidHint?: string;
   article?: boolean;
+  inMenu?: boolean;
 }[];
 
 export type PageTypeId = (typeof PAGE_TYPES)[number]['id'];

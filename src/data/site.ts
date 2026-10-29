@@ -24,59 +24,12 @@ export type NavLink = { label: string; href: string; blurb?: string };
 export type NavGroup = { label: string; href: string; children?: NavLink[] };
 
 /*
-  Navigation is deliberately outcome-led. The brief is explicit that visitors
-  must not have to understand EdCo's org chart to find help, so "What are you
-  trying to achieve?" comes before Products.
+  The main menu is built from Prismic (src/lib/menu.ts). It is deliberately
+  outcome-led: the brief is explicit that visitors must not have to
+  understand EdCo's org chart to find help, so "What are you trying to
+  achieve?" comes before Products. That order is fixed, in
+  prismic/pageTypes.ts; what goes under each section is ticked in Prismic.
 */
-export const primaryNav: NavGroup[] = [
-  {
-    label: 'What are you trying to achieve?',
-    href: '/what-are-you-trying-to-achieve/',
-    children: [
-      { label: 'Understand education & educators', href: '/understand-education-and-educators/' },
-      { label: 'Build your reputation & audience', href: '/build-your-reputation-and-audience/' },
-      { label: 'Reach & engage educators', href: '/reach-and-engage-educators/' },
-      { label: 'Generate leads & build pipeline', href: '/generate-leads-and-build-pipeline/' },
-      { label: 'Grow & retain customers', href: '/grow-and-retain-customers/' },
-      { label: 'Get your education strategy right', href: '/education-strategy/' },
-    ],
-  },
-  {
-    label: 'Products',
-    href: '/products/',
-    children: [
-      { label: 'Education IQ', href: '/products/education-iq/' },
-      { label: 'Engagement Hub', href: '/products/ednet/' },
-      { label: 'SPIRIT', href: '/products/spirit/' },
-      { label: 'International Schools Network', href: '/products/international-schools-network/' },
-      { label: 'The Curriculum Network', href: '/products/the-curriculum-network/' },
-    ],
-  },
-  {
-    label: 'Insights & Opinion',
-    href: '/insights/',
-    children: [
-      { label: 'What we’re hearing', href: '/insights/what-were-hearing/' },
-      { label: 'Opinion', href: '/insights/opinion/' },
-    ],
-  },
-  {
-    label: 'Capabilities',
-    href: '/capabilities/',
-    children: [
-      { label: 'Research', href: '/capabilities/research/' },
-      { label: 'Marketing Services', href: '/capabilities/marketing-services/' },
-      { label: 'Events & CPD', href: '/capabilities/events-and-cpd/' },
-      { label: 'Content creation', href: '/capabilities/content-creation/' },
-      { label: 'Data Services', href: '/capabilities/data-services/' },
-      { label: 'CSR programmes', href: '/capabilities/csr-programmes/' },
-      { label: 'Technology & integration', href: '/capabilities/technology-and-integration/' },
-      { label: 'Bespoke technology', href: '/capabilities/bespoke-technology/' },
-    ],
-  },
-  { label: 'About', href: '/about/' },
-  { label: 'Agencies & Partners', href: '/agencies-and-partners/' },
-];
 
 export const utilityNav: NavLink[] = [
   { label: 'For Educators', href: '/for-educators/' },
@@ -84,39 +37,28 @@ export const utilityNav: NavLink[] = [
   { label: 'Search', href: '/search/' },
 ];
 
-export const footerNav: { heading: string; links: NavLink[] }[] = [
-  {
-    heading: 'What are you trying to achieve?',
-    links: primaryNav[0].children!,
-  },
-  {
-    heading: 'Products',
-    links: primaryNav[1].children!,
-  },
-  {
-    heading: 'Capabilities',
-    links: [
-      { label: 'Research', href: '/capabilities/research/' },
-      { label: 'Marketing Services', href: '/capabilities/marketing-services/' },
-      { label: 'Events & CPD', href: '/capabilities/events-and-cpd/' },
-      { label: 'Data Services', href: '/capabilities/data-services/' },
-      { label: 'CSR programmes', href: '/capabilities/csr-programmes/' },
-      { label: 'Technology & integration', href: '/capabilities/technology-and-integration/' },
-      { label: 'Bespoke technology', href: '/capabilities/bespoke-technology/' },
-      { label: 'All capabilities', href: '/capabilities/' },
-      { label: 'Free customer analysis', href: '/free-customer-analysis/' },
-    ],
-  },
-  {
-    heading: 'EdCo',
-    links: [
-      { label: 'About EdCo', href: '/about/' },
-      { label: 'Insights & Opinion', href: '/insights/' },
-      { label: 'Case studies', href: '/case-studies/' },
-      { label: 'Agencies & Partners', href: '/agencies-and-partners/' },
-      { label: 'For Educators', href: '/for-educators/' },
-      { label: 'Customer login', href: '/customer/' },
-      { label: 'Contact', href: '/contact/' },
-    ],
-  },
-];
+/*
+  The footer lists the pages under these main menu sections, in this order,
+  each followed by its extra links here.
+*/
+export const footerExtras: Record<string, NavLink[]> = {
+  outcomes_hub: [],
+  products_hub: [],
+  capabilities_hub: [
+    { label: 'All capabilities', href: '/capabilities/' },
+    { label: 'Free customer analysis', href: '/free-customer-analysis/' },
+  ],
+};
+
+export const footerEdCo: { heading: string; links: NavLink[] } = {
+  heading: 'EdCo',
+  links: [
+    { label: 'About EdCo', href: '/about/' },
+    { label: 'Insights & Opinion', href: '/insights/' },
+    { label: 'Case studies', href: '/case-studies/' },
+    { label: 'Agencies & Partners', href: '/agencies-and-partners/' },
+    { label: 'For Educators', href: '/for-educators/' },
+    { label: 'Customer login', href: '/customer/' },
+    { label: 'Contact', href: '/contact/' },
+  ],
+};
