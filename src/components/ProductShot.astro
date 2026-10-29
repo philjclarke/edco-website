@@ -6,8 +6,11 @@
 
   The image is either a key from src/data/screens.ts (optimised at build) or
   an image from Prismic (resized on request by Prismic's image CDN).
+
+  A real screenshot opens full size in a modal when clicked, since detail is
+  hard to read at card size. The large copy only downloads when it's opened.
 */
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import Placeholder from './Placeholder.astro';
 import { screens, isScreenKey } from '@/data/screens';
 import { srcsetOf } from '@/lib/prismic';
@@ -23,12 +26,24 @@ const { caption, src, tone = 'light', ratio = 'wide' } = Astro.props;
 const dark = tone === 'dark';
 const shot = typeof src === 'string' ? (isScreenKey(src) ? screens[src] : null) : null;
 const remote = src && typeof src === 'object' ? { ...srcsetOf(src, [600, 900, 1400]), alt: src.alt || caption } : null;
+
+const large = remote
+  ? { ...srcsetOf(src as Exclude<ImageRef, string>, [1200, 1800, 2400]), width: (src as any).dimensions.width, height: (src as any).dimensions.height }
+  : shot
+    ? await getImage({ src: shot, widths: [1200, 1800, 2400] }).then((i) => ({ src: i.src, srcset: i.srcSet.attribute, width: shot.width, height: shot.height }))
+    : null;
+const alt = remote?.alt ?? caption;
+const Wrapper = large ? 'button' : 'div';
 ---
 
 <figure class="w-full">
-  <div
+  <Wrapper
+    {...(large
+      ? { type: 'button', 'data-zoom': '', 'aria-label': `Enlarge screenshot: ${caption}`, 'aria-haspopup': 'dialog' }
+      : {})}
     class:list={[
-      'relative overflow-hidden rounded-card border',
+      'relative block w-full overflow-hidden rounded-card border',
+      large && 'group cursor-zoom-in text-left focus-visible:outline-2 focus-visible:outline-offset-2',
       ratio === 'wide' ? 'aspect-[16/10]' : 'aspect-[4/3]',
       shot || remote ? 'border-navy-700 bg-navy-900' : dark ? 'border-navy-700 bg-navy-800' : 'border-line bg-mist',
     ]}
@@ -70,8 +85,71 @@ const remote = src && typeof src === 'object' ? { ...srcsetOf(src, [600, 900, 14
         </div>
       )
     }
-  </div>
+    {
+      large && (
+        <span
+          aria-hidden="true"
+          class="absolute bottom-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-navy-900/80 text-white opacity-80 transition group-hover:opacity-100 group-focus-visible:opacity-100"
+        >
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+          </svg>
+        </span>
+      )
+    }
+  </Wrapper>
+  {
+    large && (
+      <dialog
+        class="m-auto max-h-none max-w-none overflow-visible border-0 bg-transparent p-0 backdrop:bg-navy-950/95 backdrop:backdrop-blur-sm"
+        aria-label={caption}
+      >
+        <img
+          data-src={large.src}
+          data-srcset={large.srcset}
+          sizes="92vw"
+          alt={alt}
+          width={large.width}
+          height={large.height}
+          class="block h-auto max-h-[85vh] w-auto max-w-[92vw] rounded-lg bg-navy-900 object-contain"
+        />
+        <p class="mt-3 max-w-[92vw] text-sm text-ondark-muted">{caption}</p>
+        <button
+          type="button"
+          data-close
+          aria-label="Close"
+          class="fixed right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full bg-navy-800 text-white transition hover:bg-navy-700"
+        >
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+      </dialog>
+    )
+  }
   <figcaption class:list={['mt-3 text-sm', dark ? 'text-ondark-muted' : 'text-ink-muted']}>
     {caption}
   </figcaption>
 </figure>
+
+<script>
+  // Open the full-size copy, loading it the first time. The browser's modal
+  // handles focus and Escape; a click on the backdrop closes it too.
+  for (const button of document.querySelectorAll<HTMLButtonElement>('[data-zoom]')) {
+    const dialog = button.nextElementSibling as HTMLDialogElement | null;
+    if (!dialog) continue;
+    const img = dialog.querySelector('img');
+    button.addEventListener('click', () => {
+      if (img && !img.src) {
+        img.srcset = img.dataset.srcset ?? '';
+        img.src = img.dataset.src ?? '';
+      }
+      dialog.showModal();
+      document.documentElement.style.overflow = 'hidden';
+    });
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog || (e.target as Element).closest('[data-close]')) dialog.close();
+    });
+    dialog.addEventListener('close', () => (document.documentElement.style.overflow = ''));
+  }
+</script>

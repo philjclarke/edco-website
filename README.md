@@ -119,6 +119,9 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
 - **Banner image colour:** Brand tint (the default) runs the photo through the
   brand duotone; Natural leaves it as taken, keeping the fade that protects the
   text. Natural is on Research and The Curriculum Network as a trial (29 October 2026).
+- **Screenshots enlarge:** a real screenshot (Screenshots, and the ones in
+  expandable cards) opens full size in a modal when clicked. The large copy
+  only downloads when it's opened.
 - **Banners on phones:** below 768px the photo is left out (and not downloaded)
   and the banner shows a navy-to-blue gradient instead. No orange in it, so the
   copy keeps its contrast.
