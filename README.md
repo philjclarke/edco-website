@@ -119,6 +119,9 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
 - **Banner image colour:** Brand tint (the default) runs the photo through the
   brand duotone; Natural leaves it as taken, keeping the fade that protects the
   text. Natural is on Research and The Curriculum Network as a trial (29 October 2026).
+- **Banners on phones:** below 768px the photo is left out (and not downloaded)
+  and the banner shows a navy-to-blue gradient instead. No orange in it, so the
+  copy keeps its contrast.
 - **Earlier components:** Statement, Comparison, How EdCo works (its own stages, or Site settings' model if it
   has none), Page cards,
   Link words, Logo wall, Latest articles, Link cards, Cards, Steps (with

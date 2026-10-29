@@ -12,8 +12,13 @@
 
   `duotone` blends the brand gradient through by luminosity, which pulls any
   stock photograph onto the palette.
+
+  On a phone the photo would be a sliver beside the copy, so it gives way to
+  a gradient in the brand blues. The photo isn't downloaded there either: the
+  <picture> hands a phone a blank pixel instead. No orange in the gradient,
+  so the white and grey copy keeps its contrast.
 */
-import { Image } from 'astro:assets';
+import { getImage } from 'astro:assets';
 import { banners, isBannerKey } from '@/data/banners';
 import { srcsetOf, type RemoteImage } from '@/lib/prismic';
 
@@ -45,7 +50,12 @@ if (typeof src === 'string' && !isBannerKey(src)) {
       `Known: ${Object.keys(banners).join(', ')}`
   );
 }
-const image = typeof src === 'string' ? banners[src as keyof typeof banners] : null;
+const local =
+  typeof src === 'string'
+    ? await getImage({ src: banners[src as keyof typeof banners], widths: [700, 1100, 1600] })
+    : null;
+const img = remote ?? { src: local!.src, srcset: local!.srcSet.attribute };
+const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 const objectPos = { left: 'object-left', centre: 'object-center', right: 'object-right' }[focus];
 // Unique per instance: two shape banners on one page would otherwise both
 // resolve to whichever clipPath the browser saw first.
@@ -53,7 +63,12 @@ const clipId = `banner-curve-${Math.random().toString(36).slice(2, 9)}`;
 ---
 
 <div
-  class:list={['pointer-events-none absolute inset-y-0 right-0 w-[56%]', cls]}
+  class="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_70%_at_100%_0%,#24365f_0%,rgba(36,54,95,0)_70%),linear-gradient(165deg,var(--color-navy-900)_45%,#1a2645_100%)] md:hidden"
+  aria-hidden="true"
+>
+</div>
+<div
+  class:list={['pointer-events-none absolute inset-y-0 right-0 hidden w-[56%] md:block', cls]}
   aria-hidden={alt ? undefined : 'true'}
 >
   {
@@ -76,26 +91,12 @@ const clipId = `banner-curve-${Math.random().toString(36).slice(2, 9)}`;
     ]}
     style={treatment === 'shape' ? `clip-path: url(#${clipId})` : undefined}
   >
-    {
-      remote ? (
-        <img
-          src={remote.src}
-          srcset={remote.srcset}
-          alt={alt}
-          sizes="56vw"
-          class:list={[
-            'h-full w-full object-cover',
-            objectPos,
-            duotone && 'opacity-90 mix-blend-luminosity grayscale contrast-[1.1]',
-          ]}
-          loading="eager"
-          fetchpriority="high"
-        />
-      ) : (
-      <Image
-        src={image!}
+    <picture class="block h-full w-full">
+      <source media="(max-width: 767px)" srcset={BLANK} />
+      <img
+        src={img.src}
+        srcset={img.srcset}
         alt={alt}
-        widths={[700, 1100, 1600]}
         sizes="56vw"
         class:list={[
           'h-full w-full object-cover',
@@ -103,9 +104,9 @@ const clipId = `banner-curve-${Math.random().toString(36).slice(2, 9)}`;
           duotone && 'opacity-90 mix-blend-luminosity grayscale contrast-[1.1]',
         ]}
         loading="eager"
+        fetchpriority="high"
       />
-      )
-    }
+    </picture>
 
     {/* The copy always has to win. Fade dissolves the whole left edge; shape
         only needs a short veil where the curve meets the text. */}
