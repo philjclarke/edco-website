@@ -1,10 +1,14 @@
 ---
-/* Link cards: cards written by hand, each linking somewhere. A [BRACKETED] title is a placeholder (homepage "free value"). */
+/*
+  Link cards: cards written by hand, each linking somewhere. A [BRACKETED] title is a placeholder (homepage "free value").
+  A card linking to a product with a logo shows that logo.
+*/
 import Section from '../Section.astro';
 import SectionHead from '../SectionHead.astro';
 import Card from '../Card.astro';
 import Placeholder from '../Placeholder.astro';
 import { hrefOf, textOf } from '@/lib/prismic';
+import { pages } from '@/lib/pages';
 import { placeholderLabel } from '@/lib/placeholders';
 import { toneOf } from './tone';
 
@@ -12,6 +16,11 @@ const { p } = Astro.props as { p: Record<string, any> };
 const tone = toneOf(p.background);
 const dark = tone === 'dark';
 const cards = (p.cards ?? []).filter((c: any) => textOf(c.title));
+const all = await pages(Astro.locals);
+const logoOf = (link: any) => {
+  const doc = all.linked(link);
+  return doc ? all.preview(doc).logo : undefined;
+};
 // Two or four cards sit in pairs; otherwise rows of three.
 ---
 
@@ -36,6 +45,7 @@ const cards = (p.cards ?? []).filter((c: any) => textOf(c.title));
               body={textOf(c.body) || undefined}
               meta={textOf(c.link_label) || undefined}
               tone={dark ? 'dark' : 'light'}
+              logo={logoOf(c.link)}
             />
           </li>
         );

@@ -33,11 +33,11 @@ Node 22 (pinned via Volta in `package.json`).
 | --- | --- | --- |
 | Every page built from components: the homepage, the top-level page of each section and the pages below it, insights, opinion, provision blueprints, Contact, For Educators, Free customer analysis, Customer login | One page type each (see below) | [pages.ts](src/lib/pages.ts), [PageView.astro](src/components/PageView.astro) |
 | Case studies hub, Search, 404 | One single-instance type each, with fixed fields | [pageCopy.ts](src/data/pageCopy.ts) |
-| The Listen → Grow model, proof figures, logo list, themes | `site_settings` | [pageCopy.ts](src/data/pageCopy.ts), then `model.ts`, `proof.ts` |
+| The Listen → Grow model, proof figures, client logos, themes | `site_settings` | [pageCopy.ts](src/data/pageCopy.ts), then `model.ts`, `proof.ts` |
 | Case studies | `case_study` | content collection `caseStudies` |
 | Main menu, and the footer's section lists | Each section page's "Show in main menu" and "Menu order" (Preview tab) | [menu.ts](src/lib/menu.ts) |
 | The menu's top level, the footer's extra links, contact details | Code: [site.ts](src/data/site.ts), [pageTypes.ts](prismic/pageTypes.ts) | |
-| Mock testimonials, logos and quotes | Code: [mock.ts](src/data/mock.ts) | |
+| Mock testimonials and quotes | Code: [mock.ts](src/data/mock.ts) | |
 
 ## Prismic
 
@@ -168,13 +168,31 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
 ## Mock proof
 
 While EdCo's copy is outstanding, empty shout-out bands and every testimonial
-show **invented** quotes, and the logo wall shows invented organisations, from [src/data/mock.ts](src/data/mock.ts), so the design
+show **invented** quotes from [src/data/mock.ts](src/data/mock.ts), so the design
 can be judged in full. The names, roles and organisations are deliberately fake
 ("Alex Example, Head of Example Partnerships, Sample Learning Ltd"). The mocks
 aren't in Prismic, they're kept out of site search, and real copy replaces
 them where it exists. **Before launch, set `MOCK_PROOF` to `false`:** every mock
 then shows as a visible placeholder again. Running
 `grep -rl data-mock .vercel/output/static` lists the pages still showing them.
+
+## Logos
+
+- **Client logos** are in Site settings (Proof tab): a name, a full-colour logo
+  and a "permission confirmed" tick for each. The wall shows them on white tiles
+  whatever the section's tone, since most brands don't allow recolouring. A note
+  under the wall stays until every client is ticked (brief §76). With no logos
+  at all, it falls back to the mock wall while `MOCK_PROOF` is on.
+- **Product logos** are on each product's Preview tab: one for light and one
+  for dark backgrounds. [Logo.astro](src/components/Logo.astro) picks the one
+  for the background: the banner, product cards, How we do it panels, and Link
+  cards that link to the product. A product with only a dark logo shows it on a
+  navy panel on light backgrounds.
+- SVGs are served straight from Prismic's CDN: its image service would turn
+  them into bitmaps. Upload with a file type, or Prismic stores the file as a
+  document that image fields reject.
+- **EdCo's reversed logo** is an SVG ([public/brand/edco-logo-reversed.svg](public/brand/edco-logo-reversed.svg)),
+  used by the footer and the dark header. The positive one is still a bitmap.
 
 ## Snapshots
 

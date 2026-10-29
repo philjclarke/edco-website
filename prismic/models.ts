@@ -535,6 +535,12 @@ function pageType(t: (typeof PAGE_TYPES)[number]): CustomTypeModel {
         interest_tags: group('Interest tags', { tag: text('Tag') }),
         icon: text('Icon', ICON_HINT),
         preview_image: image('Preview image'),
+        ...(t.id === 'product'
+          ? {
+              logo: image('Logo, for light backgrounds (SVG if you have it)'),
+              logo_dark: image('Logo, for dark backgrounds: the banner, dark cards'),
+            }
+          : {}),
         panel_link_label: text('Link label', 'e.g. See SPIRIT. Leave blank for “Find out more”'),
         ...(article
           ? {
@@ -560,6 +566,7 @@ const fieldFor = (kind: Kind, label: string): Nested =>
   kind === 'text' ? text(label)
   : kind === 'link' ? link(label)
   : kind === 'boolean' ? boolean(label, false, 'Yes', 'No')
+  : kind === 'image' ? image(label)
   : bullets(label);
 
 function fromSpec(id: string, label: string, fields: Record<string, Field | Group>): CustomTypeModel {

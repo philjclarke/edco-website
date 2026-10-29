@@ -105,6 +105,7 @@ const date = article?.date?.toLocaleDateString('en-GB', { day: 'numeric', month:
       externalSite={external}
       banner={banner}
       size={p.size === 'Large' ? 'lg' : 'sm'}
+      logo={context?.preview?.logo?.dark}
     />
   )
 }

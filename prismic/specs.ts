@@ -13,7 +13,7 @@
   No imports: this file is read by both the site build and the Node scripts.
 */
 
-export type Kind = "text" | "link" | "boolean" | "bullets";
+export type Kind = "text" | "link" | "boolean" | "bullets" | "image";
 export interface Field {
   kind: Kind;
   label: string;
@@ -196,16 +196,26 @@ export const specs: DocSpec[] = [
           },
         },
       },
+      // The client logo wall. The item's name field kept its original id
+      // (text) so the names entered before logos were added carried over.
       logo_candidates: {
         kind: "group",
-        label: "Client logo list",
+        label: "Client logos",
         tab: "Proof",
-        path: "logoCandidates",
-        strings: true,
+        path: "clientLogos",
         fields: {
           text: {
             kind: "text",
-            label: "Item",
+            label: "Client name",
+            key: "name",
+          },
+          logo: {
+            kind: "image",
+            label: "Logo (full colour, for a white background)",
+          },
+          confirmed: {
+            kind: "boolean",
+            label: "Current client, permission to show the logo confirmed",
           },
         },
       },

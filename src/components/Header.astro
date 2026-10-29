@@ -66,13 +66,15 @@ const primaryNav = (await menu(Astro.locals)).main;
         runtime image endpoint this deployment doesn't have, so the logo would
         break on draft previews while static pages were fine. The logo is one fixed asset
         at one size on every page, so pre-generating it is simpler than adding
-        an image service, and keeps the header identical everywhere.
+        an image service, and keeps the header identical everywhere. The
+        reversed logo is EdCo's own SVG; the positive one is still a bitmap
+        until there's an SVG of it too.
       */}
       <img
-        src={`/brand/edco-logo-${dark ? 'reversed' : 'positive'}-200.webp`}
-        srcset={`/brand/edco-logo-${dark ? 'reversed' : 'positive'}-200.webp 200w, /brand/edco-logo-${dark ? 'reversed' : 'positive'}-400.webp 400w`}
-        sizes="200px"
-        width="200"
+        src={dark ? '/brand/edco-logo-reversed.svg' : '/brand/edco-logo-positive-200.webp'}
+        srcset={dark ? undefined : '/brand/edco-logo-positive-200.webp 200w, /brand/edco-logo-positive-400.webp 400w'}
+        sizes={dark ? undefined : '200px'}
+        width={dark ? 216 : 200}
         height="82"
         alt="The Education Company"
         class="h-16 w-auto transition-[height] duration-200 md:h-[4.5rem] lg:h-16 xl:h-20 lg:group-data-stuck/header:h-12"

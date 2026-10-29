@@ -18,7 +18,7 @@ grep -rn "verified: false" src/data/  # unconfirmed statistics
 
 | # | Item | Why it matters |
 | --- | --- | --- |
-| 1.1 | **Logo as SVG** (positive + reversed) | We have 1106×451 PNGs. They're upscaled at large sizes and can't be recoloured. The starburst is vector artwork somewhere. |
+| 1.1 | **Logo as SVG** (positive) | The reversed SVG arrived on 29 October 2026 and is used in the footer and dark header. The positive one is still a 1106×451 PNG, upscaled at large sizes. |
 | 1.2 | **Brand typeface + web licence** | Poppins/Inter are stand-ins loaded from Google Fonts. If EdCo has a licensed face (the deck looks like a Gilroy/Poppins-class geometric sans), we need the webfont files and the licence. |
 | 1.3 | **Ribbon device as SVG** | Currently four PNGs with baked-in shadows. SVG would let it scale, animate and recolour cleanly. |
 | 1.4 | **Written brand guidelines**, if they exist | The palette, type scale and ribbon rules in `global.css` were reverse-engineered from the logo and one deck. If there's a document, the system should follow it rather than my reading of it. |
@@ -46,8 +46,21 @@ The Big Plastic Count.
 | --- | --- |
 | 1.10 | Which of these are **current** relationships (the brief is explicit that historical ones must not be implied as current) |
 | 1.11 | Written **logo permission** for each |
-| 1.12 | Logo files, SVG preferred |
+| 1.12 | Logo files, SVG preferred. Nine arrived on 29 October 2026 and are in Site settings. Still needed: **Gatsby**. Worth replacing with SVG or larger files: Raintree (200px wide), Encyclopaedia Britannica (269px), Edustaff (446px) |
 | 1.13 | Any 11th–15th logos to reach the 10–15 the brief asks for |
+
+### Product logos
+
+Added on 29 October 2026 to each product's Preview tab: Education IQ (both
+versions), The Curriculum Network (both), International Schools Network (dark
+only, so light cards show it on a navy panel).
+
+| # | Need |
+| --- | --- |
+| 1.13a | **SPIRIT** logo, light and dark versions |
+| 1.13b | **Engagement Hub** logo, or a decision that EdNet's stays (see the rename note below) |
+| 1.13c | **International Schools Network** logo for light backgrounds |
+| 1.13d | **Navigate**: we have its logos, but it has no page. It's mentioned on Bespoke technology and in the 250,000+ students figure. Does it need a page, or the logo on Bespoke technology? |
 
 ### External destinations
 

@@ -1,0 +1,58 @@
+---
+/*
+  A logo uploaded to Prismic: a client's on the logo wall, or a product's.
+  An SVG is served untouched, since Prismic's image service would turn it
+  into a fixed-size bitmap; anything else is resized to the widths a logo
+  needs, with a sharper copy for high-density screens.
+
+  Give it a product's pair of logos and the background it sits on, and it
+  picks the right one. A product with only a logo for dark backgrounds
+  shows it on a small navy panel on a light background, so it isn't missing.
+*/
+import { srcsetOf, type RemoteImage } from '@/lib/prismic';
+
+interface Props {
+  image?: RemoteImage;
+  /** A product's logos, in place of `image`. */
+  pair?: { light?: RemoteImage; dark?: RemoteImage };
+  /** The background `pair` sits on. */
+  onDark?: boolean;
+  /** The organisation or product it names, for screen readers. */
+  name: string;
+  class?: string;
+}
+const { pair, onDark = false, name, class: className } = Astro.props;
+const plate = !Astro.props.image && !onDark && !pair?.light && Boolean(pair?.dark);
+const image = Astro.props.image ?? (onDark ? pair?.dark : pair?.light ?? pair?.dark);
+if (!image) return null;
+const svg = /\.svg$/i.test(new URL(image.url).pathname);
+const { src, srcset } = svg ? { src: image.url.split('?')[0], srcset: undefined } : srcsetOf(image, [240, 480]);
+---
+
+{plate ? (
+  <span class="mb-5 inline-flex self-start rounded-lg bg-navy-900 px-3.5 py-2.5">
+    <img
+      src={src}
+      srcset={srcset}
+      sizes={srcset ? '240px' : undefined}
+      alt={image.alt || name}
+      width={image.dimensions.width}
+      height={image.dimensions.height}
+      loading="lazy"
+      decoding="async"
+      class="h-9 w-auto max-w-[12rem] object-contain object-left"
+    />
+  </span>
+) : (
+<img
+  src={src}
+  srcset={srcset}
+  sizes={srcset ? '240px' : undefined}
+  alt={image.alt || name}
+  width={image.dimensions.width}
+  height={image.dimensions.height}
+  loading="lazy"
+  decoding="async"
+  class:list={['object-contain', className]}
+/>
+)}

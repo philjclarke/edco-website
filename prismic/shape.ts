@@ -30,6 +30,7 @@ function valueOf(kind: Kind, v: any) {
   if (kind === 'text') return typeof v === 'string' ? v : '';
   if (kind === 'link') return hrefOfLink(v);
   if (kind === 'boolean') return Boolean(v);
+  if (kind === 'image') return prismic.isFilled.image(v) ? v : undefined;
   return listText(v);
 }
 

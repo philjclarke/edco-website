@@ -17,9 +17,6 @@ export interface ProofStat {
 
 export const proofStats: ProofStat[] = data.proofStats;
 
-/* Brief §76: do not imply a historical relationship is current unless confirmed. */
-export const logoCandidates: string[] = data.logoCandidates;
-
 /* Brief §59 — testimonials are commissioned against these themes. */
 export const testimonialThemes: string[] = data.testimonialThemes;
 

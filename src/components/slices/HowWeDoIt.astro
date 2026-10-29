@@ -3,12 +3,13 @@
   How we do it: a panel for each picked product or capability, filled from
   that page's Preview tab, on a ruled grid: dark by default (component deck,
   slide 9), or light where it follows another dark section. Each panel
-  links to its page.
+  links to its page. A product with a logo shows it in place of the icon.
 */
 import type { Slice } from '@prismicio/client';
 import { Icon } from 'astro-icon/components';
 import Section from '../Section.astro';
 import Grid from '../Grid.astro';
+import Logo from '../Logo.astro';
 import { textOf } from '@/lib/prismic';
 import { pages } from '@/lib/pages';
 import { toneOf } from '../sections/tone';
@@ -32,6 +33,16 @@ const panels = (p.pages ?? []).map((x: any) => all.linked(x.page)).filter(Boolea
       panels.map((pg: any) => (
         <li>
           <a href={pg.href} class:list={['group flex h-full items-start gap-5 p-6 transition-colors duration-200 md:p-8', dark ? 'hover:bg-navy-800' : 'hover:bg-mist']}>
+            {(() => {
+              // A logo for this background, or (on light) the dark one on its panel.
+              return pg.logo && (dark ? pg.logo.dark : true) ? (
+                <span class="flex flex-1 flex-col">
+                  <Logo pair={pg.logo} onDark={dark} name={pg.title} class="mb-5 h-14 w-auto max-w-[14rem] object-left" />
+                  <span class="font-display text-xl font-bold leading-snug">{pg.title}</span>
+                  {pg.text && <span class:list={['mt-2 text-[0.9375rem]', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{pg.text}</span>}
+                </span>
+              ) : (
+                <>
             <span class="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,var(--color-orange),var(--color-pink))] text-white shadow-lg shadow-pink/20 transition-transform duration-200 group-hover:scale-105">
               {pg.icon ? <Icon name={pg.icon} class="h-6 w-6" /> : <Icon name="fa6-solid:arrow-right" class="h-5 w-5" />}
             </span>
@@ -39,6 +50,9 @@ const panels = (p.pages ?? []).map((x: any) => all.linked(x.page)).filter(Boolea
               <span class="font-display text-xl font-bold leading-snug">{pg.title}</span>
               {pg.text && <span class:list={['mt-2 text-[0.9375rem]', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{pg.text}</span>}
             </span>
+                </>
+              );
+            })()}
           </a>
         </li>
       ))

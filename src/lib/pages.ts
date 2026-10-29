@@ -26,6 +26,8 @@ export interface PagePreview {
   text: string;
   icon?: string;
   image?: RemoteImage;
+  /** Products only: the logo for light and for dark backgrounds, either of which may be missing. */
+  logo?: { light?: RemoteImage; dark?: RemoteImage };
   linkLabel?: string;
   tags: string[];
   /** Insights and opinion only. */
@@ -47,6 +49,7 @@ export function previewOf(doc: PrismicDocument): PagePreview {
     text: textOf(d.summary),
     icon: knownIcon(d.icon),
     image: imageOf(d.preview_image),
+    logo: imageOf(d.logo) || imageOf(d.logo_dark) ? { light: imageOf(d.logo), dark: imageOf(d.logo_dark) } : undefined,
     linkLabel: textOf(d.panel_link_label) || undefined,
     tags: (d.interest_tags ?? []).map((t: any) => textOf(t.tag)).filter(Boolean),
     article: ARTICLE_TYPES.has(doc.type)

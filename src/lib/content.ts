@@ -9,6 +9,14 @@
   requests, so a reload after saving in Prismic always shows the latest.
 */
 import { published, loadSiteCopy, type SiteCopy } from '@/data/pageCopy';
+import type { RemoteImage } from '@/lib/prismic';
+
+/** A client on the logo wall (Site settings, Proof tab). */
+export interface ClientLogo {
+  name: string;
+  logo?: RemoteImage;
+  confirmed: boolean;
+}
 
 const perRequest = new WeakMap<object, Promise<SiteCopy>>();
 
@@ -25,7 +33,7 @@ export async function siteSettings(locals?: App.Locals) {
   return {
     edcoModel: s.edcoModel as { name: string; summary: string; methods: string[]; icon?: string }[],
     proofStats: s.proofStats as { value: string; label: string; verified?: boolean }[],
-    logoCandidates: s.logoCandidates as string[],
+    clientLogos: s.clientLogos as ClientLogo[],
     testimonialThemes: s.testimonialThemes as string[],
     caseStudyThemes: s.caseStudyThemes as string[],
   };

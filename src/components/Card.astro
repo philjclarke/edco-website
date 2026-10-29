@@ -1,5 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
+import Logo from './Logo.astro';
+import type { RemoteImage } from '@/lib/prismic';
 
 interface Props {
   href?: string;
@@ -13,8 +15,10 @@ interface Props {
   tone?: 'dark' | 'light';
   /** A numeral, shown only when there is no icon. */
   index?: number;
+  /** A product's logos, above the eyebrow. */
+  logo?: { light?: RemoteImage; dark?: RemoteImage };
 }
-const { href, icon, eyebrow, title, body, meta, tone = 'light', index } = Astro.props;
+const { href, icon, eyebrow, title, body, meta, tone = 'light', index, logo } = Astro.props;
 const dark = tone === 'dark';
 const Tag = href ? 'a' : 'div';
 const linked = Boolean(href);
@@ -75,6 +79,7 @@ const linked = Boolean(href);
       </span>
     )
   }
+  {logo && <Logo pair={logo} onDark={dark} name={title} class="mb-5 h-12 w-auto max-w-[13rem] object-left" />}
   {eyebrow && <p class:list={['eyebrow mb-3', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{eyebrow}</p>}
   {title && <h3 class="text-lg leading-snug md:text-xl">{title}</h3>}
   {body && <p class:list={['mt-3 text-sm', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{body}</p>}

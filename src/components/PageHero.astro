@@ -5,6 +5,7 @@ import Button from './Button.astro';
 import BannerImage from './BannerImage.astro';
 import type { RemoteImage } from '@/lib/prismic';
 import Placeholder from './Placeholder.astro';
+import Logo from './Logo.astro';
 
 interface Props {
   /** The page's own name, shown in the small label above the heading. */
@@ -30,6 +31,8 @@ interface Props {
   /** Hero photography. Supersedes the ribbon where it is set. */
   /** A key from src/data/banners.ts, or an image from Prismic. */
   banner?: { src: string | RemoteImage; focus?: 'left' | 'centre' | 'right' };
+  /** A product's logo for dark backgrounds, above the heading. */
+  logo?: RemoteImage;
 }
 const {
   eyebrow,
@@ -43,6 +46,7 @@ const {
   size = 'sm',
   ribbon: showRibbon = true,
   banner,
+  logo,
 } = Astro.props;
 ---
 
@@ -84,6 +88,7 @@ const {
           eyebrow && <p class="eyebrow mb-5 text-ondark-muted">{eyebrow}</p>
         )
       }
+      {logo && <Logo image={logo} name={eyebrow ?? title} class="mb-7 h-14 w-auto max-w-[16rem] object-left md:h-16" />}
       <h1 class:list={[size === 'lg' ? 'text-hero' : 'text-display']}>{title}</h1>
       {standfirst && <p class="mt-6 font-display text-lead font-medium grad-text">{standfirst}</p>}
       {lead && <p class="mt-5 max-w-2xl text-lead text-ondark-muted">{lead}</p>}

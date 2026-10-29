@@ -2,15 +2,26 @@
 /*
   Client logos — brief §17, §76. Not clickable, so a Grid.
 
-  None are confirmed yet. While MOCK_PROOF is on (src/data/mock.ts) the wall
-  shows invented organisations so the design reads in full; otherwise it lists
-  the brief's candidates, each with a placeholder for its logo.
+  The clients come from Site settings (Proof tab). Once any has a logo the
+  wall shows them, in full colour on white tiles whatever the section's tone,
+  since few brands allow their logo to be recoloured; a client still waiting
+  for one shows its name and a placeholder. Until then, while MOCK_PROOF is
+  on (src/data/mock.ts), the wall shows invented organisations so the design
+  reads in full.
+
+  Brief §76: nothing may imply a past relationship is current. Until every
+  client on the wall is ticked as confirmed, a note under it says so.
 */
 import Placeholder from './Placeholder.astro';
+import Logo from './Logo.astro';
 import { MOCK_PROOF, mockLogos } from '@/data/mock';
 import { siteSettings } from '@/lib/content';
 
-const { logoCandidates } = await siteSettings(Astro.locals);
+const { clientLogos } = await siteSettings(Astro.locals);
+const clients = clientLogos.filter((c) => c.name || c.logo);
+const real = clients.some((c) => c.logo);
+const mock = !real && MOCK_PROOF;
+const unconfirmed = clients.some((c) => !c.confirmed);
 
 interface Props {
   tone?: 'dark' | 'light';
@@ -26,11 +37,11 @@ const typeClass = {
 };
 ---
 
-<div data-mock={MOCK_PROOF ? 'logos' : undefined} data-pagefind-ignore={MOCK_PROOF ? 'all' : undefined}>
+<div data-mock={mock ? 'logos' : undefined} data-pagefind-ignore={mock ? 'all' : undefined}>
   <ul class="grid grid-cols-2 gap-px overflow-hidden rounded-card border sm:grid-cols-3 lg:grid-cols-5"
     class:list={[dark ? 'border-navy-700 bg-navy-700' : 'border-line bg-line']}>
     {
-      MOCK_PROOF
+      mock
         ? mockLogos.map((l) => (
             <li
               class:list={[
@@ -44,26 +55,34 @@ const typeClass = {
               <span class:list={['max-w-[9rem] text-sm leading-tight', typeClass[l.type]]}>{l.name}</span>
             </li>
           ))
-        : logoCandidates.map((name) => (
+        : clients.map((c) => (
             <li
               class:list={[
                 'flex min-h-28 flex-col items-center justify-center gap-2 p-5 text-center',
-                dark ? 'bg-navy-800' : 'bg-paper',
+                real ? 'bg-paper' : dark ? 'bg-navy-800' : 'bg-paper',
               ]}
             >
-              <span class:list={['font-display text-sm font-semibold', dark ? 'text-ondark-muted' : 'text-ink-muted']}>
-                {name}
-              </span>
-              <Placeholder label="CLIENT LOGO" />
+              {c.logo ? (
+                <Logo image={c.logo} name={c.name} class="h-14 w-full max-w-[9.5rem]" />
+              ) : (
+                <>
+                  <span class:list={['font-display text-sm font-semibold', dark && !real ? 'text-ondark-muted' : 'text-ink-muted']}>
+                    {c.name}
+                  </span>
+                  <Placeholder label="CLIENT LOGO" />
+                </>
+              )}
             </li>
           ))
     }
   </ul>
-  <p class:list={['mt-4 text-xs', dark ? 'text-ondark-muted' : 'text-ink-muted']}>
-    {
-      MOCK_PROOF
-        ? 'Sample logos — invented organisations, standing in until real logos and permissions are confirmed.'
-        : 'Brief §76: relationships and logo permissions must be confirmed before launch. Nothing here implies a current relationship.'
-    }
-  </p>
+  {
+    (mock || unconfirmed) && (
+      <p data-pagefind-ignore class:list={['mt-4 text-xs', dark ? 'text-ondark-muted' : 'text-ink-muted']}>
+        {mock
+          ? 'Sample logos — invented organisations, standing in until real logos and permissions are confirmed.'
+          : 'Brief §76: relationships and logo permissions must be confirmed before launch. Nothing here implies a current relationship.'}
+      </p>
+    )
+  }
 </div>
