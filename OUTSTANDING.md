@@ -203,7 +203,6 @@ Every page is now built from the deck's page types and components. Left to decid
 
 | Item | What I need |
 | --- | --- |
-| **Deprecated components still in use** | The homepage, outcomes hub, About and Agencies & Partners still use components that aren't in the deck (Statement, Link cards and others; Figures is now a full component). Each needs a decision: add it to the deck, or rebuild that part from the deck's components. |
 | **Insights & Opinion copy** | The section's banner still says “Three different things, kept deliberately separate”. Research & insight merged into What we're hearing, so it's now two. |
 | **Pages below About and Agencies & Partners** | The types exist; no pages yet. |
 | **Provision blueprints** | The type exists at `/provision-blueprints/<name>/`; no pages yet, and nothing links to them. |

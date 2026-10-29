@@ -97,10 +97,10 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
   text, Features listing and Screenshots go through the block shapes in
   [blocks.ts](src/data/blocks.ts) ([src/lib/slices.ts](src/lib/slices.ts)),
   and runs of them share a background.
-- **Deprecated components:** Statement, Comparison, How EdCo works,
-  Page cards, Link words, Logo wall, Latest articles, Link cards, Cards, Steps,
-  Options, Routes and Call to action. They predate the deck and are kept so no
-  page lost content; replace them as pages are rebuilt
+- **Earlier components:** Statement, Comparison, How EdCo works, Page cards,
+  Link words, Logo wall, Latest articles, Link cards, Cards, Steps, Options,
+  Routes and Call to action. They predate the deck; EdCo asked to keep them
+  all as ordinary components
   ([src/components/sections/](src/components/sections/)).
 - **Placeholders:** text in square brackets, like `[VERIFIED METRIC: 28 years]`,
   or a card titled `[CURRENT EVENT]`, renders as a placeholder chip

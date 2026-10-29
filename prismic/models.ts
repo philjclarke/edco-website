@@ -18,8 +18,8 @@
     pages below it, even where they are identical today, so each can grow
     its own fields later without affecting the others.
   - The components are the deck's list. Components the site already had
-    that aren't on it are kept, marked deprecated, so no page loses content;
-    retire them as pages are rebuilt.
+    that aren't on it are kept as components in their own right; EdCo use
+    them alongside the deck's.
 
   Typed against @prismicio/client's model types, so a model with the wrong
   shape fails the type check before it ever reaches Prismic.
@@ -128,10 +128,6 @@ const slice = (id: string, name: string, description: string, primary: Fields | 
 
 /** The small label above a section's heading, as the deck calls it. */
 const sectionHeader = (placeholder = 'Optional, e.g. How we do it') => text('Section header text', placeholder);
-
-const DEPRECATED = 'Deprecated: not in the component list. Kept so existing pages keep their content; replace it when the page is rebuilt.';
-const deprecated = (id: string, name: string, description: string, primary: Fields) =>
-  slice(id, `${name} (deprecated)`, `${DEPRECATED} ${description}`, primary);
 
 const TESTIMONIAL_THEMES = [
   'EdCo challenging the original brief',
@@ -314,9 +310,9 @@ export const components: SharedSliceModel[] = [
   }),
 ];
 
-/** Components the site had before the deck. Each still renders; none should be added to new pages. */
-export const deprecatedComponents: SharedSliceModel[] = [
-  deprecated('statement', 'Statement', 'A big heading on the left, a few paragraphs on the right. Text in [SQUARE BRACKETS] shows as a placeholder.', {
+/** Components the site had before the deck, kept at EdCo's request. */
+export const earlierComponents: SharedSliceModel[] = [
+  slice('statement', 'Statement', 'A big heading on the left, a few paragraphs on the right. Text in [SQUARE BRACKETS] shows as a placeholder.', {
     eyebrow: text('Small label'),
     heading: text('Heading'),
     body: prose('Text'),
@@ -324,7 +320,7 @@ export const deprecatedComponents: SharedSliceModel[] = [
     background: BACKGROUND('white'),
   }),
 
-  deprecated('comparison', 'Comparison', 'A heading beside a ruled list of who/what pairs, then a turning line and text.', {
+  slice('comparison', 'Comparison', 'A heading beside a ruled list of who/what pairs, then a turning line and text.', {
     eyebrow: text('Small label'),
     heading: text('Heading'),
     rows: group('Rows', { who: text('Who'), what: text('What') }),
@@ -334,7 +330,7 @@ export const deprecatedComponents: SharedSliceModel[] = [
     background: BACKGROUND('white'),
   }),
 
-  deprecated('model', 'How EdCo works', 'The Listen → Grow model from Site settings, with a heading and intro.', {
+  slice('model', 'How EdCo works', 'The Listen → Grow model from Site settings, with a heading and intro.', {
     eyebrow: text('Small label'),
     heading: text('Heading'),
     intro: text('Intro'),
@@ -342,7 +338,7 @@ export const deprecatedComponents: SharedSliceModel[] = [
     background: BACKGROUND('navy'),
   }),
 
-  deprecated('page_cards', 'Page cards', 'Cards linking to pages: all outcomes, all products, all capabilities, or ones you choose.', {
+  slice('page_cards', 'Page cards', 'Cards linking to pages: all outcomes, all products, all capabilities, or ones you choose.', {
     eyebrow: text('Small label'),
     heading: text('Heading'),
     intro: text('Intro'),
@@ -353,7 +349,7 @@ export const deprecatedComponents: SharedSliceModel[] = [
     background: BACKGROUND('white'),
   }),
 
-  deprecated('link_words', 'Link words', 'A heading and button beside a cloud of linked words.', {
+  slice('link_words', 'Link words', 'A heading and button beside a cloud of linked words.', {
     heading: text('Heading'),
     intro: text('Intro'),
     button_label: text('Button label'),
@@ -362,13 +358,13 @@ export const deprecatedComponents: SharedSliceModel[] = [
     background: BACKGROUND('grey'),
   }),
 
-  deprecated('logo_wall', 'Logo wall', 'The client logo wall, with a centred heading.', {
+  slice('logo_wall', 'Logo wall', 'The client logo wall, with a centred heading.', {
     heading: text('Heading'),
     intro: text('Intro'),
     background: BACKGROUND('white'),
   }),
 
-  deprecated('latest_articles', 'Latest articles', 'Replaced by Content listing → Latest.', {
+  slice('latest_articles', 'Latest articles', 'The latest insights and opinion. Content listing → Latest does the same, with more choices.', {
     eyebrow: text('Small label'),
     heading: text('Heading'),
     intro: text('Intro'),
@@ -380,7 +376,7 @@ export const deprecatedComponents: SharedSliceModel[] = [
     background: BACKGROUND('grey'),
   }),
 
-  deprecated('link_cards', 'Link cards', 'Cards you write yourself, each linking somewhere. A card titled [IN BRACKETS] shows as a placeholder.', {
+  slice('link_cards', 'Link cards', 'Cards you write yourself, each linking somewhere. A card titled [IN BRACKETS] shows as a placeholder.', {
     eyebrow: text('Small label'),
     heading: text('Heading'),
     intro: text('Intro'),
@@ -394,7 +390,7 @@ export const deprecatedComponents: SharedSliceModel[] = [
     background: BACKGROUND('white'),
   }),
 
-  deprecated('feature_cards', 'Cards', 'Cards with a title and short text. Add detail or an image and each card opens to show it.', {
+  slice('feature_cards', 'Cards', 'Cards with a title and short text. Add detail or an image and each card opens to show it.', {
     heading: text('Heading'),
     intro: text('Intro line'),
     cards: group('Cards', {
@@ -406,13 +402,13 @@ export const deprecatedComponents: SharedSliceModel[] = [
     }),
   }),
 
-  deprecated('steps', 'Steps', 'A sequence, shown as a timeline.', {
+  slice('steps', 'Steps', 'A sequence, shown as a timeline.', {
     heading: text('Heading'),
     intro: text('Intro line'),
     steps: group('Steps', { label: text('Step') }),
   }),
 
-  deprecated('numbered_options', 'Options', 'A numbered menu of options, each with a few bullet points.', {
+  slice('numbered_options', 'Options', 'A numbered menu of options, each with a few bullet points.', {
     heading: text('Heading'),
     intro: text('Intro line'),
     options: group('Options', {
@@ -423,12 +419,12 @@ export const deprecatedComponents: SharedSliceModel[] = [
     }),
   }),
 
-  deprecated('routes', 'Routes', 'Each outcome’s objective and the products and capabilities its How we do it picks, listed in turn.', {
+  slice('routes', 'Routes', 'Each outcome’s objective and the products and capabilities its How we do it picks, listed in turn.', {
     heading: text('Heading'),
     closing: text('Closing line'),
   }),
 
-  deprecated('cta_band', 'Call to action', 'Replaces the call to action at the foot of the page. Leave a field blank to keep the site-wide wording.', {
+  slice('cta_band', 'Call to action', 'Replaces the call to action at the foot of the page. Leave a field blank to keep the site-wide wording.', {
     title: text('Heading'),
     body: text('Text'),
     button_label: text('Button label'),
@@ -436,7 +432,7 @@ export const deprecatedComponents: SharedSliceModel[] = [
   }),
 ];
 
-export const slices: SharedSliceModel[] = [...components, ...deprecatedComponents];
+export const slices: SharedSliceModel[] = [...components, ...earlierComponents];
 
 const sliceZone = (): CustomTypeModelField => ({
   type: 'Slices',
