@@ -103,7 +103,8 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
   text, Features listing and Screenshots go through the block shapes in
   [blocks.ts](src/data/blocks.ts) ([src/lib/slices.ts](src/lib/slices.ts)),
   and runs of them share a background.
-- **Earlier components:** Statement, Comparison, How EdCo works, Page cards,
+- **Earlier components:** Statement, Comparison, How EdCo works (its own stages, or Site settings' model if it
+  has none), Page cards,
   Link words, Logo wall, Latest articles, Link cards, Cards, Steps (with
   optional text, a button and a background), Options, Routes and Call to
   action. They predate the deck; EdCo asked to keep them all as ordinary

@@ -1,14 +1,18 @@
 ---
-/* How it works: the Listen → Grow model from Site settings. On navy it carries the ribbon. */
+/* How it works: the Listen → Grow model, the component's own stages or else Site settings'. On navy it carries the ribbon. */
 import Section from '../Section.astro';
 import SectionHead from '../SectionHead.astro';
 import ModelStrip from '../ModelStrip.astro';
-import { textOf } from '@/lib/prismic';
+import { listItemsOf, textOf } from '@/lib/prismic';
+import { knownIcon } from '@/lib/icons';
 import { toneOf } from './tone';
 
 const { p } = Astro.props as { p: Record<string, any> };
 const tone = toneOf(p.background);
 const dark = tone === 'dark';
+const stages = ((p.stages ?? []) as any[])
+  .filter((s) => textOf(s.name))
+  .map((s) => ({ name: textOf(s.name), summary: textOf(s.summary), methods: listItemsOf(s.methods), icon: knownIcon(s.icon) }));
 const anchor = textOf(p.anchor).replace(/^#/, '') || undefined;
 ---
 
@@ -28,6 +32,6 @@ const anchor = textOf(p.anchor).replace(/^#/, '') || undefined;
   }
   <SectionHead eyebrow={textOf(p.eyebrow) || undefined} title={textOf(p.heading)} lead={textOf(p.intro) || undefined} tone={dark ? 'dark' : 'light'} />
   <div class="mt-14">
-    <ModelStrip tone={dark ? 'dark' : 'light'} />
+    <ModelStrip steps={stages} tone={dark ? 'dark' : 'light'} />
   </div>
 </Section>

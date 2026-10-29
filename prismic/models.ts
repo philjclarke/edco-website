@@ -331,10 +331,16 @@ export const earlierComponents: SharedSliceModel[] = [
     background: BACKGROUND('white'),
   }),
 
-  slice('model', 'How EdCo works', 'The Listen → Grow model from Site settings, with a heading and intro.', {
+  slice('model', 'How EdCo works', 'The Listen → Grow model, with a heading and intro. Add stages to give it its own; leave them empty to show the standard stages from Site settings.', {
     eyebrow: text('Small label'),
     heading: text('Heading'),
     intro: text('Intro'),
+    stages: group('Stages', {
+      icon: text('Icon', ICON_HINT),
+      name: text('Name', 'e.g. Listen'),
+      summary: text('Summary'),
+      methods: bullets('Methods'),
+    }),
     anchor: text('Link name', 'e.g. how-edco-works, so links can jump to this section (optional)'),
     background: BACKGROUND('navy'),
   }),

@@ -8,13 +8,16 @@ import { Icon } from 'astro-icon/components';
 import Grid from './Grid.astro';
 import { siteSettings } from '@/lib/content';
 
-const { edcoModel } = await siteSettings(Astro.locals);
+type Step = { name: string; summary: string; methods: string[]; icon?: string };
 
 interface Props {
+  /** A component's own stages; otherwise the model from Site settings. */
+  steps?: Step[];
   tone?: 'dark' | 'light';
   compact?: boolean;
 }
-const { tone = 'dark', compact = false } = Astro.props;
+const { steps, tone = 'dark', compact = false } = Astro.props;
+const edcoModel: Step[] = steps?.length ? steps : (await siteSettings(Astro.locals)).edcoModel;
 const dark = tone === 'dark';
 ---
 
@@ -39,7 +42,7 @@ const dark = tone === 'dark';
         <p class:list={['mt-3 text-sm', dark ? 'text-ondark-muted' : 'text-ink-muted']}>
           {step.summary}
         </p>
-        {!compact && (
+        {!compact && step.methods.length > 0 && (
           <p
             class:list={[
               'mt-4 text-xs leading-relaxed',
