@@ -21,7 +21,7 @@ const cards = (p.pages ?? []).map((x: any) => all.linked(x.page)).filter(Boolean
       <div class="max-w-3xl">
         {textOf(p.eyebrow) && <p class="eyebrow grad-text mb-4">{textOf(p.eyebrow)}</p>}
         {textOf(p.heading) && <h2 class="text-title">{textOf(p.heading)}</h2>}
-        {textOf(p.intro) && <p class:list={['mt-4', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{textOf(p.intro)}</p>}
+        {textOf(p.intro) && <p class:list={['mt-4 text-intro', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{textOf(p.intro)}</p>}
       </div>
     )
   }

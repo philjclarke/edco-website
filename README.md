@@ -106,6 +106,16 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
 - **Text and image** ([TextImage.astro](src/components/slices/TextImage.astro)):
   text beside a picture, the picture left or right, half and half or 75/25
   either way, with a background option.
+- **Backgrounds:** every component except Banner, Screenshots, Contact form and
+  Customer logins has a Background (white, grey, navy). Plain content
+  components given grey or navy stand alone instead of sharing the run's
+  background (Slices.astro). Two navy or two grey sections in a row get a
+  hairline between them (global.css).
+- **Type scale:** one size per job, listed in [global.css](src/styles/global.css):
+  hero and display for page headings and the three "big moment" components
+  (Statement, one-column Quote, Call to action), title for every other section
+  heading, subtitle for card and item titles, lead for the banner, intro for
+  text under a section heading. Use these rather than one-off sizes.
 - **Banner image colour:** Brand tint (the default) runs the photo through the
   brand duotone; Natural leaves it as taken, keeping the fade that protects the
   text. Natural is on Research and The Curriculum Network as a trial (29 October 2026).

@@ -27,7 +27,7 @@ const mock = MOCK_PROOF ? mockTestimonial(pagePath(Astro.locals, Astro.url), pro
   data-pagefind-ignore={mock ? 'all' : undefined}
 >
   <div class="h-1 w-12 rounded-full grad-rule"></div>
-  <blockquote class="mt-5 font-display text-lg leading-snug md:text-xl">
+  <blockquote class="mt-5 font-display text-subtitle">
     {mock ? <p>“{mock.text}”</p> : <Placeholder label={`TESTIMONIAL ABOUT ${prompt.toUpperCase()}`} block />}
   </blockquote>
   <figcaption class:list={['mt-5 text-sm', dark ? 'text-ondark-muted' : 'text-ink-muted']}>

@@ -20,6 +20,7 @@ export type Block =
       /** Standard keeps lines readable at about two thirds of the width. */
       layout?: 'standard' | 'beside' | 'wide';
       size?: 'large' | 'standard';
+      tone?: 'mist' | 'dark';
     }
   | {
       type: 'list';
@@ -53,6 +54,7 @@ export type Block =
       lead?: string;
       /** With `detail` or `shot`, each card expands to reveal them. */
       items: { title: string; body: string; detail?: string; shot?: ImageRef; icon?: string }[];
+      tone?: 'mist' | 'dark';
     }
   | { type: 'shots'; eyebrow?: string; title?: string; lead?: string; photo?: RemoteImage; shots: { caption: string; src?: ImageRef }[] }
   | {
@@ -61,4 +63,5 @@ export type Block =
       lead?: string;
       /** Numbered because they are a menu of options, not a sequence. */
       items: { title: string; body: string; points: string[]; icon?: string }[];
+      tone?: 'mist' | 'dark';
     };

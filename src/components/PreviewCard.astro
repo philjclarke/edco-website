@@ -30,7 +30,7 @@ const a = page.article;
   {page.image && <FadedPhoto image={page.image} placement="card" />}
   {page.logo && <Logo pair={page.logo} onDark={dark} name={page.title} class="mb-5 h-12 w-auto max-w-[13rem] object-left" />}
   {a && <p class:list={['eyebrow mb-3', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{a.label}</p>}
-  <h3 class="text-lg leading-snug md:text-xl">{page.title}</h3>
+  <h3 class="text-subtitle">{page.title}</h3>
   {!a && page.positioning && <p class="mt-2 font-display text-base font-semibold leading-snug grad-text">{page.positioning}</p>}
   {page.text && <p class:list={['mt-3 text-sm', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{page.text}</p>}
   {

@@ -26,7 +26,7 @@ const panels = (p.pages ?? []).map((x: any) => all.linked(x.page)).filter(Boolea
   <div class="max-w-3xl">
     {textOf(p.eyebrow) && <p class="eyebrow grad-text mb-4">{textOf(p.eyebrow)}</p>}
     {textOf(p.heading) && <h2 class="text-title">{textOf(p.heading)}</h2>}
-    {textOf(p.intro) && <p class:list={['mt-4', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{textOf(p.intro)}</p>}
+    {textOf(p.intro) && <p class:list={['mt-4 text-intro', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{textOf(p.intro)}</p>}
   </div>
   <Grid cols={3} tone={dark ? 'dark' : 'light'} as="ul" class={textOf(p.heading) || textOf(p.eyebrow) ? 'mt-10' : ''}>
     {
@@ -38,7 +38,7 @@ const panels = (p.pages ?? []).map((x: any) => all.linked(x.page)).filter(Boolea
               return pg.logo && (dark ? pg.logo.dark : true) ? (
                 <span class="flex flex-1 flex-col">
                   <Logo pair={pg.logo} onDark={dark} name={pg.title} class="mb-5 h-14 w-auto max-w-[14rem] object-left" />
-                  <span class="font-display text-xl font-bold leading-snug">{pg.title}</span>
+                  <span class="font-display text-subtitle font-bold">{pg.title}</span>
                   {pg.text && <span class:list={['mt-2 text-[0.9375rem]', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{pg.text}</span>}
                 </span>
               ) : (
@@ -47,7 +47,7 @@ const panels = (p.pages ?? []).map((x: any) => all.linked(x.page)).filter(Boolea
               {pg.icon ? <Icon name={pg.icon} class="h-6 w-6" /> : <Icon name="fa6-solid:arrow-right" class="h-5 w-5" />}
             </span>
             <span class="flex flex-1 flex-col">
-              <span class="font-display text-xl font-bold leading-snug">{pg.title}</span>
+              <span class="font-display text-subtitle font-bold">{pg.title}</span>
               {pg.text && <span class:list={['mt-2 text-[0.9375rem]', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{pg.text}</span>}
             </span>
                 </>

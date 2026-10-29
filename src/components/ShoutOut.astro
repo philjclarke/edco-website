@@ -17,27 +17,35 @@ interface Props {
   sub?: string;
   /** Its position on the page, for the placeholder. */
   n: number;
+  /** Navy by default; white or grey for a lighter pull quote. */
+  tone?: 'dark' | 'light' | 'mist';
 }
-const { header, text, name, sub, n } = Astro.props;
+const { header, text, name, sub, n, tone = 'dark' } = Astro.props;
+const dark = tone === 'dark';
+const muted = dark ? 'text-ondark-muted' : 'text-ink-muted';
+const strong = dark ? 'text-ondark' : 'text-ink';
 const quoted = (t: string) => (/^[“"]/.test(t) ? t : `“${t.replace(/[”"]$/, '')}”`);
 const filled = !!text?.trim();
 const mock = !filled && MOCK_PROOF ? mockShout(pagePath(Astro.locals, Astro.url), n) : null;
 ---
 
 <section
-  class:list={['bg-navy-900 text-ondark', filled || mock ? 'py-14 md:py-20' : 'py-6']}
+  class:list={[
+    { dark: 'bg-navy-900 text-ondark', light: 'bg-paper text-ink', mist: 'bg-mist text-ink' }[tone],
+    filled || mock ? 'py-14 md:py-20' : 'py-6',
+  ]}
   data-mock={mock ? 'shout-out' : undefined}
   data-pagefind-ignore={mock ? 'all' : undefined}
 >
   <div class="mx-auto max-w-4xl px-6 text-center">
-    {header?.trim() && (filled || mock) && <p class="eyebrow mb-6 text-ondark-muted">{header}</p>}
+    {header?.trim() && (filled || mock) && <p class:list={['eyebrow mb-6', muted]}>{header}</p>}
     {
       filled && name?.trim() ? (
         <figure>
           <div class="mx-auto mb-8 h-1 w-16 rounded-full grad-rule" />
           <blockquote class="font-display text-display font-bold">{quoted(text!.trim())}</blockquote>
-          <figcaption class="mt-6 text-sm text-ondark-muted">
-            <span class="font-semibold text-ondark">{name.trim()}</span>
+          <figcaption class:list={['mt-6 text-sm', muted]}>
+            <span class:list={['font-semibold', strong]}>{name.trim()}</span>
             {sub?.trim() && <> · {sub.trim()}</>}
           </figcaption>
         </figure>
@@ -45,14 +53,14 @@ const mock = !filled && MOCK_PROOF ? mockShout(pagePath(Astro.locals, Astro.url)
         <>
           <div class="mx-auto mb-8 h-1 w-16 rounded-full grad-rule" />
           <p class="font-display text-display font-bold">{text}</p>
-          {sub?.trim() && <p class="mt-6 text-lead text-ondark-muted">{sub}</p>}
+          {sub?.trim() && <p class:list={['mt-6 text-intro', muted]}>{sub}</p>}
         </>
       ) : mock ? (
         <figure>
           <div class="mx-auto mb-8 h-1 w-16 rounded-full grad-rule" />
           <blockquote class="font-display text-display font-bold">“{mock.text}”</blockquote>
-          <figcaption class="mt-6 text-sm text-ondark-muted">
-            <span class="font-semibold text-ondark">{mock.cite.name}</span> · {mock.cite.role},{' '}
+          <figcaption class:list={['mt-6 text-sm', muted]}>
+            <span class:list={['font-semibold', strong]}>{mock.cite.name}</span> · {mock.cite.role},{' '}
             {mock.cite.org}
           </figcaption>
         </figure>

@@ -25,6 +25,7 @@ export function blockOf(slice: Slice): Block | null {
         html: richHTML(p.body),
         layout: p.layout === 'Heading beside text' ? 'beside' : p.layout === 'Wide' ? 'wide' : 'standard',
         size: p.text_size === 'Standard' ? 'standard' : 'large',
+        tone: toneOf(p.background),
       };
     case 'item_list': {
       const items = (p.items ?? []).filter((i: any) => textOf(i.text));
@@ -61,6 +62,7 @@ export function blockOf(slice: Slice): Block | null {
           shot: imageOf(c.image),
           icon: knownIcon(c.icon),
         })),
+        tone: toneOf(p.background),
       };
     case 'steps': {
       const href = hrefOf(p.button_link);
@@ -85,6 +87,7 @@ export function blockOf(slice: Slice): Block | null {
           points: listItemsOf(o.points),
           icon: knownIcon(o.icon),
         })),
+        tone: toneOf(p.background),
       };
     default:
       return null;

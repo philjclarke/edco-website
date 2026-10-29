@@ -20,9 +20,9 @@ const stats = own.length ? own : (await siteSettings(Astro.locals)).proofStats;
   <div class="grid gap-12 lg:grid-cols-2 lg:gap-20">
     <div>
       {textOf(p.eyebrow) && <p class="eyebrow grad-text mb-4">{textOf(p.eyebrow)}</p>}
-      <h2 class="text-display">{textOf(p.heading)}</h2>
+      <h2 class="text-title">{textOf(p.heading)}</h2>
     </div>
-    <div class:list={['text-lead space-y-5', dark ? 'text-ondark-muted' : 'text-ink-muted']}>
+    <div class:list={['text-intro space-y-5', dark ? 'text-ondark-muted' : 'text-ink-muted']}>
       <Fragment set:html={withPlaceholders(richHTML(p.body))} />
     </div>
   </div>

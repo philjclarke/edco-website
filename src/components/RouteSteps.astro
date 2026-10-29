@@ -16,8 +16,10 @@ interface Props {
   hrefs: readonly (string | null | undefined)[];
   /** Show 01, 02 … Off by default: routes are a set of panels, not a sequence. */
   numbered?: boolean;
+  tone?: 'dark' | 'light';
 }
-const { steps, hrefs, numbered = false } = Astro.props;
+const { steps, hrefs, numbered = false, tone = 'light' } = Astro.props;
+const dark = tone === 'dark';
 
 // Name the destination from the navigation, so a step reads "Data enrichment →
 // Data Services" without that label having to be maintained twice.
@@ -40,8 +42,10 @@ for (const g of footer) for (const l of g.links) if (!labels.has(l.href)) labels
           <Tag
             href={href}
             class:list={[
-              'group relative isolate flex h-full flex-col overflow-hidden rounded-card border border-line bg-paper p-5',
-              href && 'transition duration-200 hover:-translate-y-1 hover:border-transparent hover:shadow-xl hover:shadow-navy-900/10',
+              'group relative isolate flex h-full flex-col overflow-hidden rounded-card border p-5',
+              dark ? 'border-navy-700 bg-navy-900' : 'border-line bg-paper',
+              href && 'transition duration-200 hover:-translate-y-1',
+              href && (dark ? 'hover:border-orange/60' : 'hover:border-transparent hover:shadow-xl hover:shadow-navy-900/10'),
             ]}
           >
             {href && (
@@ -55,7 +59,7 @@ for (const g of footer) for (const l of g.links) if (!labels.has(l.href)) labels
             )}
             <span class="font-display text-base font-semibold leading-snug">{step}</span>
             {href && (
-              <span class="mt-auto flex items-center gap-2 pt-4 text-sm text-ink-muted">
+              <span class:list={['mt-auto flex items-center gap-2 pt-4 text-sm', dark ? 'text-ondark-muted' : 'text-ink-muted']}>
                 {labels.get(href) && labels.get(href) !== step ? labels.get(href) : 'Find out more'}
                 <svg
                   class="h-3.5 w-3.5 text-pink transition-transform duration-200 group-hover:translate-x-1"

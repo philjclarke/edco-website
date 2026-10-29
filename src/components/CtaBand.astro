@@ -7,17 +7,20 @@ interface Props {
   body?: string;
   ctaLabel?: string;
   ctaHref?: string;
+  /** White by default, so it stands apart from the navy footer below. */
+  tone?: 'light' | 'mist' | 'dark';
 }
 const {
   title = 'What are you trying to achieve?',
   body = 'You don’t need to know which EdCo product, service or team you need. Tell us what you’re trying to achieve and we’ll bring together the right people, thinking and expertise to help.',
   ctaLabel = site.primaryCta.label,
   ctaHref = site.primaryCta.href,
+  tone = 'light',
 } = Astro.props;
+const dark = tone === 'dark';
 ---
 
-<!-- White, so it stands apart from the navy footer below and from dark sections above. -->
-<section class="relative overflow-hidden bg-paper">
+<section class:list={['relative overflow-hidden', { light: 'bg-paper', mist: 'bg-mist', dark: 'bg-navy-900' }[tone]]}>
   <div
     class="pointer-events-none absolute inset-x-0 top-0 h-1 grad-rule"
     aria-hidden="true"
@@ -33,9 +36,9 @@ const {
     aria-hidden="true"
   >
   </div>
-  <div class="relative mx-auto max-w-3xl px-6 py-20 text-center text-ink md:py-28">
+  <div class:list={['relative mx-auto max-w-3xl px-6 py-20 text-center md:py-28', dark ? 'text-ondark' : 'text-ink']}>
     <h2 class="text-display">{title}</h2>
-    <p class="mt-6 text-lead text-ink-muted">{body}</p>
+    <p class:list={['mt-6 text-lead', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{body}</p>
     <div class="mt-9 flex justify-center">
       <Button href={ctaHref} size="lg">{ctaLabel}</Button>
     </div>

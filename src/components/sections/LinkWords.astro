@@ -15,8 +15,8 @@ const words = (p.words ?? []).map((w: any) => ({ label: textOf(w.label), href: h
 <Section tone={tone} size="lg">
   <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
     <div>
-      <h2 class="text-display">{textOf(p.heading)}</h2>
-      {textOf(p.intro) && <p class:list={['mt-6 text-lead', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{textOf(p.intro)}</p>}
+      <h2 class="text-title">{textOf(p.heading)}</h2>
+      {textOf(p.intro) && <p class:list={['mt-4 text-intro', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{textOf(p.intro)}</p>}
       {
         button && textOf(p.button_label) && (
           <div class="mt-8">

@@ -180,6 +180,7 @@ export const components: SharedSliceModel[] = [
     body: prose('Text', undefined, true),
     layout: select('Layout', ['Standard', 'Heading beside text', 'Wide'] as const, 'Standard'),
     text_size: select('Text size', ['Large', 'Standard'] as const, 'Large'),
+    background: BACKGROUND('white'),
   }),
 
   slice('quote', 'Quote', 'A quote or engaging thought. Leave the text blank to show a mock quote until there’s a real one.', [
@@ -192,6 +193,7 @@ export const components: SharedSliceModel[] = [
         text: text('Text', 'The line that carries the argument'),
         name: text('Footer: name', 'Who said it, shown in bold, e.g. Sam Example. With a name, the text gets quote marks'),
         footer: text('Footer: role and organisation', 'e.g. Head of Marketing, Example Trust. Without a name, a supporting line'),
+        background: BACKGROUND('navy'),
       },
     },
     {
@@ -206,6 +208,7 @@ export const components: SharedSliceModel[] = [
         footer: text('Footer: role and organisation', 'e.g. Head of Marketing, Example Trust'),
         theme: select('Testimonial theme', TESTIMONIAL_THEMES, 'working with EdCo'),
         show_logos: boolean('Client logos underneath', false),
+        background: BACKGROUND('grey'),
       },
     },
   ]),
@@ -420,6 +423,7 @@ export const earlierComponents: SharedSliceModel[] = [
       detail: text('More detail', 'Shown when the card is opened (optional)'),
       image: image('Image shown when opened'),
     }),
+    background: BACKGROUND('white'),
   }),
 
   slice('steps', 'Steps', 'A sequence, shown as a timeline, with optional text and a button underneath.', {
@@ -441,11 +445,13 @@ export const earlierComponents: SharedSliceModel[] = [
       body: text('Text'),
       points: bullets('Points'),
     }),
+    background: BACKGROUND('white'),
   }),
 
   slice('routes', 'Routes', 'Each outcome’s objective and the products and capabilities its How we do it picks, listed in turn.', {
     heading: text('Heading'),
     closing: text('Closing line'),
+    background: BACKGROUND('white'),
   }),
 
   slice('cta_band', 'Call to action', 'Replaces the call to action at the foot of the page. Leave a field blank to keep the site-wide wording.', {
@@ -453,6 +459,7 @@ export const earlierComponents: SharedSliceModel[] = [
     body: text('Text'),
     button_label: text('Button label'),
     button_link: link('Button link'),
+    background: BACKGROUND('white'),
   }),
 ];
 
