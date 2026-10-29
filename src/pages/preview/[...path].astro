@@ -17,10 +17,6 @@ import { prismic } from '@/lib/prismic';
 import { pages } from '@/lib/pages';
 import { caseStudyEntry } from '@/lib/editorial';
 import CaseStudiesHub from '../case-studies/index.astro';
-import Contact from '../contact.astro';
-import Customer from '../customer.astro';
-import ForEducators from '../for-educators.astro';
-import FreeAnalysis from '../free-customer-analysis.astro';
 import Search from '../search.astro';
 import NotFound from '../404.astro';
 
@@ -36,10 +32,6 @@ Astro.response.headers.set('Cache-Control', 'private, no-store');
 // Pages still built from fixed fields rather than components.
 const SINGLE: Record<string, any> = {
   '/case-studies/': CaseStudiesHub,
-  '/contact/': Contact,
-  '/customer/': Customer,
-  '/for-educators/': ForEducators,
-  '/free-customer-analysis/': FreeAnalysis,
   '/search/': Search,
   '/404/': NotFound,
 };

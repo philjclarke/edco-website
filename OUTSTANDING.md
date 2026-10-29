@@ -206,7 +206,8 @@ Every page is now built from the deck's page types and components. Left to decid
 | **Insights & Opinion copy** | The section's banner still says “Three different things, kept deliberately separate”. Research & insight merged into What we're hearing, so it's now two. |
 | **Pages below About and Agencies & Partners** | The types exist; no pages yet. |
 | **Provision blueprints** | The type exists at `/provision-blueprints/<name>/`; no pages yet, and nothing links to them. |
-| **Contact and case studies** | Not yet converted to components. Contact needs a form component first. |
+| **Case studies** | The case studies list and case study pages are not yet converted to components. |
+| **For Educators network links** | The two network cards link to the product pages. If the networks' own sites should be the destination, change the card links in Prismic. |
 | **How we do it colours** | The deck shows each panel's icon in a different colour (indigo, teal, blue…). Those aren't brand colours, so every icon uses the orange-to-pink gradient. |
 
 ## 7. Questions I'd want answered

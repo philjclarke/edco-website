@@ -12,11 +12,12 @@ const { p } = Astro.props as { p: Record<string, any> };
 const tone = toneOf(p.background);
 const dark = tone === 'dark';
 const cards = (p.cards ?? []).filter((c: any) => textOf(c.title));
+// Two or four cards sit in pairs; otherwise rows of three.
 ---
 
 <Section tone={tone} size="lg">
   <SectionHead eyebrow={textOf(p.eyebrow) || undefined} title={textOf(p.heading)} lead={textOf(p.intro) || undefined} tone={dark ? 'dark' : 'light'} />
-  <ul class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+  <ul class:list={['mt-12 grid gap-5 md:grid-cols-2', cards.length % 3 === 0 || cards.length > 4 ? 'lg:grid-cols-3' : '']}>
     {
       cards.map((c: any) => {
         const label = placeholderLabel(c.title);

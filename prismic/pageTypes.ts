@@ -30,6 +30,12 @@ export const PAGE_TYPES = [
   { id: 'insight', label: 'Insight', path: '/insights/:uid/', parent: 'what_we_think_page', uidHint: 'e.g. what-mat-finance-leaders-are-telling-us', article: true },
   { id: 'opinion', label: 'Opinion', path: '/insights/:uid/', parent: 'what_we_think_page', uidHint: 'e.g. your-database-isnt-your-market', article: true },
   { id: 'provision_blueprint', label: 'Provision blueprint', path: '/provision-blueprints/:uid/', uidHint: 'e.g. careers-guidance' },
+  // One page each, outside the menu. `closingCta: false`: no site-wide call to
+  // action at the foot (a page can still add its own Call to action component).
+  { id: 'contact_page', label: 'Contact', path: '/contact/', closingCta: false },
+  { id: 'for_educators_page', label: 'For Educators', path: '/for-educators/', closingCta: false },
+  { id: 'free_analysis_page', label: 'Free customer analysis', path: '/free-customer-analysis/', closingCta: false },
+  { id: 'customer_page', label: 'Customer login', path: '/customer/', closingCta: false },
 ] as const satisfies readonly {
   id: string;
   label: string;
@@ -38,6 +44,7 @@ export const PAGE_TYPES = [
   uidHint?: string;
   article?: boolean;
   inMenu?: boolean;
+  closingCta?: boolean;
 }[];
 
 export type PageTypeId = (typeof PAGE_TYPES)[number]['id'];

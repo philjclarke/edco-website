@@ -25,8 +25,10 @@ interface Props {
   columns?: 1 | 2 | 3;
   tone?: 'dark' | 'light';
   variant?: TickListVariant;
+  /** Sits in half the page's width (dense only): two columns at most. */
+  half?: boolean;
 }
-const { items, icons = [], explainers = [], columns = 2, tone = 'light', variant = 'list' } = Astro.props;
+const { items, icons = [], explainers = [], columns = 2, tone = 'light', variant = 'list', half = false } = Astro.props;
 const dark = tone === 'dark';
 const cols = (columns === 1 ? 2 : columns) as 2 | 3;
 const iconOf = (i: number) => icons[i] || 'fa6-solid:circle-check';
@@ -34,7 +36,7 @@ const accent = dark ? 'text-orange' : 'text-pink';
 
 // Dense and list choose their own columns from the item count: three for a
 // short list, four (dense) or three (list) once it's long.
-const denseCols = (items.length <= 6 ? 3 : 4) as 3 | 4;
+const denseCols = (half ? 2 : items.length <= 6 ? 3 : 4) as 2 | 3 | 4;
 const listCols = items.length <= 6 ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3';
 ---
 

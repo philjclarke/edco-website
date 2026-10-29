@@ -14,8 +14,7 @@ export const prerender = false;
 
 // Pages built from fixed fields, which have no route in src/lib/prismic.ts.
 const SINGLETON_PATHS: Record<string, string> = {
-  free_analysis_page: '/free-customer-analysis/', contact_page: '/contact/', customer_page: '/customer/',
-  for_educators_page: '/for-educators/', case_studies_hub: '/case-studies/', search_page: '/search/',
+  case_studies_hub: '/case-studies/', search_page: '/search/',
   not_found_page: '/404/', site_settings: '/', // shown across the site; the homepage carries most of it
 };
 

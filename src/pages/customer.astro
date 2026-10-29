@@ -1,59 +1,10 @@
 ---
-/* Brief §69. A discreet utility area, deliberately not part of the sales
-   narrative. All destinations need supplying and verifying before launch. */
-import Layout from '@/layouts/Layout.astro';
-import Section from '@/components/Section.astro';
-import Placeholder from '@/components/Placeholder.astro';
-import { contact } from '@/data/site';
-import { siteCopy } from '@/lib/content';
+/* Customer login (brief §69). The logins are the Customer logins component. Built from its components in Prismic (type "customer_page"). */
+import PageView from '@/components/PageView.astro';
+import { pages } from '@/lib/pages';
 
-const { pages: copy } = await siteCopy(Astro.locals);
-
-const destinations = [
-  { name: 'Education IQ', note: 'Intelligence platform login' },
-  { name: 'SPIRIT', note: 'CRM login' },
-  { name: 'Engagement Hub administration', note: 'Site administration' },
-  { name: 'International Schools Network', note: 'Network / admin system' },
-  { name: 'The Curriculum Network', note: 'Network / admin system' },
-];
+const doc = (await pages(Astro.locals)).single('customer_page');
+if (!doc) throw new Error('No customer_page page in Prismic.');
 ---
 
-<Layout title={copy.customer.metaTitle} description={copy.customer.metaDescription}>
-  <Section tone="light" size="lg">
-    <div class="max-w-2xl">
-      <p class="eyebrow grad-text mb-4">Customer area</p>
-      <h1 class="text-display">Logins and support</h1>
-      <p class="mt-6 text-lead text-ink-muted">{copy.customer.body}</p>
-    </div>
-
-    <ul class="mt-12 grid max-w-4xl gap-px overflow-hidden rounded-card border border-line bg-line">
-      {
-        destinations.map((d) => (
-          <li class="flex flex-wrap items-center justify-between gap-4 bg-paper px-6 py-5">
-            <div>
-              <p class="font-display text-base font-semibold">{d.name}</p>
-              <p class="text-sm text-ink-muted">{d.note}</p>
-            </div>
-            <Placeholder label="EXTERNAL LOGIN URL" note="to be supplied and verified" />
-          </li>
-        ))
-      }
-    </ul>
-
-    <div class="mt-12 grid max-w-4xl gap-5 sm:grid-cols-2">
-      <div class="rounded-card border border-line bg-mist p-6">
-        <h2 class="font-display text-base font-semibold">Support</h2>
-        <p class="mt-3 text-sm text-ink-muted">
-          <a href={contact.phoneHref} class="underline decoration-pink underline-offset-2"
-            >{contact.phone}</a
-          >
-        </p>
-        <p class="mt-2"><Placeholder label="SUPPORT EMAIL / TICKET URL" /></p>
-      </div>
-      <div class="rounded-card border border-line bg-mist p-6">
-        <h2 class="font-display text-base font-semibold">{copy.customer.heading}</h2>
-        <p class="mt-3 text-sm text-ink-muted">{copy.customer.body2}</p>
-      </div>
-    </div>
-  </Section>
-</Layout>
+<PageView doc={doc} />

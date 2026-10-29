@@ -3,7 +3,8 @@
   The one template for every page built from components: the homepage, the
   top-level page of each section and the pages below them, insights and
   opinion. The page is its components in the editor's order, then the
-  site-wide call to action (unless the page has its own).
+  site-wide call to action (unless the page has its own, or its type has
+  none: see prismic/pageTypes.ts).
 */
 import type { PrismicDocument } from '@prismicio/client';
 import Layout from '@/layouts/Layout.astro';
@@ -11,6 +12,7 @@ import Slices from './Slices.astro';
 import CtaBand from './CtaBand.astro';
 import { textOf } from '@/lib/prismic';
 import { assertComponents, contextOf, pages } from '@/lib/pages';
+import { pageTypeOf } from '../../prismic/pageTypes';
 
 interface Props {
   doc: PrismicDocument;
@@ -21,10 +23,11 @@ const d = doc.data as Record<string, any>;
 const slices = (d.slices ?? []) as any[];
 const context = contextOf(await pages(Astro.locals), doc);
 const title = doc.type === 'home_page' ? 'home' : textOf(d.meta_title) || context.title;
-if (!slices.some((s) => s.slice_type === 'banner')) console.warn(`[prismic] ${doc.type} ${doc.uid ?? ''} has no Banner component.`);
+// Customer logins carries its own page heading.
+if (!slices.some((s) => s.slice_type === 'banner' || s.slice_type === 'customer_logins')) console.warn(`[prismic] ${doc.type} ${doc.uid ?? ''} has no Banner component.`);
 ---
 
 <Layout title={title} description={textOf(d.meta_description) || context.preview.text}>
   <Slices slices={slices} context={context} />
-  {!slices.some((s) => s.slice_type === 'cta_band') && <CtaBand />}
+  {(pageTypeOf(doc.type) as { closingCta?: boolean } | undefined)?.closingCta !== false && !slices.some((s) => s.slice_type === 'cta_band') && <CtaBand />}
 </Layout>

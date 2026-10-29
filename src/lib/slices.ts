@@ -5,10 +5,12 @@
 */
 import type { Slice } from '@prismicio/client';
 import type { Block } from '@/data/blocks';
-import { imageOf, listItemsOf, richHTML, textOf } from './prismic';
+import { hrefOf, imageOf, listItemsOf, richHTML, textOf } from './prismic';
 import { knownIcon } from './icons';
 
 const opt = (s: string | null | undefined) => textOf(s) || undefined;
+/** A grey or navy background sets the block apart; white shares the run's. */
+const toneOf = (bg: unknown) => (bg === 'navy' ? 'dark' : bg === 'grey' ? 'mist' : undefined) as 'dark' | 'mist' | undefined;
 
 export function blockOf(slice: Slice): Block | null {
   const p = slice.primary as Record<string, any>;
@@ -34,7 +36,8 @@ export function blockOf(slice: Slice): Block | null {
         items: items.map((i: any) => textOf(i.text)),
         icons: items.map((i: any) => knownIcon(i.icon)),
         explainers: items.map((i: any) => opt(i.explainer)),
-        tone: p.background === 'navy' ? 'dark' : p.background === 'grey' ? 'mist' : undefined,
+        tone: toneOf(p.background),
+        layout: p.layout === 'Heading beside list' ? 'beside' : 'standard',
       };
     }
     case 'screenshots':
@@ -59,13 +62,18 @@ export function blockOf(slice: Slice): Block | null {
           icon: knownIcon(c.icon),
         })),
       };
-    case 'steps':
+    case 'steps': {
+      const href = hrefOf(p.button_link);
       return {
         type: 'steps',
         title: heading || undefined,
         lead,
         steps: (p.steps ?? []).map((s: any) => textOf(s.label)).filter(Boolean),
+        after: opt(p.closing),
+        button: href && textOf(p.button_label) ? { label: textOf(p.button_label), href } : undefined,
+        tone: toneOf(p.background),
       };
+    }
     case 'numbered_options':
       return {
         type: 'ways',

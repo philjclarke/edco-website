@@ -1,0 +1,76 @@
+---
+/*
+  Customer logins: the customer area's heading, its list of logins, then
+  support and account manager boxes. Brief §69: a discreet utility area,
+  deliberately not part of the sales narrative, so it carries its own plain
+  heading rather than a banner. A login with no address yet shows a
+  placeholder, so the gap stays visible until it's supplied.
+*/
+import type { Slice } from '@prismicio/client';
+import Section from '../Section.astro';
+import Placeholder from '../Placeholder.astro';
+import Button from '../Button.astro';
+import { contact } from '@/data/site';
+import { hrefOf, richHTML, textOf } from '@/lib/prismic';
+
+const { slice } = Astro.props as { slice: Slice };
+const p = slice.primary as Record<string, any>;
+const logins = (p.logins ?? []).filter((l: any) => textOf(l.name));
+const supportHTML = richHTML(p.support_text);
+const managerHTML = richHTML(p.manager_text);
+---
+
+<Section tone="light" size="lg">
+  <div class="max-w-2xl">
+    {textOf(p.eyebrow) && <p class="eyebrow grad-text mb-4">{textOf(p.eyebrow)}</p>}
+    <h1 class="text-display">{textOf(p.heading) || 'Logins and support'}</h1>
+    {textOf(p.intro) && <p class="mt-6 text-lead text-ink-muted">{textOf(p.intro)}</p>}
+  </div>
+
+  {
+    logins.length > 0 && (
+      <ul class="mt-12 grid max-w-4xl gap-px overflow-hidden rounded-card border border-line bg-line">
+        {logins.map((l: any) => {
+          const href = hrefOf(l.link);
+          return (
+            <li class="flex flex-wrap items-center justify-between gap-4 bg-paper px-6 py-5">
+              <div>
+                <p class="font-display text-base font-semibold">{textOf(l.name)}</p>
+                {textOf(l.note) && <p class="text-sm text-ink-muted">{textOf(l.note)}</p>}
+              </div>
+              {href ? (
+                <Button href={href} size="sm" variant="ghost">{textOf(l.link_label) || 'Log in'}</Button>
+              ) : (
+                <Placeholder label="EXTERNAL LOGIN URL" note="to be supplied and verified" />
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    )
+  }
+
+  <div class="mt-12 grid max-w-4xl gap-5 sm:grid-cols-2">
+    <div class="rounded-card border border-line bg-mist p-6">
+      <h2 class="font-display text-base font-semibold">{textOf(p.support_heading) || 'Support'}</h2>
+      <p class="mt-3 text-sm text-ink-muted">
+        <a href={contact.phoneHref} class="underline decoration-pink underline-offset-2">{contact.phone}</a>
+      </p>
+      {
+        supportHTML ? (
+          <div class="prose-edco mt-2 text-sm text-ink-muted" set:html={supportHTML} />
+        ) : (
+          <p class="mt-2"><Placeholder label="SUPPORT EMAIL / TICKET URL" /></p>
+        )
+      }
+    </div>
+    {
+      (textOf(p.manager_heading) || managerHTML) && (
+        <div class="rounded-card border border-line bg-mist p-6">
+          {textOf(p.manager_heading) && <h2 class="font-display text-base font-semibold">{textOf(p.manager_heading)}</h2>}
+          <div class="prose-edco mt-3 text-sm text-ink-muted" set:html={managerHTML} />
+        </div>
+      )
+    }
+  </div>
+</Section>

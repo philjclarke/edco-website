@@ -7,6 +7,7 @@ import Grid from './Grid.astro';
 import ProcessGrid from './ProcessGrid.astro';
 import Placeholder from './Placeholder.astro';
 import FadedPhoto from './FadedPhoto.astro';
+import Button from './Button.astro';
 
 interface Props {
   blocks: Block[];
@@ -26,9 +27,9 @@ const bg = (i: number) =>
     <section
       class:list={[
         'py-14 md:py-20',
-        block.type === 'pull' || (block.type === 'list' && block.tone === 'dark')
+        block.type === 'pull' || ('tone' in block && block.tone === 'dark')
           ? 'bg-navy-900 text-ondark'
-          : block.type === 'list' && block.tone === 'mist'
+          : 'tone' in block && block.tone === 'mist'
             ? 'bg-mist'
             : bg(i),
         tone && i > 0 && 'pt-0 md:pt-0',
@@ -69,19 +70,20 @@ const bg = (i: number) =>
         )}
 
         {block.type === 'list' && (
-          <div>
+          <div class:list={[block.layout === 'beside' && 'grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-20']}>
             <div class="max-w-3xl">
               {block.eyebrow && <p class="eyebrow grad-text mb-4">{block.eyebrow}</p>}
               {block.title && <h2 class="text-title">{block.title}</h2>}
               {block.lead && <p class:list={['mt-4 text-lead', block.tone === 'dark' ? 'text-ondark-muted' : 'text-ink-muted']}>{block.lead}</p>}
             </div>
-            <div class:list={[(block.title || block.lead) && 'mt-8']}>
+            <div class:list={[(block.title || block.lead) && block.layout !== 'beside' && 'mt-8']}>
               <TickList
                 items={block.items}
                 icons={block.icons}
                 explainers={block.explainers}
                 columns={block.columns ?? 2}
                 variant="dense"
+                half={block.layout === 'beside'}
                 tone={block.tone === 'dark' ? 'dark' : 'light'}
               />
             </div>
@@ -92,11 +94,17 @@ const bg = (i: number) =>
           <div>
             <div class="max-w-3xl">
               {block.title && <h2 class="text-title">{block.title}</h2>}
-              {block.lead && <p class="mt-4 text-lead text-ink-muted">{block.lead}</p>}
+              {block.lead && <p class:list={['mt-4 text-lead', block.tone === 'dark' ? 'text-ondark-muted' : 'text-ink-muted']}>{block.lead}</p>}
             </div>
             <div class="mt-8">
-              <ProcessGrid steps={block.steps} />
+              <ProcessGrid steps={block.steps} tone={block.tone === 'dark' ? 'dark' : 'light'} />
             </div>
+            {block.after && <p class:list={['mt-8 max-w-3xl text-lead', block.tone === 'dark' ? 'text-ondark-muted' : 'text-ink-muted']}>{block.after}</p>}
+            {block.button && (
+              <div class="mt-10">
+                <Button href={block.button.href} size="lg">{block.button.label}</Button>
+              </div>
+            )}
           </div>
         )}
 

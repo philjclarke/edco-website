@@ -33,8 +33,19 @@ export type Block =
       columns?: 2 | 3;
       /** A background of its own; otherwise it shares the run's. */
       tone?: 'mist' | 'dark';
+      /** Beside: the heading and intro in a column to the left of the list. */
+      layout?: 'standard' | 'beside';
     }
-  | { type: 'steps'; title?: string; lead?: string; steps: string[] }
+  | {
+      type: 'steps';
+      title?: string;
+      lead?: string;
+      steps: string[];
+      /** Text and a button under the steps. */
+      after?: string;
+      button?: { label: string; href: string };
+      tone?: 'mist' | 'dark';
+    }
   | { type: 'pull'; text: string; sub?: string }
   | {
       type: 'cards';

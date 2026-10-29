@@ -1,6 +1,6 @@
 /*
-  Copy for the single-instance pages still built from fixed fields (Contact,
-  Free customer analysis and so on) and the site settings, from Prismic.
+  Copy for the single-instance pages still built from fixed fields (the case
+  studies list, Search, Page not found) and the site settings, from Prismic.
   Pages built from components are read through src/lib/pages.ts instead. Each document is turned back into the shape
   the page templates read, using prismic/specs.ts.
 
@@ -13,8 +13,7 @@ import { specs } from '../../prismic/specs';
 import { shapeOf } from '../../prismic/shape';
 
 const KEYS = {
-  free_analysis_page: 'freeAnalysis', contact_page: 'contact', customer_page: 'customer',
-  for_educators_page: 'forEducators', case_studies_hub: 'caseStudies', search_page: 'search', not_found_page: 'notFound',
+  case_studies_hub: 'caseStudies', search_page: 'search', not_found_page: 'notFound',
 } as const;
 
 export type PageKey = (typeof KEYS)[keyof typeof KEYS];

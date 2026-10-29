@@ -31,8 +31,8 @@ Node 22 (pinned via Volta in `package.json`).
 
 | Content | In Prismic as | Read by |
 | --- | --- | --- |
-| Every page built from components: the homepage, the top-level page of each section and the pages below it, insights, opinion, provision blueprints | One page type each (see below) | [pages.ts](src/lib/pages.ts), [PageView.astro](src/components/PageView.astro) |
-| Contact, For Educators, Free customer analysis, Customer login, Case studies hub, Search, 404 | One single-instance type each, with fixed fields | [pageCopy.ts](src/data/pageCopy.ts) |
+| Every page built from components: the homepage, the top-level page of each section and the pages below it, insights, opinion, provision blueprints, Contact, For Educators, Free customer analysis, Customer login | One page type each (see below) | [pages.ts](src/lib/pages.ts), [PageView.astro](src/components/PageView.astro) |
+| Case studies hub, Search, 404 | One single-instance type each, with fixed fields | [pageCopy.ts](src/data/pageCopy.ts) |
 | The Listen → Grow model, proof figures, logo list, themes | `site_settings` | [pageCopy.ts](src/data/pageCopy.ts), then `model.ts`, `proof.ts` |
 | Case studies | `case_study` | content collection `caseStudies` |
 | Main menu, and the footer's section lists | Each section page's "Show in main menu" and "Menu order" (Preview tab) | [menu.ts](src/lib/menu.ts) |
@@ -72,6 +72,10 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
   | About | `about_page` | `about_subpage` |
   | Agencies & Partners | `agencies_page` | `agencies_subpage` |
   | Not in the menu | | `provision_blueprint` (`/provision-blueprints/<name>/`) |
+  | One page each, not in the menu | `contact_page`, `for_educators_page`, `free_analysis_page`, `customer_page` | |
+
+  The last four have no site-wide call to action at the foot (`closingCta:
+  false` in pageTypes.ts); a page can still add a Call to action component.
 
   Every one has the same anatomy: a **Page** tab holding only its components, a
   **Preview** tab and an **SEO** tab. The **Preview** tab (title, positioning
@@ -89,7 +93,8 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
     size: Large or Standard; both ignored in an article's body), **Quote** (variations One column and Two column, the
     latter with optional client logos), **Outcomes we can help with**,
     **Content listing** (variations Chosen, Latest and Links), **How we do it**,
-    **Screenshots**, **Features listing**, **Figures** (a heading and text over
+    **Screenshots**, **Features listing** (Layout: Standard, or Heading beside
+    list), **Figures** (a heading and text over
     a row of figures; its own figures, or Site settings' proof figures if it
     has none; kept from before the deck at EdCo's request).
 
@@ -99,10 +104,15 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
   [blocks.ts](src/data/blocks.ts) ([src/lib/slices.ts](src/lib/slices.ts)),
   and runs of them share a background.
 - **Earlier components:** Statement, Comparison, How EdCo works, Page cards,
-  Link words, Logo wall, Latest articles, Link cards, Cards, Steps, Options,
-  Routes and Call to action. They predate the deck; EdCo asked to keep them
-  all as ordinary components
-  ([src/components/sections/](src/components/sections/)).
+  Link words, Logo wall, Latest articles, Link cards, Cards, Steps (with
+  optional text, a button and a background), Options, Routes and Call to
+  action. They predate the deck; EdCo asked to keep them all as ordinary
+  components ([src/components/sections/](src/components/sections/)).
+- **Page components**, offered only on their own page (`pageComponents` in
+  models.ts): **Contact form** (the enquiry form and its side panel; the
+  wording is editable, the fields and the outcome tick boxes are code) and
+  **Customer logins** (the customer area's heading, logins, support and
+  account manager boxes).
 - **Placeholders:** text in square brackets, like `[VERIFIED METRIC: 28 years]`,
   or a card titled `[CURRENT EVENT]`, renders as a placeholder chip
   ([src/lib/placeholders.ts](src/lib/placeholders.ts)).

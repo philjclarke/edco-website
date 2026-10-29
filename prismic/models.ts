@@ -294,6 +294,7 @@ export const components: SharedSliceModel[] = [
       explainer: text('Explainer', 'Optional'),
     }),
     background: BACKGROUND('white'),
+    layout: select('Layout', ['Standard', 'Heading beside list'] as const, 'Standard'),
   }),
 
   // Kept from before the deck at EdCo's request, with its own figures.
@@ -402,10 +403,14 @@ export const earlierComponents: SharedSliceModel[] = [
     }),
   }),
 
-  slice('steps', 'Steps', 'A sequence, shown as a timeline.', {
+  slice('steps', 'Steps', 'A sequence, shown as a timeline, with optional text and a button underneath.', {
     heading: text('Heading'),
     intro: text('Intro line'),
     steps: group('Steps', { label: text('Step') }),
+    closing: text('Text underneath', 'Optional'),
+    button_label: text('Button label', 'Optional'),
+    button_link: link('Button link'),
+    background: BACKGROUND('white'),
   }),
 
   slice('numbered_options', 'Options', 'A numbered menu of options, each with a few bullet points.', {
@@ -432,12 +437,60 @@ export const earlierComponents: SharedSliceModel[] = [
   }),
 ];
 
-export const slices: SharedSliceModel[] = [...components, ...earlierComponents];
+/*
+  Components that belong to one page, offered only on that page's type: the
+  parts held in code (the contact form, the login list), with their wording
+  editable.
+*/
+export const pageComponents: { page: string; slice: SharedSliceModel }[] = [
+  {
+    page: 'contact_page',
+    slice: slice('contact_form', 'Contact form', 'The enquiry form, with what happens next and the phone number beside it. The form’s fields themselves are fixed.', {
+      heading: text('Heading', 'e.g. What are you trying to achieve?'),
+      intro: text('Text under the heading'),
+      analysis_option: text('Free customer analysis option', 'The last tick box, e.g. I’d like the free customer analysis'),
+      more_heading: text('Message heading', 'e.g. Tell us a little more'),
+      more_intro: text('Text under the message heading'),
+      details_heading: text('Details heading', 'e.g. And who are you?'),
+      button_label: text('Button label', 'e.g. Start the conversation'),
+      next_heading: text('Side panel heading', 'e.g. What happens next'),
+      next_text: prose('Side panel text'),
+      phone_heading: text('Phone heading', 'e.g. Or just ring us. The number and address come from the site’s contact details'),
+      customers_heading: text('Customer box heading', 'e.g. Already an EdCo customer?'),
+      customers_text: prose('Customer box text'),
+    }),
+  },
+  {
+    page: 'customer_page',
+    slice: slice('customer_logins', 'Customer logins', 'The page heading, the list of logins, then support and account manager boxes.', {
+      eyebrow: text('Small label', 'e.g. Customer area'),
+      heading: text('Heading', 'e.g. Logins and support'),
+      intro: text('Introduction text'),
+      logins: group('Logins', {
+        name: text('Name', 'e.g. Education IQ'),
+        note: text('Description', 'e.g. Intelligence platform login'),
+        link: link('Login address', 'Leave blank to show a placeholder until it’s known'),
+        link_label: text('Button label', 'Leave blank for “Log in”'),
+      }),
+      support_heading: text('Support box heading', 'e.g. Support. The phone number comes from the site’s contact details'),
+      support_text: prose('Support box text', 'e.g. the support email or ticket address. Leave blank to show a placeholder'),
+      manager_heading: text('Second box heading', 'e.g. Your account manager'),
+      manager_text: prose('Second box text'),
+    }),
+  },
+];
 
-const sliceZone = (): CustomTypeModelField => ({
+export const slices: SharedSliceModel[] = [...components, ...earlierComponents, ...pageComponents.map((c) => c.slice)];
+
+/** The components a page type offers: everyone's, plus any that belong to that page. */
+const sliceZone = (type: string): CustomTypeModelField => ({
   type: 'Slices',
   fieldset: 'Components',
-  config: { choices: Object.fromEntries(slices.map((s) => [s.id, { type: 'SharedSlice' as const }])) },
+  config: {
+    choices: Object.fromEntries(
+      [...components, ...earlierComponents, ...pageComponents.filter((c) => c.page === type).map((c) => c.slice)].map((s) => [s.id, { type: 'SharedSlice' as const }])
+    ),
+  },
 });
 
 /*
@@ -460,7 +513,7 @@ function pageType(t: (typeof PAGE_TYPES)[number]): CustomTypeModel {
       // page without one, and a duplicated page starts with it blank.
       Page: {
         ...(repeatable ? { uid: { type: 'UID', config: { label: 'Web address', placeholder: 'uidHint' in t ? t.uidHint : undefined } } } : {}),
-        slices: sliceZone(),
+        slices: sliceZone(t.id),
       },
       // How this page appears wherever another page features it. One place to edit it.
       Preview: {

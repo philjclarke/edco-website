@@ -16,6 +16,8 @@ import OutcomeCards from './slices/OutcomeCards.astro';
 import ContentListing from './slices/ContentListing.astro';
 import HowWeDoIt from './slices/HowWeDoIt.astro';
 import ArticleBody from './slices/ArticleBody.astro';
+import ContactForm from './slices/ContactForm.astro';
+import CustomerLogins from './slices/CustomerLogins.astro';
 import SectionSlice from './sections/SectionSlice.astro';
 import { SECTION_SLICE_TYPES } from './sections/tone';
 import { blockOf } from '@/lib/slices';
@@ -40,6 +42,8 @@ const OWN_SECTION: Record<string, any> = {
   outcomes: OutcomeCards,
   content_listing: ContentListing,
   how_we_do_it: HowWeDoIt,
+  contact_form: ContactForm,
+  customer_logins: CustomerLogins,
 };
 
 type Part =
