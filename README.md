@@ -119,6 +119,11 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
 - **Banner image colour:** Brand tint (the default) runs the photo through the
   brand duotone; Natural leaves it as taken, keeping the fade that protects the
   text. Natural is on Research and The Curriculum Network as a trial (29 October 2026).
+- **Content listing (Latest):** "How many" is a maximum, never empty slots.
+  "Show every article" lists them all with a Show more button (How many per
+  step, 9 by default); "Filter buttons" adds All / Insights / Opinion / Case
+  studies for the types present. The filter goes in the address (#opinion).
+  A Latest listing with no articles isn't rendered.
 - **Screenshots enlarge:** a real screenshot (Screenshots, and the ones in
   expandable cards) opens full size in a modal when clicked. The large copy
   only downloads when it's opened.

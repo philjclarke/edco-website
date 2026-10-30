@@ -3,9 +3,10 @@
   Content listing, in three variations:
     Chosen — a card for each picked page.
     Latest — the newest insights, opinion or case studies, filled in
-             automatically. With "How many" set, empty slots show a
-             placeholder; without it, every item shows, then one card
-             saying more is to come (if there's a note for it).
+             automatically. "How many" is the most that show; there are
+             never empty slots. With "Show every article" on, it's how
+             many show before a Show more button, and filter buttons
+             can narrow the list by type. With nothing to show, it is left out.
     Links  — a compact list of links ("You might also be interested in").
   Every card is filled from its page's Preview tab.
 */
@@ -13,9 +14,7 @@ import type { Slice } from '@prismicio/client';
 import Section from '../Section.astro';
 import SectionHead from '../SectionHead.astro';
 import Button from '../Button.astro';
-import Card from '../Card.astro';
 import NextSteps from '../NextSteps.astro';
-import Placeholder from '../Placeholder.astro';
 import PreviewCard from '../PreviewCard.astro';
 import FadedPhoto from '../FadedPhoto.astro';
 import { hrefOf, imageOf, textOf } from '@/lib/prismic';
@@ -40,9 +39,16 @@ const SHOW: Record<string, { types: string[]; label: string }> = {
   'Case studies': { types: ['case_study'], label: 'case study' },
 };
 
-let cards: PagePreview[] = [];
-let slots: number[] = [];
-let more = false;
+// Filter buttons, in this order, for the types that have something to show.
+const TYPES: Record<string, { id: string; label: string }> = {
+  insight: { id: 'insights', label: 'Insights' },
+  opinion: { id: 'opinion', label: 'Opinion' },
+  case_study: { id: 'case-studies', label: 'Case studies' },
+};
+
+let cards: (PagePreview & { kind?: string })[] = [];
+let pageSize = 0;
+let filters: { id: string; label: string }[] = [];
 let links: { label: string; href: string; blurb?: string; icon?: string }[] = [];
 const show = SHOW[p.show] ?? SHOW['Insights and opinion'];
 
@@ -65,21 +71,28 @@ if (slice.variation === 'links') {
   const when = (pg: PagePreview, d: any) => pg.article?.date?.getTime() ?? new Date(d.first_publication_date).getTime();
   const found = all.docs
     .filter((d) => show.types.includes(d.type) && d.id !== context?.id)
-    .map((d) => ({ pg: all.preview(d), t: when(all.preview(d), d) }))
+    .map((d) => ({ pg: { ...all.preview(d), kind: TYPES[d.type]?.id }, t: when(all.preview(d), d) }))
     .sort((a, b) => b.t - a.t)
     .map((x) => x.pg);
   const count = Number(p.count) || 0;
-  cards = count ? found.slice(0, count) : found;
-  slots = count ? Array.from({ length: Math.max(0, count - cards.length) }, (_, i) => cards.length + i + 1) : [];
-  more = !count && Boolean(textOf(p.empty_note));
+  if (p.everything) {
+    cards = found;
+    pageSize = count || 9;
+  } else {
+    cards = count ? found.slice(0, count) : found;
+  }
+  const kinds = Object.values(TYPES).filter((t) => cards.some((c) => c.kind === t.id));
+  if (p.filters && kinds.length > 1) filters = [{ id: 'all', label: 'All' }, ...kinds];
 } else {
   cards = (p.items ?? []).map((x: any) => all.linked(x.page)).filter(Boolean).map((d: any) => all.preview(d));
 }
 const button = hrefOf(p.button_link);
+// A Latest listing with nothing to show yet leaves no trace on the page.
+const empty = slice.variation === 'latest' && cards.length === 0;
 ---
 
 {
-  slice.variation === 'links' ? (
+  empty ? null : slice.variation === 'links' ? (
     <Section tone={tone} size="md">
       <NextSteps title={textOf(p.heading) || 'Where might you go next?'} links={links} icons={p.icons !== false} tone={dark ? 'dark' : 'light'} />
     </Section>
@@ -94,25 +107,106 @@ const button = hrefOf(p.button_link);
           {button && textOf(p.button_label) && <Button href={button} variant={dark ? 'ghost-dark' : 'ghost'}>{textOf(p.button_label)}</Button>}
         </div>
       )}
-      <ul class:list={['grid gap-5 md:grid-cols-2 lg:grid-cols-3', (textOf(p.heading) || button) && 'mt-12']}>
-        {cards.map((c) => <li><PreviewCard page={c} tone={dark ? 'dark' : 'light'} /></li>)}
-        {slots.map((n) => (
-          <li>
-            <Card title="">
-              <div class="space-y-3">
-                <Placeholder label={`CURRENT ${show.label.toUpperCase()} ITEM`} note={`slot ${n}`} block />
-                {textOf(p.empty_note) && <p class="text-sm text-ink-muted">{textOf(p.empty_note)}</p>}
-              </div>
-            </Card>
+      {
+        filters.length > 0 && (
+          <div
+            data-filters
+            hidden
+            role="group"
+            aria-label="Show"
+            class:list={['flex flex-wrap gap-2', (textOf(p.heading) || button) ? 'mt-10' : '']}
+          >
+            {filters.map((f, i) => (
+              <button
+                type="button"
+                data-filter={f.id}
+                aria-pressed={i === 0 ? 'true' : 'false'}
+                class:list={[
+                  'rounded-full border px-4 py-2 font-display text-sm font-semibold transition',
+                  dark
+                    ? 'border-navy-600 text-ondark hover:border-orange aria-pressed:border-white aria-pressed:bg-white aria-pressed:text-navy-900'
+                    : 'border-line text-ink hover:border-ink aria-pressed:border-navy-900 aria-pressed:bg-navy-900 aria-pressed:text-ondark',
+                ]}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+        )
+      }
+      <ul
+        data-listing={pageSize || filters.length ? '' : undefined}
+        data-page-size={pageSize || undefined}
+        class:list={[
+          'grid gap-5 md:grid-cols-2 lg:grid-cols-3',
+          filters.length ? 'mt-8' : (textOf(p.heading) || button) && 'mt-12',
+        ]}
+      >
+        {cards.map((c, i) => (
+          <li data-kind={c.kind} hidden={pageSize > 0 && i >= pageSize}>
+            <PreviewCard page={c} tone={dark ? 'dark' : 'light'} />
           </li>
         ))}
-        {more && (
-          <li class="rounded-card border border-dashed border-line p-7">
-            <Placeholder label="FURTHER ARTICLES" note="content programme to agree" block />
-            <p class="mt-4 text-sm text-ink-muted">{textOf(p.empty_note)}</p>
-          </li>
-        )}
       </ul>
+      {
+        pageSize > 0 && cards.length > pageSize && (
+          <div class="mt-10 flex justify-center">
+            <button
+              type="button"
+              data-more
+              class:list={[
+                'inline-flex items-center justify-center rounded-full border px-5 py-3 font-display text-sm font-semibold transition',
+                dark ? 'border-navy-600 text-ondark hover:border-orange hover:text-orange' : 'border-line text-ink hover:border-ink hover:bg-mist',
+              ]}
+            >
+              Show more
+            </button>
+          </div>
+        )
+      }
     </Section>
   )
 }
+
+<script>
+  // Filter buttons and Show more. Without JavaScript the first page of cards
+  // shows and the buttons stay hidden. The chosen filter goes in the address
+  // (e.g. #opinion) so a filtered view can be shared.
+  for (const list of document.querySelectorAll<HTMLElement>('[data-listing]')) {
+    const section = list.parentElement!;
+    const bar = section.querySelector<HTMLElement>('[data-filters]');
+    const buttons = [...(bar?.querySelectorAll<HTMLButtonElement>('[data-filter]') ?? [])];
+    const more = section.querySelector<HTMLButtonElement>('[data-more]');
+    const items = [...list.querySelectorAll<HTMLElement>(':scope > li')];
+    const size = Number(list.dataset.pageSize) || Infinity;
+    let filter = 'all';
+    let shown = size;
+
+    const render = () => {
+      const matching = items.filter((li) => filter === 'all' || li.dataset.kind === filter);
+      for (const li of items) li.hidden = true;
+      matching.slice(0, shown).forEach((li) => (li.hidden = false));
+      for (const b of buttons) b.setAttribute('aria-pressed', String(b.dataset.filter === filter));
+      if (more) more.parentElement!.hidden = matching.length <= shown;
+    };
+
+    const fromHash = location.hash.slice(1);
+    if (buttons.some((b) => b.dataset.filter === fromHash)) filter = fromHash;
+    if (bar) bar.hidden = false;
+    for (const b of buttons) {
+      b.addEventListener('click', () => {
+        filter = b.dataset.filter!;
+        shown = size;
+        history.replaceState(null, '', filter === 'all' ? location.pathname + location.search : `#${filter}`);
+        render();
+      });
+    }
+    more?.addEventListener('click', () => {
+      const first = items.filter((li) => li.hidden && (filter === 'all' || li.dataset.kind === filter))[0];
+      shown += size;
+      render();
+      first?.querySelector('a')?.focus();
+    });
+    render();
+  }
+</script>
