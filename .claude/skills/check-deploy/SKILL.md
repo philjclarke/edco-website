@@ -5,7 +5,7 @@ description: Check whether the EdCo site's Vercel deploy succeeded, and investig
 
 # Checking a deploy
 
-The site is a Vercel project, https://edco-website.vercel.app. www.educationcompany.co.uk is still the old site. Builds run on every push to `main` and on every Prismic publish, through a deploy hook.
+The site is a Vercel project in EdCo's team (Pro plan), https://edco-website.vercel.app. www.educationcompany.co.uk is still the old site. Builds run on every push to `main` and on every Prismic publish, through a deploy hook.
 
 ## A pushed commit
 

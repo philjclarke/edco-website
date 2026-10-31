@@ -90,26 +90,18 @@ only, so light cards show it on a navy panel).
 | --- | --- | --- |
 | 1.26 | **Where the contact form posts** | Currently no endpoint. Options: a form service (Netlify/Formspree), an email relay, or straight into SPIRIT/HubSpot. This is the only thing forcing any server-side consideration. |
 | 1.27 | **Where the subscriber list lives** | Brief §52 wants name + email now, interest personalisation later. Needs a marketing platform. |
-| 1.28 | **Hosting** | The proof of concept runs on Vercel, in Phil's own account, on the Hobby plan. Before launch it moves to an account EdCo own, on Pro. See *Hosting handover* below. The domain also needs DNS access. |
+| 1.28 | **Hosting** | Decided: Vercel, in EdCo's own team on the Pro plan (moved from Phil's Hobby account on 31 October 2026). See *Hosting handover* below. The domain still needs DNS access. |
 | 1.29 | **Analytics** | None installed. Brief implies measuring relationships over traffic — worth a conversation about what's actually being measured. |
 | 1.30 | **CMS** | Decided: **Prismic** (repository `66bbee42`). All content is in it; see README *Prismic* and the editor guide. Draft previews work for every page type. |
 
 ### Hosting handover
 
-The proof of concept stays in Phil's Vercel account for now. Before launch, move it to an account EdCo own. Nothing in the code depends on the account or the `.vercel.app` address, so this is a short job.
+On 31 October 2026 the project was transferred from Phil's Hobby account to EdCo's Vercel team, on Pro (Settings → General → Transfer Project). The transfer kept the project name, the `edco-website.vercel.app` address, the GitHub link, past deployments and settings. Phil's Loop account is a member of the team. Still to do:
 
-1. **Create the account** with a shared EdCo mailbox (e.g. `web@educationcompany.co.uk`) rather than a personal address, so it survives staff changes. Turn on two-factor authentication and keep the recovery codes where EdCo can reach them.
-2. **Choose the plan.**
-   - **Pro is required at launch:** Hobby is for non-commercial use only. A new account gets a free Pro trial.
-   - **Pro is also needed** to add team members, or to deploy a private repo owned by a GitHub organisation (if the repo moves into one).
-3. **Import the repo** (`philjclarke/edco-website`) in the new account, and give Vercel's GitHub app access to it.
-4. **Environment variables:** none are needed. The site reads published Prismic content without a token.
-5. **Point Prismic at the new deployment:**
-   - **Deploy hook:** create one in the new Vercel project (Settings → Git → Deploy Hooks, branch `main`). Then, in Prismic, replace the webhook's URL with it (`npx prismic webhook` or Settings → Webhooks).
-   - **Previews and simulator:** once the domain changes, update the preview URL and the slice simulator URL in Prismic.
-6. **Check the new deployment:** the site, `/v1/`, `/v2/`, a Prismic preview, and a test publish.
-7. **Delete the old project.** Until then, both rebuild on every change. The `edco-website.vercel.app` name only frees up once the old project is deleted, so anyone with the old link needs the new one.
-8. **Add the custom domain** and update DNS.
+1. **Check Prismic still triggers rebuilds.** Publish a small change and look for a new deploy. If none appears, create a deploy hook in the project (Settings → Git → Deploy Hooks, branch `main`) and replace the webhook's URL in Prismic with it (Settings → Webhooks).
+2. **Function region:** check it's London (`lhr1`) under Settings → Functions.
+3. **Add the custom domain** and update DNS. Then update the preview URL and the slice simulator URL in Prismic.
+4. **Account safety:** make sure EdCo's team has more than one owner, two-factor authentication on, and recovery codes where EdCo can reach them.
 
 ---
 
