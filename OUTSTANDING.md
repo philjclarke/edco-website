@@ -96,12 +96,11 @@ only, so light cards show it on a navy panel).
 
 ### Hosting handover
 
-On 31 October 2026 the project was transferred from Phil's Hobby account to EdCo's Vercel team, on Pro (Settings → General → Transfer Project). The transfer kept the project name, the `edco-website.vercel.app` address, the GitHub link, past deployments and settings. Phil's Loop account is a member of the team. Still to do:
+On 31 October 2026 the project was transferred from Phil's Hobby account to EdCo's Vercel team, on Pro (Settings → General → Transfer Project). The transfer kept the project name, the `edco-website.vercel.app` address, the GitHub link, past deployments and settings. Phil's Loop account is a member of the team, and Prismic's deploy hook still triggers rebuilds. Still to do:
 
-1. **Check Prismic still triggers rebuilds.** Publish a small change and look for a new deploy. If none appears, create a deploy hook in the project (Settings → Git → Deploy Hooks, branch `main`) and replace the webhook's URL in Prismic with it (Settings → Webhooks).
-2. **Function region:** check it's London (`lhr1`) under Settings → Functions.
-3. **Add the custom domain** and update DNS. Then update the preview URL and the slice simulator URL in Prismic.
-4. **Account safety:** make sure EdCo's team has more than one owner, two-factor authentication on, and recovery codes where EdCo can reach them.
+1. **Function region:** check it's London (`lhr1`) under Settings → Functions.
+2. **Add the custom domain** and update DNS. Then update the preview URL and the slice simulator URL in Prismic.
+3. **Account safety:** make sure EdCo's team has more than one owner, two-factor authentication on, and recovery codes where EdCo can reach them.
 
 ---
 
