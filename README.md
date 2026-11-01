@@ -192,6 +192,12 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
   Google Sheet copy deck and the `/admin` publish console it fed are in git
   history before commit "Retire the copy deck and /admin".
 
+## Search engines
+
+The site is kept out of search until launch: `robots.txt` (`src/pages/robots.txt.ts`)
+turns every crawler away and every page carries `<meta name="robots" content="noindex, nofollow">`.
+Both follow one switch, `indexable` in `src/data/site.ts`. Set it to `true` on launch day.
+
 ## Mock proof
 
 While EdCo's copy is outstanding, empty shout-out bands and every testimonial

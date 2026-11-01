@@ -4,6 +4,7 @@ import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
 import { repositoryName } from '@/lib/prismic';
 import { pagePath } from '@/lib/content';
+import { site } from '@/data/site';
 
 interface Props {
   title: string;
@@ -33,7 +34,7 @@ const preview = Astro.locals.prismicPreview;
     {description && <meta property="og:description" content={description} />}
     <meta property="og:type" content="website" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    {preview && <meta name="robots" content="noindex, nofollow" />}
+    {(preview || !site.indexable) && <meta name="robots" content="noindex, nofollow" />}
     {preview && <script is:inline async defer src={`https://static.cdn.prismic.io/prismic.js?new=true&repo=${repositoryName}`} />}
 
     <!-- PROVISIONAL webfonts. Swap for the licensed EdCo face and self-host. -->

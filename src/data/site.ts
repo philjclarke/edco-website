@@ -10,6 +10,12 @@ export const site = {
   category: 'Education Intelligence & Engagement',
   primaryCta: { label: 'Tell us what you’re trying to achieve', href: '/contact/' },
   secondaryCta: { label: 'See how EdCo works', href: '/#how-edco-works' },
+  /**
+   * Whether search engines may index the site. Off until launch: robots.txt
+   * turns every crawler away and every page carries a noindex tag. Set to
+   * true on launch day.
+   */
+  indexable: false,
 } as const;
 
 /* Verify before launch — carried over from the current site. */

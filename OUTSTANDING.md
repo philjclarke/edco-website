@@ -101,6 +101,7 @@ On 31 October 2026 the project was transferred from Phil's Hobby account to EdCo
 1. **Function region:** check it's London (`lhr1`) under Settings → Functions.
 2. **Add the custom domain** and update DNS. Then update the preview URL and the slice simulator URL in Prismic.
 3. **Account safety:** make sure EdCo's team has more than one owner, two-factor authentication on, and recovery codes where EdCo can reach them.
+4. **Let search engines in on launch day.** Until then the site is kept out of search: `robots.txt` turns crawlers away and every page has a noindex tag. Set `indexable: true` in `src/data/site.ts` and push. Check `site` in `astro.config.mjs` is the live address too, as canonical links and the sitemap use it.
 
 ---
 
