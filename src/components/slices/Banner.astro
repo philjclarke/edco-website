@@ -2,7 +2,8 @@
 /*
   Banner: the top of every page. Three looks from one component:
     Homepage variation — the large homepage banner with two buttons.
-    On an insight or opinion page — the article header, with its date and author.
+    On an insight or opinion page — the article header, with its date and author,
+      and the banner photo beside it when there is one.
     Otherwise — the page banner, with the breadcrumb for the section it's in.
 */
 import type { Slice } from '@prismicio/client';
@@ -35,6 +36,11 @@ const primary = buttonLabel && buttonHref && !external ? { label: buttonLabel, h
 
 const button2Label = textOf(p.button2_label);
 const button2Href = hrefOf(p.button2_link);
+// An article's header: the positioning line, then the intro, which falls back
+// to the summary from the Preview tab. Said once if the two match.
+const standfirst = textOf(p.positioning) || undefined;
+const intro = textOf(p.intro) || context?.preview?.text;
+const lead = intro && intro !== standfirst ? intro : undefined;
 const date = article?.date?.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
 
@@ -63,28 +69,30 @@ const date = article?.date?.toLocaleDateString('en-GB', { day: 'numeric', month:
     </section>
   ) : article ? (
     <>
-      <header class="bg-navy-900 py-16 text-ondark md:py-20">
-        <div class="mx-auto max-w-3xl px-6">
-          {context?.parent ? (
-            <a href={context.parent.href} class="eyebrow grad-text">{article.label}</a>
-          ) : (
-            <p class="eyebrow grad-text">{article.label}</p>
-          )}
-          <h1 class="mt-5 text-display">{title}</h1>
-          {(textOf(p.intro) || context?.preview?.text) && (
-            <p class="mt-6 text-lead text-ondark-muted">{textOf(p.intro) || context?.preview?.text}</p>
-          )}
-          <p class="mt-8 flex flex-wrap items-center gap-x-4 text-sm text-ondark-muted">
-            {date && <time datetime={article.date!.toISOString()}>{date}</time>}
-            {article.author && <span>{article.author}</span>}
-          </p>
-          {context?.preview?.tags.length ? (
-            <ul class="mt-6 flex flex-wrap gap-2">
-              {context.preview.tags.map((t) => (
-                <li class="rounded-md bg-navy-800 px-3 py-1.5 text-[0.8125rem] font-medium text-ondark-muted">{t}</li>
-              ))}
-            </ul>
-          ) : null}
+      <header class="relative overflow-hidden bg-navy-900 py-16 text-ondark md:py-20">
+        {banner && <BannerImage src={banner.src} focus={banner.focus} treatment="fade" duotone={tint} />}
+        <div class:list={['relative mx-auto px-6', banner ? 'max-w-7xl' : 'max-w-3xl']}>
+          <div class:list={[banner && 'max-w-2xl']}>
+            {context?.parent ? (
+              <a href={context.parent.href} class="eyebrow grad-text">{textOf(p.eyebrow) || article.label}</a>
+            ) : (
+              <p class="eyebrow grad-text">{textOf(p.eyebrow) || article.label}</p>
+            )}
+            <h1 class="mt-5 text-display">{title}</h1>
+            {standfirst && <p class="mt-6 font-display text-lead font-medium grad-text">{standfirst}</p>}
+            {lead && <p class:list={['text-lead text-ondark-muted', standfirst ? 'mt-5' : 'mt-6']}>{lead}</p>}
+            <p class="mt-8 flex flex-wrap items-center gap-x-4 text-sm text-ondark-muted">
+              {date && <time datetime={article.date!.toISOString()}>{date}</time>}
+              {article.author && <span>{article.author}</span>}
+            </p>
+            {context?.preview?.tags.length ? (
+              <ul class="mt-6 flex flex-wrap gap-2">
+                {context.preview.tags.map((t) => (
+                  <li class="rounded-md bg-navy-800 px-3 py-1.5 text-[0.8125rem] font-medium text-ondark-muted">{t}</li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
         </div>
       </header>
       {article.status === 'sample' && (
