@@ -88,8 +88,8 @@ only, so light cards show it on a navy panel).
 
 | # | Decision | Note |
 | --- | --- | --- |
-| 1.26 | **Where the contact form posts** | Currently no endpoint. Options: a form service (Netlify/Formspree), an email relay, or straight into SPIRIT/HubSpot. This is the only thing forcing any server-side consideration. |
-| 1.27 | **Where the subscriber list lives** | Brief §52 wants name + email now, interest personalisation later. Needs a marketing platform. |
+| 1.26 | **Where the contact form posts** | Decided: each submission is emailed to EdCo through SendGrid (README, *Forms*). Needs the recipient, a verified sender and the SendGrid key in Vercel. Sending to SPIRIT as well is being scoped with EdCo. |
+| 1.27 | **Where the subscriber list lives** | Brief §52 wants name + email now, interest personalisation later. For now each sign-up is emailed to EdCo with the contact form's submissions; SPIRIT may take them too. |
 | 1.28 | **Hosting** | Decided: Vercel, in EdCo's own team on the Pro plan (moved from Phil's Hobby account on 31 October 2026). See *Hosting handover* below. The domain still needs DNS access. |
 | 1.29 | **Analytics** | None installed. Brief implies measuring relationships over traffic — worth a conversation about what's actually being measured. |
 | 1.30 | **CMS** | Decided: **Prismic** (repository `66bbee42`). All content is in it; see README *Prismic* and the editor guide. Draft previews work for every page type. |

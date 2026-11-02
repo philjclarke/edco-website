@@ -1,7 +1,6 @@
 ---
 import { contact, site } from '@/data/site';
 import { menu } from '@/lib/menu';
-import Placeholder from './Placeholder.astro';
 
 const footerNav = (await menu(Astro.locals)).footer;
 
@@ -30,7 +29,18 @@ const legal = [
           Worth knowing. Occasionally worth arguing about.
         </p>
       </div>
-      <form class="flex flex-col gap-3 sm:flex-row" data-subscribe>
+      <form
+        method="post"
+        action="/api/form"
+        class="relative flex flex-col gap-3 sm:flex-row"
+        data-form="subscribe"
+        data-sent="Thank you. We’ll add you to the list."
+        data-error={`Sorry, that didn’t send. Please try again, or ring us on ${contact.phone}.`}
+      >
+        <input type="hidden" name="form" value="subscribe" />
+        <div class="absolute -left-[10000px] h-px w-px overflow-hidden" aria-hidden="true">
+          <label>Leave this empty <input name="website" tabindex="-1" autocomplete="off" /></label>
+        </div>
         <label class="sr-only" for="sub-name">Name</label>
         <input
           id="sub-name"
@@ -45,6 +55,7 @@ const legal = [
           name="email"
           type="email"
           autocomplete="email"
+          required
           placeholder="Work email"
           class="min-w-0 flex-1 rounded-full border border-navy-700 bg-navy-900 px-5 py-3 text-sm placeholder:text-ondark-muted/60"
         />
@@ -53,10 +64,8 @@ const legal = [
           class="shrink-0 rounded-full bg-[linear-gradient(96deg,var(--color-orange),var(--color-pink))] px-6 py-3 font-display text-sm font-semibold text-white transition hover:brightness-110"
           >Keep listening</button
         >
+        <p data-form-status role="status" tabindex="-1" hidden class="self-center text-sm text-ondark-muted outline-none data-[state=sent]:font-display data-[state=sent]:text-base data-[state=sent]:font-semibold data-[state=sent]:text-ondark sm:basis-full"></p>
       </form>
-    </div>
-    <div class="mx-auto max-w-7xl px-6 pb-8">
-      <Placeholder label="FORM ENDPOINT" note="no marketing platform connected yet" />
     </div>
   </div>
 
@@ -123,3 +132,7 @@ const legal = [
     </div>
   </div>
 </footer>
+
+<script>
+  import '@/scripts/forms';
+</script>

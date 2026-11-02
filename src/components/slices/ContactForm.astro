@@ -8,8 +8,8 @@
   interrogate.
 
   The wording is the editor's; the fields stay in code, since the form's
-  handler (not yet connected) depends on them. The tick boxes are the
-  outcome pages, in menu order.
+  handler (src/pages/api/form.ts) depends on them. The tick boxes are the
+  outcome pages, in menu order. Sending is handled by src/scripts/forms.ts.
 */
 import type { Slice } from '@prismicio/client';
 import Section from '../Section.astro';
@@ -30,7 +30,19 @@ const field =
 
 <Section tone="light" size="lg">
   <div class="grid gap-14 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:gap-20">
-    <form id="objective-form" novalidate>
+    <form
+      id="objective-form"
+      method="post"
+      action="/api/form"
+      class="relative"
+      data-form="contact"
+      data-sent={t('sent_message', 'Thank you. That’s with the team now, and we’ll be in touch soon.')}
+      data-error={`Sorry, that didn’t send. Please try again, or ring us on ${contact.phone}.`}
+    >
+      <input type="hidden" name="form" value="contact" />
+      <div class="absolute -left-[10000px] h-px w-px overflow-hidden" aria-hidden="true">
+        <label>Leave this empty <input name="website" tabindex="-1" autocomplete="off" /></label>
+      </div>
       <fieldset>
         <legend class="font-display text-title font-bold">{t('heading', 'What are you trying to achieve?')}</legend>
         {textOf(p.intro) && <p class="mt-3 text-ink-muted">{textOf(p.intro)}</p>}
@@ -88,9 +100,15 @@ const field =
         >
       </div>
       <div class="mt-6 space-y-2">
-        <Placeholder label="FORM ENDPOINT" note="no CRM or form handler connected yet" block />
         <Placeholder label="PRIVACY NOTICE / CONSENT WORDING" note="legal sign-off required" block />
       </div>
+      <p
+        data-form-status
+        role="status"
+        tabindex="-1"
+        hidden
+        class="mt-6 rounded-card border border-line p-5 outline-none data-[state=sent]:mt-0 data-[state=sent]:border-pink/40 data-[state=sent]:bg-pink/5 data-[state=sent]:p-7 data-[state=sent]:font-display data-[state=sent]:text-title data-[state=sent]:font-semibold"
+      ></p>
     </form>
 
     <aside class="lg:pt-4">
@@ -129,6 +147,8 @@ const field =
 </Section>
 
 <script>
+  import '@/scripts/forms';
+
   // Deep links such as /contact/?intent=customer-analysis pre-tick the matching
   // objective, so a CTA elsewhere on the site carries its context into the form.
   const intent = new URLSearchParams(location.search).get('intent');

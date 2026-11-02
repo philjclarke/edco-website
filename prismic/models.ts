@@ -480,6 +480,7 @@ export const pageComponents: { page: string; slice: SharedSliceModel }[] = [
       more_intro: text('Text under the message heading'),
       details_heading: text('Details heading', 'e.g. And who are you?'),
       button_label: text('Button label', 'e.g. Start the conversation'),
+      sent_message: text('Thank-you message', 'Replaces the form once it has sent. Leave blank for “Thank you. That’s with the team now, and we’ll be in touch soon.”'),
       next_heading: text('Side panel heading', 'e.g. What happens next'),
       next_text: prose('Side panel text'),
       phone_heading: text('Phone heading', 'e.g. Or just ring us. The number and address come from the site’s contact details'),

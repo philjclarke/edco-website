@@ -19,8 +19,9 @@ Node 22 (pinned via Volta in `package.json`).
 
 ## Why this stack
 
-- **Astro 5:** static output, zero JS shipped except the nav toggle and the contact-form
-  deep link.
+- **Astro 5:** static output, with little JS shipped: the nav toggle, the
+  listings' filters and the forms. Server code runs only for Prismic previews and
+  form submissions.
 - **Tailwind 4:** design tokens live in `src/styles/global.css` under `@theme`.
 - **Pagefind:** search index built from the output at build time. No search service,
   no API key, works on any static host.
@@ -191,6 +192,31 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
   Markdown files that used to hold it. Those files, the import scripts, the
   Google Sheet copy deck and the `/admin` publish console it fed are in git
   history before commit "Retire the copy deck and /admin".
+
+## Forms
+
+The contact form and the footer's subscribe form post to
+[src/pages/api/form.ts](src/pages/api/form.ts), which emails each submission to
+EdCo through SendGrid's SMTP relay, with Reply-To set to the visitor.
+[src/scripts/forms.ts](src/scripts/forms.ts) sends them without leaving the page
+and shows the thank-you message (the contact form's is editable in Prismic). A
+hidden field and a minimum fill-in time turn away most automated spam.
+
+The settings are Vercel environment variables (Settings → Environment
+Variables, Production), never committed:
+
+| Variable | Value |
+| --- | --- |
+| `SMTP_HOST` | `smtp.sendgrid.net` |
+| `SMTP_PORT` | `587` (optional; the default) |
+| `SMTP_USER` | `apikey` (literally; that is SendGrid's username) |
+| `SMTP_PASS` | The SendGrid API key. Mark it **Sensitive**. |
+| `FORM_TO` | Who receives submissions; several addresses separated by commas. |
+| `FORM_FROM` | The sender, e.g. `EdCo website <website@educationcompany.co.uk>`. Must be a sender or domain verified in SendGrid. |
+
+Until all of them are set, the forms say they couldn't send and give the phone
+number. Redeploy after changing them. Failures show in the Vercel function logs,
+prefixed `[form]`.
 
 ## Search engines
 
