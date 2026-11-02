@@ -68,7 +68,6 @@ const date = article?.date?.toLocaleDateString('en-GB', { day: 'numeric', month:
       </div>
     </section>
   ) : article ? (
-    <>
       <header class="relative overflow-hidden bg-navy-900 py-16 text-ondark md:py-20">
         {banner && <BannerImage src={banner.src} focus={banner.focus} treatment="fade" duotone={tint} />}
         <div class:list={['relative mx-auto px-6', banner ? 'max-w-7xl' : 'max-w-3xl']}>
@@ -95,15 +94,6 @@ const date = article?.date?.toLocaleDateString('en-GB', { day: 'numeric', month:
           </div>
         </div>
       </header>
-      {article.status === 'sample' && (
-        <div class="border-b border-orange/30 bg-orange/10">
-          <p class="mx-auto max-w-3xl px-6 py-4 text-sm text-ink">
-            <strong class="font-display font-semibold">Sample article.</strong> Written to the brief’s voice to
-            demonstrate the template. Not approved as EdCo’s published position.
-          </p>
-        </div>
-      )}
-    </>
   ) : (
     <PageHero
       parent={context?.parent}

@@ -38,7 +38,6 @@ const a = page.article;
       <p class:list={['mt-auto flex flex-wrap items-center gap-x-3 pt-5 text-xs', dark ? 'text-ondark-muted' : 'text-ink-muted']}>
         {a.date && <time datetime={a.date.toISOString()}>{a.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</time>}
         {a.author && <span>{a.author}</span>}
-        {a.status === 'sample' && <span class="text-orange">Sample</span>}
       </p>
     ) : (
       <span class="mt-auto pt-5 text-sm font-medium grad-text">{page.linkLabel ?? 'Find out more'} →</span>
