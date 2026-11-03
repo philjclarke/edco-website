@@ -496,8 +496,6 @@ export const pageComponents: { page: string; slice: SharedSliceModel }[] = [
       next_heading: text('Side panel heading', 'e.g. What happens next'),
       next_text: prose('Side panel text'),
       phone_heading: text('Phone heading', 'e.g. Or just ring us. The number and address come from the site’s contact details'),
-      customers_heading: text('Customer box heading', 'e.g. Already an EdCo customer?'),
-      customers_text: prose('Customer box text'),
     }),
   },
   {

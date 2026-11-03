@@ -22,7 +22,6 @@ const { slice } = Astro.props as { slice: Slice };
 const p = slice.primary as Record<string, any>;
 const t = (k: string, fallback: string) => textOf(p[k]) || fallback;
 const nextHTML = richHTML(p.next_text);
-const customersHTML = richHTML(p.customers_text);
 
 const field =
   'w-full rounded-xl border border-line bg-paper px-4 py-3 text-[0.9375rem] transition placeholder:text-ink-muted/60 focus:border-orange';
@@ -133,15 +132,6 @@ const field =
           <a href={`mailto:${contact.email}`} class="font-medium underline decoration-pink underline-offset-4 transition-colors hover:text-pink">{contact.email}</a>
         </p>
       </div>
-
-      {
-        (textOf(p.customers_heading) || customersHTML) && (
-          <div class="mt-8 rounded-card border border-line p-7">
-            {textOf(p.customers_heading) && <h2 class="font-display text-base font-semibold">{textOf(p.customers_heading)}</h2>}
-            <div class="prose-edco mt-3 text-sm text-ink-muted" set:html={customersHTML} />
-          </div>
-        )
-      }
     </aside>
   </div>
 </Section>
