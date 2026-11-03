@@ -21,22 +21,22 @@ const primaryNav = (await menu(Astro.locals)).main;
 -->
 <div
   id="site-header"
-  class:list={['relative z-40 lg:h-(--header-h)', dark ? 'bg-navy-900' : 'bg-paper']}
+  class:list={['relative z-40 nav:h-(--header-h)', dark ? 'bg-navy-900' : 'bg-paper']}
 >
 <header
   class:list={[
-    'group/header relative z-40 inset-x-0 top-0 transition-shadow lg:data-stuck:fixed lg:data-stuck:shadow-xl',
-    dark ? 'bg-navy-900 text-ondark lg:data-stuck:shadow-black/30' : 'bg-paper text-ink border-b border-line lg:data-stuck:shadow-navy-900/10',
+    'group/header relative z-40 inset-x-0 top-0 transition-shadow nav:data-stuck:fixed nav:data-stuck:shadow-xl',
+    dark ? 'bg-navy-900 text-ondark nav:data-stuck:shadow-black/30' : 'bg-paper text-ink border-b border-line nav:data-stuck:shadow-navy-900/10',
   ]}
 >
   <!-- Utility bar -->
   <div
     class:list={[
-      'hidden lg:block lg:group-data-stuck/header:hidden',
+      'hidden nav:block nav:group-data-stuck/header:hidden',
       dark ? 'border-b border-navy-700' : 'border-b border-line',
     ]}
   >
-    <div class="mx-auto flex max-w-7xl items-center justify-end gap-6 px-6 py-2 text-xs">
+    <div class="mx-auto flex max-w-7xl items-center justify-end gap-6 px-6 py-2 text-xs 2xl:max-w-[96rem]">
       {
         utilityNav.map((l) => (
           <a
@@ -58,7 +58,7 @@ const primaryNav = (await menu(Astro.locals)).main;
     </div>
   </div>
 
-  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3 xl:gap-8 lg:group-data-stuck/header:py-2">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3 xl:gap-8 2xl:max-w-[96rem] nav:group-data-stuck/header:py-2">
     <a href="/" class="shrink-0" aria-label="The Education Company — home">
       {/*
         A plain <img> against pre-built files rather than astro:assets. On a
@@ -77,13 +77,13 @@ const primaryNav = (await menu(Astro.locals)).main;
         width={dark ? 216 : 200}
         height="82"
         alt="The Education Company"
-        class="h-16 w-auto transition-[height] duration-200 md:h-[4.5rem] lg:h-16 xl:h-20 lg:group-data-stuck/header:h-12"
+        class="h-16 w-auto transition-[height] duration-200 md:h-[4.5rem] nav:h-16 xl:h-20 nav:group-data-stuck/header:h-12"
         fetchpriority="high"
       />
     </a>
 
     <!-- Desktop nav -->
-    <nav class="hidden items-center lg:flex" aria-label="Primary">
+    <nav class="hidden items-center nav:flex" aria-label="Primary">
       {
         primaryNav.map((item) => {
           const active = path.startsWith(item.href) && item.href !== '/';
@@ -144,7 +144,7 @@ const primaryNav = (await menu(Astro.locals)).main;
       aria-expanded="false"
       aria-controls="mobile-nav"
       class:list={[
-        'rounded-lg border p-2 lg:hidden',
+        'rounded-lg border p-2 nav:hidden',
         dark ? 'border-navy-700' : 'border-line',
       ]}
     >
@@ -156,7 +156,7 @@ const primaryNav = (await menu(Astro.locals)).main;
   </div>
 
   <!-- Mobile nav -->
-  <div id="mobile-nav" hidden class:list={['lg:hidden', dark ? 'bg-navy-900' : 'bg-paper']}>
+  <div id="mobile-nav" hidden class:list={['nav:hidden', dark ? 'bg-navy-900' : 'bg-paper']}>
     <nav class="mx-auto max-w-7xl px-6 pb-8" aria-label="Primary (mobile)">
       <ul class:list={['divide-y', dark ? 'divide-navy-700' : 'divide-line']}>
         {
@@ -208,7 +208,7 @@ const primaryNav = (await menu(Astro.locals)).main;
   const wrap = document.getElementById('site-header');
   const bar = wrap?.querySelector('header');
   const utility = bar?.firstElementChild as HTMLElement | null;
-  const desktop = matchMedia('(min-width: 64rem)');
+  const desktop = matchMedia('(min-width: 70rem)');
   if (wrap && bar) {
     // The full header is one height at every desktop width, so measure it
     // only while it is full — never mid-way through compacting.

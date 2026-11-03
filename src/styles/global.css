@@ -7,6 +7,10 @@
 */
 
 @theme {
+  /* The header's full menu: wide enough for every top-level label beside the
+     logo. Narrower screens get the menu button. */
+  --breakpoint-nav: 70rem;
+
   /* --- Ground: brand navy, sampled from the deck --------------------- */
   --color-navy-950: #0a0e18; /* deepest — footer, full-bleed CTA bands */
   --color-navy-900: #0f1421; /* THE brand navy */
