@@ -217,6 +217,7 @@ Variables, Production), never committed:
 | `SMTP_USER` | `apikey` (literally; that is SendGrid's username) |
 | `SMTP_PASS` | The SendGrid API key. Mark it **Sensitive**. |
 | `FORM_TO` | Who receives submissions; several addresses separated by commas. |
+| `SUBSCRIBE_TO` | Optional: who receives the footer's newsletter sign-ups, if not `FORM_TO`. Same format. |
 | `FORM_FROM` | The sender, e.g. `EdCo website <website@educationcompany.co.uk>`. Must be a sender or domain verified in SendGrid. |
 
 Until all of them are set, the forms say they couldn't send and give the phone

@@ -80,7 +80,9 @@ export const POST: APIRoute = async ({ request }) => {
   const host = env('SMTP_HOST');
   const user = env('SMTP_USER');
   const pass = env('SMTP_PASS');
-  const to = env('FORM_TO');
+  // Sign-ups can go to someone other than enquiries; until SUBSCRIBE_TO is
+  // set, both go to FORM_TO.
+  const to = (form === 'subscribe' && env('SUBSCRIBE_TO')) || env('FORM_TO');
   const from = env('FORM_FROM');
   if (!host || !user || !pass || !to || !from) {
     console.error('[form] Not sent: set SMTP_HOST, SMTP_USER, SMTP_PASS, FORM_TO and FORM_FROM in Vercel.');
