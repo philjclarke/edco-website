@@ -59,7 +59,6 @@ export const footerEdCo: { heading: string; links: NavLink[] } = {
   links: [
     { label: 'About EdCo', href: '/about/' },
     { label: 'Insights & Opinion', href: '/insights/' },
-    { label: 'Case studies', href: '/case-studies/' },
     { label: 'Agencies & Partners', href: '/agencies-and-partners/' },
     { label: 'For Educators', href: '/for-educators/' },
     { label: 'Contact', href: '/contact/' },
