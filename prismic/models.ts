@@ -89,6 +89,9 @@ const number = (label: string, placeholder?: string): Nested => ({ type: 'Number
 
 const date = (label: string): Nested => ({ type: 'Date', config: { label } });
 
+/** A table: the editor adds rows and columns, with an optional header row. */
+const table = (label: string): CustomTypeModelField => ({ type: 'Table', config: { label } });
+
 const group = (label: string, fields: Record<string, Nested>): CustomTypeModelField => ({
   type: 'Group',
   config: { label, fields },
@@ -324,6 +327,15 @@ export const components: SharedSliceModel[] = [
     image: image('Image'),
     image_side: select('Image side', ['Right', 'Left'] as const, 'Right'),
     widths: select('Widths', ['Half and half', 'Text wider (75/25)', 'Image wider (25/75)'] as const, 'Half and half'),
+    background: BACKGROUND('white'),
+  }),
+
+  slice('table', 'Table', 'A table of rows and columns, with an optional heading and text above it and a note under it. On an insight or opinion it sits in the article column.', {
+    eyebrow: sectionHeader('Optional'),
+    heading: text('Heading', 'Optional'),
+    intro: prose('Text above the table', 'Optional'),
+    table: table('Table'),
+    note: prose('Note under the table', 'Optional, e.g. a source or a caveat'),
     background: BACKGROUND('white'),
   }),
 ];

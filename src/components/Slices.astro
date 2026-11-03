@@ -19,6 +19,7 @@ import ArticleBody from './slices/ArticleBody.astro';
 import ContactForm from './slices/ContactForm.astro';
 import CustomerLogins from './slices/CustomerLogins.astro';
 import TextImage from './slices/TextImage.astro';
+import Table from './slices/Table.astro';
 import SectionSlice from './sections/SectionSlice.astro';
 import { SECTION_SLICE_TYPES, toneOf } from './sections/tone';
 import { blockOf } from '@/lib/slices';
@@ -46,6 +47,7 @@ const OWN_SECTION: Record<string, any> = {
   contact_form: ContactForm,
   customer_logins: CustomerLogins,
   text_image: TextImage,
+  table: Table,
 };
 
 type Part =

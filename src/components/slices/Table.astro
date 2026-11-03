@@ -1,0 +1,115 @@
+---
+/*
+  Table: rows and columns built in Prismic's table editor, with an optional
+  heading and text above and a note (a source, a caveat) underneath.
+
+  On an insight or opinion it sits in the article column, white like the
+  text around it; elsewhere it takes its Background and a comfortable width
+  rather than the full page. A table too wide for a phone scrolls sideways
+  inside its own box, so the page itself never does, with a shadow at the
+  edge while there's more to see.
+*/
+import type { Slice, TableField } from '@prismicio/client';
+import Section from '../Section.astro';
+import { richHTML, textOf } from '@/lib/prismic';
+import { withPlaceholders } from '@/lib/placeholders';
+import { toneOf } from '../sections/tone';
+import type { PageContext } from '@/lib/pages';
+
+interface Props {
+  slice: Slice;
+  context?: PageContext;
+}
+const { slice, context } = Astro.props;
+const p = slice.primary as Record<string, any>;
+const article = !!context?.preview?.article;
+const tone = article ? 'light' : toneOf(p.background);
+const dark = tone === 'dark';
+
+const t = p.table as TableField;
+const head = t?.head?.rows ?? [];
+const body = t?.body?.rows ?? [];
+const columns = Math.max(0, ...[...head, ...body].map((r) => r.cells.length));
+const cell = (content: unknown) => withPlaceholders(richHTML(content as any));
+
+const heading = textOf(p.heading);
+const intro = richHTML(p.intro);
+const note = richHTML(p.note);
+const empty = !columns && !heading && !intro;
+
+const line = dark ? 'border-navy-700' : 'border-line';
+const muted = dark ? 'text-ondark-muted' : 'text-ink-muted';
+// Cell text: paragraphs close together, links underlined like running text.
+const cellText = '[&_p+p]:mt-2 [&_a]:underline [&_a]:underline-offset-2 [&_a]:decoration-pink';
+---
+
+{
+  !empty && (
+    <Section tone={tone} size={article ? 'md' : 'lg'} width={article ? 'narrow' : 'default'}>
+      <div class:list={[!article && 'max-w-4xl']}>
+        {textOf(p.eyebrow) && <p class="eyebrow grad-text mb-4">{textOf(p.eyebrow)}</p>}
+        {heading && <h2 class:list={['text-title', article ? 'mb-6' : 'mb-5']}>{heading}</h2>}
+        {intro && <div class:list={['prose-edco mb-8', !article && muted]} set:html={withPlaceholders(intro)} />}
+        {
+          columns > 0 && (
+            <div
+              class:list={['scroll-hint overflow-x-auto rounded-card border', line, dark ? 'bg-navy-800' : 'bg-paper']}
+              role="region"
+              aria-label={heading || 'Table'}
+              tabindex="0"
+            >
+              <table class="w-full border-collapse text-left text-[0.9375rem] leading-relaxed" style={columns > 2 ? `min-width: ${columns * 10}rem` : undefined}>
+                {
+                  head.length > 0 && (
+                    <thead class:list={[dark ? 'bg-navy-900/60' : 'bg-mist']}>
+                      {head.map((row) => (
+                        <tr>
+                          {row.cells.map((c) => (
+                            <th scope="col" class:list={['px-5 py-3.5 align-bottom font-display text-sm font-semibold', cellText]} set:html={cell(c.content)} />
+                          ))}
+                        </tr>
+                      ))}
+                    </thead>
+                  )
+                }
+                <tbody>
+                  {body.map((row, i) => (
+                    <tr class:list={[(i > 0 || head.length > 0) && ['border-t', line]]}>
+                      {row.cells.map((c) =>
+                        c.type === 'header' ? (
+                          <th scope="row" class:list={['px-5 py-4 align-top font-semibold', cellText]} set:html={cell(c.content)} />
+                        ) : (
+                          <td class:list={['px-5 py-4 align-top', dark ? 'text-ondark' : 'text-ink', cellText]} set:html={cell(c.content)} />
+                        )
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )
+        }
+        {note && <div class:list={['mt-5 text-sm leading-relaxed [&_p+p]:mt-2 [&_a]:underline', muted]} set:html={withPlaceholders(note)} />}
+      </div>
+    </Section>
+  )
+}
+
+<style>
+  /* Edge shadows that show only while the table can scroll that way: the
+     covers scroll with the content and hide the shadows at either end. */
+  .scroll-hint {
+    --cover: var(--color-paper);
+    --shade: rgb(15 20 33 / 0.16);
+    background:
+      linear-gradient(to right, var(--cover) 30%, transparent) left / 2.5rem 100% no-repeat local,
+      linear-gradient(to left, var(--cover) 30%, transparent) right / 2.5rem 100% no-repeat local,
+      radial-gradient(farthest-side at 0 50%, var(--shade), transparent) left / 0.9rem 100% no-repeat scroll,
+      radial-gradient(farthest-side at 100% 50%, var(--shade), transparent) right / 0.9rem 100% no-repeat scroll,
+      var(--cover);
+  }
+  .scroll-hint:global(.bg-navy-800) {
+    --cover: var(--color-navy-800);
+    --shade: rgb(255 255 255 / 0.16);
+  }
+</style>

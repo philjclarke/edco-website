@@ -107,6 +107,11 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
 - **Text and image** ([TextImage.astro](src/components/slices/TextImage.astro)):
   text beside a picture, the picture left or right, half and half or 75/25
   either way, with a background option.
+- **Table** ([Table.astro](src/components/slices/Table.astro)): Prismic's own
+  Table field, so editors add rows and columns in a grid, with an optional
+  header row, plus a heading and text above and a note below. In an article it
+  sits in the reading column; elsewhere it takes a Background. Wide tables
+  scroll sideways inside their box, with edge shadows while there's more.
 - **Backgrounds:** every component except Banner, Screenshots, Contact form and
   Customer logins has a Background (white, grey, navy). Plain content
   components given grey or navy stand alone instead of sharing the run's
