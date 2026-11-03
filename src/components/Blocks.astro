@@ -120,7 +120,7 @@ const muted = (b: Block) => (isDark(b) ? 'text-ondark-muted' : 'text-ink-muted')
                 {block.lead && <p class:list={['mt-4 text-intro', muted(block)]}>{block.lead}</p>}
               </div>
             )}
-            <Grid cols={3} class="mt-10" as="ol" tone={isDark(block) ? 'dark' : 'light'}>
+            <Grid cols={3} class="mt-10" as="ol" count={block.items.length} tone={isDark(block) ? 'dark' : 'light'}>
               {block.items.map((w, i) => (
                 <li class="flex h-full flex-col p-6">
                   {w.icon ? (
@@ -193,7 +193,7 @@ const muted = (b: Block) => (isDark(b) ? 'text-ondark-muted' : 'text-ink-muted')
             )}
             <div class:list={['mt-8', block.items.some((i) => i.detail || i.shot) ? 'grid gap-5 md:grid-cols-2 lg:grid-cols-3' : '']}>
               {!block.items.some((i) => i.detail || i.shot) ? (
-                <Grid cols={3} tone={isDark(block) ? 'dark' : 'light'}>
+                <Grid cols={3} count={block.items.length} tone={isDark(block) ? 'dark' : 'light'}>
                   {block.items.map((c) => (
                     <div class="p-6">
                       {c.icon && <Icon name={c.icon} class="mb-4 h-5 w-5 text-pink" />}

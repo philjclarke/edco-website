@@ -42,7 +42,7 @@ const listCols = items.length <= 6 ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-
 
 {
   variant === 'grid' && (
-    <Grid cols={cols} tone={tone} as="ul">
+    <Grid cols={cols} tone={tone} as="ul" count={items.length}>
       {items.map((item, i) => (
         <li class="p-5 md:p-6">
           <Icon name={iconOf(i)} class:list={['mb-3 h-5 w-5', accent]} />
@@ -55,7 +55,7 @@ const listCols = items.length <= 6 ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-
 
 {
   variant === 'dense' && (
-    <Grid cols={denseCols} tone={tone} as="ul">
+    <Grid cols={denseCols} tone={tone} as="ul" count={items.length}>
       {items.map((item, i) => (
         <li class:list={['flex gap-4 px-5 py-4', explainers[i] ? 'items-start' : 'items-center']}>
           <span

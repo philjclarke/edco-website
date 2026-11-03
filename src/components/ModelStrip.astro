@@ -21,7 +21,7 @@ const edcoModel: Step[] = steps?.length ? steps : (await siteSettings(Astro.loca
 const dark = tone === 'dark';
 ---
 
-<Grid cols={3} tone={tone} as="ol">
+<Grid cols={3} tone={tone} as="ol" count={edcoModel.length}>
   {
     edcoModel.map((step, i) => (
       <li class="p-6 md:p-7">

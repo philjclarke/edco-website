@@ -28,7 +28,7 @@ const panels = (p.pages ?? []).map((x: any) => all.linked(x.page)).filter(Boolea
     {textOf(p.heading) && <h2 class="text-title">{textOf(p.heading)}</h2>}
     {textOf(p.intro) && <p class:list={['mt-4 text-intro', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{textOf(p.intro)}</p>}
   </div>
-  <Grid cols={3} tone={dark ? 'dark' : 'light'} as="ul" class={textOf(p.heading) || textOf(p.eyebrow) ? 'mt-10' : ''}>
+  <Grid cols={3} tone={dark ? 'dark' : 'light'} as="ul" count={panels.length} class={textOf(p.heading) || textOf(p.eyebrow) ? 'mt-10' : ''}>
     {
       panels.map((pg: any) => (
         <li>

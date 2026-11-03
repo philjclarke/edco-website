@@ -7,14 +7,21 @@
   Children are plain elements; the cell borders are applied here so callers
   don't have to remember the negative-margin trick that keeps a part-filled
   last row from showing a stray edge.
+
+  Given the number of items, a part-filled last row is made up with empty
+  ruled cells, so the column lines run to the bottom instead of the last cell
+  seeming to span the row. How many depends on the columns at each width, so
+  each filler shows only at the widths that need it.
 */
 interface Props {
   cols?: 2 | 3 | 4 | 5 | 6;
   tone?: 'dark' | 'light';
   as?: 'div' | 'ul' | 'ol' | 'dl';
+  /** How many items there are, to fill out a part-filled last row. */
+  count?: number;
   class?: string;
 }
-const { cols = 3, tone = 'light', as: Tag = 'div', class: cls = '' } = Astro.props as Props;
+const { cols = 3, tone = 'light', as: Tag = 'div', count, class: cls = '' } = Astro.props as Props;
 const dark = tone === 'dark';
 
 const columns = {
@@ -24,6 +31,17 @@ const columns = {
   5: 'sm:grid-cols-2 lg:grid-cols-5',
   6: 'sm:grid-cols-3 lg:grid-cols-6',
 };
+
+// Columns at the sm and lg widths (one column below sm needs no filling).
+const perRow = { 2: [2, 2], 3: [2, 3], 4: [2, 4], 5: [2, 5], 6: [3, 6] }[cols];
+const short = (n: number) => (count ? (n - (count % n)) % n : 0);
+const [smFill, lgFill] = perRow.map(short);
+const fillers = Array.from({ length: Math.max(smFill, lgFill) }, (_, i) => [
+  'hidden',
+  i < smFill && 'sm:block',
+  i < lgFill ? 'lg:block' : 'lg:hidden',
+]);
+const Filler = Tag === 'ul' || Tag === 'ol' ? 'li' : 'div';
 ---
 
 <Tag
@@ -43,4 +61,5 @@ const columns = {
   ]}
 >
   <slot />
+  {fillers.map((c) => <Filler class:list={c} aria-hidden="true" />)}
 </Tag>

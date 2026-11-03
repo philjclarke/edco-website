@@ -31,7 +31,7 @@ const along = (i: number) => (steps.length === 1 ? 0 : Math.round((i / (steps.le
 
 {
   variant === 'grid' && (
-    <Grid cols={cols} tone={tone} as="ol">
+    <Grid cols={cols} tone={tone} as="ol" count={steps.length}>
       {steps.map((s, i) => (
         <li class="flex items-baseline gap-3 px-5 py-4">
           <span class="font-display text-xs font-bold grad-text">{n(i)}</span>
