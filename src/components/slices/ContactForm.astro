@@ -130,7 +130,7 @@ const field =
           {contact.address.map((line) => <span class="block">{line}</span>)}
         </address>
         <p class="mt-4">
-          <Placeholder label="GENERAL EMAIL ADDRESS" />
+          <a href={`mailto:${contact.email}`} class="font-medium underline decoration-pink underline-offset-4 transition-colors hover:text-pink">{contact.email}</a>
         </p>
       </div>
 

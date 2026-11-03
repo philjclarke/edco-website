@@ -23,7 +23,7 @@ export const contact = {
   address: ['Denne Court, Hengist Field', 'Oad Street, Borden', 'Kent ME9 8LT'],
   phone: '01634 766920',
   phoneHref: 'tel:+441634766920',
-  email: '[EMAIL TO CONFIRM]',
+  email: 'info@educationcompany.co.uk',
 };
 
 export type NavLink = { label: string; href: string; blurb?: string };
