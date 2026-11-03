@@ -32,7 +32,7 @@ Node 22 (pinned via Volta in `package.json`).
 
 | Content | In Prismic as | Read by |
 | --- | --- | --- |
-| Every page built from components: the homepage, the top-level page of each section and the pages below it, insights, opinion, provision blueprints, Contact, For Educators, Free customer analysis, Customer login | One page type each (see below) | [pages.ts](src/lib/pages.ts), [PageView.astro](src/components/PageView.astro) |
+| Every page built from components: the homepage, the top-level page of each section and the pages below it, insights, opinion, provision blueprints, Contact, For Educators | One page type each (see below) | [pages.ts](src/lib/pages.ts), [PageView.astro](src/components/PageView.astro) |
 | Case studies hub, Search, 404 | One single-instance type each, with fixed fields | [pageCopy.ts](src/data/pageCopy.ts) |
 | The Listen → Grow model, proof figures, client logos, themes | `site_settings` | [pageCopy.ts](src/data/pageCopy.ts), then `model.ts`, `proof.ts` |
 | Case studies | `case_study` | content collection `caseStudies` |
@@ -73,7 +73,7 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
   | About | `about_page` | `about_subpage` |
   | Agencies & Partners | `agencies_page` | `agencies_subpage` |
   | Not in the menu | | `provision_blueprint` (`/provision-blueprints/<name>/`) |
-  | One page each, not in the menu | `contact_page`, `for_educators_page`, `free_analysis_page`, `customer_page` | |
+  | One page each, not in the menu | `contact_page`, `for_educators_page` | `free_analysis_page` and `customer_page` were archived on 3 November 2026 and their pages removed from `src/pages`; restore a page file there to bring one back. |
 
   The last four have no site-wide call to action at the foot (`closingCta:
   false` in pageTypes.ts); a page can still add a Call to action component.
@@ -140,7 +140,7 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
 - **Page components**, offered only on their own page (`pageComponents` in
   models.ts): **Contact form** (the enquiry form and its side panel; the
   wording is editable, the fields and the outcome tick boxes are code) and
-  **Customer logins** (the customer area's heading, logins, support and
+  **Customer logins**, unused while the Customer login page is archived (the customer area's heading, logins, support and
   account manager boxes).
 - **Placeholders:** text in square brackets, like `[VERIFIED METRIC: 28 years]`,
   or a card titled `[CURRENT EVENT]`, renders as a placeholder chip

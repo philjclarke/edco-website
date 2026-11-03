@@ -34,6 +34,8 @@ export const PAGE_TYPES = [
   // action at the foot (a page can still add its own Call to action component).
   { id: 'contact_page', label: 'Contact', path: '/contact/', closingCta: false },
   { id: 'for_educators_page', label: 'For Educators', path: '/for-educators/', closingCta: false },
+  // Archived in Prismic on 3 November 2026, with their pages removed from the
+  // site (src/pages). The types stay so they can be restored.
   { id: 'free_analysis_page', label: 'Free customer analysis', path: '/free-customer-analysis/', closingCta: false },
   { id: 'customer_page', label: 'Customer login', path: '/customer/', closingCta: false },
 ] as const satisfies readonly {

@@ -39,7 +39,6 @@ export type NavGroup = { label: string; href: string; children?: NavLink[] };
 
 export const utilityNav: NavLink[] = [
   { label: 'For Educators', href: '/for-educators/' },
-  { label: 'Customer login', href: '/customer/' },
   { label: 'Search', href: '/search/' },
 ];
 
@@ -52,7 +51,6 @@ export const footerExtras: Record<string, NavLink[]> = {
   products_hub: [],
   capabilities_hub: [
     { label: 'All capabilities', href: '/capabilities/' },
-    { label: 'Free customer analysis', href: '/free-customer-analysis/' },
   ],
 };
 
@@ -64,7 +62,6 @@ export const footerEdCo: { heading: string; links: NavLink[] } = {
     { label: 'Case studies', href: '/case-studies/' },
     { label: 'Agencies & Partners', href: '/agencies-and-partners/' },
     { label: 'For Educators', href: '/for-educators/' },
-    { label: 'Customer login', href: '/customer/' },
     { label: 'Contact', href: '/contact/' },
   ],
 };
