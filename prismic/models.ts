@@ -196,6 +196,7 @@ export const components: SharedSliceModel[] = [
         text: text('Text', 'The line that carries the argument'),
         name: text('Footer: name', 'Who said it, shown in bold, e.g. Sam Example. With a name, the text gets quote marks'),
         footer: text('Footer: role and organisation', 'e.g. Head of Marketing, Example Trust. Without a name, a supporting line'),
+        logo: image('Logo of their organisation (full colour; on navy it sits on a small white panel)'),
         background: BACKGROUND('navy'),
       },
     },
@@ -209,6 +210,7 @@ export const components: SharedSliceModel[] = [
         text: text('Text', 'The quote'),
         name: text('Footer: name', 'Who said it, shown in bold, e.g. Sam Example'),
         footer: text('Footer: role and organisation', 'e.g. Head of Marketing, Example Trust'),
+        logo: image('Logo of their organisation (full colour; on navy it sits on a small white panel)'),
         theme: select('Testimonial theme', TESTIMONIAL_THEMES, 'working with EdCo'),
         show_logos: boolean('Client logos underneath', false),
         background: BACKGROUND('grey'),
@@ -394,9 +396,13 @@ export const earlierComponents: SharedSliceModel[] = [
     background: BACKGROUND('grey'),
   }),
 
-  slice('logo_wall', 'Logo wall', 'The client logo wall, with a centred heading.', {
+  slice('logo_wall', 'Logo wall', 'Client logos under a centred heading. Add the logos for this wall, or leave them empty to show every client logo in Site settings.', {
     heading: text('Heading'),
     intro: text('Intro'),
+    logos: group('Logos', {
+      logo: image('Logo (full colour, for a white background)'),
+      name: text('Organisation', 'Read out by screen readers, e.g. Collins'),
+    }),
     background: BACKGROUND('white'),
   }),
 

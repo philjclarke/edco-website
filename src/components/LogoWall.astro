@@ -2,7 +2,8 @@
 /*
   Client logos — brief §17, §76. Not clickable, so a Grid.
 
-  The clients come from Site settings (Proof tab). Once any has a logo the
+  A logo wall can have its own logos, picked for that page (`items`). Without
+  them it shows the clients from Site settings (Proof tab). Once any has a logo the
   wall shows them, in full colour on white tiles whatever the section's tone,
   since few brands allow their logo to be recoloured; a client still waiting
   for one shows its name and a placeholder. Until then, while MOCK_PROOF is
@@ -10,24 +11,45 @@
   reads in full.
 
   Brief §76: nothing may imply a past relationship is current. Until every
-  client on the wall is ticked as confirmed, a note under it says so.
+  client on the wall is ticked as confirmed, a note under it says so. Logos
+  picked for a wall are the editor's choice, so they carry no note.
+
+  A last row that isn't full is completed with empty tiles, so the ruled
+  lines run to the edge.
 */
 import Placeholder from './Placeholder.astro';
 import Logo from './Logo.astro';
 import { MOCK_PROOF, mockLogos } from '@/data/mock';
-import { siteSettings } from '@/lib/content';
-
-const { clientLogos } = await siteSettings(Astro.locals);
-const clients = clientLogos.filter((c) => c.name || c.logo);
-const real = clients.some((c) => c.logo);
-const mock = !real && MOCK_PROOF;
-const unconfirmed = clients.some((c) => !c.confirmed);
+import { siteSettings, type ClientLogo } from '@/lib/content';
 
 interface Props {
   tone?: 'dark' | 'light';
+  /** Logos picked for this wall, in place of Site settings' list. */
+  items?: ClientLogo[];
 }
 const { tone = 'light' } = Astro.props;
 const dark = tone === 'dark';
+
+const picked = (Astro.props.items ?? []).filter((c) => c.logo);
+const clients = picked.length ? picked : (await siteSettings(Astro.locals)).clientLogos.filter((c) => c.name || c.logo);
+const real = clients.some((c) => c.logo);
+const mock = !real && MOCK_PROOF;
+const unconfirmed = !picked.length && clients.some((c) => !c.confirmed);
+
+// Across a desktop: as many as there are, up to five; past five, whichever of
+// five, four or three leaves the fewest gaps. Any gaps left in the last row
+// are filled with empty tiles.
+const count = mock ? mockLogos.length : clients.length;
+const gaps = (n: number) => (n - (count % n)) % n;
+const lgCols = count <= 5 ? Math.max(count, 2) : [5, 4, 3].reduce((a, n) => (gaps(n) < gaps(a) ? n : a));
+const lgClass = { 2: 'lg:grid-cols-2', 3: 'lg:grid-cols-3', 4: 'lg:grid-cols-4', 5: 'lg:grid-cols-5' }[lgCols];
+const [baseFill, smFill, lgFill] = [2, 3, lgCols].map(gaps);
+const fillers = Array.from({ length: Math.max(baseFill, smFill, lgFill) }, (_, i) => [
+  i < baseFill ? 'block' : 'hidden',
+  i < smFill ? 'sm:block' : 'sm:hidden',
+  i < lgFill ? 'lg:block' : 'lg:hidden',
+]);
+const tileBg = real ? 'bg-paper' : dark ? 'bg-navy-800' : 'bg-paper';
 
 const typeClass = {
   bold: 'font-display font-bold tracking-tight',
@@ -38,8 +60,7 @@ const typeClass = {
 ---
 
 <div data-mock={mock ? 'logos' : undefined} data-pagefind-ignore={mock ? 'all' : undefined}>
-  <ul class="grid grid-cols-2 gap-px overflow-hidden rounded-card border sm:grid-cols-3 lg:grid-cols-5"
-    class:list={[dark ? 'border-navy-700 bg-navy-700' : 'border-line bg-line']}>
+  <ul class:list={['grid grid-cols-2 gap-px overflow-hidden rounded-card border sm:grid-cols-3', lgClass, dark ? 'border-navy-700 bg-navy-700' : 'border-line bg-line']}>
     {
       mock
         ? mockLogos.map((l) => (
@@ -75,6 +96,7 @@ const typeClass = {
             </li>
           ))
     }
+    {fillers.map((c) => <li class:list={[c, tileBg]} aria-hidden="true" />)}
   </ul>
   {
     (mock || unconfirmed) && (

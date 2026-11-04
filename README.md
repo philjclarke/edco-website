@@ -91,8 +91,8 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
     introduction text, banner image. On a page below a section it shows the
     breadcrumb; on an insight or opinion it becomes the article header.
   - **Explainer text** (Layout: Standard, Heading beside text or Wide; Text
-    size: Large or Standard; both ignored in an article's body), **Quote** (variations One column and Two column, the
-    latter with optional client logos), **Outcomes we can help with**,
+    size: Large or Standard; both ignored in an article's body), **Quote** (variations One column and Two column, both
+    with an optional logo of the speaker's organisation, the latter with optional client logos), **Outcomes we can help with**,
     **Content listing** (variations Chosen, Latest and Links), **How we do it**,
     **Screenshots**, **Features listing** (Layout: Standard, or Heading beside
     list), **Figures** (a heading and text over
@@ -267,6 +267,11 @@ then shows as a visible placeholder again. Running
   whatever the section's tone, since most brands don't allow recolouring. A note
   under the wall stays until every client is ticked (brief §76). With no logos
   at all, it falls back to the mock wall while `MOCK_PROOF` is on.
+- **A Logo wall can have its own logos** (its Logos list), shown in place of
+  Site settings' list and without the note. It sets 3, 4 or 5 across to suit
+  the number, and fills any gaps in the last row with empty tiles.
+- **Quote logos:** both Quote layouts take a logo of the speaker's
+  organisation, full colour, on a small white panel when the background is navy.
 - **Product logos** are on each product's Preview tab: one for light and one
   for dark backgrounds. [Logo.astro](src/components/Logo.astro) picks the one
   for the background: the banner, product cards, How we do it panels, and Link

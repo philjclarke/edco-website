@@ -3,9 +3,14 @@
   The full-width band between template sections. With no copy yet it shows a
   mock quote while MOCK_PROOF is on (see src/data/mock.ts), and a placeholder
   otherwise — either way the gap is visible rather than silently closed.
+
+  A logo of the speaker's organisation sits above their name, full colour, on
+  a small white panel when the band is navy.
 */
 import { pagePath } from '@/lib/content';
 import Placeholder from './Placeholder.astro';
+import Logo from './Logo.astro';
+import type { RemoteImage } from '@/lib/prismic';
 import { MOCK_PROOF, mockShout } from '@/data/mock';
 
 interface Props {
@@ -15,12 +20,14 @@ interface Props {
   /** Who said it, in bold. With a name the text is a quote, and the footer is their role. */
   name?: string;
   sub?: string;
+  /** Their organisation's logo. */
+  logo?: RemoteImage;
   /** Its position on the page, for the placeholder. */
   n: number;
   /** Navy by default; white or grey for a lighter pull quote. */
   tone?: 'dark' | 'light' | 'mist';
 }
-const { header, text, name, sub, n, tone = 'dark' } = Astro.props;
+const { header, text, name, sub, logo, n, tone = 'dark' } = Astro.props;
 const dark = tone === 'dark';
 const muted = dark ? 'text-ondark-muted' : 'text-ink-muted';
 const strong = dark ? 'text-ondark' : 'text-ink';
@@ -45,6 +52,13 @@ const mock = !filled && MOCK_PROOF ? mockShout(pagePath(Astro.locals, Astro.url)
           <div class="mx-auto mb-8 h-1 w-16 rounded-full grad-rule" />
           <blockquote class="font-display text-display font-bold">{quoted(text!.trim())}</blockquote>
           <figcaption class:list={['mt-6 text-sm', muted]}>
+            {logo && (
+              <span class="mb-5 flex justify-center">
+                <span class:list={['inline-flex', dark && 'rounded-lg bg-paper px-4 py-3']}>
+                  <Logo image={logo} name={sub?.trim() || name.trim()} class="h-10 w-auto max-w-[10rem]" />
+                </span>
+              </span>
+            )}
             <span class:list={['font-semibold', strong]}>{name.trim()}</span>
             {sub?.trim() && <> · {sub.trim()}</>}
           </figcaption>

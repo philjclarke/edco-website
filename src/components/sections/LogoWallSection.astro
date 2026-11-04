@@ -9,11 +9,15 @@ import { toneOf } from './tone';
 const { p } = Astro.props as { p: Record<string, any> };
 const tone = toneOf(p.background);
 const dark = tone === 'dark';
+// Logos picked for this wall; none means every client logo in Site settings.
+const items = ((p.logos ?? []) as any[])
+  .filter((l) => l.logo?.url)
+  .map((l) => ({ name: textOf(l.name), logo: l.logo, confirmed: true }));
 ---
 
 <Section tone={tone} size="md">
   <SectionHead title={textOf(p.heading)} lead={textOf(p.intro) || undefined} align="center" tone={dark ? 'dark' : 'light'} />
   <div class="mt-12">
-    <LogoWall tone={dark ? 'dark' : 'light'} />
+    <LogoWall tone={dark ? 'dark' : 'light'} items={items} />
   </div>
 </Section>
