@@ -230,6 +230,25 @@ The site is kept out of search until launch: `robots.txt` (`src/pages/robots.txt
 turns every crawler away and every page carries `<meta name="robots" content="noindex, nofollow">`.
 Both follow one switch, `indexable` in `src/data/site.ts`. Set it to `true` on launch day.
 
+## Analytics
+
+The old site's tracking is carried over unchanged, so EdCo's reports carry on: their Google tag
+`AW-992802190` (Google Ads, and their GA4 property `G-6JDGTEGX7Y`, which is linked to the tag in
+Google's settings) and LinkedIn's Insight tag. The IDs are in `analytics` in `src/data/site.ts`;
+the tag is `src/components/Analytics.astro`.
+
+- **Live address only.** The tags load only when the page is served from the `site` address in
+  `astro.config.mjs`, so they start by themselves when the domain moves over. Kairos, vercel.app
+  and Prismic previews send nothing.
+- **Testing elsewhere:** add `?analytics=test` to any address. Google's tag loads, flagged as
+  debug traffic, for the rest of that tab (GA4 → Admin → DebugView). `?analytics=off` stops it.
+  Activate GA4's Developer traffic filter so test visits stay out of the reports.
+- **Form events:** a sent contact form sends `generate_lead` and the Google Ads conversion the old
+  form sent (`AW-992802190/1Dh0CJuW7YAYEI7rs9kD`); a newsletter sign-up sends `sign_up`. Both carry
+  `form_name`. Mark them as key events in GA4.
+- **No cookie banner yet**, as on the old site. Google's consent defaults would go in
+  `Analytics.astro`, before the config.
+
 ## Mock proof
 
 While EdCo's copy is outstanding, empty shout-out bands and every testimonial

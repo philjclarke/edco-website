@@ -18,6 +18,22 @@ export const site = {
   indexable: false,
 } as const;
 
+/**
+ * Tracking, carried over from the current site so EdCo's reports carry on
+ * unbroken. It runs only on the live address (the `site` in astro.config.mjs),
+ * so it starts by itself when the domain moves over; kairos, vercel.app and
+ * Prismic previews send nothing. See Analytics.astro.
+ */
+export const analytics = {
+  /** EdCo's Google tag. It also feeds their GA4 property, G-6JDGTEGX7Y,
+      linked in Google's own settings rather than here. */
+  googleTag: 'AW-992802190',
+  /** The Google Ads conversion the old contact form sent on success. */
+  contactConversion: 'AW-992802190/1Dh0CJuW7YAYEI7rs9kD',
+  /** LinkedIn Insight tag. */
+  linkedinPartner: '924786',
+};
+
 /* Verify before launch — carried over from the current site. */
 export const contact = {
   address: ['Denne Court, Hengist Field', 'Oad Street, Borden', 'Kent ME9 8LT'],

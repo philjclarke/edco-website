@@ -6,7 +6,13 @@
   Without JavaScript the form still posts; the handler sends the visitor back
   with ?form=contact&result=sent (or the error) in the address, which is shown
   here on load.
+
+  A sent form is reported to Google Analytics, when it's loaded (the live site
+  only; see Analytics.astro): generate_lead for the contact form, sign_up for
+  the newsletter, and the contact form's Google Ads conversion as before.
 */
+import { analytics } from '@/data/site';
+
 type Outcome = 'sent' | 'invalid' | 'unavailable' | 'failed';
 
 function show(form: HTMLFormElement, outcome: Outcome) {
@@ -25,6 +31,14 @@ function show(form: HTMLFormElement, outcome: Outcome) {
     status.focus({ preventScroll: true });
     status.scrollIntoView({ block: 'center' });
   }
+}
+
+function track(form: HTMLFormElement) {
+  const gtag = (window as { gtag?: (...args: unknown[]) => void }).gtag;
+  if (!gtag) return;
+  const name = form.dataset.form;
+  gtag('event', name === 'subscribe' ? 'sign_up' : 'generate_lead', { form_name: name, page_path: location.pathname });
+  if (name === 'contact') gtag('event', 'conversion', { send_to: analytics.contactConversion });
 }
 
 const started = String(Date.now());
@@ -63,5 +77,6 @@ for (const form of document.querySelectorAll<HTMLFormElement>('form[data-form]')
       button.textContent = label ?? '';
     }
     show(form, outcome);
+    if (outcome === 'sent') track(form);
   });
 }

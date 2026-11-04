@@ -1,0 +1,54 @@
+---
+/*
+  Google tag (Analytics and Ads) and LinkedIn's Insight tag, on the live
+  address only. The check is made in the browser, so the same build can sit on
+  kairos and start counting the moment the domain points at it.
+
+  To check the setup anywhere else, add ?analytics=test to an address: Google's
+  tag then loads for the rest of that browser tab, flagged as debug traffic
+  (it shows in GA4's DebugView and nowhere else, once GA4's "Developer
+  traffic" filter is active). ?analytics=off ends it. LinkedIn stays off in
+  test mode.
+
+  No cookie banner yet: the tags run as they did on the old site. When EdCo
+  decide on consent, Google's consent defaults go here, before the config.
+*/
+import { analytics } from '@/data/site';
+
+const host = Astro.site!.hostname;
+const { googleTag, linkedinPartner } = analytics;
+---
+
+<script is:inline define:vars={{ host, googleTag, linkedinPartner }}>
+  (() => {
+    let test = false;
+    try {
+      const q = new URLSearchParams(location.search).get('analytics');
+      if (q === 'test') sessionStorage.setItem('analytics', 'test');
+      if (q === 'off') sessionStorage.removeItem('analytics');
+      test = sessionStorage.getItem('analytics') === 'test';
+    } catch {}
+    const live = location.hostname === host;
+    if (!live && !test) return;
+
+    const load = (src) => {
+      const s = document.createElement('script');
+      s.async = true;
+      s.src = src;
+      document.head.append(s);
+    };
+
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () {
+      dataLayer.push(arguments);
+    };
+    gtag('js', new Date());
+    gtag('config', googleTag, test ? { debug_mode: true } : {});
+    load(`https://www.googletagmanager.com/gtag/js?id=${googleTag}`);
+
+    if (live) {
+      window._linkedin_data_partner_ids = [linkedinPartner];
+      load('https://snap.licdn.com/li.lms-analytics/insight.min.js');
+    }
+  })();
+</script>

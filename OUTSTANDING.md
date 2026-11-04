@@ -91,7 +91,7 @@ only, so light cards show it on a navy panel).
 | 1.26 | **Where the contact form posts** | Decided: each submission is emailed to EdCo through SendGrid (README, *Forms*). Needs the recipient, a verified sender and the SendGrid key in Vercel. Sending to SPIRIT as well is being scoped with EdCo. |
 | 1.27 | **Where the subscriber list lives** | Brief §52 wants name + email now, interest personalisation later. For now each sign-up is emailed to EdCo with the contact form's submissions; SPIRIT may take them too. |
 | 1.28 | **Hosting** | Decided: Vercel, in EdCo's own team on the Pro plan (moved from Phil's Hobby account on 31 October 2026). See *Hosting handover* below. The domain still needs DNS access. |
-| 1.29 | **Analytics** | None installed. Brief implies measuring relationships over traffic — worth a conversation about what's actually being measured. |
+| 1.29 | **Analytics** | Built: the old site's Google tag (Ads + GA4 `G-6JDGTEGX7Y`) and LinkedIn tag, live address only, with form events (see README). Still to decide: a cookie banner (the old site has none; Google Ads and LinkedIn cookies need consent under PECR). In GA4: mark `generate_lead` and `sign_up` as key events, activate the Developer traffic filter, annotate the launch date. |
 | 1.30 | **CMS** | Decided: **Prismic** (repository `66bbee42`). All content is in it; see README *Prismic* and the editor guide. Draft previews work for every page type. |
 
 ### Hosting handover
@@ -101,7 +101,7 @@ On 31 October 2026 the project was transferred from Phil's Hobby account to EdCo
 1. **Function region:** check it's London (`lhr1`) under Settings → Functions.
 2. **Add the custom domain** and update DNS. Then update the preview URL and the slice simulator URL in Prismic.
 3. **Account safety:** make sure EdCo's team has more than one owner, two-factor authentication on, and recovery codes where EdCo can reach them.
-4. **Let search engines in on launch day.** Until then the site is kept out of search: `robots.txt` turns crawlers away and every page has a noindex tag. Set `indexable: true` in `src/data/site.ts` and push. Check `site` in `astro.config.mjs` is the live address too, as canonical links and the sitemap use it.
+4. **Let search engines in on launch day.** Until then the site is kept out of search: `robots.txt` turns crawlers away and every page has a noindex tag. Set `indexable: true` in `src/data/site.ts` and push. Check `site` in `astro.config.mjs` is the live address too, as canonical links and the sitemap use it. Analytics starts by itself on that address.
 
 ---
 
