@@ -8,7 +8,7 @@ const { slice } = Astro.props as { slice: Slice };
 const p = slice.primary as Record<string, any>;
 ---
 
-<Section tone="light" size="md" width="narrow">
+<Section tone="light" size="md" width="narrow" class="article-flow">
   {textOf(p.heading) && <h2 class="text-title mb-6">{textOf(p.heading)}</h2>}
   <div class="prose-edco">
     <Fragment set:html={richHTML(p.body)} />

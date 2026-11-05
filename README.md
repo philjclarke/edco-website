@@ -91,7 +91,9 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
     introduction text, banner image. On a page below a section it shows the
     breadcrumb; on an insight or opinion it becomes the article header.
   - **Explainer text** (Layout: Standard, Heading beside text or Wide; Text
-    size: Large or Standard; both ignored in an article's body), **Quote** (variations One column and Two column, both
+    size: Large or Standard; both ignored in an article's body; in an article,
+    back-to-back Explainer texts and tables join into one reading column, with
+    a heading's gap between them rather than two sections' padding), **Quote** (variations One column and Two column, both
     with an optional logo of the speaker's organisation, the latter with optional client logos), **Outcomes we can help with**,
     **Content listing** (variations Chosen, Latest and Links), **How we do it**,
     **Screenshots**, **Features listing** (Layout: Standard, or Heading beside
@@ -112,6 +114,11 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
   header row, plus a heading and text above and a note below. In an article it
   sits in the reading column; elsewhere it takes a Background. Wide tables
   scroll sideways inside their box, with edge shadows while there's more.
+- **Line breaks:** a new line typed in a plain-text field (a summary, an
+  intro, a card's text) shows on the page: the slice zone has `white-space:
+  pre-line` ([Slices.astro](src/components/Slices.astro)). Template text in
+  components should sit on one line inside its tag, or the break shows too
+  (Placeholder opts out).
 - **Backgrounds:** every component except Banner, Screenshots, Contact form and
   Customer logins has a Background (white, grey, navy). Plain content
   components given grey or navy stand alone instead of sharing the run's

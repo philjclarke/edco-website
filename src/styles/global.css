@@ -188,3 +188,10 @@
     line-height: 1.45;
   }
 }
+
+/* On an insight or opinion page, each Explainer text (and table) is its own
+   white section. Back to back, their padding stacked into a 192px gap; joined,
+   they read as one article, with the gap a heading inside the text gets.
+   Unlayered, so it wins over the sections' padding utilities. */
+.article-flow:has(+ .article-flow) { padding-bottom: 0; }
+.article-flow + .article-flow { padding-top: clamp(3.5rem, 6vw, 5rem); }
