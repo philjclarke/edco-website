@@ -102,7 +102,7 @@ const primaryNav = (await menu(Astro.locals)).main;
                   <path d="M2 4.5 6 8.5 10 4.5" fill="none" stroke="currentColor" stroke-width="1.6" />
                 </svg>
               </a>
-              <div class="invisible absolute left-0 top-full w-72 pt-2 opacity-0 transition group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+              <div class="invisible absolute left-0 top-full w-72 pt-2 opacity-0 transition group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100 group-data-closed:invisible! group-data-closed:opacity-0!">
                 <ul class="overflow-hidden rounded-card border border-navy-700 bg-navy-800 py-2 text-ondark shadow-2xl">
                   {item.children.map((c) => (
                     <li>
@@ -229,9 +229,31 @@ const primaryNav = (await menu(Astro.locals)).main;
 
   const toggle = document.getElementById('nav-toggle');
   const panel = document.getElementById('mobile-nav');
-  toggle?.addEventListener('click', () => {
-    const open = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', String(!open));
-    if (panel) panel.hidden = open;
+  const setMenu = (open: boolean) => {
+    toggle?.setAttribute('aria-expanded', String(open));
+    if (panel) panel.hidden = !open;
+  };
+  toggle?.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
+
+  // Escape closes whatever menu is open (WCAG 1.4.13). A dropdown then stays
+  // closed until the pointer or focus leaves it, so it doesn't spring back.
+  const groups = [...document.querySelectorAll<HTMLElement>('nav[aria-label="Primary"] .group')];
+  for (const group of groups) {
+    group.addEventListener('mouseleave', () => group.removeAttribute('data-closed'));
+    group.addEventListener('focusout', (e) => {
+      if (!group.contains(e.relatedTarget as Node | null)) group.removeAttribute('data-closed');
+    });
+  }
+  addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const open = groups.find((g) => g.matches(':hover, :focus-within') && !g.hasAttribute('data-closed'));
+    if (open) {
+      open.setAttribute('data-closed', '');
+      if (open.contains(document.activeElement)) open.querySelector<HTMLElement>('a')?.focus();
+    }
+    if (panel && !panel.hidden) {
+      setMenu(false);
+      toggle?.focus();
+    }
   });
 </script>

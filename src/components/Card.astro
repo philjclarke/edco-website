@@ -17,8 +17,11 @@ interface Props {
   index?: number;
   /** A product's logos, above the eyebrow. */
   logo?: { light?: RemoteImage; dark?: RemoteImage };
+  /** 2 when the cards' list has no heading of its own, so no level is skipped. */
+  level?: 2 | 3;
 }
-const { href, icon, eyebrow, title, body, meta, tone = 'light', index, logo } = Astro.props;
+const { href, icon, eyebrow, title, body, meta, tone = 'light', index, logo, level = 3 } = Astro.props;
+const Heading = level === 2 ? 'h2' : 'h3';
 const dark = tone === 'dark';
 const Tag = href ? 'a' : 'div';
 const linked = Boolean(href);
@@ -81,7 +84,7 @@ const linked = Boolean(href);
   }
   {logo && <Logo pair={logo} onDark={dark} name={title} class="mb-5 h-12 w-auto max-w-[13rem] object-left" />}
   {eyebrow && <p class:list={['eyebrow mb-3', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{eyebrow}</p>}
-  {title && <h3 class="text-subtitle">{title}</h3>}
+  {title && <Heading class="text-subtitle">{title}</Heading>}
   {body && <p class:list={['mt-3 text-sm', dark ? 'text-ondark-muted' : 'text-ink-muted']}>{body}</p>}
   <slot />
   {

@@ -144,7 +144,7 @@ const empty = slice.variation === 'latest' && cards.length === 0;
       >
         {cards.map((c, i) => (
           <li data-kind={c.kind} hidden={pageSize > 0 && i >= pageSize}>
-            <PreviewCard page={c} tone={dark ? 'dark' : 'light'} />
+            <PreviewCard page={c} tone={dark ? 'dark' : 'light'} level={textOf(p.heading) ? 3 : 2} />
           </li>
         ))}
       </ul>

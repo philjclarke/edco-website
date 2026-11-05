@@ -14,7 +14,7 @@ const rows = (p.rows ?? []).filter((r: any) => textOf(r.who) || textOf(r.what));
   <div class="grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-20">
     <div>
       {textOf(p.eyebrow) && <p class="eyebrow grad-text mb-4">{textOf(p.eyebrow)}</p>}
-      <h2 class="text-title">{textOf(p.heading)}</h2>
+      {textOf(p.heading) && <h2 class="text-title">{textOf(p.heading)}</h2>}
     </div>
     <div>
       <ul class:list={['divide-y border-y', dark ? 'divide-navy-700 border-navy-700' : 'divide-line border-line']}>

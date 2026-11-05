@@ -33,7 +33,7 @@ const legal = [
       <form
         method="post"
         action="/api/form"
-        class="relative flex flex-col gap-3 sm:flex-row"
+        class="relative flex flex-col gap-3 sm:flex-row sm:items-end"
         data-form="subscribe"
         data-sent="Thank you. We’ll add you to the list."
         data-error={`Sorry, that didn’t send. Please try again, or ring us on ${contact.phone}.`}
@@ -42,24 +42,26 @@ const legal = [
         <div class="absolute -left-[10000px] h-px w-px overflow-hidden" aria-hidden="true">
           <label>Leave this empty <input name="website" tabindex="-1" autocomplete="off" /></label>
         </div>
-        <label class="sr-only" for="sub-name">Name</label>
-        <input
-          id="sub-name"
-          name="name"
-          autocomplete="name"
-          placeholder="Name"
-          class="min-w-0 flex-1 rounded-full border border-navy-700 bg-navy-900 px-5 py-3 text-sm placeholder:text-ondark-muted/60"
-        />
-        <label class="sr-only" for="sub-email">Work email</label>
-        <input
-          id="sub-email"
-          name="email"
-          type="email"
-          autocomplete="email"
-          required
-          placeholder="Work email"
-          class="min-w-0 flex-1 rounded-full border border-navy-700 bg-navy-900 px-5 py-3 text-sm placeholder:text-ondark-muted/60"
-        />
+        <div class="flex min-w-0 flex-1 flex-col gap-1.5">
+          <label class="pl-5 text-xs font-medium text-ondark-muted" for="sub-name">Name</label>
+          <input
+            id="sub-name"
+            name="name"
+            autocomplete="name"
+            class="min-w-0 rounded-full border border-field-ondark bg-navy-900 px-5 py-3 text-sm"
+          />
+        </div>
+        <div class="flex min-w-0 flex-1 flex-col gap-1.5">
+          <label class="pl-5 text-xs font-medium text-ondark-muted" for="sub-email">Work email</label>
+          <input
+            id="sub-email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            required
+            class="min-w-0 rounded-full border border-field-ondark bg-navy-900 px-5 py-3 text-sm"
+          />
+        </div>
         <button
           type="submit"
           class="shrink-0 rounded-full bg-[linear-gradient(96deg,var(--color-orange),var(--color-pink))] px-6 py-3 font-display text-sm font-semibold text-white transition hover:brightness-110"

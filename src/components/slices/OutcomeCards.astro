@@ -29,7 +29,7 @@ const cards = (p.pages ?? []).map((x: any) => all.linked(x.page)).filter(Boolean
     {
       cards.map((c: any) => (
         <li>
-          <Card href={c.href} icon={c.icon} title={c.title} body={c.text} meta={c.linkLabel ?? 'Find out more'} tone={dark ? 'dark' : 'light'} />
+          <Card href={c.href} icon={c.icon} title={c.title} body={c.text} meta={c.linkLabel ?? 'Find out more'} tone={dark ? 'dark' : 'light'} level={textOf(p.heading) ? 3 : 2} />
         </li>
       ))
     }

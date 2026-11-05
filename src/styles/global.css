@@ -34,6 +34,9 @@
   --color-ink-muted: #59637c;
   --color-ondark: #ffffff;
   --color-ondark-muted: #a8b0c4;
+  /* Form field edges, dark enough to see (3:1, WCAG 1.4.11). */
+  --color-field: #868ea3;
+  --color-field-ondark: #5f6880;
 
   /* --- Type. PROVISIONAL: Poppins stands in for the deck's geometric
          sans until EdCo confirm the licensed brand face. ------------- */
@@ -78,8 +81,8 @@
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
   }
-  /* Keep in-page links clear of the pinned desktop header. */
-  @media (min-width: 64rem) {
+  /* Keep in-page links and keyboard focus clear of the pinned desktop header. */
+  @media (min-width: 70rem) {
     html { scroll-padding-top: 5.5rem; }
   }
   body {
@@ -89,6 +92,8 @@
     font-size: 1rem;
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
+    /* A long web address breaks rather than pushing the page wider on a phone. */
+    overflow-wrap: break-word;
   }
   h1, h2, h3, h4 {
     font-family: var(--font-display);
@@ -107,10 +112,15 @@
   }
 
   /* Visible, on-brand focus ring in both light and dark sections. */
+  /* Navy on light backgrounds, orange on navy: both stand out by well over
+     3:1 (WCAG 1.4.11). Orange alone was too faint on white. */
   :focus-visible {
-    outline: 2px solid var(--color-orange);
+    outline: 2px solid var(--color-navy-900);
     outline-offset: 3px;
     border-radius: 4px;
+  }
+  .text-ondark :focus-visible {
+    outline-color: var(--color-orange);
   }
 
   @media (prefers-reduced-motion: reduce) {

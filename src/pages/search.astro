@@ -19,7 +19,8 @@ const { pages: copy } = await siteCopy(Astro.locals);
       <h1 class="text-display">{copy.search.heading}</h1>
       <p class="mt-6 text-lead text-ink-muted">{copy.search.body}</p>
     </div>
-    <div id="search" class="mt-10"></div>
+    <label for="search-input" class="mt-10 block text-sm font-semibold">Search the site</label>
+    <div id="search" class="mt-2"></div>
   </Section>
 </Layout>
 
@@ -29,6 +30,13 @@ const { pages: copy } = await siteCopy(Astro.locals);
   window.addEventListener('DOMContentLoaded', () => {
     if (typeof PagefindUI === 'undefined') return;
     new PagefindUI({ element: '#search', showSubResults: true, showImages: false });
+    // Pagefind's box has no id; give it one so the label above names it.
+    const label = () => {
+      const input = document.querySelector('#search input[type="text"], #search input[type="search"]');
+      if (!input) return requestAnimationFrame(label);
+      input.id = 'search-input';
+    };
+    label();
   });
 </script>
 <style is:global>
@@ -37,7 +45,7 @@ const { pages: copy } = await siteCopy(Astro.locals);
     --pagefind-ui-primary: var(--color-ink);
     --pagefind-ui-text: var(--color-ink);
     --pagefind-ui-background: var(--color-paper);
-    --pagefind-ui-border: var(--color-line);
+    --pagefind-ui-border: var(--color-field);
     --pagefind-ui-tag: var(--color-mist);
     --pagefind-ui-border-radius: 0.75rem;
     --pagefind-ui-font: var(--font-sans);

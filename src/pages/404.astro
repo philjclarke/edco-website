@@ -25,7 +25,7 @@ const { pages: copy } = await siteCopy(Astro.locals);
       {
         outcomes.map((o) => (
           <li>
-            <Card href={`/${o.slug}/`} title={o.navLabel} body={o.summary} meta="Explore this" />
+            <Card href={`/${o.slug}/`} title={o.navLabel} body={o.summary} meta="Explore this" level={2} />
           </li>
         ))
       }

@@ -24,7 +24,7 @@ const t = (k: string, fallback: string) => textOf(p[k]) || fallback;
 const nextHTML = richHTML(p.next_text);
 
 const field =
-  'w-full rounded-xl border border-line bg-paper px-4 py-3 text-[0.9375rem] transition placeholder:text-ink-muted/60 focus:border-orange';
+  'w-full rounded-xl border border-field bg-paper px-4 py-3 text-[0.9375rem] transition placeholder:text-ink-muted focus:border-ink';
 ---
 
 <Section tone="light" size="lg">
@@ -110,7 +110,7 @@ const field =
       ></p>
     </form>
 
-    <aside class="lg:pt-4">
+    <div class="lg:pt-4">
       {
         (textOf(p.next_heading) || nextHTML) && (
           <div class="rounded-card border border-line bg-mist p-7">
@@ -132,7 +132,7 @@ const field =
           <a href={`mailto:${contact.email}`} class="font-medium underline decoration-pink underline-offset-4 transition-colors hover:text-pink">{contact.email}</a>
         </p>
       </div>
-    </aside>
+    </div>
   </div>
 </Section>
 

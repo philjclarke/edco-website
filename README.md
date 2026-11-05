@@ -249,6 +249,21 @@ the tag is `src/components/Analytics.astro`.
 - **No cookie banner yet**, as on the old site. Google's consent defaults would go in
   `Analytics.astro`, before the config.
 
+## Accessibility
+
+Audited against WCAG 2.2 AA on 5 November 2026 (axe-core on every page, plus keyboard,
+menu, form and reflow checks). Things to keep when changing the code:
+
+- **Focus ring:** navy on light backgrounds, orange inside anything marked `text-ondark`
+  (`src/styles/global.css`). Orange alone is too faint on white.
+- **Form fields** use `border-field` on white and `border-field-ondark` on navy, which pass 3:1.
+  Don't go back to `border-line` for anything a visitor types into.
+- **Headings:** never output an empty one, and cards in a listing with no heading of its own
+  use `level={2}` (Card and PreviewCard) so no level is skipped.
+- **Menus:** Escape closes a header dropdown or the phone menu (`Header.astro`).
+- **Still open:** the orange-to-pink gradient on small text and behind white button text
+  fails contrast on light backgrounds; waiting on a design decision.
+
 ## Mock proof
 
 While EdCo's copy is outstanding, empty shout-out bands and every testimonial
