@@ -81,6 +81,14 @@ for (const s of slices) {
 }
 ---
 
+{/*
+  Editors press Enter inside plain-text fields (a summary, an intro) to start
+  a new line, and expect it on the page. pre-line keeps those line breaks and
+  still collapses spaces. Template whitespace in these components is
+  compressed to spaces at build, so the only line breaks left are editors'.
+  display: contents passes the setting down without adding a box.
+*/}
+<div class="contents whitespace-pre-line">
 {
   parts.map((part) => {
     const content =
@@ -94,3 +102,4 @@ for (const s of slices) {
     return separate ? <div>{content}</div> : content;
   })
 }
+</div>
