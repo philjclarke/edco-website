@@ -36,7 +36,7 @@ export const analytics = {
 
 /* Verify before launch — carried over from the current site. */
 export const contact = {
-  address: ['Denne Court, Hengist Field', 'Oad Street, Borden', 'Kent ME9 8LT'],
+  address: ['Denne Court, Hengist Field', 'Oad Street, Borden', 'Kent', 'ME9 8LT'],
   phone: '01634 766920',
   phoneHref: 'tel:+441634766920',
   email: 'info@educationcompany.co.uk',
