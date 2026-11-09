@@ -84,6 +84,8 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
   plus date, author and status on articles) is how the page appears wherever
   another page links to it: How we do it, Outcomes we can help with, Content
   listings, related links and the breadcrumb. One place to edit it.
+  On an article, the interest tags show under the byline as "Topics" (labels,
+  not links). In How we do it, every panel has its logo or icon above the title.
   A Prismic page that still has its pre-component fields stops the build
   (`assertComponents` in [pages.ts](src/lib/pages.ts)) rather than publish it broken.
 - **Components** (Prismic calls them slices), in the deck's order:
