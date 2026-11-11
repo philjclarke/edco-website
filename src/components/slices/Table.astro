@@ -45,7 +45,7 @@ const cellText = '[&_p+p]:mt-2 [&_a]:underline [&_a]:underline-offset-2 [&_a]:de
 
 {
   !empty && (
-    <Section tone={tone} size={article ? 'md' : 'lg'} width={article ? 'narrow' : 'default'} class={article ? 'article-flow' : ''}>
+    <Section tone={tone} size={article ? 'sm' : 'lg'} width={article ? 'narrow' : 'default'} class={article ? 'article-flow' : ''}>
       <div class:list={[!article && 'max-w-4xl']}>
         {textOf(p.eyebrow) && <p class="eyebrow grad-text mb-4">{textOf(p.eyebrow)}</p>}
         {heading && <h2 class:list={['text-title', article ? 'mb-6' : 'mb-5']}>{heading}</h2>}

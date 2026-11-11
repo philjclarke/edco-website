@@ -26,8 +26,10 @@ interface Props {
   n: number;
   /** Navy by default; white or grey for a lighter pull quote. */
   tone?: 'dark' | 'light' | 'mist';
+  /** Less padding, for a quote set into an article's text. */
+  compact?: boolean;
 }
-const { header, text, name, sub, logo, n, tone = 'dark' } = Astro.props;
+const { header, text, name, sub, logo, n, tone = 'dark', compact = false } = Astro.props;
 const dark = tone === 'dark';
 const muted = dark ? 'text-ondark-muted' : 'text-ink-muted';
 const strong = dark ? 'text-ondark' : 'text-ink';
@@ -39,7 +41,7 @@ const mock = !filled && MOCK_PROOF ? mockShout(pagePath(Astro.locals, Astro.url)
 <section
   class:list={[
     { dark: 'bg-navy-900 text-ondark', light: 'bg-paper text-ink', mist: 'bg-mist text-ink' }[tone],
-    filled || mock ? 'py-14 md:py-20' : 'py-6',
+    !(filled || mock) ? 'py-6' : compact ? 'py-10 md:py-14' : 'py-14 md:py-20',
   ]}
   data-mock={mock ? 'shout-out' : undefined}
   data-pagefind-ignore={mock ? 'all' : undefined}
