@@ -22,6 +22,7 @@ const { slice } = Astro.props as { slice: Slice };
 const p = slice.primary as Record<string, any>;
 const t = (k: string, fallback: string) => textOf(p[k]) || fallback;
 const nextHTML = richHTML(p.next_text);
+const privacyHTML = richHTML(p.privacy_note);
 
 const field =
   'w-full rounded-xl border border-field bg-paper px-4 py-3 text-[0.9375rem] transition placeholder:text-ink-muted focus:border-ink';
@@ -99,7 +100,12 @@ const field =
         >
       </div>
       <div class="mt-6 space-y-2">
-        <Placeholder label="PRIVACY NOTICE / CONSENT WORDING" note="legal sign-off required" block />
+        {/* The Contact form component's Privacy note; a placeholder until EdCo write it. */}
+        {privacyHTML ? (
+          <div class="text-sm leading-relaxed text-ink-muted [&_a]:underline [&_a]:underline-offset-2 [&_p+p]:mt-2" set:html={privacyHTML} />
+        ) : (
+          <Placeholder label="PRIVACY NOTICE / CONSENT WORDING" note="legal sign-off required" block />
+        )}
       </div>
       <p
         data-form-status

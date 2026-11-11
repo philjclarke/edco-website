@@ -283,15 +283,18 @@ export const components: SharedSliceModel[] = [
     background: BACKGROUND('navy'),
   }),
 
-  slice('screenshots', 'Screenshots', 'Screenshots, each with a strapline.', {
+  slice('screenshots', 'Screenshots', 'Screenshots, each with a strapline, and an optional button, e.g. out to the product’s own site.', {
     eyebrow: sectionHeader(),
     heading: text('Header'),
     intro: text('Text'),
+    closing_line: text('Closing line', 'Shown in bold under the text (optional)'),
     photo: image('Background photo (optional, faded behind the header)'),
     shots: group('Screenshots', {
       image: image('Screenshot'),
       caption: text('Strapline'),
     }),
+    button_label: text('Button label', 'e.g. Visit The Curriculum Network'),
+    button_link: link('Button link', 'A web address on another site opens in a new tab'),
   }),
 
   slice('item_list', 'Features listing', 'Features, each with an icon, title and explainer.', {
@@ -498,6 +501,7 @@ export const pageComponents: { page: string; slice: SharedSliceModel }[] = [
       more_intro: text('Text under the message heading'),
       details_heading: text('Details heading', 'e.g. And who are you?'),
       button_label: text('Button label', 'e.g. Start the conversation'),
+      privacy_note: prose('Privacy note', 'Under the form, before the button: how you use their details, with a link to the Privacy policy page'),
       sent_message: text('Thank-you message', 'Replaces the form once it has sent. Leave blank for “Thank you. That’s with the team now, and we’ll be in touch soon.”'),
       next_heading: text('Side panel heading', 'e.g. What happens next'),
       next_text: prose('Side panel text'),
@@ -565,6 +569,7 @@ function pageType(t: (typeof PAGE_TYPES)[number]): CustomTypeModel {
         ...(inMenu !== undefined
           ? {
               show_in_menu: boolean('Show in main menu', inMenu, 'Yes', 'No'),
+              show_in_footer: boolean('Show in footer even when not in the main menu', false, 'Yes', 'No'),
               menu_order: number('Menu order', 'Lower numbers come first, e.g. 10, 20, 30. Blank goes last'),
             }
           : {}),

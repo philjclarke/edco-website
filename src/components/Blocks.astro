@@ -160,6 +160,7 @@ const muted = (b: Block) => (isDark(b) ? 'text-ondark-muted' : 'text-ink-muted')
                 {block.eyebrow && <p class="eyebrow grad-text mb-4">{block.eyebrow}</p>}
                 <h2 class="text-title">{block.title}</h2>
                 {block.lead && <p class="mt-4 text-intro text-ink-muted">{block.lead}</p>}
+                {block.closing && <p class="mt-4 text-intro font-semibold text-ink">{block.closing}</p>}
               </div>
             )}
             <div
@@ -172,6 +173,12 @@ const muted = (b: Block) => (isDark(b) ? 'text-ondark-muted' : 'text-ink-muted')
                 <ProductShot caption={sh.caption} src={sh.src} />
               ))}
             </div>
+            {/* An address on another site (e.g. the network's own) opens in a new tab. */}
+            {block.button && (
+              <div class="mt-8">
+                <Button href={block.button.href} external={/^https?:/.test(block.button.href)}>{block.button.label}</Button>
+              </div>
+            )}
           </div>
         )}
 

@@ -47,10 +47,17 @@ function build(all: Pages): Menu {
     return [{ type: hub.id, label: title, href, ...(children.length ? { children } : {}) }];
   });
 
-  // The footer repeats some of the menu's sections, with a few extra links.
+  // The footer repeats some of the menu's sections, with a few extra links,
+  // plus pages ticked "Show in footer" that aren't in the main menu.
   const footer = Object.entries(footerExtras).flatMap(([type, extra]) => {
     const group = main.find((g) => g.type === type);
-    return group ? [{ heading: group.label, links: [...(group.children ?? []), ...extra] }] : [];
+    if (!group) return [];
+    const childTypes = PAGE_TYPES.filter((t) => 'parent' in t && t.parent === type && MENU_TYPES.has(t.id)).map((t) => t.id as string);
+    const footerOnly = all.docs
+      .filter((d) => childTypes.includes(d.type) && !inMenu(d) && d.data.show_in_footer === true)
+      .sort(byMenuOrder)
+      .map((d) => ({ label: all.preview(d).title, href: all.preview(d).href }));
+    return [{ heading: group.label, links: [...(group.children ?? []), ...footerOnly, ...extra] }];
   });
   return { main, footer: [...footer, footerEdCo] };
 }

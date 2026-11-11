@@ -98,7 +98,8 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
     a heading's gap between them rather than two sections' padding), **Quote** (variations One column and Two column, both
     with an optional logo of the speaker's organisation, the latter with optional client logos), **Outcomes we can help with**,
     **Content listing** (variations Chosen, Latest and Links), **How we do it**,
-    **Screenshots**, **Features listing** (Layout: Standard, or Heading beside
+    **Screenshots** (with an optional bold closing line, and a button that can
+    link out to another site in a new tab), **Features listing** (Layout: Standard, or Heading beside
     list), **Figures** (a heading and text over
     a row of figures; its own figures, or Site settings' proof figures if it
     has none; kept from before the deck at EdCo's request).
@@ -153,7 +154,8 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
   components ([src/components/sections/](src/components/sections/)).
 - **Page components**, offered only on their own page (`pageComponents` in
   models.ts): **Contact form** (the enquiry form and its side panel; the
-  wording is editable, the fields and the outcome tick boxes are code) and
+  wording is editable, including a Privacy note under the form that replaces
+  the placeholder; the fields and the outcome tick boxes are code) and
   **Customer logins**, unused while the Customer login page is archived (the customer area's heading, logins, support and
   account manager boxes).
 - **Placeholders:** text in square brackets, like `[VERIFIED METRIC: 28 years]`,
@@ -194,7 +196,8 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
   first, blank last, then oldest first). Outcomes, products, capabilities and
   Insights & Opinion sections start ticked; About and Agencies & Partners
   pages start unticked (`inMenu` in pageTypes.ts). The footer repeats the
-  outcomes, products and capabilities lists. The same order is used wherever
+  outcomes, products and capabilities lists, plus any page ticked **Show in
+  footer even when not in the main menu**. The same order is used wherever
   the site lists those pages.
 - **Checking content before it's published:** `PRISMIC_REF` (and
   `PRISMIC_ACCESS_TOKEN`, for a release) build from that ref instead of the
@@ -275,9 +278,12 @@ menu, form and reflow checks). Things to keep when changing the code:
 
 ## Mock proof
 
-While EdCo's copy is outstanding, empty shout-out bands and every testimonial
-show **invented** quotes from [src/data/mock.ts](src/data/mock.ts), so the design
-can be judged in full. The names, roles and organisations are deliberately fake
+**Off since 11 November 2026** (`MOCK_PROOF = false`), at EdCo's request: a
+Quote with blank text now shows a visible placeholder until someone writes it.
+
+While it was on, empty shout-out bands and every testimonial
+showed **invented** quotes from [src/data/mock.ts](src/data/mock.ts), so the design
+could be judged in full. The names, roles and organisations are deliberately fake
 ("Alex Example, Head of Example Partnerships, Sample Learning Ltd"). The mocks
 aren't in Prismic, they're kept out of site search, and real copy replaces
 them where it exists. **Before launch, set `MOCK_PROOF` to `false`:** every mock

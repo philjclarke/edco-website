@@ -41,15 +41,19 @@ export function blockOf(slice: Slice): Block | null {
         layout: p.layout === 'Heading beside list' ? 'beside' : 'standard',
       };
     }
-    case 'screenshots':
+    case 'screenshots': {
+      const href = hrefOf(p.button_link);
       return {
         type: 'shots',
         eyebrow: opt(p.eyebrow),
         title: heading || undefined,
         lead,
+        closing: opt(p.closing_line),
         photo: imageOf(p.photo),
         shots: (p.shots ?? []).map((s: any) => ({ caption: textOf(s.caption), src: imageOf(s.image) })),
+        button: href && textOf(p.button_label) ? { label: textOf(p.button_label), href } : undefined,
       };
+    }
     case 'feature_cards':
       return {
         type: 'cards',
