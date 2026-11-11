@@ -13,8 +13,11 @@ interface Props {
   blocks: Block[];
   /** One background for all of them, when they fill one template slot. */
   tone?: 'paper' | 'mist';
+  /** On an insight or opinion: white blocks sit in the article column and
+   *  join the Explainer text around them (see .article-flow). */
+  article?: boolean;
 }
-const { blocks, tone } = Astro.props;
+const { blocks, tone, article = false } = Astro.props;
 
 // Left to themselves, blocks alternate white / mist so a long page keeps a
 // rhythm. Sharing a slot, they share a background and read as one section.
@@ -23,13 +26,15 @@ const bg = (i: number) =>
 // A block given a navy background of its own.
 const isDark = (b: Block) => 'tone' in b && b.tone === 'dark';
 const muted = (b: Block) => (isDark(b) ? 'text-ondark-muted' : 'text-ink-muted');
+// Grey and navy blocks still span the page as bands, articles included.
+const inArticle = (b: Block) => article && b.type !== 'pull' && !('tone' in b && b.tone);
 ---
 
 {
   blocks.map((block, i) => (
     <section
       class:list={[
-        'py-14 md:py-20',
+        inArticle(block) ? 'article-flow py-12 md:py-16' : 'py-14 md:py-20',
         block.type === 'pull' || isDark(block)
           ? 'bg-navy-900 text-ondark'
           : 'tone' in block && block.tone === 'mist'
@@ -40,7 +45,7 @@ const muted = (b: Block) => (isDark(b) ? 'text-ondark-muted' : 'text-ink-muted')
       ]}
     >
       {block.type === 'shots' && block.photo && <FadedPhoto image={block.photo} />}
-      <div class="mx-auto max-w-7xl px-6">
+      <div class:list={['mx-auto px-6', inArticle(block) ? 'max-w-3xl' : 'max-w-7xl']}>
         {block.type === 'prose' && (
           <div
             class:list={[
@@ -87,7 +92,7 @@ const muted = (b: Block) => (isDark(b) ? 'text-ondark-muted' : 'text-ink-muted')
                 explainers={block.explainers}
                 columns={block.columns ?? 2}
                 variant="dense"
-                half={block.layout === 'beside'}
+                half={block.layout === 'beside' || (inArticle(block) && block.items.length > 6)}
                 tone={block.tone === 'dark' ? 'dark' : 'light'}
               />
             </div>

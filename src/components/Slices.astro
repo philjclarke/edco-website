@@ -97,7 +97,7 @@ for (const s of slices) {
       ) : part.kind === 'quote' ? (
         <ShoutOut n={part.n} header={part.header} text={part.text} name={part.name} sub={part.sub} logo={part.logo} tone={part.tone} compact={!!context?.preview.article} />
       ) : (
-        <Blocks blocks={part.blocks} tone="paper" />
+        <Blocks blocks={part.blocks} tone="paper" article={!!context?.preview.article} />
       );
     return separate ? <div>{content}</div> : content;
   })
