@@ -12,7 +12,7 @@
   data-mock, so `grep -r data-mock` over the build lists what is still mock.
 */
 
-export const MOCK_PROOF = true;
+export const MOCK_PROOF = false;
 
 export interface MockCite {
   name: string;

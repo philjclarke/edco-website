@@ -54,7 +54,7 @@ export type NavGroup = { label: string; href: string; children?: NavLink[] };
 */
 
 export const utilityNav: NavLink[] = [
-  { label: 'For Educators', href: '/for-educators/' },
+  { label: 'For educators', href: '/for-educators/' },
   { label: 'Search', href: '/search/' },
 ];
 
@@ -74,9 +74,9 @@ export const footerEdCo: { heading: string; links: NavLink[] } = {
   heading: 'EdCo',
   links: [
     { label: 'About EdCo', href: '/about/' },
-    { label: 'Insights & Opinion', href: '/insights/' },
-    { label: 'Agencies & Partners', href: '/agencies-and-partners/' },
-    { label: 'For Educators', href: '/for-educators/' },
+    { label: 'Insights & opinion', href: '/insights/' },
+    { label: 'Agencies & partners', href: '/agencies-and-partners/' },
+    { label: 'For educators', href: '/for-educators/' },
     { label: 'Contact', href: '/contact/' },
   ],
 };
