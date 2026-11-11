@@ -4,7 +4,8 @@ interface Props {
   variant?: 'gradient' | 'solid' | 'ghost' | 'ghost-dark';
   size?: 'sm' | 'md' | 'lg';
   full?: boolean;
-  /** Opens in a new tab and marks the link as leaving the site. */
+  /** Opens in a new tab and marks the link as leaving the site. Defaults to on for links to other websites
+   *  (our own pages arrive as relative addresses), so editors' "open in new tab" tick isn't needed. */
   external?: boolean;
   class?: string;
 }
@@ -13,7 +14,7 @@ const {
   variant = 'gradient',
   size = 'md',
   full = false,
-  external = false,
+  external = /^https?:\/\//.test(href),
   class: cls = '',
 } = Astro.props;
 

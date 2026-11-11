@@ -54,7 +54,7 @@ const buttonLabel = textOf(p.button_label);
       {
         buttonHref && buttonLabel && (
           <div class="mt-8">
-            <Button href={buttonHref} external={/^https?:/.test(buttonHref)}>{buttonLabel}</Button>
+            <Button href={buttonHref}>{buttonLabel}</Button>
           </div>
         )
       }

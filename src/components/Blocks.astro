@@ -176,7 +176,7 @@ const muted = (b: Block) => (isDark(b) ? 'text-ondark-muted' : 'text-ink-muted')
             {/* An address on another site (e.g. the network's own) opens in a new tab. */}
             {block.button && (
               <div class="mt-8">
-                <Button href={block.button.href} external={/^https?:/.test(block.button.href)}>{block.button.label}</Button>
+                <Button href={block.button.href}>{block.button.label}</Button>
               </div>
             )}
           </div>
