@@ -94,7 +94,7 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
     breadcrumb; on an insight or opinion it becomes the article header.
   - **Explainer text** (Layout: Standard, Heading beside text or Wide; Text
     size: Large or Standard; both ignored in an article's body; in an article,
-    back-to-back Explainer texts and tables join into one reading column, with
+    back-to-back Explainer texts, tables and white Features listings (or other plain components) join into one reading column, with
     a heading's gap between them rather than two sections' padding), **Quote** (variations One column and Two column, both
     with an optional logo of the speaker's organisation, the latter with optional client logos), **Outcomes we can help with**,
     **Content listing** (variations Chosen, Latest and Links), **How we do it**,
