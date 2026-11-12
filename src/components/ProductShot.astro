@@ -25,8 +25,10 @@ interface Props {
   framed?: boolean;
   /** How wide the image shows, for picking a size to download. */
   sizes?: string;
+  /** Show the whole image at its own shape instead of cropping it to `ratio`. */
+  whole?: boolean;
 }
-const { caption, src, tone = 'light', ratio = 'wide', framed = true, sizes = '(min-width: 768px) 45vw, 90vw' } = Astro.props;
+const { caption, src, tone = 'light', ratio = 'wide', framed = true, sizes = '(min-width: 768px) 45vw, 90vw', whole = false } = Astro.props;
 const dark = tone === 'dark';
 const shot = typeof src === 'string' ? (isScreenKey(src) ? screens[src] : null) : null;
 const remote = src && typeof src === 'object' ? { ...srcsetOf(src, [600, 900, 1400]), alt: src.alt || caption } : null;
@@ -37,6 +39,8 @@ const large = remote
     ? await getImage({ src: shot, widths: [1200, 1800, 2400] }).then((i) => ({ src: i.src, srcset: i.srcSet.attribute, width: shot.width, height: shot.height }))
     : null;
 const alt = remote?.alt ?? caption;
+// The image's own shape, when it's shown whole; an empty slot keeps the crop shape.
+const own = whole && large ? `aspect-ratio: ${large.width} / ${large.height}` : undefined;
 const Wrapper = large ? 'button' : 'div';
 ---
 
@@ -50,9 +54,10 @@ const Wrapper = large ? 'button' : 'div';
       // An empty frame keeps its outline, so the placeholder still reads as a slot.
       (framed || !(shot || remote)) && 'rounded-card border',
       large && 'group cursor-zoom-in text-left focus-visible:outline-2 focus-visible:outline-offset-2',
-      ratio === 'wide' ? 'aspect-[16/10]' : 'aspect-[4/3]',
+      own ? '' : ratio === 'wide' ? 'aspect-[16/10]' : 'aspect-[4/3]',
       shot || remote ? (framed ? 'border-navy-700 bg-navy-900' : '') : dark ? 'border-navy-700 bg-navy-800' : 'border-line bg-mist',
     ]}
+    style={own}
   >
     {
       remote ? (

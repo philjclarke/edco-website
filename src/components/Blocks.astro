@@ -182,6 +182,7 @@ const inArticle = (b: Block) => article && b.type !== 'pull' && !('tone' in b &&
                   caption={sh.caption}
                   src={sh.src}
                   framed={block.framed ?? true}
+                  whole
                   sizes={block.shots.length === 1 ? '(min-width: 768px) 48rem, 90vw' : { 2: '(min-width: 768px) 45vw, 90vw', 3: '(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 90vw', 4: '(min-width: 1024px) 22vw, (min-width: 640px) 45vw, 90vw' }[block.columns ?? 2]}
                 />
               ))}

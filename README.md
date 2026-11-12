@@ -99,7 +99,7 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
     with an optional logo of the speaker's organisation, the latter with optional client logos: the ones added to it, or every client logo in Site settings if none are, like a Logo wall), **Outcomes we can help with**,
     **Content listing** (variations Chosen, Latest and Links), **How we do it**,
     **Screenshots** (with an optional bold closing line, and a button that can
-    link out to another site in a new tab; Columns 2, 3 or 4; Border and rounded corners shown or hidden), **Features listing** (Layout: Standard, or Heading beside
+    link out to another site in a new tab; Columns 2, 3 or 4; Border and rounded corners shown or hidden; each image shows whole, at its own shape), **Features listing** (Layout: Standard, or Heading beside
     list), **Figures** (a heading and text over
     a row of figures; its own figures, or Site settings' proof figures if it
     has none; kept from before the deck at EdCo's request).
