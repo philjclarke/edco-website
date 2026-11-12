@@ -168,14 +168,22 @@ const inArticle = (b: Block) => article && b.type !== 'pull' && !('tone' in b &&
                 {block.closing && <p class="mt-4 text-intro font-semibold text-ink">{block.closing}</p>}
               </div>
             )}
+            {/* Columns as the editor chose, from tablet width up; pairs first on the way down. */}
             <div
               class:list={[
                 'mt-8 grid gap-6',
-                block.shots.length > 1 ? 'md:grid-cols-2' : 'max-w-3xl',
+                block.shots.length === 1
+                  ? 'max-w-3xl'
+                  : { 2: 'md:grid-cols-2', 3: 'sm:grid-cols-2 lg:grid-cols-3', 4: 'sm:grid-cols-2 lg:grid-cols-4' }[block.columns ?? 2],
               ]}
             >
               {block.shots.map((sh) => (
-                <ProductShot caption={sh.caption} src={sh.src} />
+                <ProductShot
+                  caption={sh.caption}
+                  src={sh.src}
+                  framed={block.framed ?? true}
+                  sizes={block.shots.length === 1 ? '(min-width: 768px) 48rem, 90vw' : { 2: '(min-width: 768px) 45vw, 90vw', 3: '(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 90vw', 4: '(min-width: 1024px) 22vw, (min-width: 640px) 45vw, 90vw' }[block.columns ?? 2]}
+                />
               ))}
             </div>
             {/* An address on another site (e.g. the network's own) opens in a new tab. */}

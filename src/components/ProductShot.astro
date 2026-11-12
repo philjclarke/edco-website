@@ -21,8 +21,12 @@ interface Props {
   src?: ImageRef;
   tone?: 'dark' | 'light';
   ratio?: 'wide' | 'tall';
+  /** A border and rounded corners. Off, the image sits square and bare (an editor's choice on Screenshots). */
+  framed?: boolean;
+  /** How wide the image shows, for picking a size to download. */
+  sizes?: string;
 }
-const { caption, src, tone = 'light', ratio = 'wide' } = Astro.props;
+const { caption, src, tone = 'light', ratio = 'wide', framed = true, sizes = '(min-width: 768px) 45vw, 90vw' } = Astro.props;
 const dark = tone === 'dark';
 const shot = typeof src === 'string' ? (isScreenKey(src) ? screens[src] : null) : null;
 const remote = src && typeof src === 'object' ? { ...srcsetOf(src, [600, 900, 1400]), alt: src.alt || caption } : null;
@@ -42,10 +46,12 @@ const Wrapper = large ? 'button' : 'div';
       ? { type: 'button', 'data-zoom': '', 'aria-label': `Enlarge screenshot: ${caption}`, 'aria-haspopup': 'dialog' }
       : {})}
     class:list={[
-      'relative block w-full overflow-hidden rounded-card border',
+      'relative block w-full overflow-hidden',
+      // An empty frame keeps its outline, so the placeholder still reads as a slot.
+      (framed || !(shot || remote)) && 'rounded-card border',
       large && 'group cursor-zoom-in text-left focus-visible:outline-2 focus-visible:outline-offset-2',
       ratio === 'wide' ? 'aspect-[16/10]' : 'aspect-[4/3]',
-      shot || remote ? 'border-navy-700 bg-navy-900' : dark ? 'border-navy-700 bg-navy-800' : 'border-line bg-mist',
+      shot || remote ? (framed ? 'border-navy-700 bg-navy-900' : '') : dark ? 'border-navy-700 bg-navy-800' : 'border-line bg-mist',
     ]}
   >
     {
@@ -54,7 +60,7 @@ const Wrapper = large ? 'button' : 'div';
           src={remote.src}
           srcset={remote.srcset}
           alt={remote.alt}
-          sizes="(min-width: 768px) 45vw, 90vw"
+          sizes={sizes}
           class="h-full w-full object-cover object-top"
           loading="lazy"
           decoding="async"
@@ -64,7 +70,7 @@ const Wrapper = large ? 'button' : 'div';
           src={shot}
           alt={caption}
           widths={[600, 900, 1400]}
-          sizes="(min-width: 768px) 45vw, 90vw"
+          sizes={sizes}
           class="h-full w-full object-cover object-top"
           loading="lazy"
         />

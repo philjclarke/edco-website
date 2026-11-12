@@ -297,6 +297,8 @@ export const components: SharedSliceModel[] = [
       image: image('Screenshot'),
       caption: text('Strapline'),
     }),
+    columns: select('Columns', ['2', '3', '4'] as const, '2'),
+    show_border: boolean('Border and rounded corners', true, 'Shown', 'Hidden: square corners, no border'),
     button_label: text('Button label', 'e.g. Visit The Curriculum Network'),
     button_link: link('Button link', 'A web address on another site opens in a new tab'),
   }),

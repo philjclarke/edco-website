@@ -52,6 +52,9 @@ export function blockOf(slice: Slice): Block | null {
         photo: imageOf(p.photo),
         shots: (p.shots ?? []).map((s: any) => ({ caption: textOf(s.caption), src: imageOf(s.image) })),
         button: href && textOf(p.button_label) ? { label: textOf(p.button_label), href } : undefined,
+        columns: p.columns === '3' ? 3 : p.columns === '4' ? 4 : 2,
+        // Unset on Screenshots added before the toggle: keep the frame they had.
+        framed: p.show_border !== false,
       };
     }
     case 'feature_cards':

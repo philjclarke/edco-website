@@ -56,7 +56,7 @@ export type Block =
       items: { title: string; body: string; detail?: string; shot?: ImageRef; icon?: string }[];
       tone?: 'mist' | 'dark';
     }
-  | { type: 'shots'; eyebrow?: string; title?: string; lead?: string; closing?: string; photo?: RemoteImage; shots: { caption: string; src?: ImageRef }[]; button?: { label: string; href: string } }
+  | { type: 'shots'; eyebrow?: string; title?: string; lead?: string; closing?: string; photo?: RemoteImage; shots: { caption: string; src?: ImageRef }[]; button?: { label: string; href: string }; columns?: 2 | 3 | 4; framed?: boolean }
   | {
       type: 'ways';
       title?: string;
