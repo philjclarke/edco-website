@@ -203,7 +203,7 @@ export const components: SharedSliceModel[] = [
     {
       id: 'two_column',
       name: 'Two column',
-      description: 'A header on the left, the quote in a card on the right.',
+      description: 'A header on the left, the quote in a card on the right. Client logos underneath shows the logos added here, or every client logo in Site settings if none are.',
       primary: {
         eyebrow: sectionHeader('e.g. Social proof'),
         header: text('Header', 'e.g. Don’t take our word for it.'),
@@ -213,6 +213,10 @@ export const components: SharedSliceModel[] = [
         logo: image('Logo of their organisation (full colour; on navy it sits on a small white panel)'),
         theme: select('Testimonial theme', TESTIMONIAL_THEMES, 'working with EdCo'),
         show_logos: boolean('Client logos underneath', false),
+        logos: group('Client logos for this page', {
+          logo: image('Logo (full colour, for a white background)'),
+          name: text('Organisation', 'Read out by screen readers, e.g. Collins'),
+        }),
         background: BACKGROUND('grey'),
       },
     },

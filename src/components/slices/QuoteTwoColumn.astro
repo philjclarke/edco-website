@@ -1,7 +1,8 @@
 ---
 /*
   Quote, two-column variation: a header on the left, the quote in a card on
-  the right, client logos underneath if switched on. A logo of the speaker's
+  the right, client logos underneath if switched on: the ones picked here, or
+  every client logo in Site settings when none are. A logo of the speaker's
   organisation sits beside their name, on a white panel when the card is navy. With no quote yet it
   shows the mock testimonial for its theme (see Testimonial.astro).
 */
@@ -19,6 +20,10 @@ const quote = textOf(p.text);
 const name = textOf(p.name);
 const role = textOf(p.footer);
 const logo = p.logo?.url ? p.logo : undefined;
+// Logos picked for this page; none means every client logo in Site settings (as on a Logo wall).
+const logos = ((p.logos ?? []) as any[])
+  .filter((l) => l.logo?.url)
+  .map((l) => ({ name: textOf(l.name), logo: l.logo, confirmed: true }));
 // Grey by default; the quote's card is white, or raised navy on navy.
 const tone = toneOf(p.background ?? 'grey');
 const dark = tone === 'dark';
@@ -66,7 +71,7 @@ const dark = tone === 'dark';
   {
     p.show_logos && (
       <div class="mt-12">
-        <LogoWall tone={dark ? 'dark' : 'light'} />
+        <LogoWall tone={dark ? 'dark' : 'light'} items={logos} />
       </div>
     )
   }
