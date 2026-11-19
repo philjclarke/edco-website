@@ -42,6 +42,11 @@ export const contact = {
   email: 'info@educationcompany.co.uk',
 };
 
+/* What the footer's sign-up form says people agree to. Dotdigital stores this
+   exact wording with each sign-up as their consent record, so change it here
+   (not in the footer) and it stays matched. Agreed with EdCo, 19 Nov 2026. */
+export const subscribeConsent = 'We’ll email you our latest insights and events. You can unsubscribe at any time.';
+
 export type NavLink = { label: string; href: string; blurb?: string };
 export type NavGroup = { label: string; href: string; children?: NavLink[] };
 

@@ -80,7 +80,7 @@ only, so light cards show it on a navy panel).
 | --- | --- |
 | 1.21 | Privacy policy, cookie policy, terms |
 | 1.22 | Company number and VAT number for the footer |
-| 1.23 | Consent wording on the contact form and the subscribe form |
+| 1.23 | Consent wording on the contact form (the subscribe form's was agreed 19 Nov 2026) |
 | 1.24 | **Data-handling statement for the free customer analysis** — clients upload a customer list, so this needs proper sign-off before that offer goes live |
 | 1.25 | Confirm the registered address is still Denne Court, Kent (carried over from the current site) |
 
@@ -89,7 +89,7 @@ only, so light cards show it on a navy panel).
 | # | Decision | Note |
 | --- | --- | --- |
 | 1.26 | **Where the contact form posts** | Decided: each submission is emailed to EdCo through SendGrid (README, *Forms*). Needs the recipient, a verified sender and the SendGrid key in Vercel. Sending to SPIRIT as well is being scoped with EdCo. |
-| 1.27 | **Where the subscriber list lives** | Brief §52 wants name + email now, interest personalisation later. For now each sign-up is emailed to EdCo with the contact form's submissions; SPIRIT may take them too. |
+| 1.27 | **Where the subscriber list lives** | Brief §52 wants name + email now, interest personalisation later. Decided 19 Nov 2026: Dotdigital, list 108862874 (README, *Forms*). Needs the API user's details in Vercel. |
 | 1.28 | **Hosting** | Decided: Vercel, in EdCo's own team on the Pro plan (moved from Phil's Hobby account on 31 October 2026). See *Hosting handover* below. The domain still needs DNS access. |
 | 1.29 | **Analytics** | Built: the old site's Google tag (Ads + GA4 `G-6JDGTEGX7Y`) and LinkedIn tag, live address only, with form events (see README). Still to decide: a cookie banner (the old site has none; Google Ads and LinkedIn cookies need consent under PECR). In GA4: mark `generate_lead` and `sign_up` as key events, activate the Developer traffic filter, annotate the launch date. |
 | 1.30 | **CMS** | Decided: **Prismic** (repository `66bbee42`). All content is in it; see README *Prismic* and the editor guide. Draft previews work for every page type. |

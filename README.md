@@ -213,8 +213,14 @@ https://claude.ai/artifact/CQ92WZ2jERv9PMoxJUya5Y.
 ## Forms
 
 The contact form and the footer's subscribe form post to
-[src/pages/api/form.ts](src/pages/api/form.ts), which emails each submission to
-EdCo through SendGrid's SMTP relay, with Reply-To set to the visitor.
+[src/pages/api/form.ts](src/pages/api/form.ts). The contact form is emailed to
+EdCo through SendGrid's SMTP relay, with Reply-To set to the visitor. A sign-up
+goes straight into EdCo's Dotdigital list ([src/lib/dotdigital.ts](src/lib/dotdigital.ts)):
+first name to FIRSTNAME, last name to LASTNAME, with a consent record of the
+wording shown under the form (`subscribeConsent` in src/data/site.ts), the
+time, page, IP address and browser. EdCo send their own welcome email from
+Dotdigital. If Dotdigital isn't set up or refuses a sign-up, it's emailed to
+`SUBSCRIBE_TO` instead, marked to add by hand.
 [src/scripts/forms.ts](src/scripts/forms.ts) sends them without leaving the page
 and shows the thank-you message (the contact form's is editable in Prismic). A
 hidden field and a minimum fill-in time turn away most automated spam.
@@ -231,8 +237,12 @@ Variables, Production), never committed:
 | `FORM_TO` | Who receives submissions; several addresses separated by commas. |
 | `SUBSCRIBE_TO` | Optional: who receives the footer's newsletter sign-ups, if not `FORM_TO`. Same format. |
 | `FORM_FROM` | The sender, e.g. `EdCo website <website@educationcompany.co.uk>`. Must be a sender or domain verified in SendGrid. |
+| `DOTDIGITAL_API_USER` | The Dotdigital API user's email (`apiuser-…@apiconnector.com`; Settings → Access → API users). |
+| `DOTDIGITAL_API_PASSWORD` | That API user's password. Mark it **Sensitive**. |
+| `DOTDIGITAL_LIST_ID` | The list sign-ups join: `108862874` (the number at the end of the list's address in Dotdigital). |
+| `DOTDIGITAL_REGION` | Optional: `r1` (the default), `r2` or `r3`, as at the start of EdCo's Dotdigital address. |
 
-Until all of them are set, the forms say they couldn't send and give the phone
+Until the SMTP ones are set, the contact form (and a sign-up Dotdigital can't take) says it couldn't send and give the phone
 number. Redeploy after changing them. Failures show in the Vercel function logs,
 prefixed `[form]`.
 

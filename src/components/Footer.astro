@@ -1,5 +1,5 @@
 ---
-import { contact, site } from '@/data/site';
+import { contact, site, subscribeConsent } from '@/data/site';
 import { menu } from '@/lib/menu';
 
 const footerNav = (await menu(Astro.locals)).footer;
@@ -33,7 +33,7 @@ const legal = [
       <form
         method="post"
         action="/api/form"
-        class="relative flex flex-col gap-3 sm:flex-row sm:items-end"
+        class="relative grid gap-3 sm:grid-cols-2"
         data-form="subscribe"
         data-sent="Thank you. We’ll add you to the list."
         data-error={`Sorry, that didn’t send. Please try again, or ring us on ${contact.phone}.`}
@@ -42,32 +42,48 @@ const legal = [
         <div class="absolute -left-[10000px] h-px w-px overflow-hidden" aria-hidden="true">
           <label>Leave this empty <input name="website" tabindex="-1" autocomplete="off" /></label>
         </div>
-        <div class="flex min-w-0 flex-1 flex-col gap-1.5">
-          <label class="pl-5 text-xs font-medium text-ondark-muted" for="sub-name">Name</label>
+        {/* First and last name separately: they map onto Dotdigital's FIRSTNAME and LASTNAME. */}
+        <div class="flex min-w-0 flex-col gap-1.5">
+          <label class="pl-5 text-xs font-medium text-ondark-muted" for="sub-first">First name</label>
           <input
-            id="sub-name"
-            name="name"
-            autocomplete="name"
-            class="min-w-0 rounded-full border border-field-ondark bg-navy-900 px-5 py-3 text-sm"
-          />
-        </div>
-        <div class="flex min-w-0 flex-1 flex-col gap-1.5">
-          <label class="pl-5 text-xs font-medium text-ondark-muted" for="sub-email">Work email</label>
-          <input
-            id="sub-email"
-            name="email"
-            type="email"
-            autocomplete="email"
+            id="sub-first"
+            name="first_name"
+            autocomplete="given-name"
             required
             class="min-w-0 rounded-full border border-field-ondark bg-navy-900 px-5 py-3 text-sm"
           />
         </div>
-        <button
-          type="submit"
-          class="shrink-0 rounded-full bg-[linear-gradient(96deg,var(--color-orange),var(--color-pink))] px-6 py-3 font-display text-sm font-semibold text-white transition hover:brightness-110"
-          >Keep listening</button
-        >
-        <p data-form-status role="status" tabindex="-1" hidden class="self-center text-sm text-ondark-muted outline-none data-[state=sent]:font-display data-[state=sent]:text-base data-[state=sent]:font-semibold data-[state=sent]:text-ondark sm:basis-full"></p>
+        <div class="flex min-w-0 flex-col gap-1.5">
+          <label class="pl-5 text-xs font-medium text-ondark-muted" for="sub-last">Last name</label>
+          <input
+            id="sub-last"
+            name="last_name"
+            autocomplete="family-name"
+            class="min-w-0 rounded-full border border-field-ondark bg-navy-900 px-5 py-3 text-sm"
+          />
+        </div>
+        <div class="flex min-w-0 flex-col gap-3 sm:col-span-2 sm:flex-row sm:items-end">
+          <div class="flex min-w-0 flex-1 flex-col gap-1.5">
+            <label class="pl-5 text-xs font-medium text-ondark-muted" for="sub-email">Work email</label>
+            <input
+              id="sub-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+              class="min-w-0 rounded-full border border-field-ondark bg-navy-900 px-5 py-3 text-sm"
+            />
+          </div>
+          <button
+            type="submit"
+            class="shrink-0 rounded-full bg-[linear-gradient(96deg,var(--color-orange),var(--color-pink))] px-6 py-3 font-display text-sm font-semibold text-white transition hover:brightness-110"
+            >Keep listening</button
+          >
+        </div>
+        <p class="pl-5 text-xs text-ondark-muted sm:col-span-2">
+          {subscribeConsent} <a href="/about/privacy-policy/" class="underline underline-offset-2 hover:text-ondark">Privacy policy</a>
+        </p>
+        <p data-form-status role="status" tabindex="-1" hidden class="text-sm text-ondark-muted outline-none data-[state=sent]:font-display data-[state=sent]:text-base data-[state=sent]:font-semibold data-[state=sent]:text-ondark sm:col-span-2"></p>
       </form>
     </div>
   </div>

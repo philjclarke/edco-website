@@ -1,9 +1,12 @@
 /*
   Where the site's forms post: the contact form and the footer's subscribe
-  form. Each submission becomes an email to EdCo, sent through SendGrid's SMTP
-  relay, with Reply-To set to the visitor so EdCo can answer it directly.
+  form. A contact form submission becomes an email to EdCo, sent through
+  SendGrid's SMTP relay, with Reply-To set to the visitor so EdCo can answer it
+  directly. A sign-up goes into EdCo's Dotdigital list (src/lib/dotdigital.ts);
+  if Dotdigital isn't set up or refuses it, it's emailed instead, so nobody is
+  lost.
 
-  The SMTP details live only in Vercel's environment variables (see README,
+  The SMTP and Dotdigital details live only in Vercel's environment variables (see README,
   Forms). Without them the form says it couldn't send and offers the phone
   number, rather than pretending to succeed.
 
@@ -14,6 +17,8 @@ import type { APIRoute } from 'astro';
 import nodemailer from 'nodemailer';
 import { outcomes } from '@/data/outcomes';
 import { sameOrigin } from '@/lib/http';
+import { addSubscriber, type Added } from '@/lib/dotdigital';
+import { subscribeConsent } from '@/data/site';
 
 export const prerender = false;
 
@@ -55,7 +60,7 @@ const reply = (request: Request, result: Result, status: number, form = '') => {
   return new Response(JSON.stringify(result), { status, headers: { 'Content-Type': 'application/json' } });
 };
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, clientAddress }) => {
   if (!sameOrigin(request)) return new Response('Forbidden', { status: 403 });
 
   let data: FormData;
@@ -70,11 +75,39 @@ export const POST: APIRoute = async ({ request }) => {
   const started = Number(data.get('started'));
   if (field(data, 'website') || (started && Date.now() - started < MIN_MS)) return reply(request, { ok: true }, 200, form);
 
-  const name = field(data, 'name');
+  // The sign-up form asks for first and last name; a page cached from before
+  // that sends one "name", split at its first space.
+  const [firstName, lastName] = data.has('first_name')
+    ? [field(data, 'first_name', 100), field(data, 'last_name', 100)]
+    : (([first = '', ...rest]) => [first, rest.join(' ')])(field(data, 'name', 200).split(' '));
+  const name = form === 'subscribe' ? [firstName, lastName].filter(Boolean).join(' ') : field(data, 'name');
   const organisation = field(data, 'organisation');
   const email = field(data, 'email', 254);
   if (!EMAIL.test(email) || (form === 'contact' && (!name || !organisation)) || !['contact', 'subscribe'].includes(form)) {
     return reply(request, { ok: false, error: 'invalid' }, 400, form);
+  }
+  const page = field(data, 'page', 300);
+
+  let added: Added = 'off';
+  if (form === 'subscribe') {
+    let ipAddress = '';
+    try {
+      ipAddress = clientAddress;
+    } catch {
+      ipAddress = request.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? '';
+    }
+    added = await addSubscriber({
+      email,
+      firstName,
+      lastName,
+      consent: {
+        text: subscribeConsent,
+        url: request.headers.get('referer') ?? new URL(page || '/', request.url).href,
+        ipAddress,
+        userAgent: (request.headers.get('user-agent') ?? '').slice(0, 500),
+      },
+    });
+    if (added === 'added') return reply(request, { ok: true }, 200, form);
   }
 
   const host = env('SMTP_HOST');
@@ -86,10 +119,9 @@ export const POST: APIRoute = async ({ request }) => {
   const from = env('FORM_FROM');
   if (!host || !user || !pass || !to || !from) {
     console.error('[form] Not sent: set SMTP_HOST, SMTP_USER, SMTP_PASS, FORM_TO and FORM_FROM in Vercel.');
-    return reply(request, { ok: false, error: 'unavailable' }, 503, form);
+    return added === 'failed' ? reply(request, { ok: false, error: 'failed' }, 502, form) : reply(request, { ok: false, error: 'unavailable' }, 503, form);
   }
 
-  const page = field(data, 'page', 300);
   const who = organisation ? `${name}, ${organisation}` : name || email;
   let subject: string;
   let lines: string[];
@@ -109,7 +141,11 @@ export const POST: APIRoute = async ({ request }) => {
     ];
   } else {
     subject = `Newsletter sign-up from ${who}`;
-    lines = [`Name: ${name || '(not given)'}`, `Email: ${email}`];
+    lines = [`First name: ${firstName || '(not given)'}`, `Last name: ${lastName || '(not given)'}`, `Email: ${email}`];
+    if (added === 'failed') {
+      subject = `Newsletter sign-up to add to Dotdigital by hand: ${who}`;
+      lines.unshift('Dotdigital didn’t accept this sign-up, so please add them to the list by hand.', '');
+    }
   }
   lines.push('', `Sent from ${page || 'the website'} on ${new Date().toLocaleString('en-GB', { timeZone: 'Europe/London' })}.`);
 
